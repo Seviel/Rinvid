@@ -3,7 +3,7 @@
 int main()
 {
     sf::Window window(sf::VideoMode(800, 600), "Rinvid testing grounds");
-    sf::Event event;
+    sf::Event  event;
 
     while (window.isOpen())
     {
@@ -11,11 +11,11 @@ int main()
         {
             switch (event.type)
             {
-            case sf::Event::Closed:
-                window.close();
-                break;
-            default:
-                break;
+                case sf::Event::Closed:
+                    window.close();
+                    break;
+                default:
+                    break;
             }
         }
     }
