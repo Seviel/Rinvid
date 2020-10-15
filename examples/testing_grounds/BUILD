@@ -4,5 +4,8 @@ cc_binary(
     name = "test",
     srcs = ["main.cpp"],
     linkopts = ["-lsfml-window -lsfml-system"],
-    deps = ["//core:rinvid_core"],
+    deps = [
+        "//core:rinvid_core",
+        "//util:util",
+    ],
 )
