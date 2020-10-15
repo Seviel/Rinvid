@@ -18,6 +18,8 @@ class RinvidGfx
 
     static void set_viewport(std::int32_t x, std::int32_t y, std::int32_t width,
                              std::int32_t heigth);
+
+    static void clear_screen(float r, float g, float b, float a);
 };
 
 } // namespace rinvid
