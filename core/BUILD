@@ -5,5 +5,6 @@ cc_library(
     srcs = ["rinvid_gfx.cpp"],
     hdrs = ["include/rinvid_gfx.h"],
     linkopts = ["-lsfml-window -lsfml-system -lGL"],
+    deps = ["//util:util"],
     visibility = ["//examples:__subpackages__"],
 )
