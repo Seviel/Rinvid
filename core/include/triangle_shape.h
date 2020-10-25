@@ -7,6 +7,11 @@
 namespace rinvid
 {
 
+struct _triangle_vertices_t
+{
+    float data[9];
+};
+
 class TriangleShape : public Shape
 {
   public:
@@ -15,9 +20,7 @@ class TriangleShape : public Shape
     virtual void draw() override;
 
   private:
-    Vector3 vert1_;
-    Vector3 vert2_;
-    Vector3 vert3_;
+    _triangle_vertices_t vertices;
 };
 
 } // namespace rinvid
