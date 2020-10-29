@@ -19,6 +19,8 @@ int main()
                                    rinvid::Vector3{0.8F, -0.5F, 0.0F},
                                    rinvid::Vector3{0.0F, 0.8F, 0.0F}};
 
+    rinvid::RinvidGfx::init();
+
     while (window.isOpen())
     {
         handle_events(window, event);
