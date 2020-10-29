@@ -16,6 +16,8 @@ class RinvidGfx
     {
     }
 
+    static void init();
+
     static void set_viewport(std::int32_t x, std::int32_t y, std::int32_t width,
                              std::int32_t heigth);
 
