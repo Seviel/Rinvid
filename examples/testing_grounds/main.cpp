@@ -19,6 +19,8 @@ int main()
                                    rinvid::Vector3{0.8F, -0.5F, 0.0F},
                                    rinvid::Vector3{0.0F, 0.8F, 0.0F}};
 
+    triangle.set_color(rinvid::Color{0.1F, 0.8F, 0.3F, 1.0F});
+
     rinvid::RinvidGfx::init();
 
     while (window.isOpen())
