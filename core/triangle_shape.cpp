@@ -1,4 +1,5 @@
 #include "include/triangle_shape.h"
+#include "core/include/rinvid_gfx.h"
 #include "util/include/vector3.h"
 
 #define GL_GLEXT_PROTOTYPES
@@ -26,6 +27,8 @@ TriangleShape::TriangleShape(Vector3 vert1, Vector3 vert2, Vector3 vert3)
 
 void TriangleShape::draw()
 {
+    std::int32_t color_location = glGetUniformLocation(RinvidGfx::get_default_shader(), "in_color");
+    glUniform4f(color_location, color_.r, color_.g, color_.b, color_.a);
     glBindVertexArray(vao_);
     glDrawArrays(GL_TRIANGLES, 0, 3);
     glBindVertexArray(0);

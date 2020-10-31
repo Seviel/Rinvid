@@ -13,13 +13,14 @@ static const char* vert_shader_source =
 
 static const char* frag_shader_source =
     "#version 330 core\n"
-    "out vec4 frag_color;\n "
+    "out vec4 out_color;\n "
+    "uniform vec4 in_color;\n"
     "void main()\n"
     "{\n"
-    "   frag_color = vec4(1.0f, 1.0f, 1.0f, 1.0f);\n"
+    "   out_color = in_color;\n"
     "}\n";
 
-static void set_default_shader()
+static void set_default_shader(std::uint32_t& default_shader_ref)
 {
     std::uint32_t vert_shader;
     vert_shader = glCreateShader(GL_VERTEX_SHADER);
@@ -31,17 +32,16 @@ static void set_default_shader()
     glShaderSource(frag_shader, 1, &frag_shader_source, nullptr);
     glCompileShader(frag_shader);
 
-    std::uint32_t shader;
-    shader = glCreateProgram();
+    default_shader_ref = glCreateProgram();
 
-    glAttachShader(shader, vert_shader);
-    glAttachShader(shader, frag_shader);
-    glLinkProgram(shader);
+    glAttachShader(default_shader_ref, vert_shader);
+    glAttachShader(default_shader_ref, frag_shader);
+    glLinkProgram(default_shader_ref);
 
     glDeleteShader(vert_shader);
     glDeleteShader(frag_shader);
 
-    glUseProgram(shader);
+    glUseProgram(default_shader_ref);
 }
 
 } // namespace
@@ -49,9 +49,11 @@ static void set_default_shader()
 namespace rinvid
 {
 
+std::uint32_t RinvidGfx::default_shader{};
+
 void RinvidGfx::init()
 {
-    set_default_shader();
+    set_default_shader(RinvidGfx::default_shader);
 }
 
 void RinvidGfx::set_viewport(std::int32_t x, std::int32_t y, std::int32_t width,
@@ -64,6 +66,11 @@ void RinvidGfx::clear_screen(float r, float g, float b, float a)
 {
     glClearColor(r, g, b, a);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+std::uint32_t RinvidGfx::get_default_shader()
+{
+    return default_shader;
 }
 
 } // namespace rinvid

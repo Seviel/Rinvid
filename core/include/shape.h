@@ -12,7 +12,8 @@ class Shape
 {
   public:
     virtual void draw() = 0;
-    void         set_color(Color& color);
+    void         set_color(const Color&& color);
+    void         set_color(const Color& color);
 
   protected:
     Color         color_;

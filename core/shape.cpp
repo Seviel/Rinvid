@@ -8,7 +8,12 @@
 namespace rinvid
 {
 
-void Shape::set_color(Color& color)
+void Shape::set_color(const Color&& color)
+{
+    color_ = color;
+}
+
+void Shape::set_color(const Color& color)
 {
     color_ = color;
 }

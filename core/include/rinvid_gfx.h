@@ -22,6 +22,11 @@ class RinvidGfx
                              std::int32_t heigth);
 
     static void clear_screen(float r, float g, float b, float a);
+
+    static std::uint32_t get_default_shader();
+
+  private:
+    static std::uint32_t default_shader;
 };
 
 } // namespace rinvid
