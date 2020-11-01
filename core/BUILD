@@ -4,6 +4,7 @@ cc_library(
     name = "rinvid_core",
     srcs = [
         "rinvid_gfx.cpp",
+        "shape.cpp",
         "triangle_shape.cpp",
     ],
     hdrs = [
