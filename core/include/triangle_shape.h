@@ -20,6 +20,11 @@ class TriangleShape : public Shape
     virtual void draw() override;
 
   private:
+    virtual void convert_to_opengl_coordinates() override;
+
+    Vector3              vert1_;
+    Vector3              vert2_;
+    Vector3              vert3_;
     _triangle_vertices_t vertices;
 };
 
