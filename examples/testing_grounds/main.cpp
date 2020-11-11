@@ -15,9 +15,9 @@ int main()
 
     window.setActive(true);
 
-    rinvid::TriangleShape triangle{rinvid::Vector3{-0.8F, -0.5F, 0.0F},
-                                   rinvid::Vector3{0.8F, -0.5F, 0.0F},
-                                   rinvid::Vector3{0.0F, 0.8F, 0.0F}};
+    rinvid::TriangleShape triangle{rinvid::Vector3{400.0F, 500.0F, 0.0F},
+                                   rinvid::Vector3{50.0F, 100.0F, 0.0F},
+                                   rinvid::Vector3{750.0F, 100.0F, 0.0F}};
 
     triangle.set_color(rinvid::Color{0.1F, 0.8F, 0.3F, 1.0F});
 
