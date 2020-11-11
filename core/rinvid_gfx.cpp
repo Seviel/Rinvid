@@ -50,6 +50,8 @@ namespace rinvid
 {
 
 std::uint32_t RinvidGfx::default_shader{};
+std::uint32_t RinvidGfx::width{};
+std::uint32_t RinvidGfx::height{};
 
 void RinvidGfx::init()
 {
@@ -59,6 +61,8 @@ void RinvidGfx::init()
 void RinvidGfx::set_viewport(std::int32_t x, std::int32_t y, std::int32_t width,
                              std::int32_t heigth)
 {
+    RinvidGfx::width  = width;
+    RinvidGfx::height = heigth;
     glViewport(x, y, width, heigth);
 }
 
@@ -71,6 +75,16 @@ void RinvidGfx::clear_screen(float r, float g, float b, float a)
 std::uint32_t RinvidGfx::get_default_shader()
 {
     return default_shader;
+}
+
+std::uint32_t RinvidGfx::get_width()
+{
+    return width;
+}
+
+std::uint32_t RinvidGfx::get_height()
+{
+    return height;
 }
 
 } // namespace rinvid

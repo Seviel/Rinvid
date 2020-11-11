@@ -25,8 +25,14 @@ class RinvidGfx
 
     static std::uint32_t get_default_shader();
 
+    static std::uint32_t get_width();
+
+    static std::uint32_t get_height();
+
   private:
     static std::uint32_t default_shader;
+    static std::uint32_t width;
+    static std::uint32_t height;
 };
 
 } // namespace rinvid
