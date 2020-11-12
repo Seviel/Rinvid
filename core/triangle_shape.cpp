@@ -27,17 +27,14 @@ TriangleShape::TriangleShape(Vector3 vert1, Vector3 vert2, Vector3 vert3)
 
 void TriangleShape::convert_to_opengl_coordinates()
 {
-    std::uint32_t width  = RinvidGfx::get_width();
-    std::uint32_t heigth = RinvidGfx::get_height();
+    vertices.data[0] = RinvidGfx::get_opengl_x_coord(vert1_.x);
+    vertices.data[1] = RinvidGfx::get_opengl_y_coord(vert1_.y);
 
-    vertices.data[0] = ((vert1_.x / width) * 2.0F) - 1.0F;
-    vertices.data[1] = ((vert1_.y / heigth) * 2.0F) - 1.0F;
+    vertices.data[3] = RinvidGfx::get_opengl_x_coord(vert2_.x);
+    vertices.data[4] = RinvidGfx::get_opengl_y_coord(vert2_.y);
 
-    vertices.data[3] = ((vert2_.x / width) * 2.0F) - 1.0F;
-    vertices.data[4] = ((vert2_.y / heigth) * 2.0F) - 1.0F;
-
-    vertices.data[6] = ((vert3_.x / width) * 2.0F) - 1.0F;
-    vertices.data[7] = ((vert3_.y / heigth) * 2.0F) - 1.0F;
+    vertices.data[6] = RinvidGfx::get_opengl_x_coord(vert3_.x);
+    vertices.data[7] = RinvidGfx::get_opengl_y_coord(vert3_.y);
 
     glBindBuffer(GL_ARRAY_BUFFER, vbo_);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices.data, GL_DYNAMIC_DRAW);
