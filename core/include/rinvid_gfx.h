@@ -25,8 +25,24 @@ class RinvidGfx
 
     static std::uint32_t get_default_shader();
 
+    static std::uint32_t get_width();
+
+    static std::uint32_t get_height();
+
+    static float get_opengl_x_coord(float absolute_coord)
+    {
+        return ((absolute_coord / width) * 2.0F) - 1.0F;
+    }
+
+    static float get_opengl_y_coord(float absolute_coord)
+    {
+        return -1.0F * (((absolute_coord / height) * 2.0F) - 1.0F);
+    }
+
   private:
     static std::uint32_t default_shader;
+    static std::uint32_t width;
+    static std::uint32_t height;
 };
 
 } // namespace rinvid

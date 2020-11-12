@@ -10,7 +10,7 @@ namespace rinvid
 {
 
 TriangleShape::TriangleShape(Vector3 vert1, Vector3 vert2, Vector3 vert3)
-    : vertices{vert1.x, vert1.y, vert1.z, vert2.x, vert2.y, vert2.z, vert3.x, vert3.y, vert3.z}
+    : vert1_{vert1}, vert2_{vert2}, vert3_{vert3}, vertices{}
 {
     glGenVertexArrays(1, &vao_);
     glBindVertexArray(vao_);
@@ -25,8 +25,25 @@ TriangleShape::TriangleShape(Vector3 vert1, Vector3 vert2, Vector3 vert3)
     glBindVertexArray(0);
 }
 
+void TriangleShape::convert_to_opengl_coordinates()
+{
+    vertices.data[0] = RinvidGfx::get_opengl_x_coord(vert1_.x);
+    vertices.data[1] = RinvidGfx::get_opengl_y_coord(vert1_.y);
+
+    vertices.data[3] = RinvidGfx::get_opengl_x_coord(vert2_.x);
+    vertices.data[4] = RinvidGfx::get_opengl_y_coord(vert2_.y);
+
+    vertices.data[6] = RinvidGfx::get_opengl_x_coord(vert3_.x);
+    vertices.data[7] = RinvidGfx::get_opengl_y_coord(vert3_.y);
+
+    glBindBuffer(GL_ARRAY_BUFFER, vbo_);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices.data, GL_DYNAMIC_DRAW);
+}
+
 void TriangleShape::draw()
 {
+    convert_to_opengl_coordinates();
+
     std::int32_t color_location = glGetUniformLocation(RinvidGfx::get_default_shader(), "in_color");
     glUniform4f(color_location, color_.r, color_.g, color_.b, color_.a);
     glBindVertexArray(vao_);

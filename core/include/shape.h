@@ -19,6 +19,9 @@ class Shape
     Color         color_;
     std::uint32_t vao_;
     std::uint32_t vbo_;
+
+  private:
+    virtual void convert_to_opengl_coordinates() = 0;
 };
 
 } // namespace rinvid
