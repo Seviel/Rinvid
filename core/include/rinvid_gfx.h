@@ -36,7 +36,7 @@ class RinvidGfx
 
     static float get_opengl_y_coord(float absolute_coord)
     {
-        return ((absolute_coord / height) * 2.0F) - 1.0F;
+        return -1.0F * (((absolute_coord / height) * 2.0F) - 1.0F);
     }
 
   private:
