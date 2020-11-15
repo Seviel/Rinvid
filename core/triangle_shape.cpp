@@ -9,7 +9,7 @@
 namespace rinvid
 {
 
-TriangleShape::TriangleShape(Vector3 vert1, Vector3 vert2, Vector3 vert3)
+TriangleShape::TriangleShape(Vector2 vert1, Vector2 vert2, Vector2 vert3)
     : vert1_{vert1}, vert2_{vert2}, vert3_{vert3}, vertices{}
 {
     glGenVertexArrays(1, &vao_);

@@ -2,7 +2,7 @@
 #define CORE_INCLUDE_TRIANGLE_SHAPE_H
 
 #include "core/include/shape.h"
-#include "util/include/vector3.h"
+#include "util/include/vector2.h"
 
 namespace rinvid
 {
@@ -15,16 +15,16 @@ struct _triangle_vertices_t
 class TriangleShape : public Shape
 {
   public:
-    TriangleShape(Vector3 vert1, Vector3 vert2, Vector3 vert3);
+    TriangleShape(Vector2 vert1, Vector2 vert2, Vector2 vert3);
 
     virtual void draw() override;
 
   private:
     virtual void convert_to_opengl_coordinates() override;
 
-    Vector3              vert1_;
-    Vector3              vert2_;
-    Vector3              vert3_;
+    Vector2              vert1_;
+    Vector2              vert2_;
+    Vector2              vert3_;
     _triangle_vertices_t vertices;
 };
 
