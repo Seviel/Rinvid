@@ -1,3 +1,5 @@
+#include <unistd.h>
+
 #include <SFML/Window.hpp>
 
 #include "core/include/rinvid_gfx.h"
@@ -29,8 +31,11 @@ int main()
         rinvid::RinvidGfx::clear_screen(0.2F, 0.4F, 0.4F, 1.0F);
 
         triangle.draw();
+        triangle.move(rinvid::Vector2{1.0F, 0.0F});
 
         window.display();
+
+        usleep(10000);
     }
 
     return 0;
