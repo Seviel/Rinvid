@@ -18,6 +18,7 @@ class TriangleShape : public Shape
     TriangleShape(Vector2 vert1, Vector2 vert2, Vector2 vert3);
 
     virtual void draw() override;
+    virtual void move(const Vector2 move_vector) override;
 
   private:
     virtual void convert_to_opengl_coordinates() override;

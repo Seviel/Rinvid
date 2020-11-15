@@ -51,4 +51,11 @@ void TriangleShape::draw()
     glBindVertexArray(0);
 }
 
+void TriangleShape::move(const Vector2 move_vector)
+{
+    vert1_.move(move_vector);
+    vert2_.move(move_vector);
+    vert3_.move(move_vector);
+}
+
 } // namespace rinvid

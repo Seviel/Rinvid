@@ -4,6 +4,7 @@
 #include <cstdint>
 
 #include "util/include/color.h"
+#include "util/include/vector2.h"
 
 namespace rinvid
 {
@@ -11,7 +12,8 @@ namespace rinvid
 class Shape
 {
   public:
-    virtual void draw() = 0;
+    virtual void draw()                          = 0;
+    virtual void move(const Vector2 move_vector) = 0;
     void         set_color(const Color&& color);
     void         set_color(const Color& color);
 
