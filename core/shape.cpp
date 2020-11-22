@@ -8,6 +8,11 @@
 namespace rinvid
 {
 
+Vector2 Shape::get_origin()
+{
+    return origin_;
+}
+
 void Shape::set_color(const Color&& color)
 {
     color_ = color;

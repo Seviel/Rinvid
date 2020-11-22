@@ -1,5 +1,7 @@
-#include "include/triangle_shape.h"
+#include <algorithm>
+
 #include "core/include/rinvid_gfx.h"
+#include "include/triangle_shape.h"
 #include "util/include/vector3.h"
 
 #define GL_GLEXT_PROTOTYPES
@@ -12,6 +14,8 @@ namespace rinvid
 TriangleShape::TriangleShape(Vector2 vert1, Vector2 vert2, Vector2 vert3)
     : vert1_{vert1}, vert2_{vert2}, vert3_{vert3}, vertices{}
 {
+    calculate_origin();
+
     glGenVertexArrays(1, &vao_);
     glBindVertexArray(vao_);
 
@@ -40,6 +44,18 @@ void TriangleShape::convert_to_opengl_coordinates()
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices.data, GL_DYNAMIC_DRAW);
 }
 
+void TriangleShape::calculate_origin()
+{
+    float min_x = std::min(vert1_.x, std::min(vert2_.x, vert3_.x));
+    float min_y = std::min(vert1_.y, std::min(vert2_.y, vert3_.y));
+
+    float max_x = std::max(vert1_.x, std::max(vert2_.x, vert3_.x));
+    float max_y = std::max(vert1_.y, std::max(vert2_.y, vert3_.y));
+
+    origin_.x = (max_x + min_x) / 2.0F;
+    origin_.y = (max_y + min_y) / 2.0F;
+}
+
 void TriangleShape::draw()
 {
     convert_to_opengl_coordinates();
@@ -56,6 +72,22 @@ void TriangleShape::move(const Vector2 move_vector)
     vert1_.move(move_vector);
     vert2_.move(move_vector);
     vert3_.move(move_vector);
+
+    calculate_origin();
+}
+
+void TriangleShape::set_position(const Vector2 vector)
+{
+    Vector2 move_vector{};
+
+    move_vector.x = vector.x - origin_.x;
+    move_vector.y = vector.y - origin_.y;
+
+    vert1_.move(move_vector);
+    vert2_.move(move_vector);
+    vert3_.move(move_vector);
+
+    origin_ = vector;
 }
 
 } // namespace rinvid
