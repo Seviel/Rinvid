@@ -33,6 +33,12 @@ int main()
         triangle.draw();
         triangle.move(rinvid::Vector2{1.0F, 0.0F});
 
+        rinvid::Vector2 triangle_origin = triangle.get_origin();
+        if (triangle_origin.x >= rinvid::RinvidGfx::get_width())
+        {
+            triangle.set_position(rinvid::Vector2{0.0F, triangle_origin.y});
+        }
+
         window.display();
 
         usleep(10000);
