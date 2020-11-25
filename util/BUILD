@@ -4,6 +4,7 @@ cc_library(
     name = "util",
     hdrs = [
         "include/vector3.h", 
+        "include/vector2.h", 
         "include/color.h"
     ],
     visibility = [

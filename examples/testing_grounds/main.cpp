@@ -1,3 +1,5 @@
+#include <unistd.h>
+
 #include <SFML/Window.hpp>
 
 #include "core/include/rinvid_gfx.h"
@@ -15,9 +17,8 @@ int main()
 
     window.setActive(true);
 
-    rinvid::TriangleShape triangle{rinvid::Vector3{400.0F, 500.0F, 0.0F},
-                                   rinvid::Vector3{50.0F, 100.0F, 0.0F},
-                                   rinvid::Vector3{750.0F, 100.0F, 0.0F}};
+    rinvid::TriangleShape triangle{rinvid::Vector2{400.0F, 500.0F}, rinvid::Vector2{50.0F, 100.0F},
+                                   rinvid::Vector2{750.0F, 100.0F}};
 
     triangle.set_color(rinvid::Color{0.1F, 0.8F, 0.3F, 1.0F});
 
@@ -30,8 +31,17 @@ int main()
         rinvid::RinvidGfx::clear_screen(0.2F, 0.4F, 0.4F, 1.0F);
 
         triangle.draw();
+        triangle.move(rinvid::Vector2{1.0F, 0.0F});
+
+        rinvid::Vector2 triangle_origin = triangle.get_origin();
+        if (triangle_origin.x >= rinvid::RinvidGfx::get_width())
+        {
+            triangle.set_position(rinvid::Vector2{0.0F, triangle_origin.y});
+        }
 
         window.display();
+
+        usleep(10000);
     }
 
     return 0;
