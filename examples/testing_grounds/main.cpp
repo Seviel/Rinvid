@@ -2,6 +2,7 @@
 
 #include <SFML/Window.hpp>
 
+#include "core/include/rectangle_shape.h"
 #include "core/include/rinvid_gfx.h"
 #include "core/include/triangle_shape.h"
 #include "util/include/vector3.h"
@@ -19,8 +20,12 @@ int main()
 
     rinvid::TriangleShape triangle{rinvid::Vector2{400.0F, 500.0F}, rinvid::Vector2{50.0F, 100.0F},
                                    rinvid::Vector2{750.0F, 100.0F}};
-
     triangle.set_color(rinvid::Color{0.1F, 0.8F, 0.3F, 1.0F});
+
+    rinvid::RectangleShape rectangle{rinvid::Vector2{100.0F, 40.0F}, rinvid::Vector2{150.0F, 40.0F},
+                                     rinvid::Vector2{150.0F, 90.0F},
+                                     rinvid::Vector2{100.0F, 90.0F}};
+    rectangle.set_color(rinvid::Color{0.8F, 0.1F, 0.3F, 1.0F});
 
     rinvid::RinvidGfx::init();
 
@@ -31,12 +36,20 @@ int main()
         rinvid::RinvidGfx::clear_screen(0.2F, 0.4F, 0.4F, 1.0F);
 
         triangle.draw();
-        triangle.move(rinvid::Vector2{1.0F, 0.0F});
+        rectangle.draw();
 
+        triangle.move(rinvid::Vector2{1.0F, 0.0F});
         rinvid::Vector2 triangle_origin = triangle.get_origin();
         if (triangle_origin.x >= rinvid::RinvidGfx::get_width())
         {
             triangle.set_position(rinvid::Vector2{0.0F, triangle_origin.y});
+        }
+
+        rectangle.move(rinvid::Vector2{0.0F, 2.0F});
+        rinvid::Vector2 rectangle_origin = rectangle.get_origin();
+        if (rectangle_origin.y >= rinvid::RinvidGfx::get_height())
+        {
+            rectangle.set_position(rinvid::Vector2{rectangle_origin.x, 0.0F});
         }
 
         window.display();
