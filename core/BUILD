@@ -9,6 +9,7 @@ cc_library(
         "triangle_shape.cpp",
     ],
     hdrs = [
+        "include/fixed_polygon_shape.h",
         "include/rectangle_shape.h",
         "include/rinvid_gfx.h",
         "include/shape.h",
