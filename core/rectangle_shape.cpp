@@ -11,12 +11,13 @@
 namespace rinvid
 {
 
-RectangleShape::RectangleShape(Vector2 vert1, Vector2 vert2, Vector2 vert3, Vector2 vert4)
+RectangleShape::RectangleShape(Vector2 top_left, Vector2 top_right, Vector2 bottom_left,
+                               Vector2 bottom_right)
 {
-    verts_.at(0) = vert1;
-    verts_.at(1) = vert2;
-    verts_.at(2) = vert3;
-    verts_.at(3) = vert4;
+    verts_.at(0) = top_left;
+    verts_.at(1) = top_right;
+    verts_.at(2) = bottom_left;
+    verts_.at(3) = bottom_right;
 
     calculate_origin();
 
