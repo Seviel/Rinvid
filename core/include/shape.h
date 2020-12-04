@@ -28,8 +28,8 @@ class Shape
     std::uint32_t vbo_;
 
   private:
-    virtual void convert_to_opengl_coordinates() = 0;
-    virtual void calculate_origin()              = 0;
+    virtual void normalize_coordinates() = 0;
+    virtual void calculate_origin()      = 0;
 };
 
 } // namespace rinvid

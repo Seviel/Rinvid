@@ -20,7 +20,7 @@ class FixedPolygonShape : public Shape
     virtual void set_position(const Vector2 vector) override;
 
   protected:
-    virtual void convert_to_opengl_coordinates() override;
+    virtual void normalize_coordinates() override;
     virtual void calculate_origin() override;
     void         init_vertex_buffer();
 
@@ -38,7 +38,7 @@ FixedPolygonShape<number_of_vertices>::FixedPolygonShape() : verts_{}, vertices_
 }
 
 template <typename std::uint32_t number_of_vertices>
-void FixedPolygonShape<number_of_vertices>::convert_to_opengl_coordinates()
+void FixedPolygonShape<number_of_vertices>::normalize_coordinates()
 {
     for (std::uint32_t i{0}; i < number_of_vertices; ++i)
     {
