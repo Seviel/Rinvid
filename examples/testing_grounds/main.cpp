@@ -3,6 +3,7 @@
 #include <SFML/Window.hpp>
 
 #include "core/include/quad_shape.h"
+#include "core/include/rectangle_shape.h"
 #include "core/include/rinvid_gfx.h"
 #include "core/include/triangle_shape.h"
 #include "util/include/vector3.h"
@@ -26,6 +27,9 @@ int main()
                            rinvid::Vector2{160.0F, 90.0F}, rinvid::Vector2{90.0F, 90.0F}};
     quad.set_color(rinvid::Color{0.8F, 0.1F, 0.3F, 1.0F});
 
+    rinvid::RectangleShape rectangle{rinvid::Vector2{350.0F, 35.0F}, 100.0F, 50.0F};
+    rectangle.set_color(rinvid::Color{0.2F, 0.2F, 0.8F, 1.0F});
+
     rinvid::RinvidGfx::init();
 
     while (window.isOpen())
@@ -36,6 +40,7 @@ int main()
 
         triangle.draw();
         quad.draw();
+        rectangle.draw();
 
         triangle.move(rinvid::Vector2{1.0F, 0.0F});
         rinvid::Vector2 triangle_origin = triangle.get_origin();
