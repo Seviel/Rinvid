@@ -2,7 +2,7 @@
 
 #include <SFML/Window.hpp>
 
-#include "core/include/rectangle_shape.h"
+#include "core/include/quad_shape.h"
 #include "core/include/rinvid_gfx.h"
 #include "core/include/triangle_shape.h"
 #include "util/include/vector3.h"
@@ -22,10 +22,9 @@ int main()
                                    rinvid::Vector2{750.0F, 100.0F}};
     triangle.set_color(rinvid::Color{0.1F, 0.8F, 0.3F, 1.0F});
 
-    rinvid::RectangleShape rectangle{rinvid::Vector2{100.0F, 40.0F}, rinvid::Vector2{150.0F, 40.0F},
-                                     rinvid::Vector2{150.0F, 90.0F},
-                                     rinvid::Vector2{100.0F, 90.0F}};
-    rectangle.set_color(rinvid::Color{0.8F, 0.1F, 0.3F, 1.0F});
+    rinvid::QuadShape quad{rinvid::Vector2{100.0F, 40.0F}, rinvid::Vector2{150.0F, 40.0F},
+                           rinvid::Vector2{150.0F, 90.0F}, rinvid::Vector2{100.0F, 90.0F}};
+    quad.set_color(rinvid::Color{0.8F, 0.1F, 0.3F, 1.0F});
 
     rinvid::RinvidGfx::init();
 
@@ -36,7 +35,7 @@ int main()
         rinvid::RinvidGfx::clear_screen(0.2F, 0.4F, 0.4F, 1.0F);
 
         triangle.draw();
-        rectangle.draw();
+        quad.draw();
 
         triangle.move(rinvid::Vector2{1.0F, 0.0F});
         rinvid::Vector2 triangle_origin = triangle.get_origin();
@@ -45,11 +44,11 @@ int main()
             triangle.set_position(rinvid::Vector2{0.0F, triangle_origin.y});
         }
 
-        rectangle.move(rinvid::Vector2{0.0F, 2.0F});
-        rinvid::Vector2 rectangle_origin = rectangle.get_origin();
-        if (rectangle_origin.y >= rinvid::RinvidGfx::get_height())
+        quad.move(rinvid::Vector2{0.0F, 2.0F});
+        rinvid::Vector2 quad_origin = quad.get_origin();
+        if (quad_origin.y >= rinvid::RinvidGfx::get_height())
         {
-            rectangle.set_position(rinvid::Vector2{rectangle_origin.x, 0.0F});
+            quad.set_position(rinvid::Vector2{quad_origin.x, 0.0F});
         }
 
         window.display();
