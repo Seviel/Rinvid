@@ -4,6 +4,7 @@ cc_library(
     name = "rinvid_core",
     srcs = [
         "quad_shape.cpp",
+        "rectangle_shape.cpp",
         "rinvid_gfx.cpp",
         "shape.cpp",
         "triangle_shape.cpp",
@@ -11,6 +12,7 @@ cc_library(
     hdrs = [
         "include/fixed_polygon_shape.h",
         "include/quad_shape.h",
+        "include/rectangle_shape.h",
         "include/rinvid_gfx.h",
         "include/shape.h",
         "include/triangle_shape.h",
