@@ -23,7 +23,7 @@ int main()
     triangle.set_color(rinvid::Color{0.1F, 0.8F, 0.3F, 1.0F});
 
     rinvid::QuadShape quad{rinvid::Vector2{100.0F, 40.0F}, rinvid::Vector2{150.0F, 40.0F},
-                           rinvid::Vector2{150.0F, 90.0F}, rinvid::Vector2{100.0F, 90.0F}};
+                           rinvid::Vector2{160.0F, 90.0F}, rinvid::Vector2{90.0F, 90.0F}};
     quad.set_color(rinvid::Color{0.8F, 0.1F, 0.3F, 1.0F});
 
     rinvid::RinvidGfx::init();
