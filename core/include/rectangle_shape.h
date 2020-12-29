@@ -11,7 +11,7 @@ namespace rinvid
 class RectangleShape : public FixedPolygonShape<4>
 {
   public:
-    RectangleShape(Vector2 top_left, float width, float height);
+    RectangleShape(Vector2 center, float width, float height);
 
     virtual void draw() override;
 };
