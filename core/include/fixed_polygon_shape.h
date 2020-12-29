@@ -24,12 +24,15 @@ class FixedPolygonShape : public Shape
     virtual void calculate_origin() override;
     void         init_vertex_buffer();
 
+    const std::uint32_t number_of_vertices_;
+
     std::vector<Vector2> verts_;
     float                vertices_[number_of_vertices * 3];
 };
 
 template <typename std::uint32_t number_of_vertices>
-FixedPolygonShape<number_of_vertices>::FixedPolygonShape() : verts_{}, vertices_{}
+FixedPolygonShape<number_of_vertices>::FixedPolygonShape()
+    : number_of_vertices_{number_of_vertices}, verts_{}, vertices_{}
 {
     for (std::uint32_t i{0}; i < number_of_vertices; ++i)
     {
