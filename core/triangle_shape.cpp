@@ -30,7 +30,7 @@ void TriangleShape::draw()
     glUniform4f(color_location, color_.r, color_.g, color_.b, color_.a);
 
     glBindVertexArray(vao_);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    glDrawArrays(GL_TRIANGLES, 0, number_of_vertices_);
     glBindVertexArray(0);
 }
 
