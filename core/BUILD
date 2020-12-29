@@ -3,6 +3,7 @@ load("@rules_cc//cc:defs.bzl", "cc_library")
 cc_library(
     name = "rinvid_core",
     srcs = [
+        "quad_shape.cpp",
         "rectangle_shape.cpp",
         "rinvid_gfx.cpp",
         "shape.cpp",
@@ -10,6 +11,7 @@ cc_library(
     ],
     hdrs = [
         "include/fixed_polygon_shape.h",
+        "include/quad_shape.h",
         "include/rectangle_shape.h",
         "include/rinvid_gfx.h",
         "include/shape.h",

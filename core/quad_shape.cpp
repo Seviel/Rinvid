@@ -1,7 +1,7 @@
 #include <algorithm>
 
 #include "core/include/rinvid_gfx.h"
-#include "include/rectangle_shape.h"
+#include "include/quad_shape.h"
 #include "util/include/vector3.h"
 
 #define GL_GLEXT_PROTOTYPES
@@ -11,19 +11,19 @@
 namespace rinvid
 {
 
-RectangleShape::RectangleShape(Vector2 center, float width, float height)
+QuadShape::QuadShape(Vector2 top_left, Vector2 top_right, Vector2 bottom_right, Vector2 bottom_left)
 {
-    verts_.at(0) = Vector2{center.x - width / 2.0F, center.y - height / 2.0F};
-    verts_.at(1) = Vector2{center.x + width / 2.0F, center.y - height / 2.0F};
-    verts_.at(2) = Vector2{center.x + width / 2.0F, center.y + height / 2.0F};
-    verts_.at(3) = Vector2{center.x - width / 2.0F, center.y + height / 2.0F};
+    verts_.at(0) = top_left;
+    verts_.at(1) = top_right;
+    verts_.at(2) = bottom_right;
+    verts_.at(3) = bottom_left;
 
     calculate_origin();
 
     init_vertex_buffer();
 }
 
-void RectangleShape::draw()
+void QuadShape::draw()
 {
     normalize_coordinates();
 
