@@ -1,3 +1,12 @@
+/**********************************************************************
+ * Copyright (c) 2020, Filip Vasiljevic
+ * All rights reserved.
+ *
+ * This file is subject to the terms and conditions of the BSD 2-Clause
+ * License.  See the file LICENSE in the root directory of the Rinvid
+ * repository for more details.
+ **********************************************************************/
+
 #ifndef UTIL_COLOR_H
 #define UTIL_COLOR_H
 
