@@ -15,7 +15,7 @@ class FixedPolygonShape : public Shape
 {
   public:
     FixedPolygonShape();
-    virtual void draw() = 0;
+    virtual void draw() override;
     virtual void move(const Vector2 move_vector) override;
     virtual void set_position(const Vector2 vector) override;
 
@@ -23,6 +23,7 @@ class FixedPolygonShape : public Shape
     virtual void normalize_coordinates() override;
     virtual void calculate_origin() override;
     void         init_vertex_buffer();
+    void         draw_arrays(GLenum mode);
 
     const std::uint32_t number_of_vertices_;
 
@@ -34,6 +35,8 @@ template <typename std::uint32_t number_of_vertices>
 FixedPolygonShape<number_of_vertices>::FixedPolygonShape()
     : number_of_vertices_{number_of_vertices}, verts_{}, vertices_{}
 {
+    init_vertex_buffer();
+
     for (std::uint32_t i{0}; i < number_of_vertices; ++i)
     {
         verts_.emplace_back();
@@ -96,6 +99,23 @@ void FixedPolygonShape<number_of_vertices>::init_vertex_buffer()
 }
 
 template <typename std::uint32_t number_of_vertices>
+void FixedPolygonShape<number_of_vertices>::draw_arrays(GLenum mode)
+{
+    glBindVertexArray(vao_);
+    glDrawArrays(mode, 0, number_of_vertices_);
+    glBindVertexArray(0);
+}
+
+template <typename std::uint32_t number_of_vertices>
+void FixedPolygonShape<number_of_vertices>::draw()
+{
+    normalize_coordinates();
+
+    std::int32_t color_location = glGetUniformLocation(RinvidGfx::get_default_shader(), "in_color");
+    glUniform4f(color_location, color_.r, color_.g, color_.b, color_.a);
+}
+
+template <typename std::uint32_t number_of_vertices>
 void FixedPolygonShape<number_of_vertices>::move(const Vector2 move_vector)
 {
     for (std::uint32_t i{0}; i < number_of_vertices; ++i)
@@ -109,6 +129,8 @@ void FixedPolygonShape<number_of_vertices>::move(const Vector2 move_vector)
 template <typename std::uint32_t number_of_vertices>
 void FixedPolygonShape<number_of_vertices>::set_position(const Vector2 vector)
 {
+    calculate_origin();
+
     Vector2 move_vector{};
 
     move_vector.x = vector.x - origin_.x;

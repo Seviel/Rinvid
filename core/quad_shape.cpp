@@ -17,22 +17,12 @@ QuadShape::QuadShape(Vector2 top_left, Vector2 top_right, Vector2 bottom_right, 
     verts_.at(1) = top_right;
     verts_.at(2) = bottom_right;
     verts_.at(3) = bottom_left;
-
-    calculate_origin();
-
-    init_vertex_buffer();
 }
 
 void QuadShape::draw()
 {
-    normalize_coordinates();
-
-    std::int32_t color_location = glGetUniformLocation(RinvidGfx::get_default_shader(), "in_color");
-    glUniform4f(color_location, color_.r, color_.g, color_.b, color_.a);
-
-    glBindVertexArray(vao_);
-    glDrawArrays(GL_QUADS, 0, number_of_vertices_);
-    glBindVertexArray(0);
+    FixedPolygonShape::draw();
+    draw_arrays(GL_QUADS);
 }
 
 } // namespace rinvid
