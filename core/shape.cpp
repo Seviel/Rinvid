@@ -22,12 +22,7 @@ Vector2 Shape::get_origin()
     return origin_;
 }
 
-void Shape::set_color(const Color&& color)
-{
-    color_ = color;
-}
-
-void Shape::set_color(const Color& color)
+void Shape::set_color(const Color color)
 {
     color_ = color;
 }
