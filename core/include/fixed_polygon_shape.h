@@ -19,25 +19,85 @@
 namespace rinvid
 {
 
+/**************************************************************************************************
+ * @brief A base class for shapes that are polygons with fixed number of vertices.
+ *
+ * @param number_of_vertices How many vertices does the shape consist of
+ *
+ *************************************************************************************************/
 template <typename std::uint32_t number_of_vertices>
 class FixedPolygonShape : public Shape
 {
   public:
+    /**************************************************************************************************
+     * @brief FixedPolygonShape constructor.
+     *
+     * Initializes underlying OpenGl objects and internal vertex vector.
+     *
+     *************************************************************************************************/
     FixedPolygonShape();
+
+    /**************************************************************************************************
+     * @brief Draw the shape.
+     *
+     * This method needs to be overridden in child classes. When overriding it, call base class
+     * method first and then call draw_arrays() with appropriate argument.
+     *
+     *************************************************************************************************/
     virtual void draw() override;
+
+    /**************************************************************************************************
+     * @brief Move shape by adding move_vector to its position vector.
+     *
+     * @param move_vector Vector to be added to shape's position vector
+     *
+     *************************************************************************************************/
     virtual void move(const Vector2 move_vector) override;
+
+    /**************************************************************************************************
+     * @brief Sets shape's position to the position of passed vector.
+     *
+     * @param vector A new position vector of the shape
+     *
+     *************************************************************************************************/
     virtual void set_position(const Vector2 vector) override;
 
   protected:
+    /**************************************************************************************************
+     * @brief Normalizes coordinates (transforms x and y coordinates to [-1, 1] range). This is the
+     * range that OpenGl operates on. This method should usually be called first within overridden
+     * draw method.
+     *
+     *************************************************************************************************/
     virtual void normalize_coordinates() override;
+
+    /**************************************************************************************************
+     * @brief Calculates center point of a shape.
+     *
+     *************************************************************************************************/
     virtual void calculate_origin() override;
-    void         init_vertex_buffer();
-    void         draw_arrays(GLenum mode);
+
+    /**************************************************************************************************
+     * @brief Initializes OpenGl objects (vertex array object and vertex buffer object).
+     *
+     *************************************************************************************************/
+    void init_vertex_buffer();
+
+    /**************************************************************************************************
+     * @brief A wrapper around glDrawArrays.
+     *
+     * @param mode A proper GLenum mode constant needs to be passed depending on what are you
+     * drawing (e.g. GL_QUADS, GL_TRIANGLES...)
+     *
+     *************************************************************************************************/
+    void draw_arrays(GLenum mode);
 
     const std::uint32_t number_of_vertices_;
 
     std::vector<Vector2> verts_;
-    float                vertices_[number_of_vertices * 3];
+
+    // Times 3 because each vertex has x, y, and z component.
+    float vertices_[number_of_vertices * 3];
 };
 
 template <typename std::uint32_t number_of_vertices>

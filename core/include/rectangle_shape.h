@@ -17,11 +17,27 @@
 namespace rinvid
 {
 
+/**************************************************************************************************
+ * @brief A drawable rectangle shape.
+ *
+ *************************************************************************************************/
 class RectangleShape : public FixedPolygonShape<4>
 {
   public:
+    /**************************************************************************************************
+     * @brief RectangleShape constructor.
+     *
+     * @param center center point of rectangle
+     * @param width rectangle width
+     * @param height rectangle height
+     *
+     *************************************************************************************************/
     RectangleShape(Vector2 center, float width, float height);
 
+    /**************************************************************************************************
+     * @brief Draws the rectangle.
+     *
+     *************************************************************************************************/
     virtual void draw() override;
 };
 
