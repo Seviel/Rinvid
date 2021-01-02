@@ -27,8 +27,7 @@ class Shape
 
     Vector2 get_origin();
 
-    void set_color(const Color&& color);
-    void set_color(const Color& color);
+    void set_color(const Color color);
 
   protected:
     Vector2       origin_;
