@@ -18,15 +18,49 @@
 namespace rinvid
 {
 
+/**************************************************************************************************
+ * @brief A base class for drawable shapes.
+ *
+ *************************************************************************************************/
 class Shape
 {
   public:
-    virtual void draw()                             = 0;
-    virtual void move(const Vector2 move_vector)    = 0;
+    /**************************************************************************************************
+     * @brief Draws the shape.
+     *
+     *************************************************************************************************/
+    virtual void draw() = 0;
+
+    /**************************************************************************************************
+     * @brief Move shape by adding move_vector to its position vector.
+     *
+     * @param move_vector Vector to be added to shape's position vector
+     *
+     *************************************************************************************************/
+    virtual void move(const Vector2 move_vector) = 0;
+
+    /**************************************************************************************************
+     * @brief Sets shape's position to the position of passed vector.
+     *
+     * @param vector A new position vector of the shape
+     *
+     *************************************************************************************************/
     virtual void set_position(const Vector2 vector) = 0;
 
+    /**************************************************************************************************
+     * @brief Returns center point of shape.
+     *
+     * @return Center point of shape
+     *
+     *************************************************************************************************/
     Vector2 get_origin();
 
+    /**************************************************************************************************
+     * @brief Sets shape's color.
+     *
+     * @param color A new color of the shape
+     *
+     *************************************************************************************************/
     void set_color(const Color color);
 
   protected:
@@ -36,8 +70,19 @@ class Shape
     std::uint32_t vbo_;
 
   private:
+    /**************************************************************************************************
+     * @brief Normalizes coordinates (transforms x and y coordinates to [-1, 1] range). This is the
+     * range that OpenGl operates on. This method should usually be called first within overridden
+     * draw method.
+     *
+     *************************************************************************************************/
     virtual void normalize_coordinates() = 0;
-    virtual void calculate_origin()      = 0;
+
+    /**************************************************************************************************
+     * @brief Calculates center point of a shape.
+     *
+     *************************************************************************************************/
+    virtual void calculate_origin() = 0;
 };
 
 } // namespace rinvid

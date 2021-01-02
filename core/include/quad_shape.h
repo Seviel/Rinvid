@@ -17,11 +17,28 @@
 namespace rinvid
 {
 
+/**************************************************************************************************
+ * @brief A drawable quad shape.
+ *
+ *************************************************************************************************/
 class QuadShape : public FixedPolygonShape<4>
 {
   public:
+    /**************************************************************************************************
+     * @brief QuadShape constructor.uad
+     *
+     * @param top_left top left point of the quad
+     * @param top_right top right point of the quad
+     * @param bottom_right bottom right point of the quad
+     * @param bottom_left bottom left point of the quad
+     *
+     *************************************************************************************************/
     QuadShape(Vector2 top_left, Vector2 top_right, Vector2 bottom_right, Vector2 bottom_left);
 
+    /**************************************************************************************************
+     * @brief Draws the quad.
+     *
+     *************************************************************************************************/
     virtual void draw() override;
 };
 
