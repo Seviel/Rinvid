@@ -10,10 +10,6 @@
 #include "include/shape.h"
 #include "util/include/color.h"
 
-// #define GL_GLEXT_PROTOTYPES
-
-// #include <SFML/OpenGL.hpp>
-
 namespace rinvid
 {
 

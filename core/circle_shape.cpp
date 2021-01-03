@@ -10,14 +10,13 @@
 #include <algorithm>
 #include <cmath>
 
+#define GL_GLEXT_PROTOTYPES
+#include <SFML/OpenGL.hpp>
+
 #include "core/include/rinvid_gfx.h"
 #include "include/circle_shape.h"
 #include "util/include/math_utils.h"
 #include "util/include/vector3.h"
-
-#define GL_GLEXT_PROTOTYPES
-
-#include <SFML/OpenGL.hpp>
 
 namespace rinvid
 {
