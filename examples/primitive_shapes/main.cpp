@@ -58,6 +58,9 @@ int main()
 
         rinvid::RinvidGfx::clear_screen(0.2F, 0.4F, 0.4F, 1.0F);
 
+        float vertical_delta{0.0F};
+        float horizontal_delta{0.0F};
+
         // Handle inputs
         // Section change
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
@@ -80,12 +83,40 @@ int main()
             current_shape = &circle;
         }
 
+        // Movement
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) ||
+            sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+        {
+            horizontal_delta += 5.0F;
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) ||
+            sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+        {
+            horizontal_delta -= 5.0F;
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) ||
+            sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+        {
+            vertical_delta -= 5.0F;
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) ||
+            sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+        {
+            vertical_delta += 5.0F;
+        }
+
         // Reset colors
         triangle.set_color(base_color);
         quad.set_color(base_color);
         rectangle.set_color(base_color);
         circle.set_color(base_color);
         (*current_shape).set_color(active_color);
+
+        // Move selected object
+        (*current_shape).move(rinvid::Vector2{horizontal_delta, vertical_delta});
 
         // Draw shapes
         triangle.draw();
