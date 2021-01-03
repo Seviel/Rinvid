@@ -10,9 +10,9 @@
 #ifndef CORE_INCLUDE_RINFID_GFX_H
 #define CORE_INCLUDE_RINFID_GFX_H
 
-#define GL_GLEXT_PROTOTYPES
-
 #include <cstdint>
+
+#define GL_GLEXT_PROTOTYPES
 #include <SFML/OpenGL.hpp>
 
 namespace rinvid

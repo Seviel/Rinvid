@@ -9,13 +9,12 @@
 
 #include <algorithm>
 
+#define GL_GLEXT_PROTOTYPES
+#include <SFML/OpenGL.hpp>
+
 #include "core/include/rinvid_gfx.h"
 #include "include/quad_shape.h"
 #include "util/include/vector3.h"
-
-#define GL_GLEXT_PROTOTYPES
-
-#include <SFML/OpenGL.hpp>
 
 namespace rinvid
 {
