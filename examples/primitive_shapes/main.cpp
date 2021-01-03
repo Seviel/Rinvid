@@ -27,7 +27,8 @@ int main()
 
     sf::Event event;
 
-    rinvid::Color base_color{0.1078431373F, 0.6215686275F, 0.5745098039F, 1.0F};
+    rinvid::Color base_color{0.1078431F, 0.6215686F, 0.5745098F, 1.0F};
+    rinvid::Color active_color{0.3176470F, 0.8392156F, 0.7921568F, 1.0F};
 
     window.setActive(true);
 
@@ -40,6 +41,8 @@ int main()
     rinvid::RectangleShape rectangle{rinvid::Vector2{400.0F, 50.0F}, 100.0F, 50.0F};
 
     rinvid::CircleShape circle{rinvid::Vector2{670.0F, 280.0f}, 40.0F};
+
+    rinvid::Shape* current_shape = &triangle;
 
     triangle.set_color(base_color);
     quad.set_color(base_color);
@@ -54,6 +57,35 @@ int main()
         handle_events(window, event);
 
         rinvid::RinvidGfx::clear_screen(0.2F, 0.4F, 0.4F, 1.0F);
+
+        // Handle inputs
+        // Section change
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
+        {
+            current_shape = &triangle;
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2))
+        {
+            current_shape = &quad;
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3))
+        {
+            current_shape = &rectangle;
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num4))
+        {
+            current_shape = &circle;
+        }
+
+        // Reset colors
+        triangle.set_color(base_color);
+        quad.set_color(base_color);
+        rectangle.set_color(base_color);
+        circle.set_color(base_color);
+        (*current_shape).set_color(active_color);
 
         // Draw shapes
         triangle.draw();
