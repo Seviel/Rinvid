@@ -46,9 +46,11 @@ static const char* shape_frag_shader_source =
     "#version 330 core\n"
     "out vec4 out_color;\n "
     "uniform vec4 in_color;\n"
+    "uniform sampler2D texture1;\n"
+    "in vec2 TexCoord;\n"
     "void main()\n"
     "{\n"
-    "   out_color = in_color;\n"
+    "   out_color = texture(texture1, TexCoord);\n"
     "}\n";
 
 static void init_default_shaders(std::uint32_t& shape_default_shader_handle,
@@ -104,6 +106,8 @@ std::uint32_t RinvidGfx::height{};
 void RinvidGfx::init()
 {
     init_default_shaders(RinvidGfx::shape_default_shader_, RinvidGfx::texture_default_shader_);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_BLEND);
 }
 
 void RinvidGfx::set_viewport(std::int32_t x, std::int32_t y, std::int32_t width,
