@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2020, Filip Vasiljevic
+ * Copyright (c) 2020 - 2021, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -104,6 +104,8 @@ std::uint32_t RinvidGfx::height{};
 void RinvidGfx::init()
 {
     init_default_shaders(RinvidGfx::shape_default_shader_, RinvidGfx::texture_default_shader_);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_BLEND);
 }
 
 void RinvidGfx::set_viewport(std::int32_t x, std::int32_t y, std::int32_t width,
