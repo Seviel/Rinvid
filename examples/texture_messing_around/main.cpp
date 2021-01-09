@@ -12,6 +12,7 @@
 #include <SFML/Window.hpp>
 
 #include "core/include/rectangle_shape.h"
+#include "core/include/sprite.h"
 #include "core/include/texture.h"
 #include "util/include/vector2.h"
 
@@ -30,6 +31,10 @@ int main()
 
     rinvid::Texture texture{
         "/home/seviel/Desktop/rinvid/examples/texture_messing_around/res/logo.png"};
+    rinvid::Sprite sprite{&texture, 100, 100, rinvid::Vector2{0.0F, 0.0F}};
+
+    rinvid::RectangleShape rectangle{rinvid::Vector2{350.0F, 35.0F}, 100.0F, 50.0F};
+    rectangle.set_color(rinvid::Color{0.2F, 0.2F, 0.8F, 1.0F});
 
     while (window.isOpen())
     {
@@ -39,7 +44,11 @@ int main()
 
         /// @todo implementation
 
-        texture.draw();
+        sprite.draw();
+
+        rectangle.draw();
+
+        sprite.set_position(rinvid::Vector2{350.0F, 250.0F});
 
         window.display();
 

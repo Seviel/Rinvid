@@ -25,25 +25,47 @@ class Texture
   public:
     Texture(const char* file_name);
 
+  private:
+    friend class Sprite;
+
     void draw();
 
-  private:
-    std::uint32_t vao_;
-    std::uint32_t vbo_;
-    std::uint32_t ebo_;
-    std::uint32_t texture_id_;
+    void update_vertices(Vector2 top_left, std::uint32_t width, std::uint32_t height);
+
+    std::int32_t  width_{};
+    std::int32_t  height_{};
+    std::uint32_t vao_{};
+    std::uint32_t vbo_{};
+    std::uint32_t ebo_{};
+    std::uint32_t texture_id_{};
     float         vertices_[4 * 5] = {
-        // positions  // texture coords
-        RinvidGfx::get_opengl_x_coord(100.0F),  RinvidGfx::get_opengl_y_coord(100.0F),  0.0f, 0.0f, 0.0f, // top right
-        RinvidGfx::get_opengl_x_coord(100.0F),  RinvidGfx::get_opengl_y_coord(200.0F), 0.0f, 0.0f, 1.0f, // bottom right
-        RinvidGfx::get_opengl_x_coord(200.0F),  RinvidGfx::get_opengl_y_coord(200.0F), 0.0f, 1.0f, 1.0f, // bottom left
-        RinvidGfx::get_opengl_x_coord(200.0F),  RinvidGfx::get_opengl_y_coord(100.0F),  0.0f, 1.0f, 0.0f  // top left
+        RinvidGfx::get_opengl_x_coord(100.0F),
+        RinvidGfx::get_opengl_y_coord(100.0F),
+        0.0f,
+        0.0f,
+        0.0f, // top right
+        RinvidGfx::get_opengl_x_coord(200.0F),
+        RinvidGfx::get_opengl_y_coord(100.0F),
+        0.0f,
+        1.0f,
+        0.0f, // bottom right
+        RinvidGfx::get_opengl_x_coord(200.0F),
+        RinvidGfx::get_opengl_y_coord(200.0F),
+        0.0f,
+        1.0f,
+        1.0f, // bottom left
+        RinvidGfx::get_opengl_x_coord(100.0F),
+        RinvidGfx::get_opengl_y_coord(200.0F),
+        0.0f,
+        0.0f,
+        1.0f // top left
     };
-    std::uint32_t indices_[6] = {
+    const std::uint32_t indices_[6] = {
         0, 1, 3, // first triangle
         1, 2, 3  // second triangle
     };
-    std::vector<std::uint8_t> image_data_;
+
+    std::vector<std::uint8_t> image_data_{};
 };
 
 } // namespace rinvid
