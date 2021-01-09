@@ -12,6 +12,7 @@
 #define GL_GLEXT_PROTOTYPES
 #include <SFML/OpenGL.hpp>
 
+#include "core/include/rinvid_gfx.h"
 #include "include/texture.h"
 #include "util/include/image_loader.h"
 
@@ -54,6 +55,8 @@ Texture::Texture(const char* file_name)
 
 void Texture::draw()
 {
+    glUseProgram(RinvidGfx::get_texture_default_shader());
+
     glBindTexture(GL_TEXTURE_2D, texture_id_);
     glBindVertexArray(vao_);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
