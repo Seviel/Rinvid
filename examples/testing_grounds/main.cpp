@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2020, Filip Vasiljevic
+ * Copyright (c) 2020 - 2021, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -15,6 +15,8 @@
 #include "core/include/quad_shape.h"
 #include "core/include/rectangle_shape.h"
 #include "core/include/rinvid_gfx.h"
+#include "core/include/sprite.h"
+#include "core/include/texture.h"
 #include "core/include/triangle_shape.h"
 #include "util/include/vector3.h"
 
@@ -43,18 +45,23 @@ int main()
     rinvid::CircleShape circle{rinvid::Vector2{500.0F, 300.0f}, 150.0F};
     circle.set_color(rinvid::Color{0.1F, 0.7F, 0.8F, 1.0F});
 
+    rinvid::Texture texture{"examples/testing_grounds/resources/logo.png"};
+    rinvid::Sprite  sprite{&texture, 100, 100, rinvid::Vector2{200.0F, 200.0F},
+                          rinvid::Vector2{0.0F, 0.0F}};
+
     rinvid::RinvidGfx::init();
 
     while (window.isOpen())
     {
         handle_events(window, event);
 
-        rinvid::RinvidGfx::clear_screen(0.2F, 0.4F, 0.4F, 1.0F);
+        rinvid::RinvidGfx::clear_screen(0.1F, 0.2F, 0.2F, 1.0F);
 
         triangle.draw();
         quad.draw();
         rectangle.draw();
         circle.draw();
+        sprite.draw();
 
         triangle.move(rinvid::Vector2{1.0F, 0.0F});
         rinvid::Vector2 triangle_origin = triangle.get_origin();
