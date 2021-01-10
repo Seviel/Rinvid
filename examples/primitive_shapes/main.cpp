@@ -38,7 +38,7 @@ int main()
     float horizontal_delta{0.0F};
 
     rinvid::Color base_color{0.1078431F, 0.6215686F, 0.5745098F, 1.0F};
-    rinvid::Color active_color{0.3176470F, 0.8392156F, 0.7921568F, 1.0F};
+    rinvid::Color active_color{1.0000000F, 0.6705882F, 0.2862745F, 1.0F};
 
     rinvid::TriangleShape triangle{rinvid::Vector2{400.0F, 500.0F}, rinvid::Vector2{425.0F, 550.0F},
                                    rinvid::Vector2{375.0F, 550.0F}};
