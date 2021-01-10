@@ -20,6 +20,11 @@
 
 void handle_events(sf::Window& window, sf::Event& event);
 
+void change_current_shape(rinvid::Shape*& current_shape, rinvid::Shape& next_shape,
+                          rinvid::Color& base_color, rinvid::Color& active_color);
+
+void handle_movement(float& vertical_delta, float& horizontal_delta);
+
 int main()
 {
     sf::Window window(sf::VideoMode(800, 600), "Rinvid primitive shapes example");
@@ -27,10 +32,13 @@ int main()
 
     sf::Event event;
 
+    window.setActive(true);
+
+    float vertical_delta{0.0F};
+    float horizontal_delta{0.0F};
+
     rinvid::Color base_color{0.1078431F, 0.6215686F, 0.5745098F, 1.0F};
     rinvid::Color active_color{0.3176470F, 0.8392156F, 0.7921568F, 1.0F};
-
-    window.setActive(true);
 
     rinvid::TriangleShape triangle{rinvid::Vector2{400.0F, 500.0F}, rinvid::Vector2{425.0F, 550.0F},
                                    rinvid::Vector2{375.0F, 550.0F}};
@@ -44,7 +52,7 @@ int main()
 
     rinvid::Shape* current_shape = &triangle;
 
-    triangle.set_color(base_color);
+    triangle.set_color(active_color);
     quad.set_color(base_color);
     rectangle.set_color(base_color);
     circle.set_color(base_color);
@@ -53,78 +61,42 @@ int main()
 
     while (window.isOpen())
     {
-        // Cycle reset
         handle_events(window, event);
 
         rinvid::RinvidGfx::clear_screen(0.2F, 0.4F, 0.4F, 1.0F);
 
-        float vertical_delta{0.0F};
-        float horizontal_delta{0.0F};
+        vertical_delta   = 0.0F;
+        horizontal_delta = 0.0F;
 
-        // Handle inputs
-        // Section change
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
         {
-            current_shape = &triangle;
+            change_current_shape(current_shape, triangle, base_color, active_color);
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2))
         {
-            current_shape = &quad;
+            change_current_shape(current_shape, quad, base_color, active_color);
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3))
         {
-            current_shape = &rectangle;
+            change_current_shape(current_shape, rectangle, base_color, active_color);
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num4))
         {
-            current_shape = &circle;
+            change_current_shape(current_shape, circle, base_color, active_color);
         }
 
-        // Movement
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) ||
-            sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-        {
-            horizontal_delta += 5.0F;
-        }
+        handle_movement(vertical_delta, horizontal_delta);
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) ||
-            sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-        {
-            horizontal_delta -= 5.0F;
-        }
+        current_shape->move(rinvid::Vector2{horizontal_delta, vertical_delta});
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) ||
-            sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-        {
-            vertical_delta -= 5.0F;
-        }
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) ||
-            sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-        {
-            vertical_delta += 5.0F;
-        }
-
-        // Reset colors
-        triangle.set_color(base_color);
-        quad.set_color(base_color);
-        rectangle.set_color(base_color);
-        circle.set_color(base_color);
-        (*current_shape).set_color(active_color);
-
-        // Move selected object
-        (*current_shape).move(rinvid::Vector2{horizontal_delta, vertical_delta});
-
-        // Draw shapes
         triangle.draw();
         quad.draw();
         rectangle.draw();
         circle.draw();
 
-        // Cycle end
         window.display();
 
         usleep(10000);
@@ -148,5 +120,39 @@ void handle_events(sf::Window& window, sf::Event& event)
             default:
                 break;
         }
+    }
+}
+
+void change_current_shape(rinvid::Shape*& current_shape, rinvid::Shape& next_shape,
+                          rinvid::Color& base_color, rinvid::Color& active_color)
+{
+    current_shape->set_color(base_color);
+    current_shape = &next_shape;
+    current_shape->set_color(active_color);
+}
+
+void handle_movement(float& vertical_delta, float& horizontal_delta)
+{
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) ||
+        sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    {
+        horizontal_delta += 5.0F;
+    }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) ||
+        sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    {
+        horizontal_delta -= 5.0F;
+    }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+    {
+        vertical_delta -= 5.0F;
+    }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) ||
+        sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+    {
+        vertical_delta += 5.0F;
     }
 }
