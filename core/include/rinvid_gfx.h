@@ -64,12 +64,20 @@ class RinvidGfx
     static void clear_screen(float r, float g, float b, float a);
 
     /**************************************************************************************************
-     * @brief Returns default shader handle. Should only used internally in Rinvid.
+     * @brief Returns default shape shader handle. Should only be used internally in Rinvid.
      *
-     * @return A handle to default shader
+     * @return An OpenGl handle to the shader
      *
      *************************************************************************************************/
-    static std::uint32_t get_default_shader();
+    static std::uint32_t get_shape_default_shader();
+
+    /**************************************************************************************************
+     * @brief Returns default texture shader handle. Should only be used internally in Rinvid.
+     *
+     * @return An OpenGl handle to the shader
+     *
+     *************************************************************************************************/
+    static std::uint32_t get_texture_default_shader();
 
     /**************************************************************************************************
      * @brief Returns screen width.
@@ -116,7 +124,8 @@ class RinvidGfx
     }
 
   private:
-    static std::uint32_t default_shader;
+    static std::uint32_t texture_default_shader_;
+    static std::uint32_t shape_default_shader_;
     static std::uint32_t width;
     static std::uint32_t height;
 };
