@@ -26,9 +26,11 @@ class Sprite
      * @param width sprite width
      * @param height sprite height
      * @param top_left top left corner of sprite
+     * @param texture_offset top left corner of texture region to use, (0, 0) of texture is top left
      *
      *************************************************************************************************/
-    Sprite(Texture* texture, std::uint32_t width, std::uint32_t height, Vector2 top_left);
+    Sprite(Texture* texture, std::uint32_t width, std::uint32_t height, Vector2 top_left,
+           Vector2 texture_offset = {0.0F, 0.0F});
 
     /**************************************************************************************************
      * @brief Draws the sprite.
@@ -57,6 +59,7 @@ class Sprite
     std::uint32_t width_;
     std::uint32_t height_;
     Vector2       top_left_;
+    Vector2       texture_offset_;
 };
 
 } // namespace rinvid

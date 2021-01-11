@@ -13,14 +13,16 @@
 namespace rinvid
 {
 
-Sprite::Sprite(Texture* texture, std::uint32_t width, std::uint32_t height, Vector2 top_left)
-    : texture_{texture}, width_{width}, height_{height}, top_left_{top_left}
+Sprite::Sprite(Texture* texture, std::uint32_t width, std::uint32_t height, Vector2 top_left,
+               Vector2 texture_offset)
+    : texture_{texture}, width_{width}, height_{height}, top_left_{top_left}, texture_offset_{
+                                                                                  texture_offset}
 {
 }
 
 void Sprite::draw()
 {
-    texture_->update_vertices(top_left_, width_, height_);
+    texture_->update_vertices(top_left_, texture_offset_, width_, height_);
     texture_->draw();
 }
 

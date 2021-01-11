@@ -127,35 +127,40 @@ void Texture::draw()
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
-void Texture::update_vertices(Vector2 top_left, std::uint32_t width, std::uint32_t height)
+void Texture::update_vertices(Vector2 top_left, Vector2 offset, std::uint32_t width,
+                              std::uint32_t height)
 {
     // Top left
     vertices_[0] = RinvidGfx::get_opengl_x_coord(top_left.x);
     vertices_[1] = RinvidGfx::get_opengl_y_coord(top_left.y);
     vertices_[2] = 0.0F;
-    vertices_[3] = 0.0F;
-    vertices_[4] = 0.0F;
+    vertices_[3] = offset.x / static_cast<float>(width_);
+    vertices_[4] = offset.y / static_cast<float>(height_);
 
     // Top right
     vertices_[5] = RinvidGfx::get_opengl_x_coord(top_left.x + width);
     vertices_[6] = RinvidGfx::get_opengl_y_coord(top_left.y);
     vertices_[7] = 0.0F;
-    vertices_[8] = 1.0F;
-    vertices_[9] = 0.0F;
+    vertices_[8] = static_cast<float>(width) / static_cast<float>(width_) +
+                   offset.x / static_cast<float>(width_);
+    vertices_[9] = offset.y / static_cast<float>(height_);
 
     // Bottom right
     vertices_[10] = RinvidGfx::get_opengl_x_coord(top_left.x + width);
     vertices_[11] = RinvidGfx::get_opengl_y_coord(top_left.y + height);
     vertices_[12] = 0.0F;
-    vertices_[13] = 1.0F;
-    vertices_[14] = 1.0F;
+    vertices_[13] = static_cast<float>(width) / static_cast<float>(width_) +
+                    offset.x / static_cast<float>(width_);
+    vertices_[14] = static_cast<float>(height) / static_cast<float>(height_) +
+                    offset.y / static_cast<float>(height_);
 
     // Bottom left
     vertices_[15] = RinvidGfx::get_opengl_x_coord(top_left.x);
     vertices_[16] = RinvidGfx::get_opengl_y_coord(top_left.y + height);
     vertices_[17] = 0.0F;
-    vertices_[18] = 0.0F;
-    vertices_[19] = 1.0F;
+    vertices_[18] = offset.x / static_cast<float>(width_);
+    vertices_[19] = static_cast<float>(height) / static_cast<float>(height_) +
+                    offset.y / static_cast<float>(height_);
 
     glBindBuffer(GL_ARRAY_BUFFER, vbo_);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices_), vertices_, GL_STATIC_DRAW);
