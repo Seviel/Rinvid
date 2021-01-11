@@ -7,7 +7,9 @@
  * repository for more details.
  **********************************************************************/
 
+#include <algorithm>
 #include <iostream>
+#include <iterator>
 
 #define GL_GLEXT_PROTOTYPES
 #include <SFML/OpenGL.hpp>
@@ -55,6 +57,65 @@ Texture::Texture(const char* file_name)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width_, height_, 0, GL_RGBA, GL_UNSIGNED_BYTE,
                  image_data_.data());
+}
+
+Texture::Texture(Texture&& other)
+{
+    this->width_      = other.width_;
+    this->height_     = other.height_;
+    this->vao_        = other.vao_;
+    this->vbo_        = other.vbo_;
+    this->ebo_        = other.ebo_;
+    this->texture_id_ = other.texture_id_;
+
+    std::copy(std::begin(other.vertices_), std::end(other.vertices_), std::begin(this->vertices_));
+
+    other.vao_        = 0;
+    other.vbo_        = 0;
+    other.ebo_        = 0;
+    other.texture_id_ = 0;
+}
+
+Texture& Texture::operator=(Texture&& other)
+{
+    this->width_      = other.width_;
+    this->height_     = other.height_;
+    this->vao_        = other.vao_;
+    this->vbo_        = other.vbo_;
+    this->ebo_        = other.ebo_;
+    this->texture_id_ = other.texture_id_;
+
+    std::copy(std::begin(other.vertices_), std::end(other.vertices_), std::begin(this->vertices_));
+
+    other.vao_        = 0;
+    other.vbo_        = 0;
+    other.ebo_        = 0;
+    other.texture_id_ = 0;
+
+    return *this;
+}
+
+Texture::~Texture()
+{
+    if (texture_id_ != 0)
+    {
+        glDeleteTextures(1, &texture_id_);
+    }
+
+    if (ebo_ != 0)
+    {
+        glDeleteBuffers(1, &ebo_);
+    }
+
+    if (vbo_ != 0)
+    {
+        glDeleteBuffers(1, &vbo_);
+    }
+
+    if (vao_ != 0)
+    {
+        glDeleteVertexArrays(1, &vao_);
+    }
 }
 
 void Texture::draw()
