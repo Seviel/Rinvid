@@ -31,8 +31,8 @@ int main()
 
     window.setActive(true);
 
-    rinvid::TriangleShape triangle{rinvid::Vector2{400.0F, 500.0F}, rinvid::Vector2{50.0F, 100.0F},
-                                   rinvid::Vector2{750.0F, 100.0F}};
+    rinvid::TriangleShape triangle{rinvid::Vector2{400.0F, 200.0F}, rinvid::Vector2{300.0F, 100.0F},
+                                   rinvid::Vector2{500.0F, 100.0F}};
     triangle.set_color(rinvid::Color{0.1F, 0.8F, 0.3F, 1.0F});
 
     rinvid::QuadShape quad{rinvid::Vector2{100.0F, 40.0F}, rinvid::Vector2{150.0F, 40.0F},
@@ -42,7 +42,7 @@ int main()
     rinvid::RectangleShape rectangle{rinvid::Vector2{350.0F, 35.0F}, 100.0F, 50.0F};
     rectangle.set_color(rinvid::Color{0.2F, 0.2F, 0.8F, 1.0F});
 
-    rinvid::CircleShape circle{rinvid::Vector2{500.0F, 300.0f}, 150.0F};
+    rinvid::CircleShape circle{rinvid::Vector2{500.0F, 300.0f}, 100.0F};
     circle.set_color(rinvid::Color{0.1F, 0.7F, 0.8F, 1.0F});
 
     rinvid::Texture texture{"examples/testing_grounds/resources/logo.png"};
