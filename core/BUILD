@@ -8,6 +8,8 @@ cc_library(
         "rectangle_shape.cpp",
         "rinvid_gfx.cpp",
         "shape.cpp",
+        "sprite.cpp",
+        "texture.cpp",
         "triangle_shape.cpp",
     ],
     hdrs = [
@@ -17,6 +19,8 @@ cc_library(
         "include/rectangle_shape.h",
         "include/rinvid_gfx.h",
         "include/shape.h",
+        "include/sprite.h",
+        "include/texture.h",
         "include/triangle_shape.h",
     ],
     linkopts = ["-lsfml-window -lsfml-system -lGL"],
