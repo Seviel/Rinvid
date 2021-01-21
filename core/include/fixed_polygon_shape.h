@@ -38,6 +38,40 @@ class FixedPolygonShape : public Shape
     FixedPolygonShape();
 
     /**************************************************************************************************
+     * @brief Copy constructor deleted.
+     *
+     *************************************************************************************************/
+    FixedPolygonShape(const FixedPolygonShape& other) = delete;
+
+    /**************************************************************************************************
+     * @brief Copy assignement operator deleted.
+     *
+     *************************************************************************************************/
+    FixedPolygonShape& operator=(FixedPolygonShape& other) = delete;
+
+    /**************************************************************************************************
+     * @brief Move constructor.
+     *
+     * @param other object being moved
+     *
+     *************************************************************************************************/
+    FixedPolygonShape(FixedPolygonShape&& other);
+
+    /**************************************************************************************************
+     * @brief Move assignement operator.
+     *
+     * @param other object being moved
+     *
+     *************************************************************************************************/
+    FixedPolygonShape& operator=(FixedPolygonShape&& other);
+
+    /**************************************************************************************************
+     * @brief FixedPolygonShape destructor.
+     *
+     *************************************************************************************************/
+    ~FixedPolygonShape();
+
+    /**************************************************************************************************
      * @brief Draw the shape.
      *
      * This method needs to be overridden in child classes. When overriding it, call base class
@@ -109,6 +143,54 @@ FixedPolygonShape<number_of_vertices>::FixedPolygonShape()
     for (std::uint32_t i{0}; i < number_of_vertices; ++i)
     {
         verts_.emplace_back();
+    }
+}
+
+template <typename std::uint32_t number_of_vertices>
+FixedPolygonShape<number_of_vertices>::FixedPolygonShape(FixedPolygonShape&& other)
+    : number_of_vertices_{number_of_vertices}, verts_{other.verts_}, vertices_{}
+{
+    this->origin_ = other.origin_;
+    this->color_  = other.color_;
+    this->vao_    = other.vao_;
+    this->vbo_    = other.vbo_;
+
+    std::copy(std::begin(other.vertices_), std::end(other.vertices_), std::begin(this->vertices_));
+
+    other.vao_ = 0;
+    other.vbo_ = 0;
+}
+
+template <typename std::uint32_t number_of_vertices>
+FixedPolygonShape<number_of_vertices>& FixedPolygonShape<number_of_vertices>::
+                                       operator=(FixedPolygonShape&& other)
+{
+    this->origin_ = other.origin_;
+    this->color_  = other.color_;
+    this->vao_    = other.vao_;
+    this->vbo_    = other.vbo_;
+
+    verts_ = other.verts_;
+
+    std::copy(std::begin(other.vertices_), std::end(other.vertices_), std::begin(this->vertices_));
+
+    other.vao_ = 0;
+    other.vbo_ = 0;
+
+    return *this;
+}
+
+template <typename std::uint32_t number_of_vertices>
+FixedPolygonShape<number_of_vertices>::~FixedPolygonShape()
+{
+    if (vbo_ != 0)
+    {
+        glDeleteBuffers(1, &vbo_);
+    }
+
+    if (vao_ != 0)
+    {
+        glDeleteVertexArrays(1, &vao_);
     }
 }
 
