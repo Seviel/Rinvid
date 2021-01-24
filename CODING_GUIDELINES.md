@@ -44,7 +44,7 @@ float fl;
 fl = 0.1F;
 ```
 
-1.5 Only integer types with specified width shall be used
+1.7 Only integer types with specified width shall be used
 
 Example:
 
