@@ -60,6 +60,22 @@ int i;
 std::int32_t i;
 ```
 
+1.8 Braces shall be used even when if/else/while/for statements have only one instruction in body
+
+Example:
+
+```cpp
+// Bad
+if(counter == max_count)
+    function();
+
+// Good
+if(counter == max_count)
+{
+    function();
+}
+```
+
 ## 2. Naming
 
 2.1 The following naming conventions are used:
