@@ -148,34 +148,20 @@ FixedPolygonShape<number_of_vertices>::FixedPolygonShape()
 
 template <typename std::uint32_t number_of_vertices>
 FixedPolygonShape<number_of_vertices>::FixedPolygonShape(FixedPolygonShape&& other)
-    : number_of_vertices_{number_of_vertices}, verts_{other.verts_}, vertices_{}
+    : Shape(std::move(other)), number_of_vertices_{number_of_vertices}, verts_{}, vertices_{}
 {
-    this->origin_ = other.origin_;
-    this->color_  = other.color_;
-    this->vao_    = other.vao_;
-    this->vbo_    = other.vbo_;
-
+    verts_ = std::move(other.verts_);
     std::copy(std::begin(other.vertices_), std::end(other.vertices_), std::begin(this->vertices_));
-
-    other.vao_ = 0;
-    other.vbo_ = 0;
 }
 
 template <typename std::uint32_t number_of_vertices>
 FixedPolygonShape<number_of_vertices>& FixedPolygonShape<number_of_vertices>::
                                        operator=(FixedPolygonShape&& other)
 {
-    this->origin_ = other.origin_;
-    this->color_  = other.color_;
-    this->vao_    = other.vao_;
-    this->vbo_    = other.vbo_;
+    Shape::operator=(std::move(other));
 
-    verts_ = other.verts_;
-
+    verts_ = std::move(other.verts_);
     std::copy(std::begin(other.vertices_), std::end(other.vertices_), std::begin(this->vertices_));
-
-    other.vao_ = 0;
-    other.vbo_ = 0;
 
     return *this;
 }
@@ -183,15 +169,6 @@ FixedPolygonShape<number_of_vertices>& FixedPolygonShape<number_of_vertices>::
 template <typename std::uint32_t number_of_vertices>
 FixedPolygonShape<number_of_vertices>::~FixedPolygonShape()
 {
-    if (vbo_ != 0)
-    {
-        glDeleteBuffers(1, &vbo_);
-    }
-
-    if (vao_ != 0)
-    {
-        glDeleteVertexArrays(1, &vao_);
-    }
 }
 
 template <typename std::uint32_t number_of_vertices>
