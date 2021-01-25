@@ -44,7 +44,7 @@ float fl;
 fl = 0.1F;
 ```
 
-1.5 Only integer types with specified width shall be used
+1.7 Only integer types with specified width shall be used
 
 Example:
 
@@ -58,6 +58,22 @@ int i;
 ...
 
 std::int32_t i;
+```
+
+1.8 Braces shall be used even when if/else/while/for statements have only one instruction in body
+
+Example:
+
+```cpp
+// Bad
+if(counter == max_count)
+    function();
+
+// Good
+if(counter == max_count)
+{
+    function();
+}
 ```
 
 ## 2. Naming

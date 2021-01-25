@@ -21,10 +21,10 @@ namespace rinvid
 
 RectangleShape::RectangleShape(Vector2 center, float width, float height)
 {
-    verts_.at(0) = Vector2{center.x - width / 2.0F, center.y - height / 2.0F};
-    verts_.at(1) = Vector2{center.x + width / 2.0F, center.y - height / 2.0F};
-    verts_.at(2) = Vector2{center.x + width / 2.0F, center.y + height / 2.0F};
-    verts_.at(3) = Vector2{center.x - width / 2.0F, center.y + height / 2.0F};
+    vertices_.at(0) = Vector2{center.x - width / 2.0F, center.y - height / 2.0F};
+    vertices_.at(1) = Vector2{center.x + width / 2.0F, center.y - height / 2.0F};
+    vertices_.at(2) = Vector2{center.x + width / 2.0F, center.y + height / 2.0F};
+    vertices_.at(3) = Vector2{center.x - width / 2.0F, center.y + height / 2.0F};
 }
 
 void RectangleShape::draw()

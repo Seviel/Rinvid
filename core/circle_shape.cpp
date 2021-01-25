@@ -26,9 +26,9 @@ CircleShape::CircleShape(Vector2 center, float radius)
     float angle{};
     for (std::uint32_t i{0}; i < number_of_vertices_; ++i)
     {
-        angle        = i * (DEGREES_IN_A_CIRCLE / number_of_vertices_);
-        verts_.at(i) = Vector2{center.x + std::cos(DEGREES_TO_RADIANS(angle)) * radius,
-                               center.y + std::sin(DEGREES_TO_RADIANS(angle)) * radius};
+        angle           = i * (DEGREES_IN_A_CIRCLE / number_of_vertices_);
+        vertices_.at(i) = Vector2{center.x + std::cos(DEGREES_TO_RADIANS(angle)) * radius,
+                                  center.y + std::sin(DEGREES_TO_RADIANS(angle)) * radius};
     }
 }
 

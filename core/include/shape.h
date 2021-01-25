@@ -106,8 +106,8 @@ class Shape
   protected:
     Vector2       origin_;
     Color         color_;
-    std::uint32_t vao_;
-    std::uint32_t vbo_;
+    std::uint32_t vertex_array_object_;
+    std::uint32_t vertex_buffer_object_;
 
   private:
     /**************************************************************************************************
