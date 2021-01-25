@@ -128,30 +128,31 @@ class FixedPolygonShape : public Shape
 
     const std::uint32_t number_of_vertices_;
 
-    std::vector<Vector2> verts_;
+    std::vector<Vector2> vertices_;
 
     // Times 3 because each vertex has x, y, and z component.
-    float vertices_[number_of_vertices * 3];
+    float gl_vertices_[number_of_vertices * 3];
 };
 
 template <typename std::uint32_t number_of_vertices>
 FixedPolygonShape<number_of_vertices>::FixedPolygonShape()
-    : number_of_vertices_{number_of_vertices}, verts_{}, vertices_{}
+    : number_of_vertices_{number_of_vertices}, vertices_{}, gl_vertices_{}
 {
     init_vertex_buffer();
 
     for (std::uint32_t i{0}; i < number_of_vertices; ++i)
     {
-        verts_.emplace_back();
+        vertices_.emplace_back();
     }
 }
 
 template <typename std::uint32_t number_of_vertices>
 FixedPolygonShape<number_of_vertices>::FixedPolygonShape(FixedPolygonShape&& other)
-    : Shape(std::move(other)), number_of_vertices_{number_of_vertices}, verts_{}, vertices_{}
+    : Shape(std::move(other)), number_of_vertices_{number_of_vertices}, vertices_{}, gl_vertices_{}
 {
-    verts_ = std::move(other.verts_);
-    std::copy(std::begin(other.vertices_), std::end(other.vertices_), std::begin(this->vertices_));
+    vertices_ = std::move(other.vertices_);
+    std::copy(std::begin(other.gl_vertices_), std::end(other.gl_vertices_),
+              std::begin(this->gl_vertices_));
 }
 
 template <typename std::uint32_t number_of_vertices>
@@ -160,8 +161,9 @@ FixedPolygonShape<number_of_vertices>& FixedPolygonShape<number_of_vertices>::
 {
     Shape::operator=(std::move(other));
 
-    verts_ = std::move(other.verts_);
-    std::copy(std::begin(other.vertices_), std::end(other.vertices_), std::begin(this->vertices_));
+    vertices_ = std::move(other.vertices_);
+    std::copy(std::begin(other.gl_vertices_), std::end(other.gl_vertices_),
+              std::begin(this->gl_vertices_));
 
     return *this;
 }
@@ -176,29 +178,29 @@ void FixedPolygonShape<number_of_vertices>::normalize_coordinates()
 {
     for (std::uint32_t i{0}; i < number_of_vertices; ++i)
     {
-        vertices_[i * 3]     = RinvidGfx::get_opengl_x_coord(verts_.at(i).x);
-        vertices_[i * 3 + 1] = RinvidGfx::get_opengl_y_coord(verts_.at(i).y);
+        gl_vertices_[i * 3]     = RinvidGfx::get_opengl_x_coord(vertices_.at(i).x);
+        gl_vertices_[i * 3 + 1] = RinvidGfx::get_opengl_y_coord(vertices_.at(i).y);
     }
 
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_object_);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices_), vertices_, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(gl_vertices_), gl_vertices_, GL_DYNAMIC_DRAW);
 }
 
 template <typename std::uint32_t number_of_vertices>
 void FixedPolygonShape<number_of_vertices>::calculate_origin()
 {
     auto min_x_vector =
-        std::min_element(verts_.begin(), verts_.end(),
+        std::min_element(vertices_.begin(), vertices_.end(),
                          [](Vector2 first, Vector2 second) { return first.x < second.x; });
     auto max_x_vector =
-        std::max_element(verts_.begin(), verts_.end(),
+        std::max_element(vertices_.begin(), vertices_.end(),
                          [](Vector2 first, Vector2 second) { return first.x < second.x; });
 
     auto min_y_vector =
-        std::min_element(verts_.begin(), verts_.end(),
+        std::min_element(vertices_.begin(), vertices_.end(),
                          [](Vector2 first, Vector2 second) { return first.y < second.y; });
     auto max_y_vector =
-        std::max_element(verts_.begin(), verts_.end(),
+        std::max_element(vertices_.begin(), vertices_.end(),
                          [](Vector2 first, Vector2 second) { return first.y < second.y; });
 
     float min_x = min_x_vector->x;
@@ -218,7 +220,7 @@ void FixedPolygonShape<number_of_vertices>::init_vertex_buffer()
 
     glGenBuffers(1, &vertex_buffer_object_);
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_object_);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices_), vertices_, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(gl_vertices_), gl_vertices_, GL_DYNAMIC_DRAW);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
@@ -251,7 +253,7 @@ void FixedPolygonShape<number_of_vertices>::move(const Vector2 move_vector)
 {
     for (std::uint32_t i{0}; i < number_of_vertices; ++i)
     {
-        verts_.at(i).move(move_vector);
+        vertices_.at(i).move(move_vector);
     }
 
     calculate_origin();
@@ -269,7 +271,7 @@ void FixedPolygonShape<number_of_vertices>::set_position(const Vector2 vector)
 
     for (std::uint32_t i{0}; i < number_of_vertices; ++i)
     {
-        verts_.at(i).move(move_vector);
+        vertices_.at(i).move(move_vector);
     }
 
     origin_ = vector;

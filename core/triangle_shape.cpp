@@ -21,9 +21,9 @@ namespace rinvid
 
 TriangleShape::TriangleShape(Vector2 vert1, Vector2 vert2, Vector2 vert3)
 {
-    verts_.at(0) = vert1;
-    verts_.at(1) = vert2;
-    verts_.at(2) = vert3;
+    vertices_.at(0) = vert1;
+    vertices_.at(1) = vert2;
+    vertices_.at(2) = vert3;
 }
 
 void TriangleShape::draw()

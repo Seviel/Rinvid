@@ -94,7 +94,7 @@ class Texture
 
     // There are four vertices with 5 elements each, elements are: x, y, z coordinate and x and y
     // texture cooridnate, hence 4 * 5
-    float               vertices_[4 * 5]{};
+    float               gl_vertices_[4 * 5]{};
     const std::uint32_t indices_[6] = {
         0, 1, 3, // first triangle
         1, 2, 3  // second triangle
