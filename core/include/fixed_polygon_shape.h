@@ -180,7 +180,7 @@ void FixedPolygonShape<number_of_vertices>::normalize_coordinates()
         vertices_[i * 3 + 1] = RinvidGfx::get_opengl_y_coord(verts_.at(i).y);
     }
 
-    glBindBuffer(GL_ARRAY_BUFFER, vbo_);
+    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_object_);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices_), vertices_, GL_DYNAMIC_DRAW);
 }
 
@@ -213,11 +213,11 @@ void FixedPolygonShape<number_of_vertices>::calculate_origin()
 template <typename std::uint32_t number_of_vertices>
 void FixedPolygonShape<number_of_vertices>::init_vertex_buffer()
 {
-    glGenVertexArrays(1, &vao_);
-    glBindVertexArray(vao_);
+    glGenVertexArrays(1, &vertex_array_object_);
+    glBindVertexArray(vertex_array_object_);
 
-    glGenBuffers(1, &vbo_);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo_);
+    glGenBuffers(1, &vertex_buffer_object_);
+    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_object_);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices_), vertices_, GL_DYNAMIC_DRAW);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
@@ -229,7 +229,7 @@ void FixedPolygonShape<number_of_vertices>::init_vertex_buffer()
 template <typename std::uint32_t number_of_vertices>
 void FixedPolygonShape<number_of_vertices>::draw_arrays(GLenum mode)
 {
-    glBindVertexArray(vao_);
+    glBindVertexArray(vertex_array_object_);
     glDrawArrays(mode, 0, number_of_vertices_);
     glBindVertexArray(0);
 }

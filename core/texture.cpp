@@ -23,16 +23,16 @@ namespace rinvid
 
 Texture::Texture(const char* file_name)
 {
-    glGenVertexArrays(1, &vao_);
-    glGenBuffers(1, &vbo_);
-    glGenBuffers(1, &ebo_);
+    glGenVertexArrays(1, &vertex_array_object_);
+    glGenBuffers(1, &vertex_buffer_obecjt_);
+    glGenBuffers(1, &element_buffer_object_);
 
-    glBindVertexArray(vao_);
+    glBindVertexArray(vertex_array_object_);
 
-    glBindBuffer(GL_ARRAY_BUFFER, vbo_);
+    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_obecjt_);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices_), vertices_, GL_STATIC_DRAW);
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo_);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, element_buffer_object_);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices_), indices_, GL_STATIC_DRAW);
 
     // Position attribute
@@ -61,36 +61,36 @@ Texture::Texture(const char* file_name)
 
 Texture::Texture(Texture&& other)
 {
-    this->width_      = other.width_;
-    this->height_     = other.height_;
-    this->vao_        = other.vao_;
-    this->vbo_        = other.vbo_;
-    this->ebo_        = other.ebo_;
-    this->texture_id_ = other.texture_id_;
+    this->width_                 = other.width_;
+    this->height_                = other.height_;
+    this->vertex_array_object_   = other.vertex_array_object_;
+    this->vertex_buffer_obecjt_  = other.vertex_buffer_obecjt_;
+    this->element_buffer_object_ = other.element_buffer_object_;
+    this->texture_id_            = other.texture_id_;
 
     std::copy(std::begin(other.vertices_), std::end(other.vertices_), std::begin(this->vertices_));
 
-    other.vao_        = 0;
-    other.vbo_        = 0;
-    other.ebo_        = 0;
-    other.texture_id_ = 0;
+    other.vertex_array_object_   = 0;
+    other.vertex_buffer_obecjt_  = 0;
+    other.element_buffer_object_ = 0;
+    other.texture_id_            = 0;
 }
 
 Texture& Texture::operator=(Texture&& other)
 {
-    this->width_      = other.width_;
-    this->height_     = other.height_;
-    this->vao_        = other.vao_;
-    this->vbo_        = other.vbo_;
-    this->ebo_        = other.ebo_;
-    this->texture_id_ = other.texture_id_;
+    this->width_                 = other.width_;
+    this->height_                = other.height_;
+    this->vertex_array_object_   = other.vertex_array_object_;
+    this->vertex_buffer_obecjt_  = other.vertex_buffer_obecjt_;
+    this->element_buffer_object_ = other.element_buffer_object_;
+    this->texture_id_            = other.texture_id_;
 
     std::copy(std::begin(other.vertices_), std::end(other.vertices_), std::begin(this->vertices_));
 
-    other.vao_        = 0;
-    other.vbo_        = 0;
-    other.ebo_        = 0;
-    other.texture_id_ = 0;
+    other.vertex_array_object_   = 0;
+    other.vertex_buffer_obecjt_  = 0;
+    other.element_buffer_object_ = 0;
+    other.texture_id_            = 0;
 
     return *this;
 }
@@ -102,19 +102,19 @@ Texture::~Texture()
         glDeleteTextures(1, &texture_id_);
     }
 
-    if (ebo_ != 0)
+    if (element_buffer_object_ != 0)
     {
-        glDeleteBuffers(1, &ebo_);
+        glDeleteBuffers(1, &element_buffer_object_);
     }
 
-    if (vbo_ != 0)
+    if (vertex_buffer_obecjt_ != 0)
     {
-        glDeleteBuffers(1, &vbo_);
+        glDeleteBuffers(1, &vertex_buffer_obecjt_);
     }
 
-    if (vao_ != 0)
+    if (vertex_array_object_ != 0)
     {
-        glDeleteVertexArrays(1, &vao_);
+        glDeleteVertexArrays(1, &vertex_array_object_);
     }
 }
 
@@ -123,7 +123,7 @@ void Texture::draw()
     glUseProgram(RinvidGfx::get_texture_default_shader());
 
     glBindTexture(GL_TEXTURE_2D, texture_id_);
-    glBindVertexArray(vao_);
+    glBindVertexArray(vertex_array_object_);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
@@ -162,7 +162,7 @@ void Texture::update_vertices(Vector2 top_left, Vector2 offset, std::uint32_t wi
     vertices_[19] = static_cast<float>(height) / static_cast<float>(height_) +
                     offset.y / static_cast<float>(height_);
 
-    glBindBuffer(GL_ARRAY_BUFFER, vbo_);
+    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_obecjt_);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices_), vertices_, GL_STATIC_DRAW);
 }
 

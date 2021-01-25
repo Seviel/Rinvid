@@ -87,9 +87,9 @@ class Texture
     std::int32_t height_{};
 
     // OpenGl object id's
-    std::uint32_t vao_{};
-    std::uint32_t vbo_{};
-    std::uint32_t ebo_{};
+    std::uint32_t vertex_array_object_{};
+    std::uint32_t vertex_buffer_obecjt_{};
+    std::uint32_t element_buffer_object_{};
     std::uint32_t texture_id_{};
 
     // There are four vertices with 5 elements each, elements are: x, y, z coordinate and x and y

@@ -16,44 +16,44 @@
 namespace rinvid
 {
 
-Shape::Shape() : origin_{}, color_{}, vao_{}, vbo_{}
+Shape::Shape() : origin_{}, color_{}, vertex_array_object_{}, vertex_buffer_object_{}
 {
 }
 
 Shape::Shape(Shape&& other)
 {
-    this->origin_ = other.origin_;
-    this->color_  = other.color_;
-    this->vao_    = other.vao_;
-    this->vbo_    = other.vbo_;
+    this->origin_               = other.origin_;
+    this->color_                = other.color_;
+    this->vertex_array_object_  = other.vertex_array_object_;
+    this->vertex_buffer_object_ = other.vertex_buffer_object_;
 
-    other.vao_ = 0;
-    other.vbo_ = 0;
+    other.vertex_array_object_  = 0;
+    other.vertex_buffer_object_ = 0;
 }
 
 Shape& Shape::operator=(Shape&& other)
 {
-    this->origin_ = other.origin_;
-    this->color_  = other.color_;
-    this->vao_    = other.vao_;
-    this->vbo_    = other.vbo_;
+    this->origin_               = other.origin_;
+    this->color_                = other.color_;
+    this->vertex_array_object_  = other.vertex_array_object_;
+    this->vertex_buffer_object_ = other.vertex_buffer_object_;
 
-    other.vao_ = 0;
-    other.vbo_ = 0;
+    other.vertex_array_object_  = 0;
+    other.vertex_buffer_object_ = 0;
 
     return *this;
 }
 
 Shape::~Shape()
 {
-    if (vbo_ != 0)
+    if (vertex_buffer_object_ != 0)
     {
-        glDeleteBuffers(1, &vbo_);
+        glDeleteBuffers(1, &vertex_buffer_object_);
     }
 
-    if (vao_ != 0)
+    if (vertex_array_object_ != 0)
     {
-        glDeleteVertexArrays(1, &vao_);
+        glDeleteVertexArrays(1, &vertex_array_object_);
     }
 }
 
