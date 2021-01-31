@@ -106,7 +106,7 @@ class RinvidGfx
      *************************************************************************************************/
     static float get_opengl_x_coord(float absolute_coord)
     {
-        return ((absolute_coord / width) * 2.0F) - 1.0F;
+        return ((absolute_coord / width_) * 2.0F) - 1.0F;
     }
 
     /**************************************************************************************************
@@ -120,14 +120,14 @@ class RinvidGfx
      *************************************************************************************************/
     static float get_opengl_y_coord(float absolute_coord)
     {
-        return -1.0F * (((absolute_coord / height) * 2.0F) - 1.0F);
+        return -1.0F * (((absolute_coord / height_) * 2.0F) - 1.0F);
     }
 
   private:
     static std::uint32_t texture_default_shader_;
     static std::uint32_t shape_default_shader_;
-    static std::uint32_t width;
-    static std::uint32_t height;
+    static std::uint32_t width_;
+    static std::uint32_t height_;
 };
 
 } // namespace rinvid
