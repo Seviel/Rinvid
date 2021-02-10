@@ -5,7 +5,9 @@ cc_binary(
     srcs = ["main.cpp"],
     copts = ["-std=c++1z"],
     linkopts = ["-lsfml-window -lsfml-system"],
-    data = [":resources/logo.png"],
+    data = [":resources/logo.png",
+            ":resources/clck.png",
+    ],
     deps = [
         "//core:rinvid_core",
         "//util:util",
