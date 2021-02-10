@@ -7,10 +7,12 @@
  * repository for more details.
  **********************************************************************/
 
+#include <chrono>
 #include <unistd.h>
 
 #include <SFML/Window.hpp>
 
+#include "core/include/animation.h"
 #include "core/include/circle_shape.h"
 #include "core/include/quad_shape.h"
 #include "core/include/rectangle_shape.h"
@@ -24,6 +26,8 @@ void handle_events(sf::Window& window, sf::Event& event);
 
 int main()
 {
+    std::chrono::duration<double> delta_time{};
+
     sf::Window window(sf::VideoMode(800, 600), "Rinvid testing grounds");
     rinvid::RinvidGfx::set_viewport(0, 0, 800, 600);
 
@@ -49,10 +53,20 @@ int main()
     rinvid::Sprite  sprite{&texture, 100, 100, rinvid::Vector2{200.0F, 200.0F},
                           rinvid::Vector2{0.0F, 0.0F}};
 
+    rinvid::Texture   clock_texture{"examples/testing_grounds/resources/clck.png"};
+    rinvid::Sprite    clock_sprite{&clock_texture, 100, 100, rinvid::Vector2{650.0F, 450.0F},
+                                rinvid::Vector2{0.0F, 0.0F}};
+    auto              regions = clock_sprite.split_animation_frames(100, 100, 12, 1);
+    rinvid::Animation clock_animation{20.0, regions};
+    clock_sprite.add_animation("anim", clock_animation);
+    clock_sprite.play("anim");
+
     rinvid::RinvidGfx::init();
 
     while (window.isOpen())
     {
+        auto start = std::chrono::high_resolution_clock::now();
+
         handle_events(window, event);
 
         rinvid::RinvidGfx::clear_screen(0.1F, 0.2F, 0.2F, 1.0F);
@@ -62,6 +76,7 @@ int main()
         rectangle.draw();
         circle.draw();
         sprite.draw();
+        clock_sprite.draw(delta_time.count());
 
         triangle.move(rinvid::Vector2{1.0F, 0.0F});
         rinvid::Vector2 triangle_origin = triangle.get_origin();
@@ -80,6 +95,9 @@ int main()
         window.display();
 
         usleep(10000);
+
+        auto end   = std::chrono::high_resolution_clock::now();
+        delta_time = end - start;
     }
 
     return 0;
