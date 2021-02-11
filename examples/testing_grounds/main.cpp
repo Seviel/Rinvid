@@ -57,7 +57,7 @@ int main()
     rinvid::Sprite    clock_sprite{&clock_texture, 100, 100, rinvid::Vector2{650.0F, 450.0F},
                                 rinvid::Vector2{0.0F, 0.0F}};
     auto              regions = clock_sprite.split_animation_frames(100, 100, 12, 1);
-    rinvid::Animation clock_animation{20.0, regions};
+    rinvid::Animation clock_animation{20.0, regions, rinvid::AnimationMode::Looping};
     clock_sprite.add_animation("anim", clock_animation);
     clock_sprite.play("anim");
 
