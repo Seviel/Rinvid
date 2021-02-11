@@ -81,6 +81,7 @@ void Sprite::play(std::string name)
 {
     is_animated_       = true;
     current_animation_ = &(animations_.find(name)->second);
+    current_animation_->reset();
 }
 
 } // namespace rinvid

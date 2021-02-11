@@ -18,6 +18,12 @@
 namespace rinvid
 {
 
+enum class AnimationMode
+{
+    Normal = 0U,
+    Looping
+};
+
 class Animation
 {
   public:
@@ -27,9 +33,11 @@ class Animation
      * @param framerate Speed of animation in frames per second
      * @param regions Vector of quads where each quad represents a region of texture that represents
      * a single animation frame
+     * @param mode Which mode should animation play in (normal or looping)
      *
      *************************************************************************************************/
-    Animation(double framerate, std::vector<Quad> regions);
+    Animation(double framerate, std::vector<Quad> regions,
+              AnimationMode mode = AnimationMode::Normal);
 
     /**************************************************************************************************
      * @brief Returns which region (frame) should currently be displayed based on time passed
@@ -39,10 +47,17 @@ class Animation
      *************************************************************************************************/
     Quad current_frame(double delta_time);
 
+    /**************************************************************************************************
+     * @brief Resets animation back to first frame
+     *
+     *************************************************************************************************/
+    void reset();
+
   private:
     std::vector<Quad> regions_;
     double            frame_time_;
     double            time_passed_;
+    AnimationMode     mode_;
 };
 
 } // namespace rinvid
