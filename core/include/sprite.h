@@ -13,6 +13,8 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <initializer_list>
+#include <type_traits>
 
 #include "core/include/animation.h"
 #include "core/include/texture.h"
@@ -73,6 +75,33 @@ class Sprite
      *************************************************************************************************/
     std::vector<Quad> split_animation_frames(std::uint32_t width, std::uint32_t height,
                                              std::uint32_t cols, std::uint32_t rows);
+
+    /**************************************************************************************************
+     * @brief Fetches a subset of regions that are created after calling split_animation_frames().
+     * This may be handy when creating animations. It is users responsibility to make sure
+     * split_animation_frames() is called before this function and that indices in range are
+     * provided
+     *
+     * @param region_indices Indices of wanted regions. Indices are assinged during
+     * split_animation_frames() in left to right, top to bottom fashion
+     *
+     * @return Vector of desired regions
+     *
+     *************************************************************************************************/
+    template <typename T>
+    std::vector<Quad> get_regions(std::initializer_list<T> region_indices)
+    {
+        static_assert(std::is_integral<T>::value == true);
+
+        std::vector<Quad> regions{};
+
+        for (auto index : region_indices)
+        {
+            regions.push_back(regions_.at(index));
+        }
+
+        return regions;
+    }
 
     /**************************************************************************************************
      * @brief Adds animation to sprite. Sprite can have multiple animations (or none). Specific
