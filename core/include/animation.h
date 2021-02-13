@@ -40,12 +40,30 @@ class Animation
               AnimationMode mode = AnimationMode::Normal);
 
     /**************************************************************************************************
-     * @brief Returns which region (frame) should currently be displayed based on time passed
+     * @brief Causes animation to advance based on time so it should be called once each frame
      *
      * @param delta_time Time passed since last frame in seconds
      *
      *************************************************************************************************/
-    Quad current_frame(double delta_time);
+    void advance(double delta_time);
+
+    /**************************************************************************************************
+     * @brief Returns which region (frame) should currently be displayed based on time passed
+     *
+     * @param delta_time Leave default argument if you want to get current frame, pass 'delta_time'
+     * if you want to get frame which should be displayed as if 'delta_time' passed
+     *
+     *************************************************************************************************/
+    Quad frame(double delta_time = 0.0) const;
+
+    /**************************************************************************************************
+     * @brief Returns index of current region (frame) based on time passed
+     *
+     * @param delta_time Leave default argument if you want to get current frame index, pass
+     * 'delta_time' if you want to get frame index as if 'delta_time' passed
+     *
+     *************************************************************************************************/
+    std::uint32_t frame_index(double delta_time = 0.0) const;
 
     /**************************************************************************************************
      * @brief Resets animation back to first frame

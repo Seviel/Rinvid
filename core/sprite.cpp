@@ -24,7 +24,8 @@ void Sprite::draw(double delta_time)
 {
     if (is_animated_)
     {
-        Quad          texture_region = current_animation_->current_frame(delta_time);
+        current_animation_->advance(delta_time);
+        Quad          texture_region = current_animation_->frame();
         Vector2       offset{texture_offset_};
         std::uint32_t width  = texture_region.width;
         std::uint32_t height = texture_region.height;
