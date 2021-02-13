@@ -66,6 +66,15 @@ class Animation
     std::uint32_t frame_index(double delta_time = 0.0) const;
 
     /**************************************************************************************************
+     * @brief Checks whether animation is finished if animation is in Normal mode, otherwise returns
+     * false
+     *
+     * @return true if animation is finished, false otherwise
+     *
+     *************************************************************************************************/
+    bool is_finished();
+
+    /**************************************************************************************************
      * @brief Resets animation back to first frame
      *
      *************************************************************************************************/

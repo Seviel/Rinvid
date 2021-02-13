@@ -123,6 +123,15 @@ class Sprite
      *************************************************************************************************/
     void play(std::string name);
 
+    /**************************************************************************************************
+     * @brief Checks whether animation being currently played is finished, if animation is in Normal
+     * mode, otherwise returns false. Returns true if sprite is not animated
+     *
+     * @return true if animation is finished, false otherwise
+     *
+     *************************************************************************************************/
+    bool is_animation_finished();
+
   private:
     std::map<std::string, Animation> animations_;
     std::vector<Quad>                regions_;

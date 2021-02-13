@@ -85,4 +85,16 @@ void Sprite::play(std::string name)
     current_animation_->reset();
 }
 
+bool Sprite::is_animation_finished()
+{
+    if (is_animated_)
+    {
+        return current_animation_->is_finished();
+    }
+    else
+    {
+        return true;
+    }
+}
+
 } // namespace rinvid

@@ -61,6 +61,20 @@ std::uint32_t Animation::frame_index(double delta_time) const
     }
 }
 
+bool Animation::is_finished()
+{
+    switch (mode_)
+    {
+        case AnimationMode::Looping:
+            return false;
+            break;
+        case AnimationMode::Normal:
+        default:
+            return frame_index() == (regions_.size() - 1);
+            break;
+    }
+}
+
 void Animation::reset()
 {
     time_passed_ = 0.0;
