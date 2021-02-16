@@ -6,6 +6,6 @@ cc_binary(
     linkopts = ["-lsfml-window -lsfml-system"],
     deps = [
         "//core:rinvid_core",
-        "//util:util",
+        "//util",
     ],
 )

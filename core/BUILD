@@ -26,6 +26,6 @@ cc_library(
         "include/triangle_shape.h",
     ],
     linkopts = ["-lsfml-window -lsfml-system -lGL"],
-    deps = ["//util:util"],
     visibility = ["//examples:__subpackages__"],
+    deps = ["//util"],
 )
