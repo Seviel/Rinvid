@@ -4,12 +4,13 @@ cc_binary(
     name = "test",
     srcs = ["main.cpp"],
     copts = ["-std=c++1z"],
-    linkopts = ["-lsfml-window -lsfml-system"],
-    data = [":resources/logo.png",
-            ":resources/clck.png",
+    data = [
+        ":resources/clck.png",
+        ":resources/logo.png",
     ],
+    linkopts = ["-lsfml-window -lsfml-system"],
     deps = [
         "//core:rinvid_core",
-        "//util:util",
+        "//util",
     ],
 )

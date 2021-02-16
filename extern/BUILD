@@ -2,11 +2,11 @@ load("@rules_cc//cc:defs.bzl", "cc_library")
 
 cc_library(
     name = "extern",
+    srcs = [
+        "stb_image.cpp",
+    ],
     hdrs = [
         "include/stb_image.h",
-    ],
-    srcs = [
-        "stb_image.cpp"
     ],
     # This is needed to suppress warnings introduced by stb_image.h
     copts = ["-Wno-sign-compare -Wno-unused-but-set-variable"],
