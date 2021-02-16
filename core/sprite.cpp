@@ -24,7 +24,8 @@ void Sprite::draw(double delta_time)
 {
     if (is_animated_)
     {
-        Quad          texture_region = current_animation_->current_frame(delta_time);
+        current_animation_->advance(delta_time);
+        Quad          texture_region = current_animation_->frame();
         Vector2       offset{texture_offset_};
         std::uint32_t width  = texture_region.width;
         std::uint32_t height = texture_region.height;
@@ -55,13 +56,13 @@ void Sprite::set_position(const Vector2 vector)
 std::vector<Quad> Sprite::split_animation_frames(std::uint32_t width, std::uint32_t height,
                                                  std::uint32_t cols, std::uint32_t rows)
 {
-    for (std::uint32_t i{0}; i < cols; ++i)
+    for (std::uint32_t i{0}; i < rows; ++i)
     {
-        for (std::uint32_t j{0}; j < rows; ++j)
+        for (std::uint32_t j{0}; j < cols; ++j)
         {
             Quad quad{};
-            quad.x      = texture_offset_.x + (i * width);
-            quad.y      = texture_offset_.y + (j * height);
+            quad.x      = texture_offset_.x + (j * width);
+            quad.y      = texture_offset_.y + (i * height);
             quad.width  = width;
             quad.height = height;
 
@@ -81,6 +82,19 @@ void Sprite::play(std::string name)
 {
     is_animated_       = true;
     current_animation_ = &(animations_.find(name)->second);
+    current_animation_->reset();
+}
+
+bool Sprite::is_animation_finished()
+{
+    if (is_animated_)
+    {
+        return current_animation_->is_finished();
+    }
+    else
+    {
+        return true;
+    }
 }
 
 } // namespace rinvid
