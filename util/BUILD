@@ -3,9 +3,11 @@ load("@rules_cc//cc:defs.bzl", "cc_library")
 cc_library(
     name = "util",
     srcs = [
+        "collision_detection.cpp",
         "image_loader.cpp",
     ],
     hdrs = [
+        "include/collision_detection.h",
         "include/color.h",
         "include/image_loader.h",
         "include/math_utils.h",
