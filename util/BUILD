@@ -9,7 +9,7 @@ cc_library(
         "include/color.h",
         "include/image_loader.h",
         "include/math_utils.h",
-        "include/quad.h",
+        "include/rect.h",
         "include/vector2.h",
         "include/vector3.h",
     ],

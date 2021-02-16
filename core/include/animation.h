@@ -13,7 +13,7 @@
 #include <string>
 #include <vector>
 
-#include "util/include/quad.h"
+#include "util/include/rect.h"
 
 namespace rinvid
 {
@@ -31,12 +31,12 @@ class Animation
      * @brief Animation constructor.
      *
      * @param framerate Speed of animation in frames per second
-     * @param regions Vector of quads where each quad represents a region of texture that represents
+     * @param regions Vector of rects where each rect represents a region of texture that represents
      * a single animation frame
      * @param mode Which mode should animation play in (normal or looping)
      *
      *************************************************************************************************/
-    Animation(double framerate, std::vector<Quad> regions,
+    Animation(double framerate, std::vector<Rect> regions,
               AnimationMode mode = AnimationMode::Normal);
 
     /**************************************************************************************************
@@ -54,7 +54,7 @@ class Animation
      * if you want to get frame which should be displayed as if 'delta_time' passed
      *
      *************************************************************************************************/
-    Quad frame(double delta_time = 0.0) const;
+    Rect frame(double delta_time = 0.0) const;
 
     /**************************************************************************************************
      * @brief Returns index of current region (frame) based on time passed
@@ -81,7 +81,7 @@ class Animation
     void reset();
 
   private:
-    std::vector<Quad> regions_;
+    std::vector<Rect> regions_;
     double            frame_time_;
     double            time_passed_;
     AnimationMode     mode_;

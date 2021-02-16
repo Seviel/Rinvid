@@ -12,7 +12,7 @@
 namespace rinvid
 {
 
-Animation::Animation(double framerate, std::vector<Quad> regions, AnimationMode mode)
+Animation::Animation(double framerate, std::vector<Rect> regions, AnimationMode mode)
     : regions_{regions}, frame_time_{1.0 / framerate}, time_passed_{0.0}, mode_{mode}
 {
 }
@@ -22,7 +22,7 @@ void Animation::advance(double delta_time)
     time_passed_ += delta_time;
 }
 
-Quad Animation::frame(double delta_time) const
+Rect Animation::frame(double delta_time) const
 {
     if (!regions_.empty())
     {
@@ -30,7 +30,7 @@ Quad Animation::frame(double delta_time) const
     }
     else
     {
-        return Quad{};
+        return Rect{};
     }
 }
 

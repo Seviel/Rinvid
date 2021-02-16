@@ -7,15 +7,15 @@
  * repository for more details.
  **********************************************************************/
 
-#ifndef UTIL_QUAD_H
-#define UTIL_QUAD_H
+#ifndef UTIL_RECT_H
+#define UTIL_RECT_H
 
 #include <cstdint>
 
 namespace rinvid
 {
 
-struct Quad
+struct Rect
 {
     std::uint32_t x;
     std::uint32_t y;
@@ -25,4 +25,4 @@ struct Quad
 
 } // namespace rinvid
 
-#endif // UTIL_QUAD_H
+#endif // UTIL_RECT_H
