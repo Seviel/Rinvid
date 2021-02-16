@@ -56,13 +56,13 @@ void Sprite::set_position(const Vector2 vector)
 std::vector<Quad> Sprite::split_animation_frames(std::uint32_t width, std::uint32_t height,
                                                  std::uint32_t cols, std::uint32_t rows)
 {
-    for (std::uint32_t i{0}; i < cols; ++i)
+    for (std::uint32_t i{0}; i < rows; ++i)
     {
-        for (std::uint32_t j{0}; j < rows; ++j)
+        for (std::uint32_t j{0}; j < cols; ++j)
         {
             Quad quad{};
-            quad.x      = texture_offset_.x + (i * width);
-            quad.y      = texture_offset_.y + (j * height);
+            quad.x      = texture_offset_.x + (j * width);
+            quad.y      = texture_offset_.y + (i * height);
             quad.width  = width;
             quad.height = height;
 
