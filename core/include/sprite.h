@@ -65,6 +65,14 @@ class Sprite
     void set_position(const Vector2 vector);
 
     /**************************************************************************************************
+     * @brief Returns bounding box rect of the shape
+     *
+     * @return Bounding rect
+     *
+     *************************************************************************************************/
+    Rect bounding_rect() const;
+
+    /**************************************************************************************************
      * @brief Creates a vector of rects representing texture regions (or animation frames)
      *
      * @param width Region width

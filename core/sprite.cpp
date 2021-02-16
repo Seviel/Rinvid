@@ -53,6 +53,11 @@ void Sprite::set_position(const Vector2 vector)
     top_left_.set(vector);
 }
 
+Rect Sprite::bounding_rect() const
+{
+    return Rect{top_left_.x, top_left_.y, width_, height_};
+}
+
 std::vector<Rect> Sprite::split_animation_frames(std::uint32_t width, std::uint32_t height,
                                                  std::uint32_t cols, std::uint32_t rows)
 {
