@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2020, Filip Vasiljevic
+ * Copyright (c) 2020 - 2021, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -14,6 +14,7 @@
 
 #include "core/include/rinvid_gfx.h"
 #include "core/include/shape.h"
+#include "util/include/rect.h"
 #include "util/include/vector2.h"
 
 namespace rinvid
@@ -95,6 +96,14 @@ class FixedPolygonShape : public Shape
      *
      *************************************************************************************************/
     virtual void set_position(const Vector2 vector) override;
+
+    /**************************************************************************************************
+     * @brief Returns bounding box rect of the shape
+     *
+     * @return Bounding rect
+     *
+     *************************************************************************************************/
+    Rect bounding_rect() const;
 
   protected:
     /**************************************************************************************************
@@ -189,27 +198,10 @@ void FixedPolygonShape<number_of_vertices>::normalize_coordinates()
 template <typename std::uint32_t number_of_vertices>
 void FixedPolygonShape<number_of_vertices>::calculate_origin()
 {
-    auto min_x_vector =
-        std::min_element(vertices_.begin(), vertices_.end(),
-                         [](Vector2 first, Vector2 second) { return first.x < second.x; });
-    auto max_x_vector =
-        std::max_element(vertices_.begin(), vertices_.end(),
-                         [](Vector2 first, Vector2 second) { return first.x < second.x; });
+    Rect rect = bounding_rect();
 
-    auto min_y_vector =
-        std::min_element(vertices_.begin(), vertices_.end(),
-                         [](Vector2 first, Vector2 second) { return first.y < second.y; });
-    auto max_y_vector =
-        std::max_element(vertices_.begin(), vertices_.end(),
-                         [](Vector2 first, Vector2 second) { return first.y < second.y; });
-
-    float min_x = min_x_vector->x;
-    float max_x = max_x_vector->x;
-    float min_y = min_y_vector->y;
-    float max_y = max_y_vector->y;
-
-    origin_.x = (max_x + min_x) / 2.0F;
-    origin_.y = (max_y + min_y) / 2.0F;
+    origin_.x = rect.x + (rect.width / 2);
+    origin_.y = rect.y + (rect.height / 2);
 }
 
 template <typename std::uint32_t number_of_vertices>
@@ -275,6 +267,38 @@ void FixedPolygonShape<number_of_vertices>::set_position(const Vector2 vector)
     }
 
     origin_ = vector;
+}
+
+template <typename std::uint32_t number_of_vertices>
+Rect FixedPolygonShape<number_of_vertices>::bounding_rect() const
+{
+    Rect rect{};
+
+    auto min_x_vector =
+        std::min_element(vertices_.begin(), vertices_.end(),
+                         [](Vector2 first, Vector2 second) { return first.x < second.x; });
+    auto max_x_vector =
+        std::max_element(vertices_.begin(), vertices_.end(),
+                         [](Vector2 first, Vector2 second) { return first.x < second.x; });
+
+    auto min_y_vector =
+        std::min_element(vertices_.begin(), vertices_.end(),
+                         [](Vector2 first, Vector2 second) { return first.y < second.y; });
+    auto max_y_vector =
+        std::max_element(vertices_.begin(), vertices_.end(),
+                         [](Vector2 first, Vector2 second) { return first.y < second.y; });
+
+    auto min_x = min_x_vector->x;
+    auto max_x = max_x_vector->x;
+    auto min_y = min_y_vector->y;
+    auto max_y = max_y_vector->y;
+
+    rect.x      = min_x;
+    rect.y      = min_y;
+    rect.width  = max_x - min_x;
+    rect.height = max_y - min_y;
+
+    return rect;
 }
 
 } // namespace rinvid
