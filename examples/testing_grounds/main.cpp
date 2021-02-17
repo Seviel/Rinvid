@@ -20,6 +20,7 @@
 #include "core/include/sprite.h"
 #include "core/include/texture.h"
 #include "core/include/triangle_shape.h"
+#include "util/include/collision_detection.h"
 #include "util/include/vector3.h"
 
 void handle_events(sf::Window& window, sf::Event& event);
@@ -63,6 +64,8 @@ int main()
 
     rinvid::RinvidGfx::init();
 
+    bool quad_alive{true};
+
     while (window.isOpen())
     {
         auto start = std::chrono::high_resolution_clock::now();
@@ -71,8 +74,16 @@ int main()
 
         rinvid::RinvidGfx::clear_screen(0.1F, 0.2F, 0.2F, 1.0F);
 
+        if (intersects(triangle.bounding_rect(), quad.bounding_rect()))
+        {
+            quad_alive = false;
+        }
+
         triangle.draw();
-        quad.draw();
+        if (quad_alive)
+        {
+            quad.draw();
+        }
         rectangle.draw();
         circle.draw();
         sprite.draw();
