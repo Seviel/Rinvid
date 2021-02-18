@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2020, Filip Vasiljevic
+ * Copyright (c) 2020 - 2021, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -13,25 +13,36 @@
 namespace rinvid
 {
 
+template <typename T>
 struct Vector3
 {
-    float x;
-    float y;
-    float z;
+    Vector3()
+    {
+        static_assert(std::is_arithmetic<T>::value == true);
+    }
 
-    inline void move(const Vector3 move_vector)
+    Vector3(T X, T Y, T Z) : x{X}, y{Y}, z{Z}
+    {
+        static_assert(std::is_arithmetic<T>::value == true);
+    }
+
+    inline void move(const Vector3<T> move_vector)
     {
         x += move_vector.x;
         y += move_vector.y;
         z += move_vector.z;
     }
 
-    inline void set(const Vector3 vector)
+    inline void set(const Vector3<T> vector)
     {
         x = vector.x;
         y = vector.y;
         z = vector.z;
     }
+
+    T x;
+    T y;
+    T z;
 };
 
 } // namespace rinvid
