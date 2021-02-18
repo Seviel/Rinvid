@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2020, Filip Vasiljevic
+ * Copyright (c) 2020 - 2021, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -31,7 +31,7 @@ class CircleShape : public FixedPolygonShape<180>
      * @param radius radius of the circle
      *
      *************************************************************************************************/
-    CircleShape(Vector2 center, float radius);
+    CircleShape(Vector2<float> center, float radius);
 
     /**************************************************************************************************
      * @brief Draws the circle.

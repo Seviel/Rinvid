@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2020, Filip Vasiljevic
+ * Copyright (c) 2020 - 2021, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -33,7 +33,8 @@ class QuadShape : public FixedPolygonShape<4>
      * @param bottom_left bottom left point of the quad
      *
      *************************************************************************************************/
-    QuadShape(Vector2 top_left, Vector2 top_right, Vector2 bottom_right, Vector2 bottom_left);
+    QuadShape(Vector2<float> top_left, Vector2<float> top_right, Vector2<float> bottom_right,
+              Vector2<float> bottom_left);
 
     /**************************************************************************************************
      * @brief Draws the quad.

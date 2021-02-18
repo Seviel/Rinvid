@@ -87,7 +87,7 @@ class FixedPolygonShape : public Shape
      * @param move_vector Vector to be added to shape's position vector
      *
      *************************************************************************************************/
-    virtual void move(const Vector2 move_vector) override;
+    virtual void move(const Vector2<float> move_vector) override;
 
     /**************************************************************************************************
      * @brief Sets shape's position to the position of passed vector.
@@ -95,7 +95,7 @@ class FixedPolygonShape : public Shape
      * @param vector A new position vector of the shape
      *
      *************************************************************************************************/
-    virtual void set_position(const Vector2 vector) override;
+    virtual void set_position(const Vector2<float> vector) override;
 
     /**************************************************************************************************
      * @brief Returns bounding box rect of the shape
@@ -137,7 +137,7 @@ class FixedPolygonShape : public Shape
 
     const std::uint32_t number_of_vertices_;
 
-    std::vector<Vector2> vertices_;
+    std::vector<Vector2<float>> vertices_;
 
     // Times 3 because each vertex has x, y, and z component.
     float gl_vertices_[number_of_vertices * 3];
@@ -241,7 +241,7 @@ void FixedPolygonShape<number_of_vertices>::draw()
 }
 
 template <typename std::uint32_t number_of_vertices>
-void FixedPolygonShape<number_of_vertices>::move(const Vector2 move_vector)
+void FixedPolygonShape<number_of_vertices>::move(const Vector2<float> move_vector)
 {
     for (std::uint32_t i{0}; i < number_of_vertices; ++i)
     {
@@ -252,11 +252,11 @@ void FixedPolygonShape<number_of_vertices>::move(const Vector2 move_vector)
 }
 
 template <typename std::uint32_t number_of_vertices>
-void FixedPolygonShape<number_of_vertices>::set_position(const Vector2 vector)
+void FixedPolygonShape<number_of_vertices>::set_position(const Vector2<float> vector)
 {
     calculate_origin();
 
-    Vector2 move_vector{};
+    Vector2<float> move_vector{};
 
     move_vector.x = vector.x - origin_.x;
     move_vector.y = vector.y - origin_.y;
@@ -274,19 +274,19 @@ Rect FixedPolygonShape<number_of_vertices>::bounding_rect() const
 {
     Rect rect{};
 
-    auto min_x_vector =
-        std::min_element(vertices_.begin(), vertices_.end(),
-                         [](Vector2 first, Vector2 second) { return first.x < second.x; });
-    auto max_x_vector =
-        std::max_element(vertices_.begin(), vertices_.end(),
-                         [](Vector2 first, Vector2 second) { return first.x < second.x; });
+    auto min_x_vector = std::min_element(
+        vertices_.begin(), vertices_.end(),
+        [](Vector2<float> first, Vector2<float> second) { return first.x < second.x; });
+    auto max_x_vector = std::max_element(
+        vertices_.begin(), vertices_.end(),
+        [](Vector2<float> first, Vector2<float> second) { return first.x < second.x; });
 
-    auto min_y_vector =
-        std::min_element(vertices_.begin(), vertices_.end(),
-                         [](Vector2 first, Vector2 second) { return first.y < second.y; });
-    auto max_y_vector =
-        std::max_element(vertices_.begin(), vertices_.end(),
-                         [](Vector2 first, Vector2 second) { return first.y < second.y; });
+    auto min_y_vector = std::min_element(
+        vertices_.begin(), vertices_.end(),
+        [](Vector2<float> first, Vector2<float> second) { return first.y < second.y; });
+    auto max_y_vector = std::max_element(
+        vertices_.begin(), vertices_.end(),
+        [](Vector2<float> first, Vector2<float> second) { return first.y < second.y; });
 
     auto min_x = min_x_vector->x;
     auto max_x = max_x_vector->x;

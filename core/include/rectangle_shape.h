@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2020, Filip Vasiljevic
+ * Copyright (c) 2020 - 2021, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -32,7 +32,7 @@ class RectangleShape : public FixedPolygonShape<4>
      * @param height rectangle height
      *
      *************************************************************************************************/
-    RectangleShape(Vector2 center, float width, float height);
+    RectangleShape(Vector2<float> center, float width, float height);
 
     /**************************************************************************************************
      * @brief Draws the rectangle.

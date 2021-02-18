@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2020, Filip Vasiljevic
+ * Copyright (c) 2020 - 2021, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -57,7 +57,7 @@ Shape::~Shape()
     }
 }
 
-Vector2 Shape::get_origin()
+Vector2<float> Shape::get_origin()
 {
     return origin_;
 }

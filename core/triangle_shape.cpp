@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2020, Filip Vasiljevic
+ * Copyright (c) 2020 - 2021, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -19,7 +19,7 @@
 namespace rinvid
 {
 
-TriangleShape::TriangleShape(Vector2 vert1, Vector2 vert2, Vector2 vert3)
+TriangleShape::TriangleShape(Vector2<float> vert1, Vector2<float> vert2, Vector2<float> vert3)
 {
     vertices_.at(0) = vert1;
     vertices_.at(1) = vert2;

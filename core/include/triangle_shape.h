@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2020, Filip Vasiljevic
+ * Copyright (c) 2020 - 2021, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -32,7 +32,7 @@ class TriangleShape : public FixedPolygonShape<3>
      * @param vert3 vertex three
      *
      *************************************************************************************************/
-    TriangleShape(Vector2 vert1, Vector2 vert2, Vector2 vert3);
+    TriangleShape(Vector2<float> vert1, Vector2<float> vert2, Vector2<float> vert3);
 
     /**************************************************************************************************
      * @brief Draws the triangle.

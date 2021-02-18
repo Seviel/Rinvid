@@ -36,27 +36,29 @@ int main()
 
     window.setActive(true);
 
-    rinvid::TriangleShape triangle{rinvid::Vector2{400.0F, 200.0F}, rinvid::Vector2{300.0F, 100.0F},
-                                   rinvid::Vector2{500.0F, 100.0F}};
+    rinvid::TriangleShape triangle{rinvid::Vector2<float>{400.0F, 200.0F},
+                                   rinvid::Vector2<float>{300.0F, 100.0F},
+                                   rinvid::Vector2<float>{500.0F, 100.0F}};
     triangle.set_color(rinvid::Color{0.1F, 0.8F, 0.3F, 1.0F});
 
-    rinvid::QuadShape quad{rinvid::Vector2{100.0F, 40.0F}, rinvid::Vector2{150.0F, 40.0F},
-                           rinvid::Vector2{160.0F, 90.0F}, rinvid::Vector2{90.0F, 90.0F}};
+    rinvid::QuadShape quad{
+        rinvid::Vector2<float>{100.0F, 40.0F}, rinvid::Vector2<float>{150.0F, 40.0F},
+        rinvid::Vector2<float>{160.0F, 90.0F}, rinvid::Vector2<float>{90.0F, 90.0F}};
     quad.set_color(rinvid::Color{0.8F, 0.1F, 0.3F, 1.0F});
 
-    rinvid::RectangleShape rectangle{rinvid::Vector2{350.0F, 35.0F}, 100.0F, 50.0F};
+    rinvid::RectangleShape rectangle{rinvid::Vector2<float>{350.0F, 35.0F}, 100.0F, 50.0F};
     rectangle.set_color(rinvid::Color{0.2F, 0.2F, 0.8F, 1.0F});
 
-    rinvid::CircleShape circle{rinvid::Vector2{500.0F, 300.0f}, 100.0F};
+    rinvid::CircleShape circle{rinvid::Vector2<float>{500.0F, 300.0f}, 100.0F};
     circle.set_color(rinvid::Color{0.1F, 0.7F, 0.8F, 1.0F});
 
     rinvid::Texture texture{"examples/testing_grounds/resources/logo.png"};
-    rinvid::Sprite  sprite{&texture, 100, 100, rinvid::Vector2{200.0F, 200.0F},
-                          rinvid::Vector2{0.0F, 0.0F}};
+    rinvid::Sprite  sprite{&texture, 100, 100, rinvid::Vector2<float>{200.0F, 200.0F},
+                          rinvid::Vector2<float>{0.0F, 0.0F}};
 
     rinvid::Texture   clock_texture{"examples/testing_grounds/resources/clck.png"};
-    rinvid::Sprite    clock_sprite{&clock_texture, 100, 100, rinvid::Vector2{650.0F, 450.0F},
-                                rinvid::Vector2{0.0F, 0.0F}};
+    rinvid::Sprite    clock_sprite{&clock_texture, 100, 100, rinvid::Vector2<float>{650.0F, 450.0F},
+                                rinvid::Vector2<float>{0.0F, 0.0F}};
     auto              regions = clock_sprite.split_animation_frames(100, 100, 12, 1);
     rinvid::Animation clock_animation{20.0, regions, rinvid::AnimationMode::Looping};
     clock_sprite.add_animation("anim", clock_animation);
@@ -89,18 +91,18 @@ int main()
         sprite.draw();
         clock_sprite.draw(delta_time.count());
 
-        triangle.move(rinvid::Vector2{1.0F, 0.0F});
-        rinvid::Vector2 triangle_origin = triangle.get_origin();
+        triangle.move(rinvid::Vector2<float>{1.0F, 0.0F});
+        rinvid::Vector2<float> triangle_origin = triangle.get_origin();
         if (triangle_origin.x >= rinvid::RinvidGfx::get_width())
         {
-            triangle.set_position(rinvid::Vector2{0.0F, triangle_origin.y});
+            triangle.set_position(rinvid::Vector2<float>{0.0F, triangle_origin.y});
         }
 
-        quad.move(rinvid::Vector2{0.0F, 2.0F});
-        rinvid::Vector2 quad_origin = quad.get_origin();
+        quad.move(rinvid::Vector2<float>{0.0F, 2.0F});
+        rinvid::Vector2<float> quad_origin = quad.get_origin();
         if (quad_origin.y >= rinvid::RinvidGfx::get_height())
         {
-            quad.set_position(rinvid::Vector2{quad_origin.x, 0.0F});
+            quad.set_position(rinvid::Vector2<float>{quad_origin.x, 0.0F});
         }
 
         window.display();
