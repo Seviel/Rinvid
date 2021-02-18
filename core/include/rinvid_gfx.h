@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2020, Filip Vasiljevic
+ * Copyright (c) 2020 - 2021, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -85,7 +85,7 @@ class RinvidGfx
      * @return Screen width
      *
      *************************************************************************************************/
-    static std::uint32_t get_width();
+    static std::int32_t get_width();
 
     /**************************************************************************************************
      * @brief Returns screen height.
@@ -93,7 +93,7 @@ class RinvidGfx
      * @return Screen height
      *
      *************************************************************************************************/
-    static std::uint32_t get_height();
+    static std::int32_t get_height();
 
     /**************************************************************************************************
      * @brief Returns normalized x coordinate. Intended for internal Rinvid use.
@@ -126,8 +126,8 @@ class RinvidGfx
   private:
     static std::uint32_t texture_default_shader_;
     static std::uint32_t shape_default_shader_;
-    static std::uint32_t width_;
-    static std::uint32_t height_;
+    static std::int32_t  width_;
+    static std::int32_t  height_;
 };
 
 } // namespace rinvid

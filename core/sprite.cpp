@@ -13,7 +13,7 @@
 namespace rinvid
 {
 
-Sprite::Sprite(Texture* texture, std::uint32_t width, std::uint32_t height, Vector2 top_left,
+Sprite::Sprite(Texture* texture, std::int32_t width, std::int32_t height, Vector2 top_left,
                Vector2 texture_offset)
     : animations_{}, regions_{}, current_animation_{nullptr}, texture_{texture}, width_{width},
       height_{height}, top_left_{top_left}, texture_offset_{texture_offset}, is_animated_{false}
@@ -55,7 +55,7 @@ void Sprite::set_position(const Vector2 vector)
 
 Rect Sprite::bounding_rect() const
 {
-    return Rect{static_cast<std::uint32_t>(top_left_.x), static_cast<std::uint32_t>(top_left_.y),
+    return Rect{static_cast<std::int32_t>(top_left_.x), static_cast<std::int32_t>(top_left_.y),
                 width_, height_};
 }
 

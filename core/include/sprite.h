@@ -37,7 +37,7 @@ class Sprite
      * @param texture_offset top left corner of texture region to use, (0, 0) of texture is top left
      *
      *************************************************************************************************/
-    Sprite(Texture* texture, std::uint32_t width, std::uint32_t height, Vector2 top_left,
+    Sprite(Texture* texture, std::int32_t width, std::int32_t height, Vector2 top_left,
            Vector2 texture_offset = {0.0F, 0.0F});
 
     /**************************************************************************************************
@@ -145,8 +145,8 @@ class Sprite
     std::vector<Rect>                regions_;
     Animation*                       current_animation_;
     Texture*                         texture_;
-    std::uint32_t                    width_;
-    std::uint32_t                    height_;
+    std::int32_t                     width_;
+    std::int32_t                     height_;
     Vector2                          top_left_;
     Vector2                          texture_offset_;
     bool                             is_animated_;
