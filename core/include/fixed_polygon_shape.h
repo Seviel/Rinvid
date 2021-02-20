@@ -200,8 +200,8 @@ void FixedPolygonShape<number_of_vertices>::calculate_origin()
 {
     Rect rect = bounding_rect();
 
-    origin_.x = rect.x + (rect.width / 2);
-    origin_.y = rect.y + (rect.height / 2);
+    origin_.x = rect.position.x + (rect.width / 2);
+    origin_.y = rect.position.y + (rect.height / 2);
 }
 
 template <typename std::uint32_t number_of_vertices>
@@ -293,10 +293,10 @@ Rect FixedPolygonShape<number_of_vertices>::bounding_rect() const
     auto min_y = min_y_vector->y;
     auto max_y = max_y_vector->y;
 
-    rect.x      = min_x;
-    rect.y      = min_y;
-    rect.width  = max_x - min_x;
-    rect.height = max_y - min_y;
+    rect.position.x = min_x;
+    rect.position.y = min_y;
+    rect.width      = max_x - min_x;
+    rect.height     = max_y - min_y;
 
     return rect;
 }

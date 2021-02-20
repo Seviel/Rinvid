@@ -12,15 +12,16 @@
 
 #include <cstdint>
 
+#include "util/include/vector2.h"
+
 namespace rinvid
 {
 
 struct Rect
 {
-    std::int32_t x;
-    std::int32_t y;
-    std::int32_t width;
-    std::int32_t height;
+    Vector2<float> position;
+    std::int32_t   width;
+    std::int32_t   height;
 };
 
 } // namespace rinvid
