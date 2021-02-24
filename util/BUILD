@@ -15,6 +15,7 @@ cc_library(
         "include/vector2.h",
         "include/vector3.h",
     ],
+    copts = ["-Werror -Wall -Wextra -pedantic"],
     visibility = [
         "//core:__subpackages__",
         "//examples:__subpackages__",

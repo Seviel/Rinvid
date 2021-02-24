@@ -25,6 +25,7 @@ cc_library(
         "include/texture.h",
         "include/triangle_shape.h",
     ],
+    copts = ["-Werror -Wall -Wextra -pedantic"],
     linkopts = ["-lsfml-window -lsfml-system -lGL"],
     visibility = ["//examples:__subpackages__"],
     deps = ["//util"],
