@@ -99,7 +99,7 @@ class Sprite
     template <typename T>
     std::vector<Rect> get_regions(std::initializer_list<T> region_indices)
     {
-        static_assert(std::is_integral<T>::value == true);
+        static_assert(std::is_integral<T>::value == true, "T must be of integral type");
 
         std::vector<Rect> regions{};
 
