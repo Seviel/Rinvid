@@ -13,7 +13,7 @@
 namespace rinvid
 {
 
-Sprite::Sprite(Texture* texture, std::uint32_t width, std::uint32_t height, Vector2 top_left,
+Sprite::Sprite(Texture* texture, std::int32_t width, std::int32_t height, Vector2 top_left,
                Vector2 texture_offset)
     : animations_{}, regions_{}, current_animation_{nullptr}, texture_{texture}, width_{width},
       height_{height}, top_left_{top_left}, texture_offset_{texture_offset}, is_animated_{false}
@@ -25,7 +25,7 @@ void Sprite::draw(double delta_time)
     if (is_animated_)
     {
         current_animation_->advance(delta_time);
-        Quad          texture_region = current_animation_->frame();
+        Rect          texture_region = current_animation_->frame();
         Vector2       offset{texture_offset_};
         std::uint32_t width  = texture_region.width;
         std::uint32_t height = texture_region.height;
@@ -53,20 +53,26 @@ void Sprite::set_position(const Vector2 vector)
     top_left_.set(vector);
 }
 
-std::vector<Quad> Sprite::split_animation_frames(std::uint32_t width, std::uint32_t height,
+Rect Sprite::bounding_rect() const
+{
+    return Rect{static_cast<std::int32_t>(top_left_.x), static_cast<std::int32_t>(top_left_.y),
+                width_, height_};
+}
+
+std::vector<Rect> Sprite::split_animation_frames(std::uint32_t width, std::uint32_t height,
                                                  std::uint32_t cols, std::uint32_t rows)
 {
     for (std::uint32_t i{0}; i < rows; ++i)
     {
         for (std::uint32_t j{0}; j < cols; ++j)
         {
-            Quad quad{};
-            quad.x      = texture_offset_.x + (j * width);
-            quad.y      = texture_offset_.y + (i * height);
-            quad.width  = width;
-            quad.height = height;
+            Rect rect{};
+            rect.x      = texture_offset_.x + (j * width);
+            rect.y      = texture_offset_.y + (i * height);
+            rect.width  = width;
+            rect.height = height;
 
-            regions_.push_back(quad);
+            regions_.push_back(rect);
         }
     }
 

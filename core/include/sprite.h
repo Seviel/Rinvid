@@ -18,7 +18,7 @@
 
 #include "core/include/animation.h"
 #include "core/include/texture.h"
-#include "util/include/quad.h"
+#include "util/include/rect.h"
 #include "util/include/vector2.h"
 
 namespace rinvid
@@ -37,7 +37,7 @@ class Sprite
      * @param texture_offset top left corner of texture region to use, (0, 0) of texture is top left
      *
      *************************************************************************************************/
-    Sprite(Texture* texture, std::uint32_t width, std::uint32_t height, Vector2 top_left,
+    Sprite(Texture* texture, std::int32_t width, std::int32_t height, Vector2 top_left,
            Vector2 texture_offset = {0.0F, 0.0F});
 
     /**************************************************************************************************
@@ -65,7 +65,15 @@ class Sprite
     void set_position(const Vector2 vector);
 
     /**************************************************************************************************
-     * @brief Creates a vector of quads representing texture regions (or animation frames)
+     * @brief Returns bounding box rect of the shape
+     *
+     * @return Bounding rect
+     *
+     *************************************************************************************************/
+    Rect bounding_rect() const;
+
+    /**************************************************************************************************
+     * @brief Creates a vector of rects representing texture regions (or animation frames)
      *
      * @param width Region width
      * @param height Region height
@@ -73,7 +81,7 @@ class Sprite
      * @param rows How many rows does the sprite sheet have
      *
      *************************************************************************************************/
-    std::vector<Quad> split_animation_frames(std::uint32_t width, std::uint32_t height,
+    std::vector<Rect> split_animation_frames(std::uint32_t width, std::uint32_t height,
                                              std::uint32_t cols, std::uint32_t rows);
 
     /**************************************************************************************************
@@ -89,11 +97,11 @@ class Sprite
      *
      *************************************************************************************************/
     template <typename T>
-    std::vector<Quad> get_regions(std::initializer_list<T> region_indices)
+    std::vector<Rect> get_regions(std::initializer_list<T> region_indices)
     {
         static_assert(std::is_integral<T>::value == true);
 
-        std::vector<Quad> regions{};
+        std::vector<Rect> regions{};
 
         for (auto index : region_indices)
         {
@@ -134,11 +142,11 @@ class Sprite
 
   private:
     std::map<std::string, Animation> animations_;
-    std::vector<Quad>                regions_;
+    std::vector<Rect>                regions_;
     Animation*                       current_animation_;
     Texture*                         texture_;
-    std::uint32_t                    width_;
-    std::uint32_t                    height_;
+    std::int32_t                     width_;
+    std::int32_t                     height_;
     Vector2                          top_left_;
     Vector2                          texture_offset_;
     bool                             is_animated_;
