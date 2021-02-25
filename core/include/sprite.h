@@ -37,8 +37,8 @@ class Sprite
      * @param texture_offset top left corner of texture region to use, (0, 0) of texture is top left
      *
      *************************************************************************************************/
-    Sprite(Texture* texture, std::int32_t width, std::int32_t height, Vector2 top_left,
-           Vector2 texture_offset = {0.0F, 0.0F});
+    Sprite(Texture* texture, std::int32_t width, std::int32_t height, Vector2<float> top_left,
+           Vector2<float> texture_offset = {0.0F, 0.0F});
 
     /**************************************************************************************************
      * @brief Draws the sprite.
@@ -54,7 +54,7 @@ class Sprite
      * @param move_vector Vector to be added to sprite's position vector
      *
      *************************************************************************************************/
-    void move(const Vector2 move_vector);
+    void move(const Vector2<float> move_vector);
 
     /**************************************************************************************************
      * @brief Sets sprite's position to the position of passed vector.
@@ -62,7 +62,7 @@ class Sprite
      * @param vector A new position vector of the sprite
      *
      *************************************************************************************************/
-    void set_position(const Vector2 vector);
+    void set_position(const Vector2<float> vector);
 
     /**************************************************************************************************
      * @brief Returns bounding box rect of the shape
@@ -147,8 +147,8 @@ class Sprite
     Texture*                         texture_;
     std::int32_t                     width_;
     std::int32_t                     height_;
-    Vector2                          top_left_;
-    Vector2                          texture_offset_;
+    Vector2<float>                   top_left_;
+    Vector2<float>                   texture_offset_;
     bool                             is_animated_;
 };
 

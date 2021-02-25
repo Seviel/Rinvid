@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2020, Filip Vasiljevic
+ * Copyright (c) 2020 - 2021, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -77,7 +77,7 @@ class Shape
      * @param move_vector Vector to be added to shape's position vector
      *
      *************************************************************************************************/
-    virtual void move(const Vector2 move_vector) = 0;
+    virtual void move(const Vector2<float> move_vector) = 0;
 
     /**************************************************************************************************
      * @brief Sets shape's position to the position of passed vector.
@@ -85,7 +85,7 @@ class Shape
      * @param vector A new position vector of the shape
      *
      *************************************************************************************************/
-    virtual void set_position(const Vector2 vector) = 0;
+    virtual void set_position(const Vector2<float> vector) = 0;
 
     /**************************************************************************************************
      * @brief Returns center point of shape.
@@ -93,7 +93,7 @@ class Shape
      * @return Center point of shape
      *
      *************************************************************************************************/
-    Vector2 get_origin();
+    Vector2<float> get_origin();
 
     /**************************************************************************************************
      * @brief Sets shape's color.
@@ -104,10 +104,10 @@ class Shape
     void set_color(const Color color);
 
   protected:
-    Vector2       origin_;
-    Color         color_;
-    std::uint32_t vertex_array_object_;
-    std::uint32_t vertex_buffer_object_;
+    Vector2<float> origin_;
+    Color          color_;
+    std::uint32_t  vertex_array_object_;
+    std::uint32_t  vertex_buffer_object_;
 
   private:
     /**************************************************************************************************

@@ -13,8 +13,8 @@
 namespace rinvid
 {
 
-Sprite::Sprite(Texture* texture, std::int32_t width, std::int32_t height, Vector2 top_left,
-               Vector2 texture_offset)
+Sprite::Sprite(Texture* texture, std::int32_t width, std::int32_t height, Vector2<float> top_left,
+               Vector2<float> texture_offset)
     : animations_{}, regions_{}, current_animation_{nullptr}, texture_{texture}, width_{width},
       height_{height}, top_left_{top_left}, texture_offset_{texture_offset}, is_animated_{false}
 {
@@ -25,13 +25,13 @@ void Sprite::draw(double delta_time)
     if (is_animated_)
     {
         current_animation_->advance(delta_time);
-        Rect          texture_region = current_animation_->frame();
-        Vector2       offset{texture_offset_};
-        std::uint32_t width  = texture_region.width;
-        std::uint32_t height = texture_region.height;
+        Rect           texture_region = current_animation_->frame();
+        Vector2<float> offset{texture_offset_};
+        std::uint32_t  width  = texture_region.width;
+        std::uint32_t  height = texture_region.height;
 
-        offset.x += texture_region.x;
-        offset.y += texture_region.y;
+        offset.x += texture_region.position.x;
+        offset.y += texture_region.position.y;
 
         texture_->update_vertices(top_left_, offset, width, height);
     }
@@ -43,20 +43,19 @@ void Sprite::draw(double delta_time)
     texture_->draw();
 }
 
-void Sprite::move(const Vector2 move_vector)
+void Sprite::move(const Vector2<float> move_vector)
 {
     top_left_.move(move_vector);
 }
 
-void Sprite::set_position(const Vector2 vector)
+void Sprite::set_position(const Vector2<float> vector)
 {
     top_left_.set(vector);
 }
 
 Rect Sprite::bounding_rect() const
 {
-    return Rect{static_cast<std::int32_t>(top_left_.x), static_cast<std::int32_t>(top_left_.y),
-                width_, height_};
+    return Rect{top_left_, width_, height_};
 }
 
 std::vector<Rect> Sprite::split_animation_frames(std::uint32_t width, std::uint32_t height,
@@ -67,10 +66,10 @@ std::vector<Rect> Sprite::split_animation_frames(std::uint32_t width, std::uint3
         for (std::uint32_t j{0}; j < cols; ++j)
         {
             Rect rect{};
-            rect.x      = texture_offset_.x + (j * width);
-            rect.y      = texture_offset_.y + (i * height);
-            rect.width  = width;
-            rect.height = height;
+            rect.position.x = texture_offset_.x + (j * width);
+            rect.position.y = texture_offset_.y + (i * height);
+            rect.width      = width;
+            rect.height     = height;
 
             regions_.push_back(rect);
         }

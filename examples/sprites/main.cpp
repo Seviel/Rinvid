@@ -46,8 +46,8 @@ int main()
     rinvid::Color active_color{1.0000000F, 0.6705882F, 0.2862745F, 1.0F};
 
     rinvid::Texture robot_texture{"examples/sprites/resources/trashbot.png"};
-    rinvid::Sprite  robot_sprite{&robot_texture, 455, 455, rinvid::Vector2{0.0F, 100.0F},
-                                rinvid::Vector2{0.0F, 0.0F}};
+    rinvid::Sprite  robot_sprite{&robot_texture, 455, 455, rinvid::Vector2<float>{0.0F, 100.0F},
+                                rinvid::Vector2<float>{0.0F, 0.0F}};
 
     robot_sprite.split_animation_frames(455, 455, 9, 8);
 
@@ -106,7 +106,7 @@ int main()
             robot_sprite.play(current_animation_state);
         }
 
-        robot_sprite.move(rinvid::Vector2{horizontal_delta, 0});
+        robot_sprite.move(rinvid::Vector2<float>{horizontal_delta, 0});
 
         window.display();
 

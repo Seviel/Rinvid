@@ -129,7 +129,7 @@ void Texture::draw()
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
-void Texture::update_vertices(Vector2 top_left, Vector2 offset, std::uint32_t width,
+void Texture::update_vertices(Vector2<float> top_left, Vector2<float> offset, std::uint32_t width,
                               std::uint32_t height)
 {
     // Top left

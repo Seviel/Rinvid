@@ -15,19 +15,19 @@ namespace rinvid
 
 bool intersects(Rect rect1, Rect rect2)
 {
-    if (rect1.x > (rect2.x + rect2.width))
+    if (rect1.position.x > (rect2.position.x + rect2.width))
     {
         return false;
     }
-    else if ((rect1.x + rect1.width) < rect2.x)
+    else if ((rect1.position.x + rect1.width) < rect2.position.x)
     {
         return false;
     }
-    else if (rect1.y > (rect2.y + rect2.height))
+    else if (rect1.position.y > (rect2.position.y + rect2.height))
     {
         return false;
     }
-    else if ((rect1.y + rect1.height) < rect2.y)
+    else if ((rect1.position.y + rect1.height) < rect2.position.y)
     {
         return false;
     }
