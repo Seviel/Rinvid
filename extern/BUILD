@@ -5,9 +5,15 @@ cc_library(
     srcs = [
         "stb_image.cpp",
     ],
-    hdrs = [
-        "include/stb_image.h",
-    ],
+    hdrs =
+        glob(
+            [
+                "glm/**/*.hpp",
+                "glm/**/*.h",
+                "glm/**/*.inl",
+                "include/stb_image.h",
+            ],
+        ),
     # This is needed to suppress warnings introduced by stb_image.h
     copts = ["-Wno-sign-compare -Wno-unused-but-set-variable"],
     visibility = [
