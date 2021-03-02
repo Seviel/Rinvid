@@ -40,7 +40,7 @@ void Sprite::draw(double delta_time)
         texture_->update_vertices(top_left_, texture_offset_, width_, height_);
     }
 
-    texture_->draw();
+    texture_->draw(get_transform());
 }
 
 void Sprite::move(const Vector2<float> move_vector)

@@ -8,6 +8,8 @@
  **********************************************************************/
 
 #include "include/rinvid_gfx.h"
+#include "extern/glm/gtc/type_ptr.hpp"
+#include "extern/glm/gtx/transform.hpp"
 
 namespace
 {
@@ -17,9 +19,10 @@ static const char* texture_vert_shader_source =
     "layout (location = 0) in vec3 aPos;\n"
     "layout (location = 1) in vec2 aTexCoord;\n"
     "out vec2 TexCoord;\n"
+    "uniform mat4 model_view_projection;\n"
     "void main()\n"
     "{\n"
-    "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+    "   gl_Position = model_view_projection * vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
     "   TexCoord = vec2(aTexCoord.x, aTexCoord.y);\n"
     "}\0";
 
@@ -37,9 +40,10 @@ static const char* texture_frag_shader_source =
 static const char* shape_vert_shader_source =
     "#version 330 core\n"
     "layout (location = 0) in vec3 aPos;\n"
+    "uniform mat4 model_view_projection;\n"
     "void main()\n"
     "{\n"
-    "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+    "   gl_Position = model_view_projection * vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
     "}\0";
 
 static const char* shape_frag_shader_source =
@@ -96,6 +100,9 @@ static void init_default_shaders(std::uint32_t& shape_default_shader_handle,
 namespace rinvid
 {
 
+glm::mat4     RinvidGfx::model_view_projection_{1.0F};
+glm::mat4     RinvidGfx::view_{1.0F};
+glm::mat4     RinvidGfx::projection_{1.0F};
 std::uint32_t RinvidGfx::shape_default_shader_{};
 std::uint32_t RinvidGfx::texture_default_shader_{};
 std::int32_t  RinvidGfx::width_{};
@@ -106,6 +113,9 @@ void RinvidGfx::init()
     init_default_shaders(RinvidGfx::shape_default_shader_, RinvidGfx::texture_default_shader_);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
+    projection_            = glm::ortho(0.0F, static_cast<float>(RinvidGfx::get_width()),
+                             static_cast<float>(RinvidGfx::get_height()), 0.0F, -1.0f, 1.0f);
+    model_view_projection_ = projection_ * view_;
 }
 
 void RinvidGfx::set_viewport(std::int32_t x, std::int32_t y, std::int32_t width,
@@ -140,6 +150,15 @@ std::int32_t RinvidGfx::get_width()
 std::int32_t RinvidGfx::get_height()
 {
     return height_;
+}
+
+void RinvidGfx::update_mvp_matrix(const glm::mat4& model, std::uint32_t shader_id)
+{
+    projection_                = glm::ortho(0.0F, static_cast<float>(RinvidGfx::get_width()),
+                             static_cast<float>(RinvidGfx::get_height()), 0.0F, -1.0f, 1.0f);
+    model_view_projection_     = projection_ * view_ * model;
+    std::uint32_t mvp_location = glGetUniformLocation(shader_id, "model_view_projection");
+    glUniformMatrix4fv(mvp_location, 1, GL_FALSE, glm::value_ptr(model_view_projection_));
 }
 
 } // namespace rinvid

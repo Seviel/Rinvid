@@ -14,6 +14,7 @@
 #include <vector>
 
 #include "core/include/rinvid_gfx.h"
+#include "extern/glm/mat4x4.hpp"
 #include "util/include/color.h"
 #include "util/include/vector2.h"
 
@@ -72,8 +73,10 @@ class Texture
      * @brief Internal function called by sprite. Draws part of texture specified by sprite calling
      * it.
      *
+     * @param transform Transformation to apply (model matrix)
+     *
      *************************************************************************************************/
-    void draw();
+    void draw(const glm::mat4& transform);
 
     /**************************************************************************************************
      * @brief Internal function called by sprite. Adjusts internal texture vertices based on

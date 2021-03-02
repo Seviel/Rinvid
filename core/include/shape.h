@@ -12,6 +12,7 @@
 
 #include <cstdint>
 
+#include "core/include/transformable.h"
 #include "util/include/color.h"
 #include "util/include/vector2.h"
 
@@ -22,7 +23,7 @@ namespace rinvid
  * @brief A base class for drawable shapes.
  *
  *************************************************************************************************/
-class Shape
+class Shape : public Transformable
 {
   public:
     /**************************************************************************************************

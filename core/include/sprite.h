@@ -18,13 +18,15 @@
 
 #include "core/include/animation.h"
 #include "core/include/texture.h"
+#include "core/include/transformable.h"
+#include "extern/glm/mat4x4.hpp"
 #include "util/include/rect.h"
 #include "util/include/vector2.h"
 
 namespace rinvid
 {
 
-class Sprite
+class Sprite : public Transformable
 {
   public:
     /**************************************************************************************************
