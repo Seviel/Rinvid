@@ -15,6 +15,7 @@
 #include <SFML/OpenGL.hpp>
 
 #include "core/include/rinvid_gfx.h"
+#include "extern/glm/gtc/type_ptr.hpp"
 #include "include/texture.h"
 #include "util/include/image_loader.h"
 
@@ -120,9 +121,11 @@ Texture::~Texture()
     }
 }
 
-void Texture::draw()
+void Texture::draw(const glm::mat4& transform)
 {
     glUseProgram(RinvidGfx::get_texture_default_shader());
+
+    RinvidGfx::update_mvp_matrix(transform, RinvidGfx::get_texture_default_shader());
 
     glBindTexture(GL_TEXTURE_2D, texture_id_);
     glBindVertexArray(vertex_array_object_);
@@ -133,23 +136,23 @@ void Texture::update_vertices(Vector2<float> top_left, Vector2<float> offset, st
                               std::uint32_t height)
 {
     // Top left
-    gl_vertices_[0] = RinvidGfx::get_opengl_x_coord(top_left.x);
-    gl_vertices_[1] = RinvidGfx::get_opengl_y_coord(top_left.y);
+    gl_vertices_[0] = top_left.x;
+    gl_vertices_[1] = top_left.y;
     gl_vertices_[2] = 0.0F;
     gl_vertices_[3] = offset.x / static_cast<float>(width_);
     gl_vertices_[4] = offset.y / static_cast<float>(height_);
 
     // Top right
-    gl_vertices_[5] = RinvidGfx::get_opengl_x_coord(top_left.x + width);
-    gl_vertices_[6] = RinvidGfx::get_opengl_y_coord(top_left.y);
+    gl_vertices_[5] = top_left.x + width;
+    gl_vertices_[6] = top_left.y;
     gl_vertices_[7] = 0.0F;
     gl_vertices_[8] = static_cast<float>(width) / static_cast<float>(width_) +
                       offset.x / static_cast<float>(width_);
     gl_vertices_[9] = offset.y / static_cast<float>(height_);
 
     // Bottom right
-    gl_vertices_[10] = RinvidGfx::get_opengl_x_coord(top_left.x + width);
-    gl_vertices_[11] = RinvidGfx::get_opengl_y_coord(top_left.y + height);
+    gl_vertices_[10] = top_left.x + width;
+    gl_vertices_[11] = top_left.y + height;
     gl_vertices_[12] = 0.0F;
     gl_vertices_[13] = static_cast<float>(width) / static_cast<float>(width_) +
                        offset.x / static_cast<float>(width_);
@@ -157,8 +160,8 @@ void Texture::update_vertices(Vector2<float> top_left, Vector2<float> offset, st
                        offset.y / static_cast<float>(height_);
 
     // Bottom left
-    gl_vertices_[15] = RinvidGfx::get_opengl_x_coord(top_left.x);
-    gl_vertices_[16] = RinvidGfx::get_opengl_y_coord(top_left.y + height);
+    gl_vertices_[15] = top_left.x;
+    gl_vertices_[16] = top_left.y + height;
     gl_vertices_[17] = 0.0F;
     gl_vertices_[18] = offset.x / static_cast<float>(width_);
     gl_vertices_[19] = static_cast<float>(height) / static_cast<float>(height_) +

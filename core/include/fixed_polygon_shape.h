@@ -187,8 +187,8 @@ void FixedPolygonShape<number_of_vertices>::normalize_coordinates()
 {
     for (std::uint32_t i{0}; i < number_of_vertices; ++i)
     {
-        gl_vertices_[i * 3]     = RinvidGfx::get_opengl_x_coord(vertices_.at(i).x);
-        gl_vertices_[i * 3 + 1] = RinvidGfx::get_opengl_y_coord(vertices_.at(i).y);
+        gl_vertices_[i * 3]     = vertices_.at(i).x;
+        gl_vertices_[i * 3 + 1] = vertices_.at(i).y;
     }
 
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_object_);
@@ -234,6 +234,8 @@ void FixedPolygonShape<number_of_vertices>::draw()
     normalize_coordinates();
 
     glUseProgram(RinvidGfx::get_shape_default_shader());
+
+    RinvidGfx::update_mvp_matrix(get_transform(), RinvidGfx::get_shape_default_shader());
 
     std::int32_t color_location =
         glGetUniformLocation(RinvidGfx::get_shape_default_shader(), "in_color");
