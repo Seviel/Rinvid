@@ -1,0 +1,46 @@
+/**********************************************************************
+ * Copyright (c) 2021, Filip Vasiljevic
+ * All rights reserved.
+ *
+ * This file is subject to the terms and conditions of the BSD 2-Clause
+ * License.  See the file LICENSE in the root directory of the Rinvid
+ * repository for more details.
+ **********************************************************************/
+
+#ifndef CORE_INCLUDE_TRANSFORMABLE_H
+#define CORE_INCLUDE_TRANSFORMABLE_H
+
+#include "extern/glm/mat4x4.hpp"
+#include "util/include/vector2.h"
+
+namespace rinvid
+{
+
+/**************************************************************************************************
+ * @brief A drawable triangle shape.
+ *
+ *************************************************************************************************/
+class Transformable
+{
+  public:
+    /**************************************************************************************************
+     * @brief Transformable constructor.
+     *
+     *************************************************************************************************/
+    Transformable();
+
+    /**************************************************************************************************
+     * @brief Returns transform of the object.
+     *
+     * @return Matrix composition of position/rotation/scale
+     *
+     *************************************************************************************************/
+    const glm::mat4& get_transform();
+
+  private:
+    glm::mat4 transform_;
+};
+
+} // namespace rinvid
+
+#endif // CORE_INCLUDE_TRANSFORMABLE_H

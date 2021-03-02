@@ -11,6 +11,7 @@ cc_library(
         "shape.cpp",
         "sprite.cpp",
         "texture.cpp",
+        "transformable.cpp",
         "triangle_shape.cpp",
     ],
     hdrs = [
@@ -23,6 +24,7 @@ cc_library(
         "include/shape.h",
         "include/sprite.h",
         "include/texture.h",
+        "include/transformable.h",
         "include/triangle_shape.h",
     ],
     copts = ["-Werror -Wall -Wextra -pedantic"],
