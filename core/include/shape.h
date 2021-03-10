@@ -89,14 +89,6 @@ class Shape : public Transformable
     virtual void set_position(const Vector2<float> vector) = 0;
 
     /**************************************************************************************************
-     * @brief Returns center point of shape.
-     *
-     * @return Center point of shape
-     *
-     *************************************************************************************************/
-    Vector2<float> get_origin();
-
-    /**************************************************************************************************
      * @brief Sets shape's color.
      *
      * @param color A new color of the shape
@@ -105,10 +97,9 @@ class Shape : public Transformable
     void set_color(const Color color);
 
   protected:
-    Vector2<float> origin_;
-    Color          color_;
-    std::uint32_t  vertex_array_object_;
-    std::uint32_t  vertex_buffer_object_;
+    Color         color_;
+    std::uint32_t vertex_array_object_;
+    std::uint32_t vertex_buffer_object_;
 
   private:
     /**************************************************************************************************

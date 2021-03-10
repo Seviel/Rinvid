@@ -16,13 +16,12 @@
 namespace rinvid
 {
 
-Shape::Shape() : origin_{}, color_{}, vertex_array_object_{}, vertex_buffer_object_{}
+Shape::Shape() : color_{}, vertex_array_object_{}, vertex_buffer_object_{}
 {
 }
 
 Shape::Shape(Shape&& other)
 {
-    this->origin_               = other.origin_;
     this->color_                = other.color_;
     this->vertex_array_object_  = other.vertex_array_object_;
     this->vertex_buffer_object_ = other.vertex_buffer_object_;
@@ -33,7 +32,6 @@ Shape::Shape(Shape&& other)
 
 Shape& Shape::operator=(Shape&& other)
 {
-    this->origin_               = other.origin_;
     this->color_                = other.color_;
     this->vertex_array_object_  = other.vertex_array_object_;
     this->vertex_buffer_object_ = other.vertex_buffer_object_;
@@ -55,11 +53,6 @@ Shape::~Shape()
     {
         glDeleteVertexArrays(1, &vertex_array_object_);
     }
-}
-
-Vector2<float> Shape::get_origin()
-{
-    return origin_;
 }
 
 void Shape::set_color(const Color color)

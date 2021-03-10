@@ -37,6 +37,17 @@ class Transformable
      *************************************************************************************************/
     const glm::mat4& get_transform();
 
+    /**************************************************************************************************
+     * @brief Returns center point of object.
+     *
+     * @return Center point of object
+     *
+     *************************************************************************************************/
+    Vector2<float> get_origin();
+
+  protected:
+    Vector2<float> origin_;
+
   private:
     glm::mat4 transform_;
 };

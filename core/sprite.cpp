@@ -22,6 +22,9 @@ Sprite::Sprite(Texture* texture, std::int32_t width, std::int32_t height, Vector
 
 void Sprite::draw(double delta_time)
 {
+    origin_.x = top_left_.x + width_ / 2;
+    origin_.y = top_left_.y + height_ / 2;
+
     if (is_animated_)
     {
         current_animation_->advance(delta_time);

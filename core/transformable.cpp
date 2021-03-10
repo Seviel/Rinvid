@@ -21,4 +21,9 @@ const glm::mat4& Transformable::get_transform()
     return transform_;
 }
 
+Vector2<float> Transformable::get_origin()
+{
+    return origin_;
+}
+
 } // namespace rinvid
