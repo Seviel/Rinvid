@@ -45,11 +45,46 @@ class Transformable
      *************************************************************************************************/
     Vector2<float> get_origin();
 
+    /**************************************************************************************************
+     * @brief Rotates object
+     *
+     * @param degree_angle angle in degrees
+     *
+     *************************************************************************************************/
+    void rotate(float degree_angle);
+
+    /**************************************************************************************************
+     * @brief Sets object's rotation
+     *
+     * @param degree_angle angle in degrees
+     *
+     *************************************************************************************************/
+    void set_rotation(float degree_angle);
+
+    /**************************************************************************************************
+     * @brief Scales object
+     *
+     * @param scale how much to scale object (e.g. 0.5 means object will be half of its current
+     * size)
+     *
+     *************************************************************************************************/
+    void scale(float scale);
+
+    /**************************************************************************************************
+     * @brief Sets obejct's scale
+     *
+     * @param scale new scale of the object
+     *
+     *************************************************************************************************/
+    void set_scale(float scale);
+
   protected:
     Vector2<float> origin_;
 
   private:
     glm::mat4 transform_;
+    float     angle_;
+    float     scale_;
 };
 
 } // namespace rinvid
