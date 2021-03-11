@@ -25,6 +25,8 @@ RectangleShape::RectangleShape(Vector2<float> center, float width, float height)
     vertices_.at(1) = Vector2<float>{center.x + width / 2.0F, center.y - height / 2.0F};
     vertices_.at(2) = Vector2<float>{center.x + width / 2.0F, center.y + height / 2.0F};
     vertices_.at(3) = Vector2<float>{center.x - width / 2.0F, center.y + height / 2.0F};
+
+    calculate_origin();
 }
 
 void RectangleShape::draw()

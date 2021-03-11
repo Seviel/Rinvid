@@ -30,6 +30,8 @@ CircleShape::CircleShape(Vector2<float> center, float radius)
         vertices_.at(i) = Vector2<float>{center.x + std::cos(DEGREES_TO_RADIANS(angle)) * radius,
                                          center.y + std::sin(DEGREES_TO_RADIANS(angle)) * radius};
     }
+
+    calculate_origin();
 }
 
 void CircleShape::draw()
