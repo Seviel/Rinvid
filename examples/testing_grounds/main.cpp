@@ -48,6 +48,7 @@ int main()
 
     rinvid::RectangleShape rectangle{rinvid::Vector2<float>{350.0F, 35.0F}, 100.0F, 50.0F};
     rectangle.set_color(rinvid::Color{0.2F, 0.2F, 0.8F, 1.0F});
+    rectangle.set_rotation(90.0F);
 
     rinvid::CircleShape circle{rinvid::Vector2<float>{500.0F, 300.0f}, 100.0F};
     circle.set_color(rinvid::Color{0.1F, 0.7F, 0.8F, 1.0F});
@@ -63,6 +64,7 @@ int main()
     rinvid::Animation clock_animation{20.0, regions, rinvid::AnimationMode::Looping};
     clock_sprite.add_animation("anim", clock_animation);
     clock_sprite.play("anim");
+    clock_sprite.set_scale(1.5F);
 
     rinvid::RinvidGfx::init();
 
@@ -104,6 +106,10 @@ int main()
         {
             quad.set_position(rinvid::Vector2<float>{quad_origin.x, 0.0F});
         }
+
+        sprite.rotate(0.5F);
+
+        circle.scale(0.99F);
 
         window.display();
 
