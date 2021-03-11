@@ -26,6 +26,8 @@ QuadShape::QuadShape(Vector2<float> top_left, Vector2<float> top_right, Vector2<
     vertices_.at(1) = top_right;
     vertices_.at(2) = bottom_right;
     vertices_.at(3) = bottom_left;
+
+    calculate_origin();
 }
 
 void QuadShape::draw()
