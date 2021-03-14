@@ -54,4 +54,9 @@ void Transformable::set_scale(float scale)
     scale_ = scale;
 }
 
+bool Transformable::is_transformed() const
+{
+    return (angle_ != 0.0F) || (scale_ != 1.0F);
+}
+
 } // namespace rinvid

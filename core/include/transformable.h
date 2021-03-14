@@ -10,6 +10,9 @@
 #ifndef CORE_INCLUDE_TRANSFORMABLE_H
 #define CORE_INCLUDE_TRANSFORMABLE_H
 
+#include <algorithm>
+#include <vector>
+
 #include "extern/glm/mat4x4.hpp"
 #include "util/include/vector2.h"
 
@@ -78,7 +81,47 @@ class Transformable
      *************************************************************************************************/
     void set_scale(float scale);
 
+    /**************************************************************************************************
+     * @brief Checks whether any transformation (rotation or scaling) had been applied to the object
+     *
+     * @return true if object had been transformed, false otherwise
+     *
+     *************************************************************************************************/
+    bool is_transformed() const;
+
   protected:
+    /**************************************************************************************************
+     * @brief Given a vector of vertices, it sets min and max x and y coordinates. Helper function
+     * for finding bounding rect.
+     *
+     * @param vertices A vector of vertices which needs to contain at least a position in 2D space
+     *(x and y coordinate)
+     * @param min_x Will be set to value of minimal x coordinate out of all vertices
+     * @param max_x Will be set to value of maximal x coordinate out of all vertices
+     * @param min_y Will be set to value of maximum y coordinate out of all vertices
+     * @param max_y Will be set to value of maximum y coordinate out of all vertices
+     *
+     *************************************************************************************************/
+    template <typename T>
+    void set_min_max_coords(const std::vector<T>& vertices, float& min_x, float& max_x,
+                            float& min_y, float& max_y)
+    {
+        auto min_x_vector = std::min_element(vertices.begin(), vertices.end(),
+                                             [](T first, T second) { return first.x < second.x; });
+        auto max_x_vector = std::max_element(vertices.begin(), vertices.end(),
+                                             [](T first, T second) { return first.x < second.x; });
+
+        auto min_y_vector = std::min_element(vertices.begin(), vertices.end(),
+                                             [](T first, T second) { return first.y < second.y; });
+        auto max_y_vector = std::max_element(vertices.begin(), vertices.end(),
+                                             [](T first, T second) { return first.y < second.y; });
+
+        min_x = min_x_vector->x;
+        max_x = max_x_vector->x;
+        min_y = min_y_vector->y;
+        max_y = max_y_vector->y;
+    }
+
     Vector2<float> origin_;
 
   private:

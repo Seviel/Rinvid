@@ -72,7 +72,7 @@ class Sprite : public Transformable
      * @return Bounding rect
      *
      *************************************************************************************************/
-    Rect bounding_rect() const;
+    Rect bounding_rect();
 
     /**************************************************************************************************
      * @brief Creates a vector of rects representing texture regions (or animation frames)
