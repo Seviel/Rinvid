@@ -56,9 +56,47 @@ void Sprite::set_position(const Vector2<float> vector)
     top_left_.set(vector);
 }
 
-Rect Sprite::bounding_rect() const
+Rect Sprite::bounding_rect()
 {
-    return Rect{top_left_, width_, height_};
+    if (is_transformed() == false)
+    {
+        return Rect{top_left_, width_, height_};
+    }
+
+    Rect                   rect{};
+    std::vector<glm::vec4> glm_vertices{};
+
+    const auto& transform = get_transform();
+
+    glm::vec4 vertex{top_left_.x, top_left_.y, 1.0F, 1.0F};
+    vertex = transform * vertex;
+    glm_vertices.push_back(vertex);
+
+    vertex = glm::vec4{top_left_.x + width_, top_left_.y, 1.0F, 1.0F};
+    vertex = transform * vertex;
+    glm_vertices.push_back(vertex);
+
+    vertex = glm::vec4{top_left_.x + width_, top_left_.y + height_, 1.0F, 1.0F};
+    vertex = transform * vertex;
+    glm_vertices.push_back(vertex);
+
+    vertex = glm::vec4{top_left_.x, top_left_.y + height_, 1.0F, 1.0F};
+    vertex = transform * vertex;
+    glm_vertices.push_back(vertex);
+
+    float min_x{};
+    float max_x{};
+    float min_y{};
+    float max_y{};
+
+    set_min_max_coords(glm_vertices, min_x, max_x, min_y, max_y);
+
+    rect.position.x = min_x;
+    rect.position.y = min_y;
+    rect.width      = max_x - min_x;
+    rect.height     = max_y - min_y;
+
+    return rect;
 }
 
 std::vector<Rect> Sprite::split_animation_frames(std::uint32_t width, std::uint32_t height,
