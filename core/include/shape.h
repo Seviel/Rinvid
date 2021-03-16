@@ -103,14 +103,6 @@ class Shape : public Transformable
 
   private:
     /**************************************************************************************************
-     * @brief Normalizes coordinates (transforms x and y coordinates to [-1, 1] range). This is the
-     * range that OpenGl operates on. This method should usually be called first within overridden
-     * draw method.
-     *
-     *************************************************************************************************/
-    virtual void normalize_coordinates() = 0;
-
-    /**************************************************************************************************
      * @brief Calculates center point of a shape.
      *
      *************************************************************************************************/
