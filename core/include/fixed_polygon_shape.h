@@ -107,12 +107,10 @@ class FixedPolygonShape : public Shape
 
   protected:
     /**************************************************************************************************
-     * @brief Normalizes coordinates (transforms x and y coordinates to [-1, 1] range). This is the
-     * range that OpenGl operates on. This method should usually be called first within overridden
-     * draw method.
+     * @brief Updates OpenGl vertex buffer data
      *
      *************************************************************************************************/
-    virtual void normalize_coordinates() override;
+    void update_gl_buffer_data();
 
     /**************************************************************************************************
      * @brief Calculates center point of a shape.
@@ -193,7 +191,7 @@ FixedPolygonShape<number_of_vertices>::~FixedPolygonShape()
 }
 
 template <typename std::uint32_t number_of_vertices>
-void FixedPolygonShape<number_of_vertices>::normalize_coordinates()
+void FixedPolygonShape<number_of_vertices>::update_gl_buffer_data()
 {
     for (std::uint32_t i{0}; i < number_of_vertices; ++i)
     {
@@ -241,7 +239,10 @@ void FixedPolygonShape<number_of_vertices>::draw_arrays(GLenum mode)
 template <typename std::uint32_t number_of_vertices>
 void FixedPolygonShape<number_of_vertices>::draw()
 {
-    normalize_coordinates();
+    /// @todo This currently needs to be done every draw call because we move shape by moving
+    /// vertices on CPU side and then we send that data to OpenGl. This should be optimized in the
+    /// future so that we translate vertices via model matrix
+    update_gl_buffer_data();
 
     glUseProgram(RinvidGfx::get_shape_default_shader());
 
