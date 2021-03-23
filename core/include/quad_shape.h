@@ -41,6 +41,17 @@ class QuadShape : public FixedPolygonShape<4>
      *
      *************************************************************************************************/
     virtual void draw() override;
+
+    /**************************************************************************************************
+     * @brief Draws the quad.
+     *
+     * This version of draw() is intended for animated objects, nevertheless needs to be overriden
+     * even in objects that can't be animated because it's a pure virtual method.
+     *
+     * @param delta_time Time passed in seconds since last frame (not used in this case)
+     *
+     *************************************************************************************************/
+    virtual void draw(double delta_time) override;
 };
 
 } // namespace rinvid
