@@ -20,6 +20,11 @@ Sprite::Sprite(Texture* texture, std::int32_t width, std::int32_t height, Vector
 {
 }
 
+void Sprite::draw()
+{
+    draw(0.0);
+}
+
 void Sprite::draw(double delta_time)
 {
     origin_.x = top_left_.x + width_ / 2;

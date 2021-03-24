@@ -17,6 +17,7 @@
 #include <type_traits>
 
 #include "core/include/animation.h"
+#include "core/include/drawable.h"
 #include "core/include/texture.h"
 #include "core/include/transformable.h"
 #include "extern/glm/mat4x4.hpp"
@@ -26,7 +27,7 @@
 namespace rinvid
 {
 
-class Sprite : public Transformable
+class Sprite : public Transformable, public Drawable
 {
   public:
     /**************************************************************************************************
@@ -43,12 +44,18 @@ class Sprite : public Transformable
            Vector2<float> texture_offset = {0.0F, 0.0F});
 
     /**************************************************************************************************
-     * @brief Draws the sprite.
+     * @brief Draws the sprite. Use this function for sprites that are not animated.
+     *
+     *************************************************************************************************/
+    void draw() override;
+
+    /**************************************************************************************************
+     * @brief Draws the sprite.  Use this function for drawing animated sprites.
      *
      * @param delta_time Time passed in seconds since last frame
      *
      *************************************************************************************************/
-    void draw(double delta_time = 0.0);
+    void draw(double delta_time) override;
 
     /**************************************************************************************************
      * @brief Moves sprite by adding move_vector to its position vector.
