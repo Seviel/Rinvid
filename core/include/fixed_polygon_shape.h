@@ -103,16 +103,14 @@ class FixedPolygonShape : public Shape
      * @return Bounding rect
      *
      *************************************************************************************************/
-    Rect bounding_rect() const;
+    Rect bounding_rect();
 
   protected:
     /**************************************************************************************************
-     * @brief Normalizes coordinates (transforms x and y coordinates to [-1, 1] range). This is the
-     * range that OpenGl operates on. This method should usually be called first within overridden
-     * draw method.
+     * @brief Updates OpenGl vertex buffer data
      *
      *************************************************************************************************/
-    virtual void normalize_coordinates() override;
+    void update_gl_buffer_data();
 
     /**************************************************************************************************
      * @brief Calculates center point of a shape.
@@ -141,6 +139,16 @@ class FixedPolygonShape : public Shape
 
     // Times 3 because each vertex has x, y, and z component.
     float gl_vertices_[number_of_vertices * 3];
+
+  private:
+    /**************************************************************************************************
+     * @brief Returns bounding box rect of the shape not accounting transformation. Used as helper
+     * when calculating origin
+     *
+     * @return Bounding rect as if no transformations are applied to object
+     *
+     *************************************************************************************************/
+    Rect non_transformed_bounding_rect();
 };
 
 template <typename std::uint32_t number_of_vertices>
@@ -183,12 +191,12 @@ FixedPolygonShape<number_of_vertices>::~FixedPolygonShape()
 }
 
 template <typename std::uint32_t number_of_vertices>
-void FixedPolygonShape<number_of_vertices>::normalize_coordinates()
+void FixedPolygonShape<number_of_vertices>::update_gl_buffer_data()
 {
     for (std::uint32_t i{0}; i < number_of_vertices; ++i)
     {
-        gl_vertices_[i * 3]     = RinvidGfx::get_opengl_x_coord(vertices_.at(i).x);
-        gl_vertices_[i * 3 + 1] = RinvidGfx::get_opengl_y_coord(vertices_.at(i).y);
+        gl_vertices_[i * 3]     = vertices_.at(i).x;
+        gl_vertices_[i * 3 + 1] = vertices_.at(i).y;
     }
 
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_object_);
@@ -198,7 +206,7 @@ void FixedPolygonShape<number_of_vertices>::normalize_coordinates()
 template <typename std::uint32_t number_of_vertices>
 void FixedPolygonShape<number_of_vertices>::calculate_origin()
 {
-    Rect rect = bounding_rect();
+    Rect rect = non_transformed_bounding_rect();
 
     origin_.x = rect.position.x + (rect.width / 2);
     origin_.y = rect.position.y + (rect.height / 2);
@@ -231,9 +239,14 @@ void FixedPolygonShape<number_of_vertices>::draw_arrays(GLenum mode)
 template <typename std::uint32_t number_of_vertices>
 void FixedPolygonShape<number_of_vertices>::draw()
 {
-    normalize_coordinates();
+    /// @todo This currently needs to be done every draw call because we move shape by moving
+    /// vertices on CPU side and then we send that data to OpenGl. This should be optimized in the
+    /// future so that we translate vertices via model matrix
+    update_gl_buffer_data();
 
     glUseProgram(RinvidGfx::get_shape_default_shader());
+
+    RinvidGfx::update_mvp_matrix(get_transform(), RinvidGfx::get_shape_default_shader());
 
     std::int32_t color_location =
         glGetUniformLocation(RinvidGfx::get_shape_default_shader(), "in_color");
@@ -270,28 +283,51 @@ void FixedPolygonShape<number_of_vertices>::set_position(const Vector2<float> ve
 }
 
 template <typename std::uint32_t number_of_vertices>
-Rect FixedPolygonShape<number_of_vertices>::bounding_rect() const
+Rect FixedPolygonShape<number_of_vertices>::bounding_rect()
+{
+    if (is_transformed() == false)
+    {
+        return non_transformed_bounding_rect();
+    }
+
+    Rect                   rect{};
+    std::vector<glm::vec4> glm_vertices{};
+
+    const auto& transform = get_transform();
+
+    for (auto vec : vertices_)
+    {
+        glm::vec4 vert{vec.x, vec.y, 1.0F, 1.0F};
+        vert = transform * vert;
+        glm_vertices.push_back(vert);
+    }
+
+    float min_x{};
+    float max_x{};
+    float min_y{};
+    float max_y{};
+
+    set_min_max_coords(glm_vertices, min_x, max_x, min_y, max_y);
+
+    rect.position.x = min_x;
+    rect.position.y = min_y;
+    rect.width      = max_x - min_x;
+    rect.height     = max_y - min_y;
+
+    return rect;
+}
+
+template <typename std::uint32_t number_of_vertices>
+Rect FixedPolygonShape<number_of_vertices>::non_transformed_bounding_rect()
 {
     Rect rect{};
 
-    auto min_x_vector = std::min_element(
-        vertices_.begin(), vertices_.end(),
-        [](Vector2<float> first, Vector2<float> second) { return first.x < second.x; });
-    auto max_x_vector = std::max_element(
-        vertices_.begin(), vertices_.end(),
-        [](Vector2<float> first, Vector2<float> second) { return first.x < second.x; });
+    float min_x{};
+    float max_x{};
+    float min_y{};
+    float max_y{};
 
-    auto min_y_vector = std::min_element(
-        vertices_.begin(), vertices_.end(),
-        [](Vector2<float> first, Vector2<float> second) { return first.y < second.y; });
-    auto max_y_vector = std::max_element(
-        vertices_.begin(), vertices_.end(),
-        [](Vector2<float> first, Vector2<float> second) { return first.y < second.y; });
-
-    auto min_x = min_x_vector->x;
-    auto max_x = max_x_vector->x;
-    auto min_y = min_y_vector->y;
-    auto max_y = max_y_vector->y;
+    set_min_max_coords(vertices_, min_x, max_x, min_y, max_y);
 
     rect.position.x = min_x;
     rect.position.y = min_y;

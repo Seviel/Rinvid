@@ -18,13 +18,15 @@
 
 #include "core/include/animation.h"
 #include "core/include/texture.h"
+#include "core/include/transformable.h"
+#include "extern/glm/mat4x4.hpp"
 #include "util/include/rect.h"
 #include "util/include/vector2.h"
 
 namespace rinvid
 {
 
-class Sprite
+class Sprite : public Transformable
 {
   public:
     /**************************************************************************************************
@@ -70,7 +72,7 @@ class Sprite
      * @return Bounding rect
      *
      *************************************************************************************************/
-    Rect bounding_rect() const;
+    Rect bounding_rect();
 
     /**************************************************************************************************
      * @brief Creates a vector of rects representing texture regions (or animation frames)

@@ -12,6 +12,7 @@
 
 #include <cstdint>
 
+#include "core/include/transformable.h"
 #include "util/include/color.h"
 #include "util/include/vector2.h"
 
@@ -22,7 +23,7 @@ namespace rinvid
  * @brief A base class for drawable shapes.
  *
  *************************************************************************************************/
-class Shape
+class Shape : public Transformable
 {
   public:
     /**************************************************************************************************
@@ -88,14 +89,6 @@ class Shape
     virtual void set_position(const Vector2<float> vector) = 0;
 
     /**************************************************************************************************
-     * @brief Returns center point of shape.
-     *
-     * @return Center point of shape
-     *
-     *************************************************************************************************/
-    Vector2<float> get_origin();
-
-    /**************************************************************************************************
      * @brief Sets shape's color.
      *
      * @param color A new color of the shape
@@ -104,20 +97,11 @@ class Shape
     void set_color(const Color color);
 
   protected:
-    Vector2<float> origin_;
-    Color          color_;
-    std::uint32_t  vertex_array_object_;
-    std::uint32_t  vertex_buffer_object_;
+    Color         color_;
+    std::uint32_t vertex_array_object_;
+    std::uint32_t vertex_buffer_object_;
 
   private:
-    /**************************************************************************************************
-     * @brief Normalizes coordinates (transforms x and y coordinates to [-1, 1] range). This is the
-     * range that OpenGl operates on. This method should usually be called first within overridden
-     * draw method.
-     *
-     *************************************************************************************************/
-    virtual void normalize_coordinates() = 0;
-
     /**************************************************************************************************
      * @brief Calculates center point of a shape.
      *

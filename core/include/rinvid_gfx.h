@@ -15,6 +15,8 @@
 #define GL_GLEXT_PROTOTYPES
 #include <SFML/OpenGL.hpp>
 
+#include "extern/glm/mat4x4.hpp"
+
 namespace rinvid
 {
 
@@ -123,7 +125,18 @@ class RinvidGfx
         return -1.0F * (((absolute_coord / height_) * 2.0F) - 1.0F);
     }
 
+    /**************************************************************************************************
+     * @brief Updates model view projection matrix.
+     *
+     * @param model A model matrix to apply
+     *
+     *************************************************************************************************/
+    static void update_mvp_matrix(const glm::mat4& model, std::uint32_t shader_id);
+
   private:
+    static glm::mat4     model_view_projection_;
+    static glm::mat4     view_;
+    static glm::mat4     projection_;
     static std::uint32_t texture_default_shader_;
     static std::uint32_t shape_default_shader_;
     static std::int32_t  width_;

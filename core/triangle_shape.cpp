@@ -24,6 +24,8 @@ TriangleShape::TriangleShape(Vector2<float> vert1, Vector2<float> vert2, Vector2
     vertices_.at(0) = vert1;
     vertices_.at(1) = vert2;
     vertices_.at(2) = vert3;
+
+    calculate_origin();
 }
 
 void TriangleShape::draw()
