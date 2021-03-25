@@ -36,4 +36,14 @@ void QuadShape::draw()
     draw_arrays(GL_QUADS);
 }
 
+void QuadShape::draw(double delta_time)
+{
+    /// This suppresses unused parameter warning. This method needs to be overriden because
+    /// FixedPolygonShape inherits Drawable interface which declares this version of draw as pure
+    /// virtual function.
+    (void)delta_time;
+
+    draw();
+}
+
 } // namespace rinvid

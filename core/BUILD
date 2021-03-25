@@ -17,6 +17,7 @@ cc_library(
     hdrs = [
         "include/animation.h",
         "include/circle_shape.h",
+        "include/drawable.h",
         "include/fixed_polygon_shape.h",
         "include/quad_shape.h",
         "include/rectangle_shape.h",

@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2020 - 2021, Filip Vasiljevic
+ * Copyright (c) 2021, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -7,50 +7,38 @@
  * repository for more details.
  **********************************************************************/
 
-#ifndef CORE_INCLUDE_CIRCLE_SHAPE_H
-#define CORE_INCLUDE_CIRCLE_SHAPE_H
-
-#include "core/include/fixed_polygon_shape.h"
-#include "core/include/shape.h"
-#include "util/include/vector2.h"
+#ifndef CORE_INCLUDE_DRAWABLE_H
+#define CORE_INCLUDE_DRAWABLE_H
 
 namespace rinvid
 {
 
 /**************************************************************************************************
- * @brief A drawable circle shape.
+ * @brief An interface for drawable objects.
  *
  *************************************************************************************************/
-class CircleShape : public FixedPolygonShape<180>
+class Drawable
 {
   public:
     /**************************************************************************************************
-     * @brief CircleShape constructor.
-     *
-     * @param center center of the circle
-     * @param radius radius of the circle
+     * @brief Drawable constructor.
      *
      *************************************************************************************************/
-    CircleShape(Vector2<float> center, float radius);
+    Drawable(){};
 
     /**************************************************************************************************
-     * @brief Draws the circle.
+     * @brief Draws the object. Use this function for objects that are not animated.
      *
      *************************************************************************************************/
-    virtual void draw() override;
+    virtual void draw() = 0;
 
     /**************************************************************************************************
-     * @brief Draws the circle.
-     *
-     * This version of draw() is intended for animated objects, nevertheless needs to be overriden
-     * even in objects that can't be animated because it's a pure virtual method.
-     *
-     * @param delta_time Time passed in seconds since last frame (not used in this case)
+     * @brief Draws the object. Use this function for drawing animated objects.
      *
      *************************************************************************************************/
-    virtual void draw(double delta_time) override;
+    virtual void draw(double delta_time) = 0;
 };
 
 } // namespace rinvid
 
-#endif // CORE_INCLUDE_CIRCLE_SHAPE_H
+#endif // CORE_INCLUDE_DRAWABLE_H
