@@ -17,6 +17,7 @@
 #include "core/include/rinvid_gfx.h"
 #include "extern/glm/gtc/type_ptr.hpp"
 #include "include/texture.h"
+#include "util/include/error_handler.h"
 #include "util/include/image_loader.h"
 
 namespace rinvid
@@ -47,7 +48,7 @@ Texture::Texture(const char* file_name)
     bool result = load_image(file_name, image_data_, width_, height_);
     if (result == false)
     {
-        /// @todo Handle error
+        errors::put_error_to_log("Image loading failed during texture creation");
     }
 
     glGenTextures(1, &texture_id_);

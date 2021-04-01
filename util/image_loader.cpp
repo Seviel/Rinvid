@@ -9,10 +9,11 @@
 
 #include <cstdint>
 #include <iostream>
+#include <string>
 #include <vector>
 
 #include "extern/include/stb_image.h"
-
+#include "util/include/error_handler.h"
 #include "util/include/image_loader.h"
 
 bool load_image(const char* file_name, std::vector<std::uint8_t>& image_data, std::int32_t& width,
@@ -24,6 +25,10 @@ bool load_image(const char* file_name, std::vector<std::uint8_t>& image_data, st
 
     if (data == NULL)
     {
+        std::string error_description = "STBI: Image loading failed because: ";
+        error_description += stbi_failure_reason();
+        rinvid::errors::put_error_to_log(error_description);
+
         return false;
     }
 
