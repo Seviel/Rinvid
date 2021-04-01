@@ -25,25 +25,26 @@ namespace rinvid
 
 Texture::Texture(const char* file_name)
 {
-    glGenVertexArrays(1, &vertex_array_object_);
-    glGenBuffers(1, &vertex_buffer_obecjt_);
-    glGenBuffers(1, &element_buffer_object_);
+    GL_CALL(glGenVertexArrays(1, &vertex_array_object_));
+    GL_CALL(glGenBuffers(1, &vertex_buffer_obecjt_));
+    GL_CALL(glGenBuffers(1, &element_buffer_object_));
 
-    glBindVertexArray(vertex_array_object_);
+    GL_CALL(glBindVertexArray(vertex_array_object_));
 
-    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_obecjt_);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(gl_vertices_), gl_vertices_, GL_STATIC_DRAW);
+    GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_obecjt_));
+    GL_CALL(glBufferData(GL_ARRAY_BUFFER, sizeof(gl_vertices_), gl_vertices_, GL_STATIC_DRAW));
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, element_buffer_object_);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices_), indices_, GL_STATIC_DRAW);
+    GL_CALL(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, element_buffer_object_));
+    GL_CALL(glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices_), indices_, GL_STATIC_DRAW));
 
     // Position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
+    GL_CALL(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0));
+    GL_CALL(glEnableVertexAttribArray(0));
 
     // Texture coordinate attribute
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
+    GL_CALL(glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float),
+                                  (void*)(3 * sizeof(float))));
+    GL_CALL(glEnableVertexAttribArray(1));
 
     bool result = load_image(file_name, image_data_, width_, height_);
     if (result == false)
@@ -51,14 +52,14 @@ Texture::Texture(const char* file_name)
         errors::put_error_to_log("Image loading failed during texture creation");
     }
 
-    glGenTextures(1, &texture_id_);
-    glBindTexture(GL_TEXTURE_2D, texture_id_);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width_, height_, 0, GL_RGBA, GL_UNSIGNED_BYTE,
-                 image_data_.data());
+    GL_CALL(glGenTextures(1, &texture_id_));
+    GL_CALL(glBindTexture(GL_TEXTURE_2D, texture_id_));
+    GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT));
+    GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT));
+    GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+    GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+    GL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width_, height_, 0, GL_RGBA, GL_UNSIGNED_BYTE,
+                         image_data_.data()));
 }
 
 Texture::Texture(Texture&& other)
@@ -103,34 +104,34 @@ Texture::~Texture()
 {
     if (texture_id_ != 0)
     {
-        glDeleteTextures(1, &texture_id_);
+        GL_CALL(glDeleteTextures(1, &texture_id_));
     }
 
     if (element_buffer_object_ != 0)
     {
-        glDeleteBuffers(1, &element_buffer_object_);
+        GL_CALL(glDeleteBuffers(1, &element_buffer_object_));
     }
 
     if (vertex_buffer_obecjt_ != 0)
     {
-        glDeleteBuffers(1, &vertex_buffer_obecjt_);
+        GL_CALL(glDeleteBuffers(1, &vertex_buffer_obecjt_));
     }
 
     if (vertex_array_object_ != 0)
     {
-        glDeleteVertexArrays(1, &vertex_array_object_);
+        GL_CALL(glDeleteVertexArrays(1, &vertex_array_object_));
     }
 }
 
 void Texture::draw(const glm::mat4& transform)
 {
-    glUseProgram(RinvidGfx::get_texture_default_shader());
+    GL_CALL(glUseProgram(RinvidGfx::get_texture_default_shader()));
 
     RinvidGfx::update_mvp_matrix(transform, RinvidGfx::get_texture_default_shader());
 
-    glBindTexture(GL_TEXTURE_2D, texture_id_);
-    glBindVertexArray(vertex_array_object_);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    GL_CALL(glBindTexture(GL_TEXTURE_2D, texture_id_));
+    GL_CALL(glBindVertexArray(vertex_array_object_));
+    GL_CALL(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0));
 }
 
 void Texture::update_vertices(Vector2<float> top_left, Vector2<float> offset, std::uint32_t width,
@@ -168,8 +169,8 @@ void Texture::update_vertices(Vector2<float> top_left, Vector2<float> offset, st
     gl_vertices_[19] = static_cast<float>(height) / static_cast<float>(height_) +
                        offset.y / static_cast<float>(height_);
 
-    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_obecjt_);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(gl_vertices_), gl_vertices_, GL_STATIC_DRAW);
+    GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_obecjt_));
+    GL_CALL(glBufferData(GL_ARRAY_BUFFER, sizeof(gl_vertices_), gl_vertices_, GL_STATIC_DRAW));
 }
 
 } // namespace rinvid

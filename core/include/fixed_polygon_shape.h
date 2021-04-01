@@ -15,6 +15,7 @@
 #include "core/include/drawable.h"
 #include "core/include/rinvid_gfx.h"
 #include "core/include/shape.h"
+#include "util/include/error_handler.h"
 #include "util/include/rect.h"
 #include "util/include/vector2.h"
 
@@ -213,8 +214,8 @@ void FixedPolygonShape<number_of_vertices>::update_gl_buffer_data()
         gl_vertices_[i * 3 + 1] = vertices_.at(i).y;
     }
 
-    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_object_);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(gl_vertices_), gl_vertices_, GL_DYNAMIC_DRAW);
+    GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_object_));
+    GL_CALL(glBufferData(GL_ARRAY_BUFFER, sizeof(gl_vertices_), gl_vertices_, GL_DYNAMIC_DRAW));
 }
 
 template <typename std::uint32_t number_of_vertices>
@@ -229,25 +230,25 @@ void FixedPolygonShape<number_of_vertices>::calculate_origin()
 template <typename std::uint32_t number_of_vertices>
 void FixedPolygonShape<number_of_vertices>::init_vertex_buffer()
 {
-    glGenVertexArrays(1, &vertex_array_object_);
-    glBindVertexArray(vertex_array_object_);
+    GL_CALL(glGenVertexArrays(1, &vertex_array_object_));
+    GL_CALL(glBindVertexArray(vertex_array_object_));
 
-    glGenBuffers(1, &vertex_buffer_object_);
-    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_object_);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(gl_vertices_), gl_vertices_, GL_DYNAMIC_DRAW);
+    GL_CALL(glGenBuffers(1, &vertex_buffer_object_));
+    GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_object_));
+    GL_CALL(glBufferData(GL_ARRAY_BUFFER, sizeof(gl_vertices_), gl_vertices_, GL_DYNAMIC_DRAW));
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
+    GL_CALL(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0));
+    GL_CALL(glEnableVertexAttribArray(0));
 
-    glBindVertexArray(0);
+    GL_CALL(glBindVertexArray(0));
 }
 
 template <typename std::uint32_t number_of_vertices>
 void FixedPolygonShape<number_of_vertices>::draw_arrays(GLenum mode)
 {
-    glBindVertexArray(vertex_array_object_);
-    glDrawArrays(mode, 0, number_of_vertices_);
-    glBindVertexArray(0);
+    GL_CALL(glBindVertexArray(vertex_array_object_));
+    GL_CALL(glDrawArrays(mode, 0, number_of_vertices_));
+    GL_CALL(glBindVertexArray(0));
 }
 
 template <typename std::uint32_t number_of_vertices>
@@ -258,13 +259,19 @@ void FixedPolygonShape<number_of_vertices>::draw()
     /// future so that we translate vertices via model matrix
     update_gl_buffer_data();
 
-    glUseProgram(RinvidGfx::get_shape_default_shader());
+    GL_CALL(glUseProgram(RinvidGfx::get_shape_default_shader()));
 
     RinvidGfx::update_mvp_matrix(get_transform(), RinvidGfx::get_shape_default_shader());
 
     std::int32_t color_location =
         glGetUniformLocation(RinvidGfx::get_shape_default_shader(), "in_color");
-    glUniform4f(color_location, color_.r, color_.g, color_.b, color_.a);
+    errors::handle_gl_errors(__FILE__, __LINE__);
+    if (color_location == -1)
+    {
+        rinvid::errors::put_error_to_log("glGetUniformLocation error: invalid uniform name");
+        return;
+    }
+    GL_CALL(glUniform4f(color_location, color_.r, color_.g, color_.b, color_.a));
 }
 
 template <typename std::uint32_t number_of_vertices>
