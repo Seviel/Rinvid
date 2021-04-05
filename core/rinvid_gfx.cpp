@@ -10,6 +10,7 @@
 #include "include/rinvid_gfx.h"
 #include "extern/glm/gtc/type_ptr.hpp"
 #include "extern/glm/gtx/transform.hpp"
+#include "util/include/error_handler.h"
 
 namespace
 {
@@ -60,39 +61,45 @@ static void init_default_shaders(std::uint32_t& shape_default_shader_handle,
 {
     std::uint32_t vert_shader;
     vert_shader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vert_shader, 1, &shape_vert_shader_source, nullptr);
-    glCompileShader(vert_shader);
+    rinvid::errors::handle_gl_errors(__FILE__, __LINE__);
+    GL_CALL(glShaderSource(vert_shader, 1, &shape_vert_shader_source, nullptr));
+    GL_CALL(glCompileShader(vert_shader));
 
     std::uint32_t frag_shader;
     frag_shader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(frag_shader, 1, &shape_frag_shader_source, nullptr);
-    glCompileShader(frag_shader);
+    rinvid::errors::handle_gl_errors(__FILE__, __LINE__);
+    GL_CALL(glShaderSource(frag_shader, 1, &shape_frag_shader_source, nullptr));
+    GL_CALL(glCompileShader(frag_shader));
 
     shape_default_shader_handle = glCreateProgram();
+    rinvid::errors::handle_gl_errors(__FILE__, __LINE__);
 
-    glAttachShader(shape_default_shader_handle, vert_shader);
-    glAttachShader(shape_default_shader_handle, frag_shader);
-    glLinkProgram(shape_default_shader_handle);
+    GL_CALL(glAttachShader(shape_default_shader_handle, vert_shader));
+    GL_CALL(glAttachShader(shape_default_shader_handle, frag_shader));
+    GL_CALL(glLinkProgram(shape_default_shader_handle));
 
-    glDeleteShader(vert_shader);
-    glDeleteShader(frag_shader);
+    GL_CALL(glDeleteShader(vert_shader));
+    GL_CALL(glDeleteShader(frag_shader));
 
     vert_shader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vert_shader, 1, &texture_vert_shader_source, nullptr);
-    glCompileShader(vert_shader);
+    rinvid::errors::handle_gl_errors(__FILE__, __LINE__);
+    GL_CALL(glShaderSource(vert_shader, 1, &texture_vert_shader_source, nullptr));
+    GL_CALL(glCompileShader(vert_shader));
 
     frag_shader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(frag_shader, 1, &texture_frag_shader_source, nullptr);
-    glCompileShader(frag_shader);
+    rinvid::errors::handle_gl_errors(__FILE__, __LINE__);
+    GL_CALL(glShaderSource(frag_shader, 1, &texture_frag_shader_source, nullptr));
+    GL_CALL(glCompileShader(frag_shader));
 
     texture_default_shader_handle = glCreateProgram();
+    rinvid::errors::handle_gl_errors(__FILE__, __LINE__);
 
-    glAttachShader(texture_default_shader_handle, vert_shader);
-    glAttachShader(texture_default_shader_handle, frag_shader);
-    glLinkProgram(texture_default_shader_handle);
+    GL_CALL(glAttachShader(texture_default_shader_handle, vert_shader));
+    GL_CALL(glAttachShader(texture_default_shader_handle, frag_shader));
+    GL_CALL(glLinkProgram(texture_default_shader_handle));
 
-    glDeleteShader(vert_shader);
-    glDeleteShader(frag_shader);
+    GL_CALL(glDeleteShader(vert_shader));
+    GL_CALL(glDeleteShader(frag_shader));
 }
 
 } // namespace
@@ -111,8 +118,8 @@ std::int32_t  RinvidGfx::height_{};
 void RinvidGfx::init()
 {
     init_default_shaders(RinvidGfx::shape_default_shader_, RinvidGfx::texture_default_shader_);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable(GL_BLEND);
+    GL_CALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+    GL_CALL(glEnable(GL_BLEND));
     projection_            = glm::ortho(0.0F, static_cast<float>(RinvidGfx::get_width()),
                              static_cast<float>(RinvidGfx::get_height()), 0.0F, -1.0f, 1.0f);
     model_view_projection_ = projection_ * view_;
@@ -123,13 +130,13 @@ void RinvidGfx::set_viewport(std::int32_t x, std::int32_t y, std::int32_t width,
 {
     RinvidGfx::width_  = width;
     RinvidGfx::height_ = heigth;
-    glViewport(x, y, width, heigth);
+    GL_CALL(glViewport(x, y, width, heigth));
 }
 
 void RinvidGfx::clear_screen(float r, float g, float b, float a)
 {
-    glClearColor(r, g, b, a);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    GL_CALL(glClearColor(r, g, b, a));
+    GL_CALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 }
 
 std::uint32_t RinvidGfx::get_shape_default_shader()
@@ -154,11 +161,17 @@ std::int32_t RinvidGfx::get_height()
 
 void RinvidGfx::update_mvp_matrix(const glm::mat4& model, std::uint32_t shader_id)
 {
-    projection_                = glm::ortho(0.0F, static_cast<float>(RinvidGfx::get_width()),
+    projection_               = glm::ortho(0.0F, static_cast<float>(RinvidGfx::get_width()),
                              static_cast<float>(RinvidGfx::get_height()), 0.0F, -1.0f, 1.0f);
-    model_view_projection_     = projection_ * view_ * model;
-    std::uint32_t mvp_location = glGetUniformLocation(shader_id, "model_view_projection");
-    glUniformMatrix4fv(mvp_location, 1, GL_FALSE, glm::value_ptr(model_view_projection_));
+    model_view_projection_    = projection_ * view_ * model;
+    std::int32_t mvp_location = glGetUniformLocation(shader_id, "model_view_projection");
+    rinvid::errors::handle_gl_errors(__FILE__, __LINE__);
+    if (mvp_location == -1)
+    {
+        rinvid::errors::put_error_to_log("glGetUniformLocation error: invalid uniform name");
+        return;
+    }
+    GL_CALL(glUniformMatrix4fv(mvp_location, 1, GL_FALSE, glm::value_ptr(model_view_projection_)));
 }
 
 } // namespace rinvid
