@@ -14,7 +14,6 @@
 #include <string>
 #include <vector>
 #include <initializer_list>
-#include <type_traits>
 
 #include "core/include/animation.h"
 #include "core/include/drawable.h"
