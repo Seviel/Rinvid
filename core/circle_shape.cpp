@@ -7,7 +7,6 @@
  * repository for more details.
  **********************************************************************/
 
-#include <algorithm>
 #include <cmath>
 
 #define GL_GLEXT_PROTOTYPES

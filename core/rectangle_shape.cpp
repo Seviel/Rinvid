@@ -7,8 +7,6 @@
  * repository for more details.
  **********************************************************************/
 
-#include <algorithm>
-
 #define GL_GLEXT_PROTOTYPES
 #include <SFML/OpenGL.hpp>
 
