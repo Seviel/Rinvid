@@ -13,6 +13,9 @@
 #include <cstdint>
 #include <vector>
 
+namespace rinvid
+{
+
 /**************************************************************************************************
  * @brief Loads image from filesystem.
  *
@@ -26,5 +29,7 @@
  *************************************************************************************************/
 bool load_image(const char* file_name, std::vector<std::uint8_t>& image_data, std::int32_t& width,
                 std::int32_t& height);
+
+} // namespace rinvid
 
 #endif // UTIL_IMAGE_LOADER_H
