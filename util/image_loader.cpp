@@ -16,6 +16,9 @@
 #include "util/include/error_handler.h"
 #include "util/include/image_loader.h"
 
+namespace rinvid
+{
+
 bool load_image(const char* file_name, std::vector<std::uint8_t>& image_data, std::int32_t& width,
                 std::int32_t& height)
 {
@@ -41,3 +44,5 @@ bool load_image(const char* file_name, std::vector<std::uint8_t>& image_data, st
 
     return true;
 }
+
+} // namespace rinvid
