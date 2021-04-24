@@ -1,6 +1,6 @@
 # Rinvid
 
-Rinvid is a small framework for 2D games and multimedia applications development. Although it's primary use is for me (its primary author) to gain some experience and learn a bit about OpenGl and perhaps if it turns out well, in the future it could be used as a starting point for all my game projects. It is written in C++ and uses OpenGl and SFML. It's developed on Ubuntu 20.04 so Linux is the only supported OS for now.  
+Rinvid is a small framework for 2D games and multimedia applications development. Although it's primary use is for me to gain some experience and learn a bit about OpenGl and perhaps if it turns out well, in the future it could be used as a starting point for all my game projects. It is written in C++ and uses OpenGl and SFML. It's developed on Ubuntu 20.04 so Linux is the only supported OS for now.  
 
 ## How to build it
 
@@ -16,3 +16,9 @@ After that, clone the repo and inside any repo directory run:
     bazel run //examples/testing_grounds:test
 
 This will build and run a Rinvid test example. If it succeeds, you are all set.  
+
+## External libraries used by Rinvid
+
+[SFML](https://www.sfml-dev.org/)  
+[stb_image](https://github.com/nothings/stb)  
+[glm](https://github.com/g-truc/glm)  
