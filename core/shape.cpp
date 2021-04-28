@@ -7,8 +7,12 @@
  * repository for more details.
  **********************************************************************/
 
+#ifdef __unix__
 #define GL_GLEXT_PROTOTYPES
 #include <SFML/OpenGL.hpp>
+#else
+#include "extern/glad/include/glad/glad.h"
+#endif
 
 #include "include/shape.h"
 #include "util/include/color.h"

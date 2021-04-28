@@ -7,8 +7,16 @@
  * repository for more details.
  **********************************************************************/
 
-#include <chrono>
+#ifdef __unix__
 #include <unistd.h>
+#define GL_GLEXT_PROTOTYPES
+#include <SFML/OpenGL.hpp>
+#else
+#include <windows.h>
+#include "extern/glad/include/glad/glad.h"
+#endif
+
+#include <chrono>
 
 #include <SFML/Window.hpp>
 
@@ -30,6 +38,10 @@ int main()
     std::chrono::duration<double> delta_time{};
 
     sf::Window window(sf::VideoMode(800, 600), "Sprites example");
+#ifdef _WIN32
+    gladLoadGLLoader(reinterpret_cast<GLADloadproc>(sf::Context::getFunction));
+#endif
+
     rinvid::RinvidGfx::set_viewport(0, 0, 800, 600);
 
     sf::Event event;
@@ -110,7 +122,11 @@ int main()
 
         window.display();
 
+#ifdef __unix__
         usleep(10000);
+#else
+        Sleep(10);
+#endif
 
         auto end   = std::chrono::high_resolution_clock::now();
         delta_time = end - start;

@@ -10,6 +10,10 @@
 #ifndef UTIL_MATH_UTILS_H
 #define UTIL_MATH_UTILS_H
 
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
+
 constexpr float DEGREES_IN_A_CIRCLE = 360.0F;
 
 #ifndef DEGREES_TO_RADIANS
