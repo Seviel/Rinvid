@@ -25,6 +25,9 @@
 #include "core/include/triangle_shape.h"
 #include "util/include/vector2.h"
 
+/// Should be set to false when users attempts to close the app
+static bool static_running = true;
+
 void handle_events(sf::Window& window, sf::Event& event);
 
 void change_current_shape(rinvid::Shape*& current_shape, rinvid::Shape& next_shape,
@@ -73,7 +76,7 @@ int main()
 
     rinvid::RinvidGfx::init();
 
-    while (window.isOpen())
+    while (static_running)
     {
         handle_events(window, event);
 
@@ -130,7 +133,7 @@ void handle_events(sf::Window& window, sf::Event& event)
         switch (event.type)
         {
             case sf::Event::Closed:
-                window.close();
+                static_running = false;
                 break;
             case sf::Event::Resized:
                 rinvid::RinvidGfx::set_viewport(0, 0, event.size.width, event.size.height);
