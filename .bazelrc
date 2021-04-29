@@ -1,1 +1,2 @@
+try-import %workspace%/user.bazelrc
 build --cxxopt='-std=c++17'
