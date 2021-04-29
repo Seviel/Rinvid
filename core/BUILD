@@ -22,6 +22,7 @@ cc_library(
         "include/quad_shape.h",
         "include/rectangle_shape.h",
         "include/rinvid_gfx.h",
+        "include/rinvid_gl.h",
         "include/shape.h",
         "include/sprite.h",
         "include/texture.h",

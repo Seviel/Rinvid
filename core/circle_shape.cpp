@@ -9,14 +9,8 @@
 
 #include <cmath>
 
-#ifdef __unix__
-#define GL_GLEXT_PROTOTYPES
-#include <SFML/OpenGL.hpp>
-#else
-#include "extern/glad/include/glad/glad.h"
-#endif
-
 #include "core/include/rinvid_gfx.h"
+#include "core/include/rinvid_gl.h"
 #include "include/circle_shape.h"
 #include "util/include/math_utils.h"
 #include "util/include/vector3.h"

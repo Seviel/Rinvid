@@ -9,11 +9,8 @@
 
 #ifdef __unix__
 #include <unistd.h>
-#define GL_GLEXT_PROTOTYPES
-#include <SFML/OpenGL.hpp>
 #else
 #include <windows.h>
-#include "extern/glad/include/glad/glad.h"
 #endif
 
 #include <SFML/Window.hpp>
@@ -22,6 +19,7 @@
 #include "core/include/quad_shape.h"
 #include "core/include/rectangle_shape.h"
 #include "core/include/rinvid_gfx.h"
+#include "core/include/rinvid_gl.h"
 #include "core/include/triangle_shape.h"
 #include "util/include/vector2.h"
 
