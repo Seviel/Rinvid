@@ -12,9 +12,7 @@
 
 #include <cstdint>
 
-#define GL_GLEXT_PROTOTYPES
-#include <SFML/OpenGL.hpp>
-
+#include "core/include/rinvid_gl.h"
 #include "extern/glm/mat4x4.hpp"
 
 namespace rinvid

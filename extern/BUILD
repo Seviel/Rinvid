@@ -4,7 +4,10 @@ cc_library(
     name = "extern",
     srcs = [
         "stb_image.cpp",
-    ],
+    ] + select({
+        "@bazel_tools//src/conditions:windows": ["glad/src/glad.c"],
+        "//conditions:default": [],
+    }),
     hdrs =
         glob(
             [
@@ -13,7 +16,13 @@ cc_library(
                 "glm/**/*.inl",
                 "include/stb_image.h",
             ],
-        ),
+        ) + select({
+            "@bazel_tools//src/conditions:windows": [
+                "glad/include/glad/glad.h",
+                "glad/include/KHR/khrplatform.h",
+            ],
+            "//conditions:default": [],
+        }),
     # This is needed to suppress warnings introduced by stb_image.h
     copts = ["-Wno-sign-compare -Wno-unused-but-set-variable"],
     visibility = [

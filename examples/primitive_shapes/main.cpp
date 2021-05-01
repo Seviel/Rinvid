@@ -7,7 +7,11 @@
  * repository for more details.
  **********************************************************************/
 
+#ifdef __unix__
 #include <unistd.h>
+#else
+#include <windows.h>
+#endif
 
 #include <SFML/Window.hpp>
 
@@ -15,8 +19,12 @@
 #include "core/include/quad_shape.h"
 #include "core/include/rectangle_shape.h"
 #include "core/include/rinvid_gfx.h"
+#include "core/include/rinvid_gl.h"
 #include "core/include/triangle_shape.h"
 #include "util/include/vector2.h"
+
+/// Should be set to false when users attempts to close the app
+static bool static_running = true;
 
 void handle_events(sf::Window& window, sf::Event& event);
 
@@ -28,6 +36,11 @@ void handle_movement(float& vertical_delta, float& horizontal_delta);
 int main()
 {
     sf::Window window(sf::VideoMode(800, 600), "Rinvid primitive shapes example");
+
+#ifdef _WIN32
+    gladLoadGLLoader(reinterpret_cast<GLADloadproc>(sf::Context::getFunction));
+#endif
+
     rinvid::RinvidGfx::set_viewport(0, 0, 800, 600);
 
     sf::Event event;
@@ -61,7 +74,7 @@ int main()
 
     rinvid::RinvidGfx::init();
 
-    while (window.isOpen())
+    while (static_running)
     {
         handle_events(window, event);
 
@@ -101,7 +114,11 @@ int main()
 
         window.display();
 
+#ifdef __unix__
         usleep(10000);
+#else
+        Sleep(10);
+#endif
     }
 
     return 0;
@@ -114,7 +131,7 @@ void handle_events(sf::Window& window, sf::Event& event)
         switch (event.type)
         {
             case sf::Event::Closed:
-                window.close();
+                static_running = false;
                 break;
             case sf::Event::Resized:
                 rinvid::RinvidGfx::set_viewport(0, 0, event.size.width, event.size.height);

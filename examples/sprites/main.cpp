@@ -7,16 +7,25 @@
  * repository for more details.
  **********************************************************************/
 
-#include <chrono>
+#ifdef __unix__
 #include <unistd.h>
+#else
+#include <windows.h>
+#endif
+
+#include <chrono>
 
 #include <SFML/Window.hpp>
 
 #include "core/include/animation.h"
 #include "core/include/rinvid_gfx.h"
+#include "core/include/rinvid_gl.h"
 #include "core/include/sprite.h"
 #include "core/include/texture.h"
 #include "util/include/vector2.h"
+
+/// Should be set to false when users attempts to close the app
+static bool static_running = true;
 
 void handle_events(sf::Window& window, sf::Event& event);
 
@@ -30,6 +39,10 @@ int main()
     std::chrono::duration<double> delta_time{};
 
     sf::Window window(sf::VideoMode(800, 600), "Sprites example");
+#ifdef _WIN32
+    gladLoadGLLoader(reinterpret_cast<GLADloadproc>(sf::Context::getFunction));
+#endif
+
     rinvid::RinvidGfx::set_viewport(0, 0, 800, 600);
 
     sf::Event event;
@@ -83,7 +96,7 @@ int main()
 
     rinvid::RinvidGfx::init();
 
-    while (window.isOpen())
+    while (static_running)
     {
         auto start = std::chrono::high_resolution_clock::now();
 
@@ -110,7 +123,11 @@ int main()
 
         window.display();
 
+#ifdef __unix__
         usleep(10000);
+#else
+        Sleep(10);
+#endif
 
         auto end   = std::chrono::high_resolution_clock::now();
         delta_time = end - start;
@@ -126,7 +143,7 @@ void handle_events(sf::Window& window, sf::Event& event)
         switch (event.type)
         {
             case sf::Event::Closed:
-                window.close();
+                static_running = false;
                 break;
             case sf::Event::Resized:
                 rinvid::RinvidGfx::set_viewport(0, 0, event.size.width, event.size.height);

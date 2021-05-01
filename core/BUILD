@@ -22,6 +22,7 @@ cc_library(
         "include/quad_shape.h",
         "include/rectangle_shape.h",
         "include/rinvid_gfx.h",
+        "include/rinvid_gl.h",
         "include/shape.h",
         "include/sprite.h",
         "include/texture.h",
@@ -29,7 +30,10 @@ cc_library(
         "include/triangle_shape.h",
     ],
     copts = ["-Werror -Wall -Wextra -pedantic"],
-    linkopts = ["-lsfml-window -lsfml-system -lGL"],
+    linkopts = select({
+        "@bazel_tools//src/conditions:windows": ["-lsfml-window -lsfml-system -lopengl32 -lwinmm -lgdi32"],
+        "//conditions:default": ["-lsfml-window -lsfml-system -lGL"],
+    }),
     visibility = ["//examples:__subpackages__"],
     deps = ["//util"],
 )

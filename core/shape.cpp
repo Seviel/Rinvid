@@ -7,10 +7,8 @@
  * repository for more details.
  **********************************************************************/
 
-#define GL_GLEXT_PROTOTYPES
-#include <SFML/OpenGL.hpp>
-
 #include "include/shape.h"
+#include "core/include/rinvid_gl.h"
 #include "util/include/color.h"
 
 namespace rinvid
