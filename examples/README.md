@@ -4,6 +4,12 @@ This is where examples of usage of Rinvid are. Each example is a small applicati
 
 To build all examples, run the following command from inside Rinvid repo:
 
+#### On Ubuntu
+
     bazel build //examples/...
+
+#### On Windows 10
+
+    bazel build //examples/... --compiler=mingw-gcc  
 
 To build or run a specific example, look for instructions in the README.md file of that specific example.
