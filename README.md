@@ -70,3 +70,4 @@ In order for --enable_runfiles to work, you need to enable "developer mode" in W
 [SFML](https://www.sfml-dev.org/)  
 [stb_image](https://github.com/nothings/stb)  
 [glm](https://github.com/g-truc/glm)  
+[GLAD](https://glad.dav1d.de/)
