@@ -14,7 +14,11 @@
 #endif
 
 #include <chrono>
+#include <iostream>
 
+#ifdef _WIN32
+#include "util/include/windows_utils.h"
+#endif // _WIN32
 #include "core/include/rinvid_gfx.h"
 #include "include/application.h"
 
@@ -68,7 +72,7 @@ void Application::run()
             usleep(target_frame_time - delta_time.count());
         }
 #else
-        Sleep(10);
+        windows_sleep(target_frame_time - delta_time.count());
 #endif
         end        = std::chrono::high_resolution_clock::now();
         delta_time = end - start;
