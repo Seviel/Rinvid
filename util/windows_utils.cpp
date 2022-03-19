@@ -16,23 +16,23 @@
 namespace rinvid
 {
 
-void windows_sleep(std::int64_t microseconds);
+void windows_sleep(std::int64_t microseconds)
 {
     double       frequenzy     = 0.0;
     std::int64_t counter_start = 0;
 
+    LARGE_INTEGER freq;
     LARGE_INTEGER counter;
-    QueryPerformanceFrequency(&counter) frequenzy = double(counter.QuadPart) / 1000.0;
-
+    QueryPerformanceFrequency(&freq);
+    frequenzy = 1000000.0 / static_cast<double>(freq.QuadPart);
     QueryPerformanceCounter(&counter);
     counter_start = counter.QuadPart;
-
     do
     {
         QueryPerformanceCounter(&counter);
-    } while (counter.QuadPart < (counter_start + microseconds));
+    } while ((counter.QuadPart * frequenzy) < ((counter_start * frequenzy) + microseconds));
 }
 
-#endif // _WIN32
-
 } // namespace rinvid
+
+#endif // _WIN32

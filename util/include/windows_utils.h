@@ -12,6 +12,8 @@
 
 #ifdef _WIN32
 
+#include <cstdint>
+
 namespace rinvid
 {
 
@@ -21,7 +23,7 @@ namespace rinvid
  * @param microseconds time this thread should sleep
  *
  *************************************************************************************************/
-void windows_sleep(std::uint64_t microseconds);
+void windows_sleep(std::int64_t microseconds);
 
 } // namespace rinvid
 

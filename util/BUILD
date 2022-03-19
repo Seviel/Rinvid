@@ -6,6 +6,7 @@ cc_library(
         "collision_detection.cpp",
         "error_handler.cpp",
         "image_loader.cpp",
+        "windows_utils.cpp"
     ],
     hdrs = [
         "include/collision_detection.h",
@@ -16,6 +17,7 @@ cc_library(
         "include/rect.h",
         "include/vector2.h",
         "include/vector3.h",
+        "include/windows_utils.h",
     ],
     copts = ["-Werror -Wall -Wextra -pedantic"],
     visibility = [
