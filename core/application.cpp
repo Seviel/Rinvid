@@ -29,14 +29,13 @@ Application::Application(std::uint32_t width, std::uint32_t height, const std::s
     : window_{sf::VideoMode{width, height}, title}, current_screen_{nullptr}, fps_{60U}, running_{
                                                                                              false}
 {
+#ifdef _WIN32
+    gladLoadGLLoader(reinterpret_cast<GLADloadproc>(sf::Context::getFunction));
+#endif
 }
 
 void Application::run()
 {
-#ifdef _WIN32
-    gladLoadGLLoader(reinterpret_cast<GLADloadproc>(sf::Context::getFunction));
-#endif
-
     std::chrono::duration<double> delta_time{};
     sf::Event                     event;
 
