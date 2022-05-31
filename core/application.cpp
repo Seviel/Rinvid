@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2021, Filip Vasiljevic
+ * Copyright (c) 2021 - 2022, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -21,6 +21,7 @@
 #endif // _WIN32
 #include "core/include/rinvid_gfx.h"
 #include "include/application.h"
+#include "util/include/vector2.h"
 
 namespace rinvid
 {
@@ -82,6 +83,14 @@ void Application::set_screen(Screen* screen)
 {
     current_screen_ = screen;
     current_screen_->set_application(this);
+}
+
+Vector2<float> Application::get_mouse_pos() const
+{
+    sf::Vector2i mouse_position = sf::Mouse::getPosition(window_);
+
+    return Vector2<float>{static_cast<float>(mouse_position.x),
+                          static_cast<float>(mouse_position.y)};
 }
 
 void Application::handle_events(sf::Window& window, sf::Event& event)

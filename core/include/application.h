@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2021, Filip Vasiljevic
+ * Copyright (c) 2021 - 2022, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -15,6 +15,7 @@
 #include <SFML/Window.hpp>
 
 #include "core/include/screen.h"
+#include "util/include/vector2.h"
 
 namespace rinvid
 {
@@ -41,6 +42,8 @@ class Application
      *
      *************************************************************************************************/
     void set_screen(Screen* screen);
+
+    Vector2<float> get_mouse_pos() const;
 
   private:
     void handle_events(sf::Window& window, sf::Event& event);

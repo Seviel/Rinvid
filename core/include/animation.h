@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2021, Filip Vasiljevic
+ * Copyright (c) 2021 - 2022, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -28,6 +28,12 @@ class Animation
 {
   public:
     /**************************************************************************************************
+     * @brief Default constructor.
+     *
+     *************************************************************************************************/
+    Animation();
+
+    /**************************************************************************************************
      * @brief Animation constructor.
      *
      * @param framerate Speed of animation in frames per second
@@ -38,6 +44,18 @@ class Animation
      *************************************************************************************************/
     Animation(double framerate, std::vector<Rect> regions,
               AnimationMode mode = AnimationMode::Normal);
+
+    /**************************************************************************************************
+     * @brief Sets up animation framerate, regions and mode.
+     *
+     * @param framerate Speed of animation in frames per second
+     * @param regions Vector of rects where each rect represents a region of texture that represents
+     * a single animation frame
+     * @param mode Which mode should animation play in (normal or looping)
+     *
+     *************************************************************************************************/
+    void setup(double framerate, const std::vector<Rect>& regions,
+               AnimationMode mode = AnimationMode::Normal);
 
     /**************************************************************************************************
      * @brief Causes animation to advance based on time so it should be called once each frame

@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2021, Filip Vasiljevic
+ * Copyright (c) 2021 - 2022, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -7,14 +7,30 @@
  * repository for more details.
  **********************************************************************/
 
+#include <climits>
+
 #include "include/animation.h"
 
 namespace rinvid
 {
 
-Animation::Animation(double framerate, std::vector<Rect> regions, AnimationMode mode)
-    : regions_{regions}, frame_time_{1.0 / framerate}, time_passed_{0.0}, mode_{mode}
+Animation::Animation()
+    : regions_{}, frame_time_{1.0 / 60}, time_passed_{0.0}, mode_{AnimationMode::Normal}
 {
+}
+
+Animation::Animation(double framerate, std::vector<Rect> regions, AnimationMode mode)
+    : regions_{regions}, frame_time_{framerate != 0.0 ? (1.0 / framerate)
+                                                      : std::numeric_limits<double>::max()},
+      time_passed_{0.0}, mode_{mode}
+{
+}
+
+void Animation::setup(double framerate, const std::vector<Rect>& regions, AnimationMode mode)
+{
+    frame_time_ = framerate != 0.0 ? (1.0 / framerate) : std::numeric_limits<double>::max();
+    regions_    = regions;
+    mode_       = mode;
 }
 
 void Animation::advance(double delta_time)

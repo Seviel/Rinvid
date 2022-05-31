@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2021, Filip Vasiljevic
+ * Copyright (c) 2021 - 2022, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -12,6 +12,12 @@
 
 namespace rinvid
 {
+
+Sprite::Sprite()
+    : animations_{}, regions_{}, current_animation_{nullptr}, texture_{nullptr}, width_{},
+      height_{}, top_left_{}, texture_offset_{}, is_animated_{false}
+{
+}
 
 Sprite::Sprite(Texture* texture, std::int32_t width, std::int32_t height, Vector2<float> top_left,
                Vector2<float> texture_offset)
@@ -146,6 +152,16 @@ bool Sprite::is_animation_finished()
     {
         return true;
     }
+}
+
+void Sprite::setup(Texture* texture, std::int32_t width, std::int32_t height,
+                   Vector2<float> top_left, Vector2<float> texture_offset)
+{
+    texture_        = texture;
+    width_          = width;
+    height_         = height;
+    top_left_       = top_left;
+    texture_offset_ = texture_offset;
 }
 
 } // namespace rinvid
