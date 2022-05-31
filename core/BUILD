@@ -37,6 +37,9 @@ cc_library(
         "@bazel_tools//src/conditions:windows": ["-lsfml-window -lsfml-system -lopengl32 -lwinmm -lgdi32"],
         "//conditions:default": ["-lsfml-window -lsfml-system -lGL"],
     }),
-    visibility = ["//examples:__subpackages__"],
+    visibility = [
+        "//examples:__subpackages__",
+        "//gui:__subpackages__",
+    ],
     deps = ["//util"],
 )
