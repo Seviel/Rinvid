@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2021, Filip Vasiljevic
+ * Copyright (c) 2021 - 2022, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -29,6 +29,12 @@ namespace rinvid
 class Sprite : public Transformable, public Drawable
 {
   public:
+    /**************************************************************************************************
+     * @brief Default constructor.
+     *
+     *************************************************************************************************/
+    Sprite();
+
     /**************************************************************************************************
      * @brief Sprite constructor.
      *
@@ -148,16 +154,31 @@ class Sprite : public Transformable, public Drawable
      *************************************************************************************************/
     bool is_animation_finished();
 
-  private:
+    /**************************************************************************************************
+     * @brief Sets texture, position and size of sprite.
+     *
+     * @param texture sprite texture
+     * @param width sprite width
+     * @param height sprite height
+     * @param top_left top left corner of sprite
+     * @param texture_offset top left corner of texture region to use, (0, 0) of texture is top left
+     *
+     *************************************************************************************************/
+    void setup(Texture* texture, std::int32_t width, std::int32_t height, Vector2<float> top_left,
+               Vector2<float> texture_offset = {0.0F, 0.0F});
+
+  protected:
     std::map<std::string, Animation> animations_;
-    std::vector<Rect>                regions_;
-    Animation*                       current_animation_;
-    Texture*                         texture_;
-    std::int32_t                     width_;
-    std::int32_t                     height_;
-    Vector2<float>                   top_left_;
-    Vector2<float>                   texture_offset_;
-    bool                             is_animated_;
+
+  private:
+    std::vector<Rect> regions_;
+    Animation*        current_animation_;
+    Texture*          texture_;
+    std::int32_t      width_;
+    std::int32_t      height_;
+    Vector2<float>    top_left_;
+    Vector2<float>    texture_offset_;
+    bool              is_animated_;
 };
 
 } // namespace rinvid
