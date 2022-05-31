@@ -7,6 +7,7 @@ cc_binary(
     data = [
         ":resources/clck.png",
         ":resources/logo.png",
+        ":resources/default_button.png",
     ],
     linkopts = select({
         "@bazel_tools//src/conditions:windows": ["-lsfml-window -lsfml-system -lopengl32 -lwinmm -lgdi32"],
@@ -14,6 +15,7 @@ cc_binary(
     }),
     deps = [
         "//core:rinvid_core",
+        "//gui:rinvid_gui",
         "//util",
     ],
 )

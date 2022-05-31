@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2020 - 2021, Filip Vasiljevic
+ * Copyright (c) 2020 - 2022, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -14,6 +14,7 @@
 #endif
 
 #include <chrono>
+#include <iostream>
 
 #include <SFML/Window.hpp>
 
@@ -28,6 +29,7 @@
 #include "core/include/sprite.h"
 #include "core/include/texture.h"
 #include "core/include/triangle_shape.h"
+#include "gui/include/button.h"
 #include "util/include/collision_detection.h"
 #include "util/include/vector3.h"
 
@@ -56,6 +58,9 @@ class TestingGrounds : public rinvid::Screen
     rinvid::Texture clock_texture{"examples/testing_grounds/resources/clck.png"};
     rinvid::Sprite  clock_sprite{&clock_texture, 100, 100, rinvid::Vector2<float>{650.0F, 450.0F},
                                 rinvid::Vector2<float>{0.0F, 0.0F}};
+
+    rinvid::Texture     button_texture{"examples/testing_grounds/resources/default_button.png"};
+    rinvid::gui::Button button{};
 };
 
 void TestingGrounds::create()
@@ -71,6 +76,13 @@ void TestingGrounds::create()
     clock_sprite.add_animation("anim", clock_animation);
     clock_sprite.play("anim");
     clock_sprite.set_scale(1.5F);
+
+    button.setup(&button_texture, 100, 30, rinvid::Vector2<float>{250.0F, 450.0F});
+    auto button_regions = button.split_animation_frames(100, 30, 3, 1);
+
+    button.set_idle({button_regions.at(0)});
+    button.set_mouse_hovering({button_regions.at(1)});
+    button.set_clicked({button_regions.at(2)});
 }
 
 void TestingGrounds::update(double delta_time)
@@ -82,6 +94,14 @@ void TestingGrounds::update(double delta_time)
         quad_alive = false;
     }
 
+    button.update(get_application()->get_mouse_pos());
+
+    if (button.is_clicked())
+    {
+        quad.set_position(rinvid::Vector2<float>{100.0F, 40.0F});
+        quad_alive = true;
+    }
+
     triangle.draw();
     if (quad_alive)
     {
@@ -91,6 +111,7 @@ void TestingGrounds::update(double delta_time)
     circle.draw();
     sprite.draw();
     clock_sprite.draw(delta_time);
+    button.draw(delta_time);
 
     triangle.move(rinvid::Vector2<float>{1.0F, 0.0F});
     rinvid::Vector2<float> triangle_origin = triangle.get_origin();
