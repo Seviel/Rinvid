@@ -58,7 +58,7 @@ class Animation
                AnimationMode mode = AnimationMode::Normal);
 
     /**************************************************************************************************
-     * @brief Causes animation to advance based on time so it should be called once each frame
+     * @brief Causes animation to advance based on time. It should be called once each frame
      *
      * @param delta_time Time passed since last frame in seconds
      *

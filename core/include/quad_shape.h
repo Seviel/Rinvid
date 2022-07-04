@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2020 - 2021, Filip Vasiljevic
+ * Copyright (c) 2020 - 2022, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -25,7 +25,7 @@ class QuadShape : public FixedPolygonShape<4>
 {
   public:
     /**************************************************************************************************
-     * @brief QuadShape constructor.uad
+     * @brief QuadShape constructor
      *
      * @param top_left top left point of the quad
      * @param top_right top right point of the quad

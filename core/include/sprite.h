@@ -42,7 +42,8 @@ class Sprite : public Transformable, public Drawable
      * @param width sprite width
      * @param height sprite height
      * @param top_left top left corner of sprite
-     * @param texture_offset top left corner of texture region to use, (0, 0) of texture is top left
+     * @param texture_offset top left corner of texture region to use, since a texture can contain
+     * multiuple sprites. Origin (0, 0) is top left point of the texture.
      *
      *************************************************************************************************/
     Sprite(Texture* texture, std::int32_t width, std::int32_t height, Vector2<float> top_left,
