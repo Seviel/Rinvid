@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2020 - 2021, Filip Vasiljevic
+ * Copyright (c) 2020 - 2022, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -35,7 +35,7 @@ class FixedPolygonShape : public Shape, public Transformable, public Drawable
     /**************************************************************************************************
      * @brief FixedPolygonShape constructor.
      *
-     * Initializes underlying OpenGl objects and internal vertex vector.
+     * Initializes underlying OpenGl objects and internal vector of vertices.
      *
      *************************************************************************************************/
     FixedPolygonShape();
