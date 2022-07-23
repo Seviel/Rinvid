@@ -168,6 +168,15 @@ class Sprite : public Transformable, public Drawable
     void setup(Texture* texture, std::int32_t width, std::int32_t height, Vector2<float> top_left,
                Vector2<float> texture_offset = {0.0F, 0.0F});
 
+    /**************************************************************************************************
+     * @brief Sets transparency level of sprite.
+     *
+     * @param opacity transparency level in range 0.0 - 1.0, 0.0 meaning sprite will be
+     * completely invisible
+     *
+     *************************************************************************************************/
+    void set_opacity(float opacity);
+
   protected:
     std::map<std::string, Animation> animations_;
 
@@ -179,6 +188,7 @@ class Sprite : public Transformable, public Drawable
     std::int32_t      height_;
     Vector2<float>    top_left_;
     Vector2<float>    texture_offset_;
+    float             opacity_;
     bool              is_animated_;
 };
 

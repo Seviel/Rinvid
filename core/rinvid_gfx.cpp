@@ -30,12 +30,14 @@ static const char* texture_vert_shader_source =
 static const char* texture_frag_shader_source =
     "#version 330 core\n"
     "out vec4 out_color;\n "
-    "uniform vec4 in_color;\n"
+    "uniform float opacity;\n"
     "uniform sampler2D texture1;\n"
     "in vec2 TexCoord;\n"
     "void main()\n"
     "{\n"
+    "   vec4 alpha = texture(texture1, TexCoord).aaaa;"
     "   out_color = texture(texture1, TexCoord);\n"
+    "   out_color.a = alpha.a * opacity;\n"
     "}\n";
 
 static const char* shape_vert_shader_source =
