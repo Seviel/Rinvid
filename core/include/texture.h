@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2021, Filip Vasiljevic
+ * Copyright (c) 2021 - 2022, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -76,7 +76,7 @@ class Texture
      * @param transform Transformation to apply (model matrix)
      *
      *************************************************************************************************/
-    void draw(const glm::mat4& transform);
+    void draw(const glm::mat4& transform, float opacity = 1.0F);
 
     /**************************************************************************************************
      * @brief Internal function called by sprite. Adjusts internal texture vertices based on

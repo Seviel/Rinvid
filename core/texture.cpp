@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2021, Filip Vasiljevic
+ * Copyright (c) 2021 - 2022, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -120,11 +120,21 @@ Texture::~Texture()
     }
 }
 
-void Texture::draw(const glm::mat4& transform)
+void Texture::draw(const glm::mat4& transform, float opacity)
 {
     GL_CALL(glUseProgram(RinvidGfx::get_texture_default_shader()));
 
     RinvidGfx::update_mvp_matrix(transform, RinvidGfx::get_texture_default_shader());
+
+    std::int32_t opacity_location =
+        glGetUniformLocation(RinvidGfx::get_texture_default_shader(), "opacity");
+    rinvid::errors::handle_gl_errors(__FILE__, __LINE__);
+    if (opacity_location == -1)
+    {
+        rinvid::errors::put_error_to_log("glGetUniformLocation error: invalid uniform name");
+        return;
+    }
+    GL_CALL(glUniform1f(opacity_location, opacity));
 
     GL_CALL(glBindTexture(GL_TEXTURE_2D, texture_id_));
     GL_CALL(glBindVertexArray(vertex_array_object_));

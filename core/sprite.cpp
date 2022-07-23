@@ -15,14 +15,15 @@ namespace rinvid
 
 Sprite::Sprite()
     : animations_{}, regions_{}, current_animation_{nullptr}, texture_{nullptr}, width_{},
-      height_{}, top_left_{}, texture_offset_{}, is_animated_{false}
+      height_{}, top_left_{}, texture_offset_{}, opacity_{1.0F}, is_animated_{false}
 {
 }
 
 Sprite::Sprite(Texture* texture, std::int32_t width, std::int32_t height, Vector2<float> top_left,
                Vector2<float> texture_offset)
     : animations_{}, regions_{}, current_animation_{nullptr}, texture_{texture}, width_{width},
-      height_{height}, top_left_{top_left}, texture_offset_{texture_offset}, is_animated_{false}
+      height_{height}, top_left_{top_left}, texture_offset_{texture_offset}, opacity_{1.0F},
+      is_animated_{false}
 {
 }
 
@@ -54,7 +55,7 @@ void Sprite::draw(double delta_time)
         texture_->update_vertices(top_left_, texture_offset_, width_, height_);
     }
 
-    texture_->draw(get_transform());
+    texture_->draw(get_transform(), opacity_);
 }
 
 void Sprite::move(const Vector2<float> move_vector)
@@ -162,6 +163,11 @@ void Sprite::setup(Texture* texture, std::int32_t width, std::int32_t height,
     height_         = height;
     top_left_       = top_left;
     texture_offset_ = texture_offset;
+}
+
+void Sprite::set_opacity(float transparency)
+{
+    opacity_ = transparency;
 }
 
 } // namespace rinvid

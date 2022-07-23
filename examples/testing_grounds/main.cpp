@@ -76,6 +76,7 @@ void TestingGrounds::create()
     clock_sprite.add_animation("anim", clock_animation);
     clock_sprite.play("anim");
     clock_sprite.set_scale(1.5F);
+    clock_sprite.set_opacity(0.3);
 
     button.setup(&button_texture, 100, 30, rinvid::Vector2<float>{250.0F, 450.0F});
     auto button_regions = button.split_animation_frames(100, 30, 3, 1);
