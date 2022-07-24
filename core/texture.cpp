@@ -12,7 +12,7 @@
 
 #include "core/include/rinvid_gfx.h"
 #include "core/include/rinvid_gl.h"
-#include "extern/glm/gtc/type_ptr.hpp"
+#include "extern/glm/glm/gtc/type_ptr.hpp"
 #include "include/texture.h"
 #include "util/include/error_handler.h"
 #include "util/include/image_loader.h"

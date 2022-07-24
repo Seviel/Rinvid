@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2021, Filip Vasiljevic
+ * Copyright (c) 2021 - 2022, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -13,7 +13,7 @@
 #include <algorithm>
 #include <vector>
 
-#include "extern/glm/mat4x4.hpp"
+#include "extern/glm/glm/mat4x4.hpp"
 #include "util/include/vector2.h"
 
 namespace rinvid

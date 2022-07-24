@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2021, Filip Vasiljevic
+ * Copyright (c) 2021 - 2022, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -8,7 +8,7 @@
  **********************************************************************/
 
 #include "include/transformable.h"
-#include "extern/glm/gtx/transform.hpp"
+#include "extern/glm/glm/gtx/transform.hpp"
 
 namespace rinvid
 {

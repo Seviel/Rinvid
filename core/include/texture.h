@@ -14,7 +14,7 @@
 #include <vector>
 
 #include "core/include/rinvid_gfx.h"
-#include "extern/glm/mat4x4.hpp"
+#include "extern/glm/glm/mat4x4.hpp"
 #include "util/include/color.h"
 #include "util/include/vector2.h"
 

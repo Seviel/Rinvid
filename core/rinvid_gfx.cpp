@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2020 - 2021, Filip Vasiljevic
+ * Copyright (c) 2020 - 2022, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -8,8 +8,8 @@
  **********************************************************************/
 
 #include "include/rinvid_gfx.h"
-#include "extern/glm/gtc/type_ptr.hpp"
-#include "extern/glm/gtx/transform.hpp"
+#include "extern/glm/glm/gtc/type_ptr.hpp"
+#include "extern/glm/glm/gtx/transform.hpp"
 #include "util/include/error_handler.h"
 
 namespace
