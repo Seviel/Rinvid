@@ -13,7 +13,7 @@ First, you will need to install Bazel and SFML. [Bazel](https://bazel.build/) is
     sudo npm install -g @bazel/bazelisk  
     sudo apt install libsfml-dev  
 
-After that, clone the repo and inside any repo directory run:  
+After that, clone the repo (run `git submodule update --init --recursive` after cloning to initiate submodules) and inside any repo directory run:  
     
     bazel run //examples/testing_grounds:test
 
@@ -54,7 +54,7 @@ Download SFML from this [page](https://www.sfml-dev.org/download/sfml/2.5.1/). I
 After having downloaded/built SFML, copy SFML folder containing headers to location where standard library includes are (on my machine it was: <msys2_install_path>/mingw64/include); Copy static SFML libs (.a files) to <msys2_install_path>/mingw64/lib; Add location of your SFML dynamic libs (.dll files) to Path env var.
 
 #### Step 9
-Finally, in terminal navigate to Rinvid root folder, and run the following command:
+Finally, in terminal navigate to Rinvid root folder (run `git submodule update --init --recursive` after cloning to initiate submodules), and run the following command:
 
     bazel build ... --compiler=mingw-gcc
 
