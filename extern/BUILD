@@ -14,7 +14,7 @@ cc_library(
                 "glm/**/*.hpp",
                 "glm/**/*.h",
                 "glm/**/*.inl",
-                "include/stb_image.h",
+                "stb/stb_image.h",
             ],
         ) + select({
             "@bazel_tools//src/conditions:windows": [
