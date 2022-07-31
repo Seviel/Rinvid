@@ -6,8 +6,8 @@ cc_binary(
     copts = ["-Werror -Wall -Wextra -pedantic"],
     data = [
         ":resources/clck.png",
-        ":resources/logo.png",
         ":resources/default_button.png",
+        ":resources/logo.png",
     ],
     linkopts = select({
         "@bazel_tools//src/conditions:windows": ["-lsfml-window -lsfml-system -lopengl32 -lwinmm -lgdi32"],
