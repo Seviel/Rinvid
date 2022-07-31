@@ -9,6 +9,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <set>
 #include <string>
 
 #ifdef __unix__
@@ -25,12 +26,20 @@ namespace rinvid
 namespace errors
 {
 
+static std::set<std::string> errors;
+
 void put_error_to_log(const std::string& error_description)
 {
 #ifndef RINVID_DEBUG_MODE
     return;
 #endif
 
+    if (errors.find(error_description) != errors.end())
+    {
+        return;
+    }
+
+    errors.insert(error_description);
     std::cout << error_description << std::endl;
 
 #ifdef RINVID_DEBUG_MODE_OUTPUT_TO_FILE
@@ -47,6 +56,12 @@ void put_error_to_log(const char* error_description)
     return;
 #endif
 
+    if (errors.find(error_description) != errors.end())
+    {
+        return;
+    }
+
+    errors.insert(error_description);
     std::cout << error_description << std::endl;
 
 #ifdef RINVID_DEBUG_MODE_OUTPUT_TO_FILE
