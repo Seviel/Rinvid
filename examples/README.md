@@ -10,6 +10,6 @@ To build all examples, run the following command from inside Rinvid repo:
 
 #### On Windows 10
 
-    bazel build //examples/... --compiler=mingw-gcc  
+    bazel.exe build //examples/... --compiler=mingw-gcc  
 
 To build or run a specific example, look for instructions in the README.md file of that specific example.
