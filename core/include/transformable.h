@@ -95,11 +95,11 @@ class Transformable
      * for finding bounding rect.
      *
      * @param vertices A vector of vertices which needs to contain at least a position in 2D space
-     *(x and y coordinate)
+     * (x and y coordinate)
      * @param min_x Will be set to value of minimal x coordinate out of all vertices
      * @param max_x Will be set to value of maximal x coordinate out of all vertices
-     * @param min_y Will be set to value of maximum y coordinate out of all vertices
-     * @param max_y Will be set to value of maximum y coordinate out of all vertices
+     * @param min_y Will be set to value of minimal y coordinate out of all vertices
+     * @param max_y Will be set to value of maximal y coordinate out of all vertices
      *
      *************************************************************************************************/
     template <typename T>
