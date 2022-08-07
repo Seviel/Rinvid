@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2020 - 2021, Filip Vasiljevic
+ * Copyright (c) 2020 - 2022, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -25,6 +25,8 @@ QuadShape::QuadShape(Vector2<float> top_left, Vector2<float> top_right, Vector2<
     vertices_.at(3) = bottom_left;
 
     calculate_origin();
+
+    update_gl_buffer_data();
 }
 
 void QuadShape::draw()

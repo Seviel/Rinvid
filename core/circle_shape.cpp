@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2020 - 2021, Filip Vasiljevic
+ * Copyright (c) 2020 - 2022, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -29,6 +29,8 @@ CircleShape::CircleShape(Vector2<float> center, float radius)
     }
 
     calculate_origin();
+
+    update_gl_buffer_data();
 }
 
 void CircleShape::draw()

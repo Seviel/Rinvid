@@ -210,8 +210,8 @@ void FixedPolygonShape<number_of_vertices>::update_gl_buffer_data()
 {
     for (std::uint32_t i{0}; i < number_of_vertices; ++i)
     {
-        gl_vertices_[i * 3]     = vertices_.at(i).x;
-        gl_vertices_[i * 3 + 1] = vertices_.at(i).y;
+        gl_vertices_[i * 3]     = vertices_.at(i).x - origin_.x;
+        gl_vertices_[i * 3 + 1] = vertices_.at(i).y - origin_.y;
     }
 
     GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_object_));
@@ -254,11 +254,6 @@ void FixedPolygonShape<number_of_vertices>::draw_arrays(GLenum mode)
 template <typename std::uint32_t number_of_vertices>
 void FixedPolygonShape<number_of_vertices>::draw()
 {
-    /// @todo This currently needs to be done every draw call because we move shape by moving
-    /// vertices on CPU side and then we send that data to OpenGl. This should be optimized in the
-    /// future so that we translate vertices via model matrix
-    update_gl_buffer_data();
-
     GL_CALL(glUseProgram(RinvidGfx::get_shape_default_shader()));
 
     RinvidGfx::update_mvp_matrix(get_transform(), RinvidGfx::get_shape_default_shader());

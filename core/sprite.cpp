@@ -25,6 +25,7 @@ Sprite::Sprite(Texture* texture, std::int32_t width, std::int32_t height, Vector
       height_{height}, top_left_{top_left}, texture_offset_{texture_offset}, opacity_{1.0F},
       is_animated_{false}
 {
+    texture_->update_vertices(texture_offset_, width_, height_);
 }
 
 void Sprite::draw()
@@ -48,11 +49,7 @@ void Sprite::draw(double delta_time)
         offset.x += texture_region.position.x;
         offset.y += texture_region.position.y;
 
-        texture_->update_vertices(top_left_, offset, width, height);
-    }
-    else
-    {
-        texture_->update_vertices(top_left_, texture_offset_, width_, height_);
+        texture_->update_vertices(offset, width, height);
     }
 
     texture_->draw(get_transform(), opacity_);
@@ -163,6 +160,8 @@ void Sprite::setup(Texture* texture, std::int32_t width, std::int32_t height,
     height_         = height;
     top_left_       = top_left;
     texture_offset_ = texture_offset;
+
+    texture_->update_vertices(texture_offset_, width_, height_);
 }
 
 void Sprite::set_opacity(float transparency)

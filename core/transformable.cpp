@@ -23,8 +23,6 @@ const glm::mat4& Transformable::get_transform()
     transform_ = glm::translate(transform_, glm::vec3(origin_.x, origin_.y, 0.0f));
     transform_ = glm::scale(transform_, glm::vec3{scale_, scale_, 1.0F});
     transform_ = glm::rotate(transform_, glm::radians(angle_), glm::vec3{0.0F, 0.0F, 1.0F});
-    transform_ =
-        glm::translate(transform_, glm::vec3(origin_.x * (-1.0F), origin_.y * (-1.0F), 0.0f));
 
     return transform_;
 }
