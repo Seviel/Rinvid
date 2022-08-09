@@ -1,2 +1,18 @@
-try-import %workspace%/user.bazelrc
-build --cxxopt='-std=c++17'
+# Workaround for Bazel sync and proper intellisense on Linux
+build --action_env=BAZEL_CXXOPTS="-std=c++17"
+
+# Default build compiler options for Linux
+build:linux --cxxopt="-std=c++17"
+build:linux --cxxopt="-Werror"
+build:linux --cxxopt="-Wall"
+build:linux --cxxopt="-Wextra"
+build:linux --cxxopt="-Wpedantic"
+
+# Default build compiler options for Windows
+build:windows --cxxopt="-std=c++17"
+build:windows --cxxopt="-Wall"
+build:windows --cxxopt="-Wextra"
+build:windows --cxxopt="-Wpedantic"
+build:windows --compiler=mingw-gcc
+build:windows --enable_runfiles
+

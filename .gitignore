@@ -1,5 +1,8 @@
-.vscode
-bin
-*.o
-bazel*
-user.bazelrc
+# IDE folders
+**/.vscode/
+**/.clwb
+**/.idea
+
+# Build folders
+**/*build*/
+**/bazel-*

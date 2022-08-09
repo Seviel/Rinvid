@@ -1,0 +1,10 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+package(default_visibility = ["//visibility:public"])
+
+cc_library(
+    name = "rinvid_core",
+    srcs = glob(["*.cpp"]),
+    hdrs = glob(["include/*.h"]),
+    deps = ["//util:rinvid_util"],
+)

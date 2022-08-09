@@ -5,7 +5,7 @@
 OS=`uname -s`
 
 if [ "$OS" = "Linux" ]; then
-    tools/buildifier/buildifier -r `find -iname BUILD`
+    tools/buildifier/buildifier -r `find -iname BUILD.bazel`
 else
-    tools/buildifier/buildifier_win -r `find -iname BUILD`
+    tools/buildifier/buildifier_win -r `find -iname BUILD.bazel`
 fi

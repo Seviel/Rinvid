@@ -1,0 +1,9 @@
+derive_targets_from_directories: true
+
+directories:
+  .
+  -.clwb
+  -bazel-bin
+  -bazel-Rinvid
+  -bazel-out
+  -bazel-testlogs

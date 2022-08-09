@@ -1,5 +1,7 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
 
+package(default_visibility = ["//visibility:public"])
+
 cc_library(
     name = "extern",
     srcs = [
@@ -25,9 +27,8 @@ cc_library(
         }),
     # This is needed to suppress warnings introduced by stb_image.h
     copts = ["-Wno-sign-compare -Wno-unused-but-set-variable"],
-    visibility = [
-        "//core:__subpackages__",
-        "//examples:__subpackages__",
-        "//util:__subpackages__",
-    ],
+    linkopts = select({
+        "@bazel_tools//platforms:windows": ["-lsfml-window -lsfml-system -lopengl32 -lwinmm -lgdi32"],
+        "@bazel_tools//platforms:linux": ["-lsfml-window -lsfml-system -lGL"],
+    }),
 )
