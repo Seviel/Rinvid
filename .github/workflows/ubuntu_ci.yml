@@ -1,0 +1,35 @@
+name: Linux Ubuntu
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    types:
+      - opened
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Add bazel distribution
+        run: |
+          sudo apt install apt-transport-https curl gnupg
+          curl -fsSL https://bazel.build/bazel-release.pub.gpg | gpg --dearmor > bazel.gpg
+          sudo mv bazel.gpg /etc/apt/trusted.gpg.d/
+          echo "deb [arch=amd64] https://storage.googleapis.com/bazel-apt stable jdk1.8" | sudo tee /etc/apt/sources.list.d/bazel.list
+
+      - name: Pull submodules
+        run: git submodule update --init --recursive
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install bazel libsfml-dev
+
+      - name: Build Project | All
+        run: |
+          bazel build //... -c dbg
+          bazel build //... -c opt
