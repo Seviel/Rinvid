@@ -7,7 +7,7 @@
  * repository for more details.
  **********************************************************************/
 
-#include <climits>
+#include <limits>
 
 #include "include/animation.h"
 
