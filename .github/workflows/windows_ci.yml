@@ -1,0 +1,42 @@
+name: Windows 10
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    defaults:
+      run:
+        shell: msys2 {0}
+
+    steps:
+      - uses: msys2/setup-msys2@v2
+        with:
+          update: true
+          install: >-
+            base-devel
+            git
+
+      - uses: actions/checkout@v2
+
+      - name: Pull submodules
+        run: git submodule update --init --recursive
+
+      - name: Install dependencies
+        run: pacman -S mingw-w64-x86_64-sfml --noconfirm
+      
+      - name: Setup Bazel
+        run: curl.exe https://github.com/bazelbuild/bazel/releases/download/5.2.0/bazel-5.2.0-windows-x86_64.exe --output bazel.exe
+      
+      - name: Build Project | All
+        run: |
+          ./bazel.exe build ... -c dbg --compiler=mingw-gcc
+          ./bazel.exe build ... -c opt --compiler=mingw-gcc
