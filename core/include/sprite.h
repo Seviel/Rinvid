@@ -142,9 +142,11 @@ class Sprite : public Transformable, public Drawable
      *
      * @param name Name of added animation. An animation with this name must be previously added to
      * sprite by calling add_animation()
+     * @param reset If the requested animation is already playing, it will play from the beginning
+     * if this is set to true
      *
      *************************************************************************************************/
-    void play(std::string name);
+    void play(std::string name, bool reset = false);
 
     /**************************************************************************************************
      * @brief Checks whether animation being currently played is finished, if animation is in Normal
