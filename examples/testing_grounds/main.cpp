@@ -141,7 +141,6 @@ int main()
 {
     rinvid::Application testing_grounds_app{800, 600, "Rinvid testing grounds"};
     TestingGrounds      testing_grounds_screen{};
-    testing_grounds_screen.create();
     testing_grounds_app.set_screen(&testing_grounds_screen);
     testing_grounds_app.run();
 
