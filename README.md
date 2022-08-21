@@ -1,8 +1,8 @@
-[![Linux Ubuntu](https://github.com/Seviel/Rinvid/actions/workflows/ubuntu_ci.yml/badge.svg)](https://github.com/Seviel/Rinvid/actions/workflows/ubuntu_ci.yml) [![Windows](https://github.com/Seviel/Rinvid/actions/workflows/windows_ci.yml/badge.svg)](https://github.com/Seviel/Rinvid/actions/workflows/ubuntu_ci.yml)
+[![Linux Ubuntu](https://github.com/Seviel/Rinvid/actions/workflows/ubuntu_ci.yml/badge.svg)](https://github.com/Seviel/Rinvid/actions/workflows/ubuntu_ci.yml) [![Windows](https://github.com/Seviel/Rinvid/actions/workflows/windows_ci.yml/badge.svg)](https://github.com/Seviel/Rinvid/actions/workflows/windows_ci.yml)
 
 # Rinvid
 
-Rinvid is a small framework for 2D games and multimedia applications development. Although it's primary use is for me to gain some experience and learn a bit about OpenGl and perhaps if it turns out well, in the future it could be used as a starting point for all my game projects. It is written in C++ and uses OpenGl and SFML. Ubuntu and Windows 10 are officially supported, however since it's developed primarily on Ubuntu, and only occasionally tested on Windows, it may be possible for Windows build to be broken at certain points in time.  
+Rinvid is a small framework for 2D games and multimedia applications development. Although it's primary use is for me to gain some experience and learn a bit about OpenGl and perhaps if it turns out well, in the future it could be used as a starting point for all my game projects. It is written in C++ and uses OpenGl and SFML. Ubuntu and Windows 10 are officially supported. 
 
 ## How to build it
 
