@@ -1,4 +1,4 @@
-name: Windows 10
+name: Windows
 
 on:
   push:
@@ -34,9 +34,11 @@ jobs:
         run: pacman -S mingw-w64-x86_64-sfml --noconfirm
       
       - name: Setup Bazel
-        run: curl.exe https://github.com/bazelbuild/bazel/releases/download/5.2.0/bazel-5.2.0-windows-x86_64.exe --output bazel.exe
+        uses: abhinavsingh/setup-bazel@v3
+        with:
+          version: 5.2.0
       
       - name: Build Project | All
         run: |
-          ./bazel.exe build ... -c dbg --compiler=mingw-gcc
-          ./bazel.exe build ... -c opt --compiler=mingw-gcc
+          bazel build ... -c dbg --compiler=mingw-gcc
+          bazel build ... -c opt --compiler=mingw-gcc
