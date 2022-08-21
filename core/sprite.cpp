@@ -133,11 +133,21 @@ void Sprite::add_animation(std::string name, Animation animation)
     animations_.insert(std::pair<std::string, Animation>(name, animation));
 }
 
-void Sprite::play(std::string name)
+void Sprite::play(std::string name, bool reset)
 {
-    is_animated_       = true;
-    current_animation_ = &(animations_.find(name)->second);
-    current_animation_->reset();
+    is_animated_ = true;
+    if (current_animation_ == &(animations_.find(name)->second))
+    {
+        if (reset)
+        {
+            current_animation_->reset();
+        }
+    }
+    else
+    {
+        current_animation_ = &(animations_.find(name)->second);
+        current_animation_->reset();
+    }
 }
 
 bool Sprite::is_animation_finished()

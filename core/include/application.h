@@ -56,6 +56,7 @@ class Application
 
     sf::Window    window_;
     Screen*       current_screen_;
+    Screen*       new_screen_;
     std::uint16_t fps_;
     bool          running_;
 };

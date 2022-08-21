@@ -27,8 +27,8 @@ namespace rinvid
 {
 
 Application::Application(std::uint32_t width, std::uint32_t height, const std::string& title)
-    : window_{sf::VideoMode{width, height}, title}, current_screen_{nullptr}, fps_{60U}, running_{
-                                                                                             false}
+    : window_{sf::VideoMode{width, height}, title}, current_screen_{nullptr},
+      new_screen_{nullptr}, fps_{60U}, running_{false}
 {
 #ifdef _WIN32
     gladLoadGLLoader(reinterpret_cast<GLADloadproc>(sf::Context::getFunction));
@@ -63,6 +63,18 @@ void Application::run()
 
         window_.display();
 
+        if (new_screen_)
+        {
+            if (current_screen_)
+            {
+                current_screen_->destroy();
+            }
+            current_screen_ = new_screen_;
+            new_screen_     = nullptr;
+            current_screen_->create();
+            current_screen_->set_application(this);
+        }
+
         auto end   = std::chrono::high_resolution_clock::now();
         delta_time = end - start;
 
@@ -81,8 +93,7 @@ void Application::run()
 
 void Application::set_screen(Screen* screen)
 {
-    current_screen_ = screen;
-    current_screen_->set_application(this);
+    new_screen_ = screen;
 }
 
 Vector2<float> Application::get_mouse_pos() const
