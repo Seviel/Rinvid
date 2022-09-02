@@ -33,14 +33,44 @@ class Button : public Sprite
      *************************************************************************************************/
     Button();
 
+    /**************************************************************************************************
+     * @brief Updates the button status (clicked status and animation) based on mouse position.
+     *
+     * @param mouse_pos Vector indicating mouse position on the screen.
+     *
+     *************************************************************************************************/
     void update(Vector2<float> mouse_pos);
 
+    /**************************************************************************************************
+     * @brief Sets animation regions for idle status (mouse is not hovering over button).
+     *
+     * @param regions Vector of rects indicating frames of texture that make up the animation.
+     *
+     *************************************************************************************************/
     void set_idle(const std::vector<Rect>& regions);
 
+    /**************************************************************************************************
+     * @brief Sets animation regions for when mouse is hovering over the button.
+     *
+     * @param regions Vector of rects indicating frames of texture that make up the animation.
+     *
+     *************************************************************************************************/
     void set_mouse_hovering(const std::vector<Rect>& regions);
 
+    /**************************************************************************************************
+     * @brief Sets animation regions for when the button is clicked.
+     *
+     * @param regions Vector of rects indicating frames of texture that make up the animation.
+     *
+     *************************************************************************************************/
     void set_clicked(const std::vector<Rect>& regions);
 
+    /**************************************************************************************************
+     * @brief Checks whether button is clicked on.
+     *
+     * @return True if button is clicked, false otherwise.
+     *
+     *************************************************************************************************/
     bool is_clicked() const;
 
   private:
