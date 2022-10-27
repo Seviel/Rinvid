@@ -131,6 +131,14 @@ class RinvidGfx
      *************************************************************************************************/
     static void update_mvp_matrix(const glm::mat4& model, std::uint32_t shader_id);
 
+    /**************************************************************************************************
+     * @brief Updates view matrix.
+     *
+     * @param view A view matrix to apply
+     *
+     *************************************************************************************************/
+    static void update_view(const glm::mat4& model);
+
   private:
     static glm::mat4     model_view_projection_;
     static glm::mat4     view_;
