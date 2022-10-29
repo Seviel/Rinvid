@@ -32,7 +32,13 @@ Button::Button() : idle_{}, mouse_hovering_{}, clicked_{}, is_clicked_{false}
 
 void Button::update(Vector2<float> mouse_pos)
 {
+    glm::vec4   glm_mouse_pos{mouse_pos.x, mouse_pos.y, 1.0F, 1.0F};
+    const auto& view = glm::inverse(RinvidGfx::get_view());
+    glm_mouse_pos    = view * glm_mouse_pos;
+    mouse_pos.x      = glm_mouse_pos.x;
+    mouse_pos.y      = glm_mouse_pos.y;
     rinvid::Rect position_rect{mouse_pos, 1, 1};
+
     if (intersects(bounding_rect(), position_rect))
     {
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left))

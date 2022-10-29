@@ -139,6 +139,14 @@ class RinvidGfx
      *************************************************************************************************/
     static void update_view(const glm::mat4& model);
 
+    /**************************************************************************************************
+     * @brief Returns the view matrix.
+     *
+     * @return View matrix
+     *
+     *************************************************************************************************/
+    static const glm::mat4& get_view();
+
   private:
     static glm::mat4     model_view_projection_;
     static glm::mat4     view_;

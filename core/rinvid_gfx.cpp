@@ -181,4 +181,9 @@ void RinvidGfx::update_view(const glm::mat4& view)
     view_ = view;
 }
 
+const glm::mat4& RinvidGfx::get_view()
+{
+    return view_;
+}
+
 } // namespace rinvid
