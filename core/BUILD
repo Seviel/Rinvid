@@ -5,6 +5,7 @@ cc_library(
     srcs = [
         "animation.cpp",
         "application.cpp",
+        "camera.cpp",
         "circle_shape.cpp",
         "quad_shape.cpp",
         "rectangle_shape.cpp",
@@ -18,6 +19,7 @@ cc_library(
     hdrs = [
         "include/animation.h",
         "include/application.h",
+        "include/camera.h",
         "include/circle_shape.h",
         "include/drawable.h",
         "include/fixed_polygon_shape.h",

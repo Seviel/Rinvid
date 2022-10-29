@@ -176,4 +176,14 @@ void RinvidGfx::update_mvp_matrix(const glm::mat4& model, std::uint32_t shader_i
     GL_CALL(glUniformMatrix4fv(mvp_location, 1, GL_FALSE, glm::value_ptr(model_view_projection_)));
 }
 
+void RinvidGfx::update_view(const glm::mat4& view)
+{
+    view_ = view;
+}
+
+const glm::mat4& RinvidGfx::get_view()
+{
+    return view_;
+}
+
 } // namespace rinvid

@@ -20,6 +20,7 @@
 
 #include "core/include/animation.h"
 #include "core/include/application.h"
+#include "core/include/camera.h"
 #include "core/include/circle_shape.h"
 #include "core/include/quad_shape.h"
 #include "core/include/rectangle_shape.h"
@@ -61,6 +62,8 @@ class TestingGrounds : public rinvid::Screen
 
     rinvid::Texture     button_texture{"examples/testing_grounds/resources/default_button.png"};
     rinvid::gui::Button button{};
+
+    rinvid::Camera camera{};
 };
 
 void TestingGrounds::create()
@@ -102,6 +105,20 @@ void TestingGrounds::update(double delta_time)
         quad.set_position(rinvid::Vector2<float>{100.0F, 40.0F});
         quad_alive = true;
     }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) ||
+        sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    {
+        camera.move(rinvid::Vector2<float>{-8.0F, 0.0F});
+    }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) ||
+        sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    {
+        camera.move(rinvid::Vector2<float>{8.0F, 0.0F});
+    }
+
+    camera.update();
 
     triangle.draw();
     if (quad_alive)
