@@ -26,6 +26,11 @@ class Application
     /**************************************************************************************************
      * @brief Application constructor.
      *
+     * @param width The width of the application window
+     * @param height The height of the application window
+     * @param title Title of the application window
+     * @param fps Frames per second, pass 0 to have uncapped framerate (default is 60)
+     *
      *************************************************************************************************/
     Application(std::uint32_t width, std::uint32_t height, const std::string& title,
                 std::uint16_t fps = 60U);
