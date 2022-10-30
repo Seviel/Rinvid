@@ -38,6 +38,7 @@ Application::Application(std::uint32_t width, std::uint32_t height, const std::s
 void Application::run()
 {
     std::chrono::duration<double> delta_time{};
+    std::chrono::duration<double> total_frame_time{};
     sf::Event                     event;
 
     auto size = window_.getSize();
@@ -58,7 +59,7 @@ void Application::run()
 
         if (current_screen_ != nullptr)
         {
-            current_screen_->update(delta_time.count());
+            current_screen_->update(total_frame_time.count());
         }
 
         window_.display();
@@ -86,8 +87,8 @@ void Application::run()
 #else
         windows_sleep(target_frame_time - delta_time.count());
 #endif
-        end        = std::chrono::high_resolution_clock::now();
-        delta_time = end - start;
+        end              = std::chrono::high_resolution_clock::now();
+        total_frame_time = end - start;
     }
 }
 
