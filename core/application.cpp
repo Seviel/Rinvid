@@ -26,9 +26,10 @@
 namespace rinvid
 {
 
-Application::Application(std::uint32_t width, std::uint32_t height, const std::string& title)
+Application::Application(std::uint32_t width, std::uint32_t height, const std::string& title,
+                         std::uint16_t fps)
     : window_{sf::VideoMode{width, height}, title}, current_screen_{nullptr},
-      new_screen_{nullptr}, fps_{60U}, running_{false}
+      new_screen_{nullptr}, fps_{fps}, running_{false}
 {
 #ifdef _WIN32
     gladLoadGLLoader(reinterpret_cast<GLADloadproc>(sf::Context::getFunction));
@@ -37,14 +38,13 @@ Application::Application(std::uint32_t width, std::uint32_t height, const std::s
 
 void Application::run()
 {
+    const std::uint32_t           microseconds_in_a_second = 1'000'000;
     std::chrono::duration<double> delta_time{};
     std::chrono::duration<double> total_frame_time{};
     sf::Event                     event;
 
     auto size = window_.getSize();
     RinvidGfx::set_viewport(0, 0, size.x, size.y);
-
-    double target_frame_time = 1000000 / fps_;
 
     window_.setActive(true);
 
@@ -54,6 +54,9 @@ void Application::run()
     while (running_ == true)
     {
         auto start = std::chrono::high_resolution_clock::now();
+
+        double target_frame_time =
+            fps_ ? static_cast<double>(microseconds_in_a_second) / static_cast<double>(fps_) : 0.0;
 
         handle_events(window_, event);
 
@@ -103,6 +106,11 @@ Vector2<float> Application::get_mouse_pos() const
 
     return Vector2<float>{static_cast<float>(mouse_position.x),
                           static_cast<float>(mouse_position.y)};
+}
+
+void Application::set_fps(std::uint16_t fps)
+{
+    fps_ = fps;
 }
 
 void Application::handle_events(sf::Window& window, sf::Event& event)
