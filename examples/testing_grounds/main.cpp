@@ -109,13 +109,13 @@ void TestingGrounds::update(double delta_time)
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) ||
         sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
     {
-        camera.move(rinvid::Vector2<float>{-8.0F, 0.0F});
+        camera.move(rinvid::Vector2<float>{-480.0F * static_cast<float>(delta_time), 0.0F});
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) ||
         sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
     {
-        camera.move(rinvid::Vector2<float>{8.0F, 0.0F});
+        camera.move(rinvid::Vector2<float>{480.0F * static_cast<float>(delta_time), 0.0F});
     }
 
     camera.update();
@@ -131,21 +131,21 @@ void TestingGrounds::update(double delta_time)
     clock_sprite.draw(delta_time);
     button.draw(delta_time);
 
-    triangle.move(rinvid::Vector2<float>{1.0F, 0.0F});
+    triangle.move(rinvid::Vector2<float>{120.0F * static_cast<float>(delta_time), 0.0F});
     rinvid::Vector2<float> triangle_origin = triangle.get_origin();
     if (triangle_origin.x >= rinvid::RinvidGfx::get_width())
     {
         triangle.set_position(rinvid::Vector2<float>{0.0F, triangle_origin.y});
     }
 
-    quad.move(rinvid::Vector2<float>{0.0F, 2.0F});
+    quad.move(rinvid::Vector2<float>{0.0F, 240.0F * static_cast<float>(delta_time)});
     rinvid::Vector2<float> quad_origin = quad.get_origin();
     if (quad_origin.y >= rinvid::RinvidGfx::get_height())
     {
         quad.set_position(rinvid::Vector2<float>{quad_origin.x, 0.0F});
     }
 
-    sprite.rotate(0.5F);
+    sprite.rotate(60.0F * static_cast<float>(delta_time));
 
     circle.scale(0.99F);
 }
@@ -159,6 +159,7 @@ int main()
     rinvid::Application testing_grounds_app{800, 600, "Rinvid testing grounds"};
     TestingGrounds      testing_grounds_screen{};
     testing_grounds_app.set_screen(&testing_grounds_screen);
+    testing_grounds_app.set_fps(120);
     testing_grounds_app.run();
 
     return 0;
