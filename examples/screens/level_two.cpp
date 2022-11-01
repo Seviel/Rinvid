@@ -33,14 +33,14 @@ void LevelTwo::update(double delta_time)
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) ||
         sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
     {
-        guardian_sprite_->move({3.0F, 0.0F});
+        guardian_sprite_->move({180.0F * static_cast<float>(delta_time), 0.0F});
         guardian_sprite_->play("treading_right");
         last_moved_right = true;
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) ||
              sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
     {
-        guardian_sprite_->move({-3.0F, 0.0F});
+        guardian_sprite_->move({-180.0F * static_cast<float>(delta_time), 0.0F});
         guardian_sprite_->play("treading_left");
         last_moved_right = false;
     }
