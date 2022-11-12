@@ -10,6 +10,7 @@ cc_library(
         "quad_shape.cpp",
         "rectangle_shape.cpp",
         "rinvid_gfx.cpp",
+        "shader.cpp",
         "shape.cpp",
         "sprite.cpp",
         "texture.cpp",
@@ -28,6 +29,7 @@ cc_library(
         "include/rinvid_gfx.h",
         "include/rinvid_gl.h",
         "include/screen.h",
+        "include/shader.h",
         "include/shape.h",
         "include/sprite.h",
         "include/texture.h",
@@ -35,6 +37,12 @@ cc_library(
         "include/triangle_shape.h",
     ],
     copts = ["-Werror -Wall -Wextra -pedantic"],
+    data = [
+        ":shaders/default_shape.frag",
+        ":shaders/default_shape.vert",
+        ":shaders/default_texture.frag",
+        ":shaders/default_texture.vert",
+    ],
     linkopts = select({
         "@bazel_tools//src/conditions:windows": ["-lsfml-window -lsfml-system -lopengl32 -lwinmm -lgdi32"],
         "//conditions:default": ["-lsfml-window -lsfml-system -lGL"],
