@@ -122,7 +122,7 @@ Texture::~Texture()
 
 void Texture::draw(const glm::mat4& transform, float opacity)
 {
-    GL_CALL(glUseProgram(RinvidGfx::get_texture_default_shader()));
+    RinvidGfx::use_texture_default_shader();
 
     RinvidGfx::update_mvp_matrix(transform, RinvidGfx::get_texture_default_shader());
 

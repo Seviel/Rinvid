@@ -12,114 +12,28 @@
 #include "extern/glm/glm/gtx/transform.hpp"
 #include "util/include/error_handler.h"
 
-namespace
-{
-
-static const char* texture_vert_shader_source =
-    "#version 330 core\n"
-    "layout (location = 0) in vec3 aPos;\n"
-    "layout (location = 1) in vec2 aTexCoord;\n"
-    "out vec2 TexCoord;\n"
-    "uniform mat4 model_view_projection;\n"
-    "void main()\n"
-    "{\n"
-    "   gl_Position = model_view_projection * vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-    "   TexCoord = vec2(aTexCoord.x, aTexCoord.y);\n"
-    "}\0";
-
-static const char* texture_frag_shader_source =
-    "#version 330 core\n"
-    "out vec4 out_color;\n "
-    "uniform float opacity;\n"
-    "uniform sampler2D texture1;\n"
-    "in vec2 TexCoord;\n"
-    "void main()\n"
-    "{\n"
-    "   vec4 alpha = texture(texture1, TexCoord).aaaa;"
-    "   out_color = texture(texture1, TexCoord);\n"
-    "   out_color.a = alpha.a * opacity;\n"
-    "}\n";
-
-static const char* shape_vert_shader_source =
-    "#version 330 core\n"
-    "layout (location = 0) in vec3 aPos;\n"
-    "uniform mat4 model_view_projection;\n"
-    "void main()\n"
-    "{\n"
-    "   gl_Position = model_view_projection * vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-    "}\0";
-
-static const char* shape_frag_shader_source =
-    "#version 330 core\n"
-    "out vec4 out_color;\n "
-    "uniform vec4 in_color;\n"
-    "void main()\n"
-    "{\n"
-    "   out_color = in_color;\n"
-    "}\n";
-
-static void init_default_shaders(std::uint32_t& shape_default_shader_handle,
-                                 std::uint32_t& texture_default_shader_handle)
-{
-    std::uint32_t vert_shader;
-    vert_shader = glCreateShader(GL_VERTEX_SHADER);
-    rinvid::errors::handle_gl_errors(__FILE__, __LINE__);
-    GL_CALL(glShaderSource(vert_shader, 1, &shape_vert_shader_source, nullptr));
-    GL_CALL(glCompileShader(vert_shader));
-
-    std::uint32_t frag_shader;
-    frag_shader = glCreateShader(GL_FRAGMENT_SHADER);
-    rinvid::errors::handle_gl_errors(__FILE__, __LINE__);
-    GL_CALL(glShaderSource(frag_shader, 1, &shape_frag_shader_source, nullptr));
-    GL_CALL(glCompileShader(frag_shader));
-
-    shape_default_shader_handle = glCreateProgram();
-    rinvid::errors::handle_gl_errors(__FILE__, __LINE__);
-
-    GL_CALL(glAttachShader(shape_default_shader_handle, vert_shader));
-    GL_CALL(glAttachShader(shape_default_shader_handle, frag_shader));
-    GL_CALL(glLinkProgram(shape_default_shader_handle));
-
-    GL_CALL(glDeleteShader(vert_shader));
-    GL_CALL(glDeleteShader(frag_shader));
-
-    vert_shader = glCreateShader(GL_VERTEX_SHADER);
-    rinvid::errors::handle_gl_errors(__FILE__, __LINE__);
-    GL_CALL(glShaderSource(vert_shader, 1, &texture_vert_shader_source, nullptr));
-    GL_CALL(glCompileShader(vert_shader));
-
-    frag_shader = glCreateShader(GL_FRAGMENT_SHADER);
-    rinvid::errors::handle_gl_errors(__FILE__, __LINE__);
-    GL_CALL(glShaderSource(frag_shader, 1, &texture_frag_shader_source, nullptr));
-    GL_CALL(glCompileShader(frag_shader));
-
-    texture_default_shader_handle = glCreateProgram();
-    rinvid::errors::handle_gl_errors(__FILE__, __LINE__);
-
-    GL_CALL(glAttachShader(texture_default_shader_handle, vert_shader));
-    GL_CALL(glAttachShader(texture_default_shader_handle, frag_shader));
-    GL_CALL(glLinkProgram(texture_default_shader_handle));
-
-    GL_CALL(glDeleteShader(vert_shader));
-    GL_CALL(glDeleteShader(frag_shader));
-}
-
-} // namespace
-
 namespace rinvid
 {
 
-glm::mat4     RinvidGfx::model_view_projection_{1.0F};
-glm::mat4     RinvidGfx::view_{1.0F};
-glm::mat4     RinvidGfx::projection_{1.0F};
-std::uint32_t RinvidGfx::shape_default_shader_{};
-std::uint32_t RinvidGfx::texture_default_shader_{};
-std::int32_t  RinvidGfx::width_{};
-std::int32_t  RinvidGfx::height_{};
+glm::mat4               RinvidGfx::model_view_projection_{1.0F};
+glm::mat4               RinvidGfx::view_{1.0F};
+glm::mat4               RinvidGfx::projection_{1.0F};
+std::unique_ptr<Shader> RinvidGfx::shape_default_shader_{};
+std::unique_ptr<Shader> RinvidGfx::texture_default_shader_{};
+std::int32_t            RinvidGfx::width_{};
+std::int32_t            RinvidGfx::height_{};
+
+void RinvidGfx::init_default_shaders()
+{
+    shape_default_shader_   = std::make_unique<Shader>("core/shaders/default_shape.vert",
+                                                     "core/shaders/default_shape.frag");
+    texture_default_shader_ = std::make_unique<Shader>("core/shaders/default_texture.vert",
+                                                       "core/shaders/default_texture.frag");
+}
 
 void RinvidGfx::init()
 {
-    init_default_shaders(RinvidGfx::shape_default_shader_, RinvidGfx::texture_default_shader_);
+    RinvidGfx::init_default_shaders();
     GL_CALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
     GL_CALL(glEnable(GL_BLEND));
     projection_            = glm::ortho(0.0F, static_cast<float>(RinvidGfx::get_width()),
@@ -143,12 +57,12 @@ void RinvidGfx::clear_screen(float r, float g, float b, float a)
 
 std::uint32_t RinvidGfx::get_shape_default_shader()
 {
-    return shape_default_shader_;
+    return shape_default_shader_->get_id();
 }
 
 std::uint32_t RinvidGfx::get_texture_default_shader()
 {
-    return texture_default_shader_;
+    return texture_default_shader_->get_id();
 }
 
 std::int32_t RinvidGfx::get_width()
@@ -184,6 +98,16 @@ void RinvidGfx::update_view(const glm::mat4& view)
 const glm::mat4& RinvidGfx::get_view()
 {
     return view_;
+}
+
+void RinvidGfx::use_shape_default_shader()
+{
+    shape_default_shader_->use();
+}
+
+void RinvidGfx::use_texture_default_shader()
+{
+    texture_default_shader_->use();
 }
 
 } // namespace rinvid
