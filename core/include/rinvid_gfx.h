@@ -11,8 +11,10 @@
 #define CORE_INCLUDE_RINFID_GFX_H
 
 #include <cstdint>
+#include <memory>
 
 #include "core/include/rinvid_gl.h"
+#include "core/include/shader.h"
 #include "extern/glm/glm/mat4x4.hpp"
 
 namespace rinvid
@@ -147,14 +149,28 @@ class RinvidGfx
      *************************************************************************************************/
     static const glm::mat4& get_view();
 
+    /**************************************************************************************************
+     * @brief Use the shape default shader.
+     *
+     *************************************************************************************************/
+    static void use_shape_default_shader();
+
+    /**************************************************************************************************
+     * @brief Use the texture default shader.
+     *
+     *************************************************************************************************/
+    static void use_texture_default_shader();
+
   private:
-    static glm::mat4     model_view_projection_;
-    static glm::mat4     view_;
-    static glm::mat4     projection_;
-    static std::uint32_t texture_default_shader_;
-    static std::uint32_t shape_default_shader_;
-    static std::int32_t  width_;
-    static std::int32_t  height_;
+    static void init_default_shaders();
+
+    static glm::mat4               model_view_projection_;
+    static glm::mat4               view_;
+    static glm::mat4               projection_;
+    static std::unique_ptr<Shader> shape_default_shader_;
+    static std::unique_ptr<Shader> texture_default_shader_;
+    static std::int32_t            width_;
+    static std::int32_t            height_;
 };
 
 } // namespace rinvid

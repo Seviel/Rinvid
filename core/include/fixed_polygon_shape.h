@@ -254,7 +254,7 @@ void FixedPolygonShape<number_of_vertices>::draw_arrays(GLenum mode)
 template <typename std::uint32_t number_of_vertices>
 void FixedPolygonShape<number_of_vertices>::draw()
 {
-    GL_CALL(glUseProgram(RinvidGfx::get_shape_default_shader()));
+    RinvidGfx::use_shape_default_shader();
 
     RinvidGfx::update_mvp_matrix(get_transform(), RinvidGfx::get_shape_default_shader());
 
