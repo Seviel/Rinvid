@@ -124,17 +124,10 @@ void Texture::draw(const glm::mat4& transform, float opacity)
 {
     RinvidGfx::use_texture_default_shader();
 
-    RinvidGfx::update_mvp_matrix(transform, RinvidGfx::get_texture_default_shader());
+    RinvidGfx::update_mvp_matrix(transform, RinvidGfx::get_texture_default_shader_id());
 
-    std::int32_t opacity_location =
-        glGetUniformLocation(RinvidGfx::get_texture_default_shader(), "opacity");
-    rinvid::errors::handle_gl_errors(__FILE__, __LINE__);
-    if (opacity_location == -1)
-    {
-        rinvid::errors::put_error_to_log("glGetUniformLocation error: invalid uniform name");
-        return;
-    }
-    GL_CALL(glUniform1f(opacity_location, opacity));
+    const auto shader = RinvidGfx::get_texture_default_shader();
+    shader->set_float("opacity", opacity);
 
     GL_CALL(glBindTexture(GL_TEXTURE_2D, texture_id_));
     GL_CALL(glBindVertexArray(vertex_array_object_));
