@@ -60,6 +60,19 @@ class Shader
      *************************************************************************************************/
     void set_float(const std::string& name, float value) const;
 
+    /**************************************************************************************************
+     * @brief Sets float4 uniform.
+     *
+     * @param name Name of the uniform to set.
+     * @param value1 First value to be set.
+     * @param value2 Second value to be set.
+     * @param value3 Third value to be set.
+     * @param value4 Fourth value to be set.
+     *
+     *************************************************************************************************/
+    void set_float4(const std::string& name, float value1, float value2, float value3,
+                    float value4) const;
+
     std::uint32_t get_id() const;
 
   private:

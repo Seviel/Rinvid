@@ -62,17 +62,47 @@ void Shader::use()
 
 void Shader::set_bool(const std::string& name, bool value) const
 {
-    GL_CALL(glUniform1i(glGetUniformLocation(id_, name.c_str()), static_cast<std::int32_t>(value)));
+    std::int32_t location = glGetUniformLocation(id_, name.c_str());
+    if (location == -1)
+    {
+        rinvid::errors::put_error_to_log("glGetUniformLocation error: invalid uniform name");
+        return;
+    }
+    GL_CALL(glUniform1i(location, static_cast<std::int32_t>(value)));
 }
 
 void Shader::set_int(const std::string& name, std::int32_t value) const
 {
-    GL_CALL(glUniform1i(glGetUniformLocation(id_, name.c_str()), value));
+    std::int32_t location = glGetUniformLocation(id_, name.c_str());
+    if (location == -1)
+    {
+        rinvid::errors::put_error_to_log("glGetUniformLocation error: invalid uniform name");
+        return;
+    }
+    GL_CALL(glUniform1i(location, value));
 }
 
 void Shader::set_float(const std::string& name, float value) const
 {
-    GL_CALL(glUniform1f(glGetUniformLocation(id_, name.c_str()), value));
+    std::int32_t location = glGetUniformLocation(id_, name.c_str());
+    if (location == -1)
+    {
+        rinvid::errors::put_error_to_log("glGetUniformLocation error: invalid uniform name");
+        return;
+    }
+    GL_CALL(glUniform1f(location, value));
+}
+
+void Shader::set_float4(const std::string& name, float value1, float value2, float value3,
+                        float value4) const
+{
+    std::int32_t location = glGetUniformLocation(id_, name.c_str());
+    if (location == -1)
+    {
+        rinvid::errors::put_error_to_log("glGetUniformLocation error: invalid uniform name");
+        return;
+    }
+    GL_CALL(glUniform4f(location, value1, value2, value3, value4));
 }
 
 std::uint32_t Shader::get_id() const

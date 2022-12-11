@@ -71,7 +71,7 @@ class RinvidGfx
      * @return An OpenGl handle to the shader
      *
      *************************************************************************************************/
-    static std::uint32_t get_shape_default_shader();
+    static std::uint32_t get_shape_default_shader_id();
 
     /**************************************************************************************************
      * @brief Returns default texture shader handle. Should only be used internally in Rinvid.
@@ -79,7 +79,23 @@ class RinvidGfx
      * @return An OpenGl handle to the shader
      *
      *************************************************************************************************/
-    static std::uint32_t get_texture_default_shader();
+    static std::uint32_t get_texture_default_shader_id();
+
+    /**************************************************************************************************
+     * @brief Returns default shape shader object.
+     *
+     * @return A shared ptr to default shape Shader object.
+     *
+     *************************************************************************************************/
+    static const std::shared_ptr<Shader> get_shape_default_shader();
+
+    /**************************************************************************************************
+     * @brief Returns default texture shader object.
+     *
+     * @return A shared ptr to default texture Shader object.
+     *
+     *************************************************************************************************/
+    static const std::shared_ptr<Shader> get_texture_default_shader();
 
     /**************************************************************************************************
      * @brief Returns screen width.
@@ -167,8 +183,8 @@ class RinvidGfx
     static glm::mat4               model_view_projection_;
     static glm::mat4               view_;
     static glm::mat4               projection_;
-    static std::unique_ptr<Shader> shape_default_shader_;
-    static std::unique_ptr<Shader> texture_default_shader_;
+    static std::shared_ptr<Shader> shape_default_shader_;
+    static std::shared_ptr<Shader> texture_default_shader_;
     static std::int32_t            width_;
     static std::int32_t            height_;
 };

@@ -18,16 +18,16 @@ namespace rinvid
 glm::mat4               RinvidGfx::model_view_projection_{1.0F};
 glm::mat4               RinvidGfx::view_{1.0F};
 glm::mat4               RinvidGfx::projection_{1.0F};
-std::unique_ptr<Shader> RinvidGfx::shape_default_shader_{};
-std::unique_ptr<Shader> RinvidGfx::texture_default_shader_{};
+std::shared_ptr<Shader> RinvidGfx::shape_default_shader_{};
+std::shared_ptr<Shader> RinvidGfx::texture_default_shader_{};
 std::int32_t            RinvidGfx::width_{};
 std::int32_t            RinvidGfx::height_{};
 
 void RinvidGfx::init_default_shaders()
 {
-    shape_default_shader_   = std::make_unique<Shader>("core/shaders/default_shape.vert",
+    shape_default_shader_   = std::make_shared<Shader>("core/shaders/default_shape.vert",
                                                      "core/shaders/default_shape.frag");
-    texture_default_shader_ = std::make_unique<Shader>("core/shaders/default_texture.vert",
+    texture_default_shader_ = std::make_shared<Shader>("core/shaders/default_texture.vert",
                                                        "core/shaders/default_texture.frag");
 }
 
@@ -55,14 +55,24 @@ void RinvidGfx::clear_screen(float r, float g, float b, float a)
     GL_CALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 }
 
-std::uint32_t RinvidGfx::get_shape_default_shader()
+std::uint32_t RinvidGfx::get_shape_default_shader_id()
 {
     return shape_default_shader_->get_id();
 }
 
-std::uint32_t RinvidGfx::get_texture_default_shader()
+std::uint32_t RinvidGfx::get_texture_default_shader_id()
 {
     return texture_default_shader_->get_id();
+}
+
+const std::shared_ptr<Shader> RinvidGfx::get_shape_default_shader()
+{
+    return shape_default_shader_;
+}
+
+const std::shared_ptr<Shader> RinvidGfx::get_texture_default_shader()
+{
+    return texture_default_shader_;
 }
 
 std::int32_t RinvidGfx::get_width()
