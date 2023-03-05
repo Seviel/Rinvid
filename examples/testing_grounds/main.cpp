@@ -22,6 +22,7 @@
 #include "core/include/application.h"
 #include "core/include/camera.h"
 #include "core/include/circle_shape.h"
+#include "core/include/light_manager.h"
 #include "core/include/quad_shape.h"
 #include "core/include/rectangle_shape.h"
 #include "core/include/rinvid_gfx.h"
@@ -87,11 +88,13 @@ void TestingGrounds::create()
     button.set_idle({button_regions.at(0)});
     button.set_mouse_hovering({button_regions.at(1)});
     button.set_clicked({button_regions.at(2)});
+
+    rinvid::LightManager::activate_ambient_light(0.3F);
 }
 
 void TestingGrounds::update(double delta_time)
 {
-    rinvid::RinvidGfx::clear_screen(0.1F, 0.2F, 0.2F, 1.0F);
+    rinvid::RinvidGfx::clear_screen(0.0F, 0.0F, 0.0F, 1.0F);
 
     if (intersects(triangle.bounding_rect(), quad.bounding_rect()))
     {
