@@ -17,7 +17,6 @@ bool LightManager::using_ambient_light_{false};
 
 void LightManager::activate_ambient_light(float strength)
 {
-    (void)strength;
     const auto shape_shader = RinvidGfx::get_shape_default_shader();
     shape_shader->use();
     shape_shader->set_bool("use_ambient_light", true);
