@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2021, Filip Vasiljevic
+ * Copyright (c) 2021 - 2023, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -25,6 +25,12 @@ class Drawable
      *
      *************************************************************************************************/
     Drawable(){};
+
+    /**************************************************************************************************
+     * @brief Drawable virtual destructor.
+     *
+     *************************************************************************************************/
+    virtual ~Drawable(){};
 
     /**************************************************************************************************
      * @brief Draws the object. Use this function for objects that are not animated.

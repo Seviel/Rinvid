@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2020 - 2022, Filip Vasiljevic
+ * Copyright (c) 2020 - 2023, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -69,10 +69,10 @@ class FixedPolygonShape : public Shape, public Transformable, public Drawable
     FixedPolygonShape& operator=(FixedPolygonShape&& other);
 
     /**************************************************************************************************
-     * @brief FixedPolygonShape destructor.
+     * @brief FixedPolygonShape virtual destructor.
      *
      *************************************************************************************************/
-    ~FixedPolygonShape();
+    virtual ~FixedPolygonShape();
 
     /**************************************************************************************************
      * @brief Draw the shape.
