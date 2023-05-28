@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2021 - 2022, Filip Vasiljevic
+ * Copyright (c) 2021 - 2023, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -20,7 +20,7 @@ namespace rinvid
 {
 
 /**************************************************************************************************
- * @brief An interface for objects that can transform (rotate and scale).
+ * @brief A base class for objects that can transform (rotate and scale).
  *
  *************************************************************************************************/
 class Transformable
