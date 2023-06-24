@@ -28,27 +28,26 @@ namespace rinvid
 
 Application::Application(std::uint32_t width, std::uint32_t height, const std::string& title,
                          std::uint16_t fps)
-    : window_{sf::VideoMode{width, height}, title}, current_screen_{nullptr},
-      new_screen_{nullptr}, fps_{fps}, running_{false}
+    : window_{sf::VideoMode{width, height}, title}, current_screen_{nullptr}, new_screen_{nullptr},
+      fps_{fps}, running_{false}
 {
 #ifdef _WIN32
     gladLoadGLLoader(reinterpret_cast<GLADloadproc>(sf::Context::getFunction));
 #endif
+
+    RinvidGfx::init();
+    auto size = window_.getSize();
+    RinvidGfx::set_viewport(0, 0, size.x, size.y);
 }
 
 void Application::run()
 {
-    const std::uint32_t           microseconds_in_a_second = 1'000'000;
+    constexpr std::uint32_t       microseconds_in_a_second = 1'000'000;
     std::chrono::duration<double> delta_time{};
     std::chrono::duration<double> total_frame_time{};
     sf::Event                     event;
 
-    auto size = window_.getSize();
-    RinvidGfx::set_viewport(0, 0, size.x, size.y);
-
     window_.setActive(true);
-
-    RinvidGfx::init();
 
     running_ = true;
     while (running_ == true)
