@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2022, Filip Vasiljevic
+ * Copyright (c) 2022 - 2023, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -59,6 +59,16 @@ class Shader
      *
      *************************************************************************************************/
     void set_float(const std::string& name, float value) const;
+
+    /**************************************************************************************************
+     * @brief Sets float2 uniform.
+     *
+     * @param name Name of the uniform to set.
+     * @param value1 First value to be set.
+     * @param value2 Second value to be set.
+     *
+     *************************************************************************************************/
+    void set_float2(const std::string& name, float value1, float value2) const;
 
     /**************************************************************************************************
      * @brief Sets float4 uniform.
