@@ -22,6 +22,7 @@
 #include "core/include/application.h"
 #include "core/include/camera.h"
 #include "core/include/circle_shape.h"
+#include "core/include/light.h"
 #include "core/include/light_manager.h"
 #include "core/include/quad_shape.h"
 #include "core/include/rectangle_shape.h"
@@ -44,6 +45,11 @@ class TestingGrounds : public rinvid::Screen
   private:
     void update(double delta_time) override;
 
+    rinvid::Texture background_texture{"examples/testing_grounds/resources/rinvid_bg.png"};
+    rinvid::Sprite  background_sprite{&background_texture, 800, 600,
+                                     rinvid::Vector2<float>{0.0F, 0.0F},
+                                     rinvid::Vector2<float>{0.0F, 0.0F}};
+
     bool                  quad_alive{true};
     rinvid::TriangleShape triangle{rinvid::Vector2<float>{400.0F, 200.0F},
                                    rinvid::Vector2<float>{300.0F, 100.0F},
@@ -65,6 +71,9 @@ class TestingGrounds : public rinvid::Screen
     rinvid::gui::Button button{};
 
     rinvid::Camera camera{};
+
+    rinvid::Light light_mid{};
+    rinvid::Light light_low{{650.0F, 480.0F}, 0.5, 1.0};
 };
 
 void TestingGrounds::create()
@@ -89,7 +98,11 @@ void TestingGrounds::create()
     button.set_mouse_hovering({button_regions.at(1)});
     button.set_clicked({button_regions.at(2)});
 
-    rinvid::LightManager::activate_ambient_light(0.3F);
+    light_mid.set_position(rinvid::Vector2<float>{320.0F, 250.0F});
+    light_mid.set_intensity(0.5F);
+    light_mid.set_falloff(0.1);
+
+    rinvid::LightManager::activate_ambient_light(0.5F);
 }
 
 void TestingGrounds::update(double delta_time)
@@ -122,6 +135,8 @@ void TestingGrounds::update(double delta_time)
     }
 
     camera.update();
+
+    background_sprite.draw();
 
     triangle.draw();
     if (quad_alive)
