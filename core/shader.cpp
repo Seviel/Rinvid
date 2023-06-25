@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2022, Filip Vasiljevic
+ * Copyright (c) 2022 - 2023, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -91,6 +91,17 @@ void Shader::set_float(const std::string& name, float value) const
         return;
     }
     GL_CALL(glUniform1f(location, value));
+}
+
+void Shader::set_float2(const std::string& name, float value1, float value2) const
+{
+    std::int32_t location = glGetUniformLocation(id_, name.c_str());
+    if (location == -1)
+    {
+        rinvid::errors::put_error_to_log("glGetUniformLocation error: invalid uniform name");
+        return;
+    }
+    GL_CALL(glUniform2f(location, value1, value2));
 }
 
 void Shader::set_float4(const std::string& name, float value1, float value2, float value3,
