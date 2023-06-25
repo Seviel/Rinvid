@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2021 - 2022, Filip Vasiljevic
+ * Copyright (c) 2021 - 2023, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -34,21 +34,20 @@ Application::Application(std::uint32_t width, std::uint32_t height, const std::s
 #ifdef _WIN32
     gladLoadGLLoader(reinterpret_cast<GLADloadproc>(sf::Context::getFunction));
 #endif
+
+    RinvidGfx::init();
+    auto size = window_.getSize();
+    RinvidGfx::set_viewport(0, 0, size.x, size.y);
 }
 
 void Application::run()
 {
-    const std::uint32_t           microseconds_in_a_second = 1'000'000;
+    constexpr std::uint32_t       microseconds_in_a_second = 1'000'000;
     std::chrono::duration<double> delta_time{};
     std::chrono::duration<double> total_frame_time{};
     sf::Event                     event;
 
-    auto size = window_.getSize();
-    RinvidGfx::set_viewport(0, 0, size.x, size.y);
-
     window_.setActive(true);
-
-    RinvidGfx::init();
 
     running_ = true;
     while (running_ == true)

@@ -8,6 +8,7 @@ cc_binary(
         ":resources/clck.png",
         ":resources/default_button.png",
         ":resources/logo.png",
+        ":resources/rinvid_bg.png",
     ],
     linkopts = select({
         "@bazel_tools//src/conditions:windows": ["-lsfml-window -lsfml-system -lopengl32 -lwinmm -lgdi32"],
