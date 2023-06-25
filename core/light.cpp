@@ -13,16 +13,11 @@
 #include "core/include/light.h"
 #include "core/include/rinvid_gfx.h"
 
-// constexpr float linear_low{1.749e-006F};
-// constexpr float linear_high{7.59e-005F};
-// constexpr float quadratic_low{1.999e-007F};
-// constexpr float quadratic_high{1.009e-005F};
-
 /// @todo Revisit these constants
-constexpr float linear_low{0.00001};
-constexpr float linear_high{0.01};
-constexpr float quadratic_low{0.0000001};
-constexpr float quadratic_high{0.0001};
+constexpr float linear_low{1.749e-006F};
+constexpr float linear_high{7.59e-005F};
+constexpr float quadratic_low{1.999e-007F};
+constexpr float quadratic_high{1.009e-005F};
 
 constexpr float intensity_low{0.0F};
 constexpr float intensity_high{0.1F};

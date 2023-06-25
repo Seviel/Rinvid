@@ -34,11 +34,11 @@ vec4 apply_light(vec3 object_color, vec3 ambient, int light_number)
       vec3 attenuation = vec3(light_constant[light_number], light_linear[light_number], light_quadratic[light_number]);
       /// @todo Revisit this formula
       float light_attenuation = 1.0 / (attenuation.x + attenuation.y * dist + attenuation.z * dist * dist);
-      color = vec4(light_attenuation, light_attenuation, light_attenuation, 1.0) * vec4(ambient * object_color, 1.0);
+      color = vec4(light_attenuation, light_attenuation, light_attenuation, 1.0) * vec4(object_color, 1.0);
    }
    else 
    {
-      color = vec4(ambient * object_color, 1.0);
+      color = vec4(object_color, 1.0);
    }
 
    return color;
@@ -53,10 +53,19 @@ void main()
    vec3 ambient = vec3(used_ambient_strength, used_ambient_strength, used_ambient_strength);
    vec3 color = vec3(0.0, 0.0, 0.0);
 
+   bool any_light_active = false;
    for (int i = 0; i < NUMBER_OF_LIGHTS; ++i)
    {
       if (light_active[i])
+      {
          color += apply_light(in_color.xyz * used_ambient_strength, ambient, i).xyz;
+         any_light_active = true;
+      }
+   }
+
+   if (!any_light_active)
+   {
+      color = in_color.xyz * used_ambient_strength;
    }
 
    out_color.xyz = color.xyz;
