@@ -100,9 +100,11 @@ void TestingGrounds::create()
 
     light_mid.set_position(rinvid::Vector2<float>{320.0F, 250.0F});
     light_mid.set_intensity(0.5F);
-    light_mid.set_falloff(0.1);
+    light_mid.set_falloff(0.5F);
 
-    rinvid::LightManager::activate_ambient_light(0.5F);
+    light_low.switch_it(false);
+
+    rinvid::LightManager::activate_ambient_light(0.3F);
 }
 
 void TestingGrounds::update(double delta_time)
