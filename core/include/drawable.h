@@ -33,16 +33,10 @@ class Drawable
     virtual ~Drawable(){};
 
     /**************************************************************************************************
-     * @brief Draws the object. Use this function for objects that are not animated.
+     * @brief Draws the object.
      *
      *************************************************************************************************/
     virtual void draw() = 0;
-
-    /**************************************************************************************************
-     * @brief Draws the object. Use this function for drawing animated objects.
-     *
-     *************************************************************************************************/
-    virtual void draw(double delta_time) = 0;
 };
 
 } // namespace rinvid

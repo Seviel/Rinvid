@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2020 - 2022, Filip Vasiljevic
+ * Copyright (c) 2020 - 2023, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -30,16 +30,6 @@ void TriangleShape::draw()
 {
     FixedPolygonShape::draw();
     draw_arrays(GL_TRIANGLES);
-}
-
-void TriangleShape::draw(double delta_time)
-{
-    /// This suppresses unused parameter warning. This method needs to be overriden because
-    /// FixedPolygonShape inherits Drawable interface which declares this version of draw as pure
-    /// virtual function.
-    (void)delta_time;
-
-    draw();
 }
 
 } // namespace rinvid
