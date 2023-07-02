@@ -8,7 +8,6 @@
  **********************************************************************/
 
 #include <algorithm>
-#include <iostream>
 
 #include "core/include/light.h"
 #include "core/include/rinvid_gfx.h"
@@ -74,11 +73,6 @@ Light::Light(Vector2<float> position, float intensity, float falloff)
 
     intensity_ = 1.0F - std::clamp(intensity, 0.0F, 1.0F);
     falloff_   = std::clamp(falloff, 0.0F, 1.0F);
-
-    std::cerr << "fallof liniar: " << remap(falloff_, 0.0F, 1.0F, linear_low, linear_high)
-              << std::endl;
-    std::cerr << "fallof quadratic: " << remap(falloff_, 0.0F, 1.0F, quadratic_low, quadratic_high)
-              << std::endl;
 
     if (number_of_lights_ > MAX_NUMBER_OF_LIGHTS)
     {

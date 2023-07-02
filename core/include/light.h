@@ -12,7 +12,6 @@
 
 #include <cstdint>
 
-#include "core/include/drawable.h"
 #include "util/include/color.h"
 #include "util/include/vector2.h"
 #include "util/include/vector3.h"
