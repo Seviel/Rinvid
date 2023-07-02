@@ -25,6 +25,7 @@ cc_library(
         "include/camera.h",
         "include/circle_shape.h",
         "include/drawable.h",
+        "include/drawable_animated.h",
         "include/fixed_polygon_shape.h",
         "include/light.h",
         "include/light_manager.h",

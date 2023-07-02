@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2020 - 2023, Filip Vasiljevic
+ * Copyright (c) 2023, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -7,40 +7,40 @@
  * repository for more details.
  **********************************************************************/
 
-#ifndef CORE_INCLUDE_TRIANGLE_SHAPE_H
-#define CORE_INCLUDE_TRIANGLE_SHAPE_H
+#ifndef CORE_INCLUDE_DRAWABLE_ANIMATED_H
+#define CORE_INCLUDE_DRAWABLE_ANIMATED_H
 
-#include "core/include/fixed_polygon_shape.h"
-#include "core/include/shape.h"
-#include "util/include/vector2.h"
+#include "core/include/drawable.h"
 
 namespace rinvid
 {
 
 /**************************************************************************************************
- * @brief A drawable triangle shape.
+ * @brief An interface for animated drawable objects.
  *
  *************************************************************************************************/
-class TriangleShape final : public FixedPolygonShape<3>
+class DrawableAnimated : public Drawable
 {
   public:
     /**************************************************************************************************
-     * @brief TriangleShape constructor.
-     *
-     * @param vert1 vertex one
-     * @param vert2 vertex two
-     * @param vert3 vertex three
+     * @brief DrawableAnimated constructor.
      *
      *************************************************************************************************/
-    TriangleShape(Vector2<float> vert1, Vector2<float> vert2, Vector2<float> vert3);
+    DrawableAnimated(){};
 
     /**************************************************************************************************
-     * @brief Draws the triangle.
+     * @brief DrawableAnimated virtual destructor.
      *
      *************************************************************************************************/
-    virtual void draw() override;
+    virtual ~DrawableAnimated(){};
+
+    /**************************************************************************************************
+     * @brief Draws the animated object.
+     *
+     *************************************************************************************************/
+    virtual void draw(double delta_time) = 0;
 };
 
 } // namespace rinvid
 
-#endif // CORE_INCLUDE_TRIANGLE_SHAPE_H
+#endif // CORE_INCLUDE_DRAWABLE_ANIMATED_H

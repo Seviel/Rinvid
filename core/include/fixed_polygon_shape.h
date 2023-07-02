@@ -84,19 +84,6 @@ class FixedPolygonShape : public Shape, public Transformable, public Drawable
     virtual void draw() override;
 
     /**************************************************************************************************
-     * @brief Draw the shape.
-     *
-     * This version of draw() is intended for animated objects, nevertheless
-     * needs to be overriden even in objects that can't be animated because it's a pure virtual
-     * method. This method needs to be overridden in child classes. When overriding it, call base
-     * class method first and then call draw_arrays() with appropriate argument.
-     *
-     * @param delta_time Time passed in seconds since last frame (not used in this case)
-     *
-     *************************************************************************************************/
-    virtual void draw(double delta_time) override;
-
-    /**************************************************************************************************
      * @brief Move shape by adding move_vector to its position vector.
      *
      * @param move_vector Vector to be added to shape's position vector
@@ -260,17 +247,6 @@ void FixedPolygonShape<number_of_vertices>::draw()
 
     const auto shader = RinvidGfx::get_shape_default_shader();
     shader->set_float4("in_color", color_.r, color_.g, color_.b, color_.a);
-}
-
-template <typename std::uint32_t number_of_vertices>
-void FixedPolygonShape<number_of_vertices>::draw(double delta_time)
-{
-    /// This suppresses unused parameter warning. This method needs to be overriden because
-    /// FixedPolygonShape inherits Drawable interface which declares this version of draw as pure
-    /// virtual function.
-    (void)delta_time;
-
-    draw();
 }
 
 template <typename std::uint32_t number_of_vertices>

@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2021 - 2022, Filip Vasiljevic
+ * Copyright (c) 2021 - 2023, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -17,6 +17,7 @@
 
 #include "core/include/animation.h"
 #include "core/include/drawable.h"
+#include "core/include/drawable_animated.h"
 #include "core/include/texture.h"
 #include "core/include/transformable.h"
 #include "extern/glm/glm/mat4x4.hpp"
@@ -26,7 +27,7 @@
 namespace rinvid
 {
 
-class Sprite : public Transformable, public Drawable
+class Sprite : public Transformable, public DrawableAnimated
 {
   public:
     /**************************************************************************************************
