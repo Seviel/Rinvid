@@ -127,13 +127,13 @@ void TestingGrounds::update(double delta_time)
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) ||
         sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
     {
-        camera.move(rinvid::Vector2<float>{-480.0F * static_cast<float>(delta_time), 0.0F});
+        camera.move(rinvid::Vector2<float>{480.0F * static_cast<float>(delta_time), 0.0F});
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) ||
         sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
     {
-        camera.move(rinvid::Vector2<float>{480.0F * static_cast<float>(delta_time), 0.0F});
+        camera.move(rinvid::Vector2<float>{-480.0F * static_cast<float>(delta_time), 0.0F});
     }
 
     camera.update();
