@@ -55,7 +55,7 @@ Shader::Shader(const char* vert_path, const char* frag_path)
     GL_CALL(glDeleteShader(frag_handle));
 }
 
-void Shader::use()
+void Shader::use() const
 {
     glUseProgram(id_);
 }

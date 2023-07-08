@@ -246,7 +246,7 @@ void FixedPolygonShape<number_of_vertices>::draw()
     RinvidGfx::update_mvp_matrix(get_transform(), RinvidGfx::get_shape_default_shader_id());
 
     const auto shader = RinvidGfx::get_shape_default_shader();
-    shader->set_float4("in_color", color_.r, color_.g, color_.b, color_.a);
+    shader.set_float4("in_color", color_.r, color_.g, color_.b, color_.a);
 }
 
 template <typename std::uint32_t number_of_vertices>

@@ -15,20 +15,20 @@
 namespace rinvid
 {
 
-glm::mat4               RinvidGfx::model_view_projection_{1.0F};
-glm::mat4               RinvidGfx::view_{1.0F};
-glm::mat4               RinvidGfx::projection_{1.0F};
-std::shared_ptr<Shader> RinvidGfx::shape_default_shader_{};
-std::shared_ptr<Shader> RinvidGfx::texture_default_shader_{};
-std::int32_t            RinvidGfx::width_{};
-std::int32_t            RinvidGfx::height_{};
+glm::mat4    RinvidGfx::model_view_projection_{1.0F};
+glm::mat4    RinvidGfx::view_{1.0F};
+glm::mat4    RinvidGfx::projection_{1.0F};
+Shader       RinvidGfx::shape_default_shader_{};
+Shader       RinvidGfx::texture_default_shader_{};
+std::int32_t RinvidGfx::width_{};
+std::int32_t RinvidGfx::height_{};
 
 void RinvidGfx::init_default_shaders()
 {
-    shape_default_shader_   = std::make_shared<Shader>("core/shaders/default_shape.vert",
-                                                     "core/shaders/default_shape.frag");
-    texture_default_shader_ = std::make_shared<Shader>("core/shaders/default_texture.vert",
-                                                       "core/shaders/default_texture.frag");
+    shape_default_shader_ =
+        Shader("core/shaders/default_shape.vert", "core/shaders/default_shape.frag");
+    texture_default_shader_ =
+        Shader("core/shaders/default_texture.vert", "core/shaders/default_texture.frag");
 }
 
 void RinvidGfx::init()
@@ -57,20 +57,20 @@ void RinvidGfx::clear_screen(float r, float g, float b, float a)
 
 std::uint32_t RinvidGfx::get_shape_default_shader_id()
 {
-    return shape_default_shader_->get_id();
+    return shape_default_shader_.get_id();
 }
 
 std::uint32_t RinvidGfx::get_texture_default_shader_id()
 {
-    return texture_default_shader_->get_id();
+    return texture_default_shader_.get_id();
 }
 
-const std::shared_ptr<Shader> RinvidGfx::get_shape_default_shader()
+const Shader RinvidGfx::get_shape_default_shader()
 {
     return shape_default_shader_;
 }
 
-const std::shared_ptr<Shader> RinvidGfx::get_texture_default_shader()
+const Shader RinvidGfx::get_texture_default_shader()
 {
     return texture_default_shader_;
 }
@@ -112,12 +112,12 @@ const glm::mat4& RinvidGfx::get_view()
 
 void RinvidGfx::use_shape_default_shader()
 {
-    shape_default_shader_->use();
+    shape_default_shader_.use();
 }
 
 void RinvidGfx::use_texture_default_shader()
 {
-    texture_default_shader_->use();
+    texture_default_shader_.use();
 }
 
 } // namespace rinvid
