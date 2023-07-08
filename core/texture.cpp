@@ -127,7 +127,7 @@ void Texture::draw(const glm::mat4& transform, float opacity)
     RinvidGfx::update_mvp_matrix(transform, RinvidGfx::get_texture_default_shader_id());
 
     const auto shader = RinvidGfx::get_texture_default_shader();
-    shader->set_float("opacity", opacity);
+    shader.set_float("opacity", opacity);
 
     GL_CALL(glBindTexture(GL_TEXTURE_2D, texture_id_));
     GL_CALL(glBindVertexArray(vertex_array_object_));

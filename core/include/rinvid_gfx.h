@@ -87,7 +87,7 @@ class RinvidGfx
      * @return A shared ptr to default shape Shader object.
      *
      *************************************************************************************************/
-    static const std::shared_ptr<Shader> get_shape_default_shader();
+    static const Shader get_shape_default_shader();
 
     /**************************************************************************************************
      * @brief Returns default texture shader object.
@@ -95,7 +95,7 @@ class RinvidGfx
      * @return A shared ptr to default texture Shader object.
      *
      *************************************************************************************************/
-    static const std::shared_ptr<Shader> get_texture_default_shader();
+    static const Shader get_texture_default_shader();
 
     /**************************************************************************************************
      * @brief Returns screen width.
@@ -180,13 +180,13 @@ class RinvidGfx
   private:
     static void init_default_shaders();
 
-    static glm::mat4               model_view_projection_;
-    static glm::mat4               view_;
-    static glm::mat4               projection_;
-    static std::shared_ptr<Shader> shape_default_shader_;
-    static std::shared_ptr<Shader> texture_default_shader_;
-    static std::int32_t            width_;
-    static std::int32_t            height_;
+    static glm::mat4    model_view_projection_;
+    static glm::mat4    view_;
+    static glm::mat4    projection_;
+    static Shader       shape_default_shader_;
+    static Shader       texture_default_shader_;
+    static std::int32_t width_;
+    static std::int32_t height_;
 };
 
 } // namespace rinvid

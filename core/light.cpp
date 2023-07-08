@@ -43,26 +43,26 @@ Light::Light() : position_{0.0F, 0.0F}, intensity_{0.5F}, falloff_{0.5F}
     }
 
     const auto texture_shader = RinvidGfx::get_texture_default_shader();
-    texture_shader->use();
-    texture_shader->set_bool("light_active[" + std::to_string(ordinal_) + "]", true);
-    texture_shader->set_float2("light_pos[" + std::to_string(ordinal_) + "]", position_.x,
-                               RinvidGfx::get_height() - position_.y);
-    texture_shader->set_float("light_constant[" + std::to_string(ordinal_) + "]", intensity_);
-    texture_shader->set_float("light_linear[" + std::to_string(ordinal_) + "]",
-                              remap(falloff_, 0.0F, 1.0F, linear_low, linear_high));
-    texture_shader->set_float("light_quadratic[" + std::to_string(ordinal_) + "]",
-                              remap(falloff_, 0.0F, 1.0F, quadratic_low, quadratic_high));
+    texture_shader.use();
+    texture_shader.set_bool("light_active[" + std::to_string(ordinal_) + "]", true);
+    texture_shader.set_float2("light_pos[" + std::to_string(ordinal_) + "]", position_.x,
+                              RinvidGfx::get_height() - position_.y);
+    texture_shader.set_float("light_constant[" + std::to_string(ordinal_) + "]", intensity_);
+    texture_shader.set_float("light_linear[" + std::to_string(ordinal_) + "]",
+                             remap(falloff_, 0.0F, 1.0F, linear_low, linear_high));
+    texture_shader.set_float("light_quadratic[" + std::to_string(ordinal_) + "]",
+                             remap(falloff_, 0.0F, 1.0F, quadratic_low, quadratic_high));
 
     const auto shape_shader = RinvidGfx::get_shape_default_shader();
-    shape_shader->use();
-    shape_shader->set_bool("light_active[" + std::to_string(ordinal_) + "]", true);
-    shape_shader->set_float2("light_pos[" + std::to_string(ordinal_) + "]", position_.x,
-                             RinvidGfx::get_height() - position_.y);
-    shape_shader->set_float("light_constant[" + std::to_string(ordinal_) + "]", intensity_);
-    shape_shader->set_float("light_linear[" + std::to_string(ordinal_) + "]",
-                            remap(falloff_, 0.0F, 1.0F, linear_low, linear_high));
-    shape_shader->set_float("light_quadratic[" + std::to_string(ordinal_) + "]",
-                            remap(falloff_, 0.0F, 1.0F, quadratic_low, quadratic_high));
+    shape_shader.use();
+    shape_shader.set_bool("light_active[" + std::to_string(ordinal_) + "]", true);
+    shape_shader.set_float2("light_pos[" + std::to_string(ordinal_) + "]", position_.x,
+                            RinvidGfx::get_height() - position_.y);
+    shape_shader.set_float("light_constant[" + std::to_string(ordinal_) + "]", intensity_);
+    shape_shader.set_float("light_linear[" + std::to_string(ordinal_) + "]",
+                           remap(falloff_, 0.0F, 1.0F, linear_low, linear_high));
+    shape_shader.set_float("light_quadratic[" + std::to_string(ordinal_) + "]",
+                           remap(falloff_, 0.0F, 1.0F, quadratic_low, quadratic_high));
 }
 
 Light::Light(Vector2<float> position, float intensity, float falloff)
@@ -80,28 +80,28 @@ Light::Light(Vector2<float> position, float intensity, float falloff)
     }
 
     const auto texture_shader = RinvidGfx::get_texture_default_shader();
-    texture_shader->use();
-    texture_shader->set_bool("light_active[" + std::to_string(ordinal_) + "]", true);
-    texture_shader->set_float2("light_pos[" + std::to_string(ordinal_) + "]", position_.x,
-                               RinvidGfx::get_height() - position_.y);
-    texture_shader->set_float("light_constant[" + std::to_string(ordinal_) + "]",
-                              remap(intensity_, 0.0F, 1.0F, intensity_low, intensity_high));
-    texture_shader->set_float("light_linear[" + std::to_string(ordinal_) + "]",
-                              remap(falloff_, 0.0F, 1.0F, linear_low, linear_high));
-    texture_shader->set_float("light_quadratic[" + std::to_string(ordinal_) + "]",
-                              remap(falloff_, 0.0F, 1.0F, quadratic_low, quadratic_high));
+    texture_shader.use();
+    texture_shader.set_bool("light_active[" + std::to_string(ordinal_) + "]", true);
+    texture_shader.set_float2("light_pos[" + std::to_string(ordinal_) + "]", position_.x,
+                              RinvidGfx::get_height() - position_.y);
+    texture_shader.set_float("light_constant[" + std::to_string(ordinal_) + "]",
+                             remap(intensity_, 0.0F, 1.0F, intensity_low, intensity_high));
+    texture_shader.set_float("light_linear[" + std::to_string(ordinal_) + "]",
+                             remap(falloff_, 0.0F, 1.0F, linear_low, linear_high));
+    texture_shader.set_float("light_quadratic[" + std::to_string(ordinal_) + "]",
+                             remap(falloff_, 0.0F, 1.0F, quadratic_low, quadratic_high));
 
     const auto shape_shader = RinvidGfx::get_shape_default_shader();
-    shape_shader->use();
-    shape_shader->set_bool("light_active[" + std::to_string(ordinal_) + "]", true);
-    shape_shader->set_float2("light_pos[" + std::to_string(ordinal_) + "]", position_.x,
-                             RinvidGfx::get_height() - position_.y);
-    shape_shader->set_float("light_constant[" + std::to_string(ordinal_) + "]",
-                            remap(intensity_, 0.0F, 1.0F, intensity_low, intensity_high));
-    shape_shader->set_float("light_linear[" + std::to_string(ordinal_) + "]",
-                            remap(falloff_, 0.0F, 1.0F, linear_low, linear_high));
-    shape_shader->set_float("light_quadratic[" + std::to_string(ordinal_) + "]",
-                            remap(falloff_, 0.0F, 1.0F, quadratic_low, quadratic_high));
+    shape_shader.use();
+    shape_shader.set_bool("light_active[" + std::to_string(ordinal_) + "]", true);
+    shape_shader.set_float2("light_pos[" + std::to_string(ordinal_) + "]", position_.x,
+                            RinvidGfx::get_height() - position_.y);
+    shape_shader.set_float("light_constant[" + std::to_string(ordinal_) + "]",
+                           remap(intensity_, 0.0F, 1.0F, intensity_low, intensity_high));
+    shape_shader.set_float("light_linear[" + std::to_string(ordinal_) + "]",
+                           remap(falloff_, 0.0F, 1.0F, linear_low, linear_high));
+    shape_shader.set_float("light_quadratic[" + std::to_string(ordinal_) + "]",
+                           remap(falloff_, 0.0F, 1.0F, quadratic_low, quadratic_high));
 }
 
 void Light::move(const Vector2<float> move_vector)
@@ -115,14 +115,14 @@ void Light::set_position(const Vector2<float> vector)
     position_ = vector;
 
     const auto texture_shader = RinvidGfx::get_texture_default_shader();
-    texture_shader->use();
-    texture_shader->set_float2("light_pos[" + std::to_string(ordinal_) + "]", position_.x,
-                               RinvidGfx::get_height() - position_.y);
+    texture_shader.use();
+    texture_shader.set_float2("light_pos[" + std::to_string(ordinal_) + "]", position_.x,
+                              RinvidGfx::get_height() - position_.y);
 
     const auto shape_shader = RinvidGfx::get_shape_default_shader();
-    shape_shader->use();
-    shape_shader->set_float2("light_pos[" + std::to_string(ordinal_) + "]", position_.x,
-                             RinvidGfx::get_height() - position_.y);
+    shape_shader.use();
+    shape_shader.set_float2("light_pos[" + std::to_string(ordinal_) + "]", position_.x,
+                            RinvidGfx::get_height() - position_.y);
 }
 
 void Light::set_intensity(float intensity)
@@ -130,14 +130,14 @@ void Light::set_intensity(float intensity)
     intensity_ = 1.0F - std::clamp(intensity, 0.0F, 1.0F);
 
     const auto texture_shader = RinvidGfx::get_texture_default_shader();
-    texture_shader->use();
-    texture_shader->set_float("light_constant[" + std::to_string(ordinal_) + "]",
-                              remap(intensity_, 0.0F, 1.0F, intensity_low, intensity_high));
+    texture_shader.use();
+    texture_shader.set_float("light_constant[" + std::to_string(ordinal_) + "]",
+                             remap(intensity_, 0.0F, 1.0F, intensity_low, intensity_high));
 
     const auto shape_shader = RinvidGfx::get_shape_default_shader();
-    shape_shader->use();
-    shape_shader->set_float("light_constant[" + std::to_string(ordinal_) + "]",
-                            remap(intensity_, 0.0F, 1.0F, intensity_low, intensity_high));
+    shape_shader.use();
+    shape_shader.set_float("light_constant[" + std::to_string(ordinal_) + "]",
+                           remap(intensity_, 0.0F, 1.0F, intensity_low, intensity_high));
 }
 
 void Light::set_falloff(float falloff)
@@ -145,29 +145,29 @@ void Light::set_falloff(float falloff)
     falloff_ = std::clamp(falloff, 0.0F, 1.0F);
 
     const auto texture_shader = RinvidGfx::get_texture_default_shader();
-    texture_shader->use();
-    texture_shader->set_float("light_linear[" + std::to_string(ordinal_) + "]",
-                              remap(falloff_, 0.0F, 1.0F, linear_low, linear_high));
-    texture_shader->set_float("light_quadratic[" + std::to_string(ordinal_) + "]",
-                              remap(falloff_, 0.0F, 1.0F, quadratic_low, quadratic_high));
+    texture_shader.use();
+    texture_shader.set_float("light_linear[" + std::to_string(ordinal_) + "]",
+                             remap(falloff_, 0.0F, 1.0F, linear_low, linear_high));
+    texture_shader.set_float("light_quadratic[" + std::to_string(ordinal_) + "]",
+                             remap(falloff_, 0.0F, 1.0F, quadratic_low, quadratic_high));
 
     const auto shape_shader = RinvidGfx::get_shape_default_shader();
-    shape_shader->use();
-    shape_shader->set_float("light_linear[" + std::to_string(ordinal_) + "]",
-                            remap(falloff_, 0.0F, 1.0F, linear_low, linear_high));
-    shape_shader->set_float("light_quadratic[" + std::to_string(ordinal_) + "]",
-                            remap(falloff_, 0.0F, 1.0F, quadratic_low, quadratic_high));
+    shape_shader.use();
+    shape_shader.set_float("light_linear[" + std::to_string(ordinal_) + "]",
+                           remap(falloff_, 0.0F, 1.0F, linear_low, linear_high));
+    shape_shader.set_float("light_quadratic[" + std::to_string(ordinal_) + "]",
+                           remap(falloff_, 0.0F, 1.0F, quadratic_low, quadratic_high));
 }
 
 void Light::switch_it(bool on)
 {
     const auto texture_shader = RinvidGfx::get_texture_default_shader();
-    texture_shader->use();
-    texture_shader->set_bool("light_active[" + std::to_string(ordinal_) + "]", on);
+    texture_shader.use();
+    texture_shader.set_bool("light_active[" + std::to_string(ordinal_) + "]", on);
 
     const auto shape_shader = RinvidGfx::get_shape_default_shader();
-    shape_shader->use();
-    shape_shader->set_bool("light_active[" + std::to_string(ordinal_) + "]", on);
+    shape_shader.use();
+    shape_shader.set_bool("light_active[" + std::to_string(ordinal_) + "]", on);
 }
 
 } // namespace rinvid

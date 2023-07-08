@@ -20,14 +20,14 @@ void LightManager::activate_ambient_light(float strength)
     strength = std::clamp(strength, 0.0F, 1.0F);
 
     const auto shape_shader = RinvidGfx::get_shape_default_shader();
-    shape_shader->use();
-    shape_shader->set_bool("use_ambient_light", true);
-    shape_shader->set_float("ambient_strength", strength);
+    shape_shader.use();
+    shape_shader.set_bool("use_ambient_light", true);
+    shape_shader.set_float("ambient_strength", strength);
 
     const auto texture_shader = RinvidGfx::get_texture_default_shader();
-    texture_shader->use();
-    texture_shader->set_bool("use_ambient_light", true);
-    texture_shader->set_float("ambient_strength", strength);
+    texture_shader.use();
+    texture_shader.set_bool("use_ambient_light", true);
+    texture_shader.set_float("ambient_strength", strength);
 }
 
 } // namespace rinvid
