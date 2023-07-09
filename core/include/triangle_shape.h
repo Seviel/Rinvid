@@ -21,7 +21,7 @@ namespace rinvid
  * @brief A drawable triangle shape.
  *
  *************************************************************************************************/
-class TriangleShape final : public FixedPolygonShape<3>
+class TriangleShape final : public FixedPolygonShape<3, GL_TRIANGLES>
 {
   public:
     /**************************************************************************************************
@@ -33,12 +33,6 @@ class TriangleShape final : public FixedPolygonShape<3>
      *
      *************************************************************************************************/
     TriangleShape(Vector2<float> vert1, Vector2<float> vert2, Vector2<float> vert3);
-
-    /**************************************************************************************************
-     * @brief Draws the triangle.
-     *
-     *************************************************************************************************/
-    virtual void draw() override;
 };
 
 } // namespace rinvid

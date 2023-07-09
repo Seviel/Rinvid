@@ -21,7 +21,7 @@ namespace rinvid
  * @brief A drawable quad shape.
  *
  *************************************************************************************************/
-class QuadShape final : public FixedPolygonShape<4>
+class QuadShape final : public FixedPolygonShape<4, GL_QUADS>
 {
   public:
     /**************************************************************************************************
@@ -35,12 +35,6 @@ class QuadShape final : public FixedPolygonShape<4>
      *************************************************************************************************/
     QuadShape(Vector2<float> top_left, Vector2<float> top_right, Vector2<float> bottom_right,
               Vector2<float> bottom_left);
-
-    /**************************************************************************************************
-     * @brief Draws the quad.
-     *
-     *************************************************************************************************/
-    virtual void draw() override;
 };
 
 } // namespace rinvid

@@ -29,10 +29,4 @@ QuadShape::QuadShape(Vector2<float> top_left, Vector2<float> top_right, Vector2<
     update_gl_buffer_data();
 }
 
-void QuadShape::draw()
-{
-    FixedPolygonShape::draw();
-    draw_arrays(GL_QUADS);
-}
-
 } // namespace rinvid

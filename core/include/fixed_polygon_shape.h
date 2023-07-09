@@ -28,17 +28,28 @@ namespace rinvid
  * @param number_of_vertices How many vertices does the shape consist of
  *
  *************************************************************************************************/
-template <typename std::uint32_t number_of_vertices>
+template <typename std::uint32_t number_of_vertices, GLenum draw_mode = GL_POLYGON>
 class FixedPolygonShape : public Shape, public Transformable, public Drawable
 {
   public:
     /**************************************************************************************************
      * @brief FixedPolygonShape constructor.
      *
-     * Initializes underlying OpenGl objects and internal vector of vertices.
+     * Initializes underlying OpenGl objects and internal vector of vertices. Use this constructor
+     * for initializing derived objects.
      *
      *************************************************************************************************/
     FixedPolygonShape();
+
+    /**************************************************************************************************
+     * @brief FixedPolygonShape constructor.
+     *
+     * Initializes underlying OpenGl objects. Use this constructor when creating arbitrary polygon.
+     *
+     * @param vertices Vertices of the polygon
+     *
+     *************************************************************************************************/
+    FixedPolygonShape(std::vector<Vector2<float>> vertices);
 
     /**************************************************************************************************
      * @brief Copy constructor deleted.
@@ -76,9 +87,6 @@ class FixedPolygonShape : public Shape, public Transformable, public Drawable
 
     /**************************************************************************************************
      * @brief Draw the shape.
-     *
-     * This method needs to be overridden in child classes. When overriding it, call base class
-     * method first and then call draw_arrays() with appropriate argument.
      *
      *************************************************************************************************/
     virtual void draw() override;
@@ -126,17 +134,7 @@ class FixedPolygonShape : public Shape, public Transformable, public Drawable
      *************************************************************************************************/
     void init_vertex_buffer();
 
-    /**************************************************************************************************
-     * @brief A wrapper around glDrawArrays.
-     *
-     * @param mode A proper GLenum mode constant needs to be passed depending on what are you
-     * drawing (e.g. GL_QUADS, GL_TRIANGLES...)
-     *
-     *************************************************************************************************/
-    void draw_arrays(GLenum mode);
-
-    const std::uint32_t number_of_vertices_;
-
+    const std::uint32_t         number_of_vertices_;
     std::vector<Vector2<float>> vertices_;
 
     // Times 3 because each vertex has x, y, and z component.
@@ -153,8 +151,18 @@ class FixedPolygonShape : public Shape, public Transformable, public Drawable
     Rect non_transformed_bounding_rect();
 };
 
-template <typename std::uint32_t number_of_vertices>
-FixedPolygonShape<number_of_vertices>::FixedPolygonShape()
+template <typename std::uint32_t number_of_vertices, GLenum draw_mode>
+FixedPolygonShape<number_of_vertices, draw_mode>::FixedPolygonShape(
+    std::vector<Vector2<float>> vertices)
+    : number_of_vertices_{number_of_vertices}, vertices_{vertices}, gl_vertices_{}
+{
+    init_vertex_buffer();
+    calculate_origin();
+    update_gl_buffer_data();
+}
+
+template <typename std::uint32_t number_of_vertices, GLenum draw_mode>
+FixedPolygonShape<number_of_vertices, draw_mode>::FixedPolygonShape()
     : number_of_vertices_{number_of_vertices}, vertices_{}, gl_vertices_{}
 {
     init_vertex_buffer();
@@ -165,8 +173,8 @@ FixedPolygonShape<number_of_vertices>::FixedPolygonShape()
     }
 }
 
-template <typename std::uint32_t number_of_vertices>
-FixedPolygonShape<number_of_vertices>::FixedPolygonShape(FixedPolygonShape&& other)
+template <typename std::uint32_t number_of_vertices, GLenum draw_mode>
+FixedPolygonShape<number_of_vertices, draw_mode>::FixedPolygonShape(FixedPolygonShape&& other)
     : Shape(std::move(other)), number_of_vertices_{number_of_vertices}, vertices_{}, gl_vertices_{}
 {
     vertices_ = std::move(other.vertices_);
@@ -174,9 +182,9 @@ FixedPolygonShape<number_of_vertices>::FixedPolygonShape(FixedPolygonShape&& oth
               std::begin(this->gl_vertices_));
 }
 
-template <typename std::uint32_t number_of_vertices>
-FixedPolygonShape<number_of_vertices>& FixedPolygonShape<number_of_vertices>::
-                                       operator=(FixedPolygonShape&& other)
+template <typename std::uint32_t number_of_vertices, GLenum draw_mode>
+FixedPolygonShape<number_of_vertices, draw_mode>& FixedPolygonShape<number_of_vertices, draw_mode>::
+                                                  operator=(FixedPolygonShape&& other)
 {
     Shape::operator=(std::move(other));
 
@@ -187,13 +195,13 @@ FixedPolygonShape<number_of_vertices>& FixedPolygonShape<number_of_vertices>::
     return *this;
 }
 
-template <typename std::uint32_t number_of_vertices>
-FixedPolygonShape<number_of_vertices>::~FixedPolygonShape()
+template <typename std::uint32_t number_of_vertices, GLenum draw_mode>
+FixedPolygonShape<number_of_vertices, draw_mode>::~FixedPolygonShape()
 {
 }
 
-template <typename std::uint32_t number_of_vertices>
-void FixedPolygonShape<number_of_vertices>::update_gl_buffer_data()
+template <typename std::uint32_t number_of_vertices, GLenum draw_mode>
+void FixedPolygonShape<number_of_vertices, draw_mode>::update_gl_buffer_data()
 {
     for (std::uint32_t i{0}; i < number_of_vertices; ++i)
     {
@@ -205,8 +213,8 @@ void FixedPolygonShape<number_of_vertices>::update_gl_buffer_data()
     GL_CALL(glBufferData(GL_ARRAY_BUFFER, sizeof(gl_vertices_), gl_vertices_, GL_DYNAMIC_DRAW));
 }
 
-template <typename std::uint32_t number_of_vertices>
-void FixedPolygonShape<number_of_vertices>::calculate_origin()
+template <typename std::uint32_t number_of_vertices, GLenum draw_mode>
+void FixedPolygonShape<number_of_vertices, draw_mode>::calculate_origin()
 {
     Rect rect = non_transformed_bounding_rect();
 
@@ -214,8 +222,8 @@ void FixedPolygonShape<number_of_vertices>::calculate_origin()
     origin_.y = rect.position.y + (rect.height / 2);
 }
 
-template <typename std::uint32_t number_of_vertices>
-void FixedPolygonShape<number_of_vertices>::init_vertex_buffer()
+template <typename std::uint32_t number_of_vertices, GLenum draw_mode>
+void FixedPolygonShape<number_of_vertices, draw_mode>::init_vertex_buffer()
 {
     GL_CALL(glGenVertexArrays(1, &vertex_array_object_));
     GL_CALL(glBindVertexArray(vertex_array_object_));
@@ -230,27 +238,21 @@ void FixedPolygonShape<number_of_vertices>::init_vertex_buffer()
     GL_CALL(glBindVertexArray(0));
 }
 
-template <typename std::uint32_t number_of_vertices>
-void FixedPolygonShape<number_of_vertices>::draw_arrays(GLenum mode)
+template <typename std::uint32_t number_of_vertices, GLenum draw_mode>
+void FixedPolygonShape<number_of_vertices, draw_mode>::draw()
 {
+    RinvidGfx::use_shape_default_shader();
+    RinvidGfx::update_mvp_matrix(get_transform(), RinvidGfx::get_shape_default_shader_id());
+    const auto shader = RinvidGfx::get_shape_default_shader();
+    shader.set_float4("in_color", color_.r, color_.g, color_.b, color_.a);
+
     GL_CALL(glBindVertexArray(vertex_array_object_));
-    GL_CALL(glDrawArrays(mode, 0, number_of_vertices_));
+    GL_CALL(glDrawArrays(draw_mode, 0, number_of_vertices_));
     GL_CALL(glBindVertexArray(0));
 }
 
-template <typename std::uint32_t number_of_vertices>
-void FixedPolygonShape<number_of_vertices>::draw()
-{
-    RinvidGfx::use_shape_default_shader();
-
-    RinvidGfx::update_mvp_matrix(get_transform(), RinvidGfx::get_shape_default_shader_id());
-
-    const auto shader = RinvidGfx::get_shape_default_shader();
-    shader.set_float4("in_color", color_.r, color_.g, color_.b, color_.a);
-}
-
-template <typename std::uint32_t number_of_vertices>
-void FixedPolygonShape<number_of_vertices>::move(const Vector2<float> move_vector)
+template <typename std::uint32_t number_of_vertices, GLenum draw_mode>
+void FixedPolygonShape<number_of_vertices, draw_mode>::move(const Vector2<float> move_vector)
 {
     for (std::uint32_t i{0}; i < number_of_vertices; ++i)
     {
@@ -260,8 +262,8 @@ void FixedPolygonShape<number_of_vertices>::move(const Vector2<float> move_vecto
     calculate_origin();
 }
 
-template <typename std::uint32_t number_of_vertices>
-void FixedPolygonShape<number_of_vertices>::set_position(const Vector2<float> vector)
+template <typename std::uint32_t number_of_vertices, GLenum draw_mode>
+void FixedPolygonShape<number_of_vertices, draw_mode>::set_position(const Vector2<float> vector)
 {
     calculate_origin();
 
@@ -278,8 +280,8 @@ void FixedPolygonShape<number_of_vertices>::set_position(const Vector2<float> ve
     origin_ = vector;
 }
 
-template <typename std::uint32_t number_of_vertices>
-Rect FixedPolygonShape<number_of_vertices>::bounding_rect()
+template <typename std::uint32_t number_of_vertices, GLenum draw_mode>
+Rect FixedPolygonShape<number_of_vertices, draw_mode>::bounding_rect()
 {
     if (is_transformed() == false)
     {
@@ -313,8 +315,8 @@ Rect FixedPolygonShape<number_of_vertices>::bounding_rect()
     return rect;
 }
 
-template <typename std::uint32_t number_of_vertices>
-Rect FixedPolygonShape<number_of_vertices>::non_transformed_bounding_rect()
+template <typename std::uint32_t number_of_vertices, GLenum draw_mode>
+Rect FixedPolygonShape<number_of_vertices, draw_mode>::non_transformed_bounding_rect()
 {
     Rect rect{};
 

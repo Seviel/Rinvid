@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2020 - 2022, Filip Vasiljevic
+ * Copyright (c) 2020 - 2023, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -57,10 +57,14 @@ class TestingGrounds : public rinvid::Screen
     rinvid::QuadShape     quad{
         rinvid::Vector2<float>{100.0F, 40.0F}, rinvid::Vector2<float>{150.0F, 40.0F},
         rinvid::Vector2<float>{160.0F, 90.0F}, rinvid::Vector2<float>{90.0F, 90.0F}};
-    rinvid::RectangleShape rectangle{rinvid::Vector2<float>{350.0F, 35.0F}, 100.0F, 50.0F};
-    rinvid::CircleShape    circle{rinvid::Vector2<float>{500.0F, 300.0f}, 100.0F};
-    rinvid::Texture        texture{"examples/testing_grounds/resources/logo.png"};
-    rinvid::Sprite         sprite{&texture, 100, 100, rinvid::Vector2<float>{200.0F, 200.0F},
+    rinvid::RectangleShape       rectangle{rinvid::Vector2<float>{350.0F, 35.0F}, 100.0F, 50.0F};
+    rinvid::CircleShape          circle{rinvid::Vector2<float>{500.0F, 300.0f}, 100.0F};
+    rinvid::FixedPolygonShape<5> polygon{
+        {rinvid::Vector2<float>{100.0F, 100.0F}, rinvid::Vector2<float>{125.0F, 75.0F},
+         rinvid::Vector2<float>{150.0F, 100.0F}, rinvid::Vector2<float>{150.0F, 200.0F},
+         rinvid::Vector2<float>{100.0F, 200.0F}}};
+    rinvid::Texture texture{"examples/testing_grounds/resources/logo.png"};
+    rinvid::Sprite  sprite{&texture, 100, 100, rinvid::Vector2<float>{200.0F, 200.0F},
                           rinvid::Vector2<float>{0.0F, 0.0F}};
 
     rinvid::Texture clock_texture{"examples/testing_grounds/resources/clck.png"};
@@ -83,6 +87,8 @@ void TestingGrounds::create()
     rectangle.set_color(rinvid::Color{0.2F, 0.2F, 0.8F, 1.0F});
     rectangle.set_rotation(90.0F);
     circle.set_color(rinvid::Color{0.1F, 0.7F, 0.8F, 1.0F});
+    polygon.set_color(rinvid::Color{1.0F, 1.0F, 1.0F, 1.0F});
+    polygon.set_position(rinvid::Vector2<float>{500.0F, 500.0F});
 
     auto              regions = clock_sprite.split_animation_frames(100, 100, 12, 1);
     rinvid::Animation clock_animation{20.0, regions, rinvid::AnimationMode::Looping};
@@ -147,6 +153,7 @@ void TestingGrounds::update(double delta_time)
     }
     rectangle.draw();
     circle.draw();
+    polygon.draw();
     sprite.draw();
     clock_sprite.draw(delta_time);
     button.draw(delta_time);

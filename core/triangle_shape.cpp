@@ -26,10 +26,4 @@ TriangleShape::TriangleShape(Vector2<float> vert1, Vector2<float> vert2, Vector2
     update_gl_buffer_data();
 }
 
-void TriangleShape::draw()
-{
-    FixedPolygonShape::draw();
-    draw_arrays(GL_TRIANGLES);
-}
-
 } // namespace rinvid
