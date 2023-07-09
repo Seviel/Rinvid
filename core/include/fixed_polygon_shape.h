@@ -187,8 +187,8 @@ FixedPolygonShape<number_of_vertices, draw_mode>::FixedPolygonShape(FixedPolygon
 }
 
 template <typename std::uint32_t number_of_vertices, GLenum draw_mode>
-FixedPolygonShape<number_of_vertices, draw_mode>&
-FixedPolygonShape<number_of_vertices, draw_mode>::operator=(FixedPolygonShape&& other)
+FixedPolygonShape<number_of_vertices, draw_mode>& FixedPolygonShape<number_of_vertices, draw_mode>::
+                                                  operator=(FixedPolygonShape&& other)
 {
     Shape::operator=(std::move(other));
 
