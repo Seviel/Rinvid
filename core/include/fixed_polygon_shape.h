@@ -156,6 +156,8 @@ FixedPolygonShape<number_of_vertices, draw_mode>::FixedPolygonShape(
     std::vector<Vector2<float>> vertices)
     : number_of_vertices_{number_of_vertices}, vertices_{vertices}, gl_vertices_{}
 {
+    static_assert(number_of_vertices >= 3);
+
     init_vertex_buffer();
     calculate_origin();
     update_gl_buffer_data();
@@ -165,6 +167,8 @@ template <typename std::uint32_t number_of_vertices, GLenum draw_mode>
 FixedPolygonShape<number_of_vertices, draw_mode>::FixedPolygonShape()
     : number_of_vertices_{number_of_vertices}, vertices_{}, gl_vertices_{}
 {
+    static_assert(number_of_vertices >= 3);
+
     init_vertex_buffer();
 
     for (std::uint32_t i{0}; i < number_of_vertices; ++i)
@@ -183,8 +187,8 @@ FixedPolygonShape<number_of_vertices, draw_mode>::FixedPolygonShape(FixedPolygon
 }
 
 template <typename std::uint32_t number_of_vertices, GLenum draw_mode>
-FixedPolygonShape<number_of_vertices, draw_mode>& FixedPolygonShape<number_of_vertices, draw_mode>::
-                                                  operator=(FixedPolygonShape&& other)
+FixedPolygonShape<number_of_vertices, draw_mode>&
+FixedPolygonShape<number_of_vertices, draw_mode>::operator=(FixedPolygonShape&& other)
 {
     Shape::operator=(std::move(other));
 
