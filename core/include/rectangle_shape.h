@@ -21,7 +21,7 @@ namespace rinvid
  * @brief A drawable rectangle shape.
  *
  *************************************************************************************************/
-class RectangleShape final : public FixedPolygonShape<4>
+class RectangleShape final : public FixedPolygonShape<4, GL_QUADS>
 {
   public:
     /**************************************************************************************************
@@ -33,12 +33,6 @@ class RectangleShape final : public FixedPolygonShape<4>
      *
      *************************************************************************************************/
     RectangleShape(Vector2<float> center, float width, float height);
-
-    /**************************************************************************************************
-     * @brief Draws the rectangle.
-     *
-     *************************************************************************************************/
-    virtual void draw() override;
 };
 
 } // namespace rinvid

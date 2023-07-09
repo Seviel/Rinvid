@@ -33,10 +33,4 @@ CircleShape::CircleShape(Vector2<float> center, float radius)
     update_gl_buffer_data();
 }
 
-void CircleShape::draw()
-{
-    FixedPolygonShape::draw();
-    draw_arrays(GL_POLYGON);
-}
-
 } // namespace rinvid

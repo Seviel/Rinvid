@@ -27,10 +27,4 @@ RectangleShape::RectangleShape(Vector2<float> center, float width, float height)
     update_gl_buffer_data();
 }
 
-void RectangleShape::draw()
-{
-    FixedPolygonShape::draw();
-    draw_arrays(GL_QUADS);
-}
-
 } // namespace rinvid
