@@ -33,8 +33,11 @@
 #include "core/include/texture.h"
 #include "core/include/triangle_shape.h"
 #include "gui/include/button.h"
+#include "system/include/keyboard.h"
 #include "util/include/collision_detection.h"
 #include "util/include/vector3.h"
+
+using namespace rinvid::system;
 
 class TestingGrounds : public rinvid::Screen
 {
@@ -130,14 +133,13 @@ void TestingGrounds::update(double delta_time)
         quad_alive = true;
     }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) ||
-        sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    if (Keyboard::is_key_pressed(Keyboard::Key::D) ||
+        Keyboard::is_key_pressed(Keyboard::Key::Right))
     {
         camera.move(rinvid::Vector2<float>{480.0F * static_cast<float>(delta_time), 0.0F});
     }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) ||
-        sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    if (Keyboard::is_key_pressed(Keyboard::Key::A) || Keyboard::is_key_pressed(Keyboard::Key::Left))
     {
         camera.move(rinvid::Vector2<float>{-480.0F * static_cast<float>(delta_time), 0.0F});
     }

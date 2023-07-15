@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2021, Lazar Lukic
+ * Copyright (c) 2021 - 2023, Lazar Lukic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -21,7 +21,10 @@
 #include "core/include/rinvid_gfx.h"
 #include "core/include/rinvid_gl.h"
 #include "core/include/triangle_shape.h"
+#include "system/include/keyboard.h"
 #include "util/include/vector2.h"
+
+using namespace rinvid::system;
 
 /// Should be set to false when users attempts to close the app
 static bool static_running = true;
@@ -83,22 +86,22 @@ int main()
         vertical_delta   = 0.0F;
         horizontal_delta = 0.0F;
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
+        if (Keyboard::is_key_pressed(Keyboard::Key::Num1))
         {
             change_current_shape(current_shape, triangle, base_color, active_color);
         }
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2))
+        if (Keyboard::is_key_pressed(Keyboard::Key::Num2))
         {
             change_current_shape(current_shape, quad, base_color, active_color);
         }
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3))
+        if (Keyboard::is_key_pressed(Keyboard::Key::Num3))
         {
             change_current_shape(current_shape, rectangle, base_color, active_color);
         }
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num4))
+        if (Keyboard::is_key_pressed(Keyboard::Key::Num4))
         {
             change_current_shape(current_shape, circle, base_color, active_color);
         }
@@ -152,25 +155,23 @@ void change_current_shape(rinvid::Shape*& current_shape, rinvid::Shape& next_sha
 
 void handle_movement(float& vertical_delta, float& horizontal_delta)
 {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) ||
-        sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    if (Keyboard::is_key_pressed(Keyboard::Key::D) ||
+        Keyboard::is_key_pressed(Keyboard::Key::Right))
     {
         horizontal_delta += 5.0F;
     }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) ||
-        sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    if (Keyboard::is_key_pressed(Keyboard::Key::A) || Keyboard::is_key_pressed(Keyboard::Key::Left))
     {
         horizontal_delta -= 5.0F;
     }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+    if (Keyboard::is_key_pressed(Keyboard::Key::W) || Keyboard::is_key_pressed(Keyboard::Key::Up))
     {
         vertical_delta -= 5.0F;
     }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) ||
-        sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+    if (Keyboard::is_key_pressed(Keyboard::Key::S) || Keyboard::is_key_pressed(Keyboard::Key::Down))
     {
         vertical_delta += 5.0F;
     }

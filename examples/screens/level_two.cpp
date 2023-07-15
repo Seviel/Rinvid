@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2022, Filip Vasiljevic
+ * Copyright (c) 2022 - 2023, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -10,7 +10,10 @@
 #include <SFML/Window.hpp>
 
 #include "level_two.h"
+#include "system/include/keyboard.h"
 #include "util/include/vector2.h"
+
+using namespace rinvid::system;
 
 LevelTwo::LevelTwo(rinvid::Sprite* guardian_sprite) : guardian_sprite_{guardian_sprite}
 {
@@ -30,15 +33,15 @@ void LevelTwo::update(double delta_time)
     guardian_sprite_->draw(delta_time);
 
     static bool last_moved_right = true;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) ||
-        sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    if (Keyboard::is_key_pressed(Keyboard::Key::D) ||
+        Keyboard::is_key_pressed(Keyboard::Key::Right))
     {
         guardian_sprite_->move({180.0F * static_cast<float>(delta_time), 0.0F});
         guardian_sprite_->play("treading_right");
         last_moved_right = true;
     }
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) ||
-             sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    else if (Keyboard::is_key_pressed(Keyboard::Key::A) ||
+             Keyboard::is_key_pressed(Keyboard::Key::Left))
     {
         guardian_sprite_->move({-180.0F * static_cast<float>(delta_time), 0.0F});
         guardian_sprite_->play("treading_left");

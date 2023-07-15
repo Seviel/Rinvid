@@ -2,7 +2,7 @@ load("@rules_cc//cc:defs.bzl", "cc_library")
 
 cc_library(
     name = "rinvid_system",
-        srcs = [
+    srcs = [
         "keyboard.cpp",
         "mouse.cpp",
     ],
