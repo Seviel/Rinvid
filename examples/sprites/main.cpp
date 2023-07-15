@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2021, Lazar Lukic
+ * Copyright (c) 2021 - 2023, Lazar Lukic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -22,7 +22,10 @@
 #include "core/include/rinvid_gl.h"
 #include "core/include/sprite.h"
 #include "core/include/texture.h"
+#include "system/include/keyboard.h"
 #include "util/include/vector2.h"
+
+using namespace rinvid::system;
 
 /// Should be set to false when users attempts to close the app
 static bool static_running = true;
@@ -156,14 +159,13 @@ void handle_events(sf::Window& window, sf::Event& event)
 
 void handle_inputs(float& horizontal_delta)
 {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) ||
-        sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    if (Keyboard::is_key_pressed(Keyboard::Key::D) ||
+        Keyboard::is_key_pressed(Keyboard::Key::Right))
     {
         horizontal_delta += 4.8F;
     }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) ||
-        sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    if (Keyboard::is_key_pressed(Keyboard::Key::A) || Keyboard::is_key_pressed(Keyboard::Key::Left))
     {
         horizontal_delta -= 4.8F;
     }
@@ -175,7 +177,7 @@ bool handle_animation_state(std::string& action, std::string& direction, float h
     std::string current_animation_state{action + "_" + direction};
     std::string new_animation_state{action + "_" + direction};
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::F) ||
+    if (Keyboard::is_key_pressed(Keyboard::Key::F) ||
         (is_animation_finished == false && action == "attack"))
     {
         action = "attack";

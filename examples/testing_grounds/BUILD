@@ -17,6 +17,7 @@ cc_binary(
     deps = [
         "//core:rinvid_core",
         "//gui:rinvid_gui",
+        "//system:rinvid_system",
         "//util",
     ],
 )

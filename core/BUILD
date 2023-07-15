@@ -55,6 +55,7 @@ cc_library(
     visibility = [
         "//examples:__subpackages__",
         "//gui:__subpackages__",
+        "//system:__subpackages__",
     ],
     deps = ["//util"],
 )
