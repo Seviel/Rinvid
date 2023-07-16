@@ -95,7 +95,7 @@ void SpritesScreen::update(double delta_time)
         robot_sprite.play(current_animation_state);
     }
 
-    robot_sprite.move(rinvid::Vector2<float>{horizontal_delta, 0});
+    robot_sprite.move(rinvid::Vector2<float>{horizontal_delta * static_cast<float>(delta_time), 0});
 }
 
 void SpritesScreen::destroy()
@@ -107,12 +107,12 @@ void SpritesScreen::handle_inputs(float& horizontal_delta)
     if (Keyboard::is_key_pressed(Keyboard::Key::D) ||
         Keyboard::is_key_pressed(Keyboard::Key::Right))
     {
-        horizontal_delta += 4.8F;
+        horizontal_delta += 480.0F;
     }
 
     if (Keyboard::is_key_pressed(Keyboard::Key::A) || Keyboard::is_key_pressed(Keyboard::Key::Left))
     {
-        horizontal_delta -= 4.8F;
+        horizontal_delta -= 480.0F;
     }
 }
 
