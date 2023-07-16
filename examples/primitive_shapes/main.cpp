@@ -58,8 +58,6 @@ void ShapesScreen::create()
 
 void ShapesScreen::update(double delta_time)
 {
-    (void)delta_time;
-
     rinvid::RinvidGfx::clear_screen(0.2F, 0.4F, 0.4F, 1.0F);
 
     vertical_delta   = 0.0F;
@@ -84,7 +82,8 @@ void ShapesScreen::update(double delta_time)
 
     handle_movement(vertical_delta, horizontal_delta);
 
-    current_shape->move(rinvid::Vector2<float>{horizontal_delta, vertical_delta});
+    current_shape->move(rinvid::Vector2<float>{horizontal_delta * static_cast<float>(delta_time),
+                                               vertical_delta * static_cast<float>(delta_time)});
 
     triangle.draw();
     quad.draw();
@@ -109,22 +108,22 @@ void ShapesScreen::handle_movement(float& vertical_delta, float& horizontal_delt
     if (Keyboard::is_key_pressed(Keyboard::Key::D) ||
         Keyboard::is_key_pressed(Keyboard::Key::Right))
     {
-        horizontal_delta += 5.0F;
+        horizontal_delta += 500.0F;
     }
 
     if (Keyboard::is_key_pressed(Keyboard::Key::A) || Keyboard::is_key_pressed(Keyboard::Key::Left))
     {
-        horizontal_delta -= 5.0F;
+        horizontal_delta -= 500.0F;
     }
 
     if (Keyboard::is_key_pressed(Keyboard::Key::W) || Keyboard::is_key_pressed(Keyboard::Key::Up))
     {
-        vertical_delta -= 5.0F;
+        vertical_delta -= 500.0F;
     }
 
     if (Keyboard::is_key_pressed(Keyboard::Key::S) || Keyboard::is_key_pressed(Keyboard::Key::Down))
     {
-        vertical_delta += 5.0F;
+        vertical_delta += 500.0F;
     }
 }
 
