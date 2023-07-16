@@ -7,19 +7,11 @@
  * repository for more details.
  **********************************************************************/
 
-#ifdef __unix__
-#include <unistd.h>
-#else
-#include <windows.h>
-#endif
-
-#include <chrono>
-
-#include <SFML/Window.hpp>
-
 #include "core/include/animation.h"
+#include "core/include/application.h"
 #include "core/include/rinvid_gfx.h"
 #include "core/include/rinvid_gl.h"
+#include "core/include/screen.h"
 #include "core/include/sprite.h"
 #include "core/include/texture.h"
 #include "system/include/keyboard.h"
@@ -27,44 +19,30 @@
 
 using namespace rinvid::system;
 
-/// Should be set to false when users attempts to close the app
-static bool static_running = true;
-
-void handle_events(sf::Window& window, sf::Event& event);
-
-void handle_inputs(float& horizontal_delta);
-
-bool handle_animation_state(std::string& action, std::string& direction, float horizontal_delta,
-                            bool is_animation_finished);
-
-int main()
+class SpritesScreen : public rinvid::Screen
 {
-    std::chrono::duration<double> delta_time{};
+  public:
+    void create() override;
+    void destroy() override;
 
-    sf::Window window(sf::VideoMode(800, 600), "Sprites example");
-#ifdef _WIN32
-    gladLoadGLLoader(reinterpret_cast<GLADloadproc>(sf::Context::getFunction));
-#endif
+  private:
+    void update(double delta_time) override;
+    void handle_inputs(float& horizontal_delta);
+    bool handle_animation_state(std::string& action, std::string& direction, float horizontal_delta,
+                                bool is_animation_finished);
 
-    rinvid::RinvidGfx::set_viewport(0, 0, 800, 600);
-
-    sf::Event event;
-
-    window.setActive(true);
-
-    float horizontal_delta{0.0F};
-
-    std::string action{"idle"};
-    std::string direction{"right"};
-    std::string current_animation_state{action + "_" + direction};
-
-    rinvid::Color base_color{0.1078431F, 0.6215686F, 0.5745098F, 1.0F};
-    rinvid::Color active_color{1.0000000F, 0.6705882F, 0.2862745F, 1.0F};
-
+    std::string     action{"idle"};
+    std::string     direction{"right"};
+    std::string     current_animation_state{action + "_" + direction};
+    rinvid::Color   base_color{0.1078431F, 0.6215686F, 0.5745098F, 1.0F};
+    rinvid::Color   active_color{1.0000000F, 0.6705882F, 0.2862745F, 1.0F};
     rinvid::Texture robot_texture{"examples/sprites/resources/trashbot.png"};
     rinvid::Sprite  robot_sprite{&robot_texture, 455, 455, rinvid::Vector2<float>{0.0F, 100.0F},
                                 rinvid::Vector2<float>{0.0F, 0.0F}};
+};
 
+void SpritesScreen::create()
+{
     robot_sprite.split_animation_frames(455, 455, 9, 8);
 
     auto idle_right = robot_sprite.get_regions({0});
@@ -96,68 +74,35 @@ int main()
     robot_sprite.add_animation("attack_left", attack_left_animation);
 
     robot_sprite.play(current_animation_state);
-
-    rinvid::RinvidGfx::init();
-
-    while (static_running)
-    {
-        auto start = std::chrono::high_resolution_clock::now();
-
-        handle_events(window, event);
-
-        rinvid::RinvidGfx::clear_screen(0.2F, 0.4F, 0.4F, 1.0F);
-
-        horizontal_delta = 0.0F;
-
-        robot_sprite.draw(delta_time.count());
-
-        handle_inputs(horizontal_delta);
-
-        bool state_changed = handle_animation_state(action, direction, horizontal_delta,
-                                                    robot_sprite.is_animation_finished());
-
-        if (state_changed == true)
-        {
-            current_animation_state = action + "_" + direction;
-            robot_sprite.play(current_animation_state);
-        }
-
-        robot_sprite.move(rinvid::Vector2<float>{horizontal_delta, 0});
-
-        window.display();
-
-#ifdef __unix__
-        usleep(10000);
-#else
-        Sleep(10);
-#endif
-
-        auto end   = std::chrono::high_resolution_clock::now();
-        delta_time = end - start;
-    }
-
-    return 0;
 }
 
-void handle_events(sf::Window& window, sf::Event& event)
+void SpritesScreen::update(double delta_time)
 {
-    while (window.pollEvent(event))
+    rinvid::RinvidGfx::clear_screen(0.2F, 0.4F, 0.4F, 1.0F);
+
+    float horizontal_delta = 0.0F;
+
+    robot_sprite.draw(delta_time);
+
+    handle_inputs(horizontal_delta);
+
+    bool state_changed = handle_animation_state(action, direction, horizontal_delta,
+                                                robot_sprite.is_animation_finished());
+
+    if (state_changed == true)
     {
-        switch (event.type)
-        {
-            case sf::Event::Closed:
-                static_running = false;
-                break;
-            case sf::Event::Resized:
-                rinvid::RinvidGfx::set_viewport(0, 0, event.size.width, event.size.height);
-                break;
-            default:
-                break;
-        }
+        current_animation_state = action + "_" + direction;
+        robot_sprite.play(current_animation_state);
     }
+
+    robot_sprite.move(rinvid::Vector2<float>{horizontal_delta, 0});
 }
 
-void handle_inputs(float& horizontal_delta)
+void SpritesScreen::destroy()
+{
+}
+
+void SpritesScreen::handle_inputs(float& horizontal_delta)
 {
     if (Keyboard::is_key_pressed(Keyboard::Key::D) ||
         Keyboard::is_key_pressed(Keyboard::Key::Right))
@@ -171,8 +116,8 @@ void handle_inputs(float& horizontal_delta)
     }
 }
 
-bool handle_animation_state(std::string& action, std::string& direction, float horizontal_delta,
-                            bool is_animation_finished)
+bool SpritesScreen::handle_animation_state(std::string& action, std::string& direction,
+                                           float horizontal_delta, bool is_animation_finished)
 {
     std::string current_animation_state{action + "_" + direction};
     std::string new_animation_state{action + "_" + direction};
@@ -214,4 +159,15 @@ bool handle_animation_state(std::string& action, std::string& direction, float h
     {
         return false;
     }
+}
+
+int main()
+{
+    rinvid::Application sprites_app{800, 600, "Sprites example"};
+    SpritesScreen       sprites_screen{};
+    sprites_app.set_screen(&sprites_screen);
+    sprites_app.set_fps(120);
+    sprites_app.run();
+
+    return 0;
 }
