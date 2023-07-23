@@ -85,6 +85,14 @@ class Light
      *************************************************************************************************/
     void switch_it(bool on);
 
+    /**************************************************************************************************
+     * @brief Updates the light, should be called every frame.
+     *
+     * @param camera_pos Position of the camera if there is any.
+     *
+     *************************************************************************************************/
+    void update(Vector2<float> camera_pos = {0.0F, 0.0F});
+
   private:
     /**************************************************************************************************
      * @brief Helper function to remap a floating point value from one range to another.
