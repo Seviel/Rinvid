@@ -170,4 +170,22 @@ void Light::switch_it(bool on)
     shape_shader.set_bool("light_active[" + std::to_string(ordinal_) + "]", on);
 }
 
+/// @todo This is bullshit, this should probably be handled in the shader and update method should
+/// not exist, revisit this later.
+void Light::update(Vector2<float> camera_pos)
+{
+    Vector2<float> position = position_;
+    position.x -= camera_pos.x;
+    position.y -= camera_pos.y;
+    const auto texture_shader = RinvidGfx::get_texture_default_shader();
+    texture_shader.use();
+    texture_shader.set_float2("light_pos[" + std::to_string(ordinal_) + "]", position.x,
+                              RinvidGfx::get_height() - position.y);
+
+    const auto shape_shader = RinvidGfx::get_shape_default_shader();
+    shape_shader.use();
+    shape_shader.set_float2("light_pos[" + std::to_string(ordinal_) + "]", position.x,
+                            RinvidGfx::get_height() - position.y);
+}
+
 } // namespace rinvid

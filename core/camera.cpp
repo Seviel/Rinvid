@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2022, Filip Vasiljevic
+ * Copyright (c) 2022 - 2023, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -29,6 +29,11 @@ void Camera::move(const Vector2<float> move_vector)
 {
     camera_pos_ += move_vector.y * camera_up_;
     camera_pos_ += glm::normalize(glm::cross(camera_front_, camera_up_)) * move_vector.x;
+}
+
+Vector2<float> Camera::get_pos() const
+{
+    return Vector2<float>{camera_pos_.x, camera_pos_.y};
 }
 
 } // namespace rinvid

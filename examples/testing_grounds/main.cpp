@@ -146,6 +146,8 @@ void TestingGrounds::update(double delta_time)
 
     camera.update();
 
+    light_mid.update(camera.get_pos());
+
     background_sprite.draw();
 
     triangle.draw();

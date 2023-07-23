@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2022, Filip Vasiljevic
+ * Copyright (c) 2022 - 2023, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -43,6 +43,14 @@ class Camera
      *
      *************************************************************************************************/
     void move(const Vector2<float> move_vector);
+
+    /**************************************************************************************************
+     * @brief Returns current camera position.
+     *
+     * @return camera position.
+     *
+     *************************************************************************************************/
+    Vector2<float> get_pos() const;
 
   private:
     glm::vec3 camera_pos_;
