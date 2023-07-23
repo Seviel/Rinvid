@@ -27,10 +27,19 @@ namespace rinvid
 {
 
 Application::Application(std::uint32_t width, std::uint32_t height, const std::string& title,
-                         std::uint16_t fps)
-    : window_{sf::VideoMode{width, height}, title}, current_screen_{nullptr},
-      new_screen_{nullptr}, fps_{fps}, running_{false}
+                         bool fullscreen, std::uint16_t fps)
+    : window_{}, current_screen_{nullptr}, new_screen_{nullptr}, fps_{fps}, running_{false}
 {
+    if (fullscreen)
+    {
+        window_.create(sf::VideoMode::getDesktopMode(), title, sf::Style::Fullscreen);
+        window_.setVerticalSyncEnabled(true);
+    }
+    else
+    {
+        window_.create(sf::VideoMode{width, height}, title);
+    }
+
 #ifdef _WIN32
     gladLoadGLLoader(reinterpret_cast<GLADloadproc>(sf::Context::getFunction));
 #endif

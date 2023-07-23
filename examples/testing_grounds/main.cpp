@@ -49,7 +49,7 @@ class TestingGrounds : public rinvid::Screen
     void update(double delta_time) override;
 
     rinvid::Texture background_texture{"examples/testing_grounds/resources/rinvid_bg.png"};
-    rinvid::Sprite  background_sprite{&background_texture, 800, 600,
+    rinvid::Sprite  background_sprite{&background_texture, 1920, 1080,
                                      rinvid::Vector2<float>{0.0F, 0.0F},
                                      rinvid::Vector2<float>{0.0F, 0.0F}};
 
@@ -185,7 +185,7 @@ void TestingGrounds::destroy()
 
 int main()
 {
-    rinvid::Application testing_grounds_app{800, 600, "Rinvid testing grounds"};
+    rinvid::Application testing_grounds_app{1920, 1080, "Rinvid testing grounds", true};
     TestingGrounds      testing_grounds_screen{};
     testing_grounds_app.set_screen(&testing_grounds_screen);
     testing_grounds_app.set_fps(120);
