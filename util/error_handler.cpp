@@ -117,5 +117,15 @@ void handle_gl_errors(const char* file, std::uint32_t line)
     }
 }
 
+std::uint32_t get_error_count()
+{
+    return errors.size();
+}
+
+bool has_error_occured(std::string description)
+{
+    return errors.find(description) != errors.end();
+}
+
 } // namespace errors
 } // namespace rinvid
