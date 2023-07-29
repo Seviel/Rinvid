@@ -42,7 +42,7 @@ class Texture
      * @brief Copy assignement operator deleted.
      *
      *************************************************************************************************/
-    Texture& operator=(Texture other) = delete;
+    Texture& operator=(Texture& other) = delete;
 
     /**************************************************************************************************
      * @brief Move constructor.
