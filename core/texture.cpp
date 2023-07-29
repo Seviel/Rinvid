@@ -46,7 +46,8 @@ Texture::Texture(const char* file_name)
     bool result = load_image(file_name, image_data_, width_, height_);
     if (result == false)
     {
-        errors::put_error_to_log("Image loading failed during texture creation");
+        errors::put_error_to_log(std::string{file_name} +
+                                 " image loading failed during texture creation");
     }
 
     GL_CALL(glGenTextures(1, &texture_id_));
