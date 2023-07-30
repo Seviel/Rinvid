@@ -73,6 +73,24 @@ void put_error_to_log(const char* error_description);
  *************************************************************************************************/
 void handle_gl_errors(const char* file, std::uint32_t line);
 
+/**************************************************************************************************
+ * @brief Returns number of errors.
+ *
+ * @return Number of errors that occured up to this point in time.
+ *
+ *************************************************************************************************/
+std::uint32_t get_error_count();
+
+/**************************************************************************************************
+ * @brief Check whether specific error occured.
+ *
+ * @param description Description of the error.
+ *
+ * @return True if error with this description has occured.
+ *
+ *************************************************************************************************/
+bool has_error_occured(std::string description);
+
 } // namespace errors
 } // namespace rinvid
 

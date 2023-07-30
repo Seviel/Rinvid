@@ -14,6 +14,7 @@ First, you will need to install Bazel and SFML. [Bazel](https://bazel.build/) is
 sudo apt install npm  
 sudo npm install -g @bazel/bazelisk  
 sudo apt install libsfml-dev  
+sudo apt install libgtest-dev  
 ```
 After that, clone the repo (run `git submodule update --init --recursive` after cloning to initiate submodules) and inside any repo directory run:  
 ```shell    
@@ -28,14 +29,16 @@ What you need to build Rinvid on Windows 10:
    1. [MinGW](https://www.mingw-w64.org/)  
    2. [Bazel](https://bazel.build/)  
    3. [MSYS](https://www.msys2.org/)
-   3. [SFML](https://www.sfml-dev.org/)  
+   4. [SFML](https://www.sfml-dev.org/)  
+   5. [gtest](https://github.com/google/googletest)  
 
 #### Development environment setup
 
 1. Install [MSYS2](https://www.msys2.org/) - following all steps will also install MinGW via `pacman`
-2. Additionally, install SFML via `pacman` by executing the following command in the MSYS2 terminal:
+2. Additionally, install SFML and gtest via `pacman` by executing the following commands in the MSYS2 terminal:
 ```shell
 pacman -S mingw-w64-x86_64-sfml
+pacman -S mingw-w64-x86_64-gtest
 ```
 3. Install [Bazel](https://bazel.build/install/windows) - consider also to put Bazel in your `PATH` environment variable so you can call the `bazel` from your terminal no matter the of the current path position.
 4. Pull external dependencies by running the following command from the root of the project:
@@ -59,4 +62,5 @@ And for `--enable_runfiles` to work, you need to enable [developer mode](https:/
 [SFML](https://www.sfml-dev.org/)  
 [stb_image](https://github.com/nothings/stb)  
 [glm](https://github.com/g-truc/glm)  
-[GLAD](https://glad.dav1d.de/)
+[GLAD](https://glad.dav1d.de/)  
+[gtest](https://github.com/google/googletest)

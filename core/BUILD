@@ -56,6 +56,7 @@ cc_library(
         "//examples:__subpackages__",
         "//gui:__subpackages__",
         "//system:__subpackages__",
+        "//tests:__subpackages__",
     ],
     deps = ["//util"],
 )
