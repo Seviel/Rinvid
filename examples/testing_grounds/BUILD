@@ -5,6 +5,7 @@ cc_binary(
     srcs = ["main.cpp"],
     copts = ["-Werror -Wall -Wextra -pedantic"],
     data = [
+        ":resources/aquifer.ttf",
         ":resources/clck.png",
         ":resources/default_button.png",
         ":resources/logo.png",

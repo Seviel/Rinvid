@@ -82,6 +82,14 @@ class RinvidGfx
     static std::uint32_t get_texture_default_shader_id();
 
     /**************************************************************************************************
+     * @brief Returns default text shader handle. Should only be used internally in Rinvid.
+     *
+     * @return An OpenGl handle to the shader
+     *
+     *************************************************************************************************/
+    static std::uint32_t get_text_default_shader_id();
+
+    /**************************************************************************************************
      * @brief Returns default shape shader object.
      *
      * @return A shared ptr to default shape Shader object.
@@ -96,6 +104,14 @@ class RinvidGfx
      *
      *************************************************************************************************/
     static const Shader get_texture_default_shader();
+
+    /**************************************************************************************************
+     * @brief Returns default text shader object.
+     *
+     * @return A default text Shader object.
+     *
+     *************************************************************************************************/
+    static const Shader get_text_default_shader();
 
     /**************************************************************************************************
      * @brief Returns screen width.
@@ -177,6 +193,12 @@ class RinvidGfx
      *************************************************************************************************/
     static void use_texture_default_shader();
 
+    /**************************************************************************************************
+     * @brief Use the texture default shader.
+     *
+     *************************************************************************************************/
+    static void use_text_default_shader();
+
   private:
     static void init_default_shaders();
 
@@ -185,6 +207,7 @@ class RinvidGfx
     static glm::mat4    projection_;
     static Shader       shape_default_shader_;
     static Shader       texture_default_shader_;
+    static Shader       text_default_shader_;
     static std::int32_t width_;
     static std::int32_t height_;
 };

@@ -30,6 +30,7 @@
 #include "core/include/rinvid_gl.h"
 #include "core/include/screen.h"
 #include "core/include/sprite.h"
+#include "core/include/text.h"
 #include "core/include/texture.h"
 #include "core/include/triangle_shape.h"
 #include "gui/include/button.h"
@@ -81,6 +82,12 @@ class TestingGrounds : public rinvid::Screen
 
     rinvid::Light light_mid{};
     rinvid::Light light_low{{650.0F, 480.0F}, 0.5, 1.0};
+
+    rinvid::Text text{"Aloha!",
+                      "examples/testing_grounds/resources/aquifer.ttf",
+                      {250.0F, 375.0F},
+                      {0.0F, 0.0F, 0.0F, 1.0F},
+                      28};
 };
 
 void TestingGrounds::create()
@@ -161,6 +168,7 @@ void TestingGrounds::update(double delta_time)
     sprite.draw();
     clock_sprite.draw(delta_time);
     button.draw(delta_time);
+    text.draw();
 
     triangle.move(rinvid::Vector2<float>{120.0F * static_cast<float>(delta_time), 0.0F});
     rinvid::Vector2<float> triangle_origin = triangle.get_origin();

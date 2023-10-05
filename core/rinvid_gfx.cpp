@@ -20,6 +20,7 @@ glm::mat4    RinvidGfx::view_{1.0F};
 glm::mat4    RinvidGfx::projection_{1.0F};
 Shader       RinvidGfx::shape_default_shader_{};
 Shader       RinvidGfx::texture_default_shader_{};
+Shader       RinvidGfx::text_default_shader_{};
 std::int32_t RinvidGfx::width_{};
 std::int32_t RinvidGfx::height_{};
 
@@ -29,6 +30,8 @@ void RinvidGfx::init_default_shaders()
         Shader("core/shaders/default_shape.vert", "core/shaders/default_shape.frag");
     texture_default_shader_ =
         Shader("core/shaders/default_texture.vert", "core/shaders/default_texture.frag");
+    text_default_shader_ =
+        Shader("core/shaders/default_text.vert", "core/shaders/default_text.frag");
 }
 
 void RinvidGfx::init()
@@ -65,6 +68,11 @@ std::uint32_t RinvidGfx::get_texture_default_shader_id()
     return texture_default_shader_.get_id();
 }
 
+std::uint32_t RinvidGfx::get_text_default_shader_id()
+{
+    return text_default_shader_.get_id();
+}
+
 const Shader RinvidGfx::get_shape_default_shader()
 {
     return shape_default_shader_;
@@ -73,6 +81,11 @@ const Shader RinvidGfx::get_shape_default_shader()
 const Shader RinvidGfx::get_texture_default_shader()
 {
     return texture_default_shader_;
+}
+
+const Shader RinvidGfx::get_text_default_shader()
+{
+    return text_default_shader_;
 }
 
 std::int32_t RinvidGfx::get_width()
@@ -118,6 +131,11 @@ void RinvidGfx::use_shape_default_shader()
 void RinvidGfx::use_texture_default_shader()
 {
     texture_default_shader_.use();
+}
+
+void RinvidGfx::use_text_default_shader()
+{
+    text_default_shader_.use();
 }
 
 } // namespace rinvid
