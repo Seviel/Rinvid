@@ -29,7 +29,12 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt update
-          sudo apt install bazel libsfml-dev libgtest-dev
+          sudo apt install bazel libsfml-dev libgtest-dev libfreetype-dev
+
+      - name: Update includes
+        run: |
+          cd /usr/include/freetype2
+          sudo cp -r * ../
 
       - name: Build Project | All
         run: |

@@ -15,6 +15,7 @@ cc_library(
         "shader.cpp",
         "shape.cpp",
         "sprite.cpp",
+        "text.cpp",
         "texture.cpp",
         "transformable.cpp",
         "triangle_shape.cpp",
@@ -37,6 +38,7 @@ cc_library(
         "include/shader.h",
         "include/shape.h",
         "include/sprite.h",
+        "include/text.h",
         "include/texture.h",
         "include/transformable.h",
         "include/triangle_shape.h",
@@ -45,12 +47,14 @@ cc_library(
     data = [
         ":shaders/default_shape.frag",
         ":shaders/default_shape.vert",
+        ":shaders/default_text.frag",
+        ":shaders/default_text.vert",
         ":shaders/default_texture.frag",
         ":shaders/default_texture.vert",
     ],
     linkopts = select({
-        "@bazel_tools//src/conditions:windows": ["-lsfml-window -lsfml-system -lopengl32 -lwinmm -lgdi32"],
-        "//conditions:default": ["-lsfml-window -lsfml-system -lGL"],
+        "@bazel_tools//src/conditions:windows": ["-lsfml-window -lsfml-system -lopengl32 -lwinmm -lgdi32 -lfreetype"],
+        "//conditions:default": ["-lsfml-window -lsfml-system -lGL -lfreetype"],
     }),
     visibility = [
         "//examples:__subpackages__",

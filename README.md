@@ -15,6 +15,12 @@ sudo apt install npm
 sudo npm install -g @bazel/bazelisk  
 sudo apt install libsfml-dev  
 sudo apt install libgtest-dev  
+sudo apt install libfreetype-dev  
+```
+Note that Freetpye headers must be in root include directory, and not in any new one. To make sure that's the case, you can run:  
+```shell
+cd /usr/include/freetype2  
+sudo cp -r * ../  
 ```
 After that, clone the repo (run `git submodule update --init --recursive` after cloning to initiate submodules) and inside any repo directory run:  
 ```shell    
@@ -31,6 +37,7 @@ What you need to build Rinvid on Windows 10:
    3. [MSYS](https://www.msys2.org/)
    4. [SFML](https://www.sfml-dev.org/)  
    5. [gtest](https://github.com/google/googletest)  
+   6. [Freetype](http://freetype.org/)  
 
 #### Development environment setup
 
@@ -39,6 +46,7 @@ What you need to build Rinvid on Windows 10:
 ```shell
 pacman -S mingw-w64-x86_64-sfml
 pacman -S mingw-w64-x86_64-gtest
+pacman -S mingw-w64-x86_64-freetype
 ```
 3. Install [Bazel](https://bazel.build/install/windows) - consider also to put Bazel in your `PATH` environment variable so you can call the `bazel` from your terminal no matter the of the current path position.
 4. Pull external dependencies by running the following command from the root of the project:
@@ -63,4 +71,5 @@ And for `--enable_runfiles` to work, you need to enable [developer mode](https:/
 [stb_image](https://github.com/nothings/stb)  
 [glm](https://github.com/g-truc/glm)  
 [GLAD](https://glad.dav1d.de/)  
-[gtest](https://github.com/google/googletest)
+[gtest](https://github.com/google/googletest)  
+[Freetype](http://freetype.org/)
