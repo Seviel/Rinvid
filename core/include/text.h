@@ -7,6 +7,8 @@
  * repository for more details.
  **********************************************************************/
 
+#include <unordered_map>
+
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
@@ -48,14 +50,15 @@ class Text : public Drawable
         std::uint32_t advance;
     };
 
-    FT_Library                ft_lib_;
-    FT_Face                   ft_face_;
-    std::uint32_t             vertex_array_object_;
-    std::uint32_t             vertex_buffer_object_;
-    std::string               text_;
-    Vector2<float>            position_;
-    Color                     color_;
-    std::map<char, Character> characters_;
+    FT_Library     ft_lib_;
+    FT_Face        ft_face_;
+    std::uint32_t  vertex_array_object_;
+    std::uint32_t  vertex_buffer_object_;
+    std::string    text_;
+    Vector2<float> position_;
+    Color          color_;
+
+    std::unordered_map<char, Character> characters_;
 };
 
 } // namespace rinvid
