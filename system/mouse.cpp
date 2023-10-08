@@ -7,6 +7,8 @@
  * repository for more details.
  **********************************************************************/
 
+#include <SFML/Window.hpp>
+
 #include "include/mouse.h"
 
 namespace rinvid

@@ -10,8 +10,6 @@
 #ifndef SYSTEM_INCLUDE_MOUSE_H
 #define SYSTEM_INCLUDE_MOUSE_H
 
-#include <SFML/Window.hpp>
-
 namespace rinvid
 {
 

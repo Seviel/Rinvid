@@ -7,8 +7,6 @@
  * repository for more details.
  **********************************************************************/
 
-#include <SFML/Window.hpp>
-
 #include "level_one.h"
 #include "system/include/keyboard.h"
 

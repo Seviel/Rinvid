@@ -10,8 +10,6 @@
 #ifndef GUI_INCLUDE_BUTTON_H
 #define GUI_INCLUDE_BUTTON_H
 
-#include <SFML/Window.hpp>
-
 #include "core/include/sprite.h"
 
 namespace rinvid

@@ -7,8 +7,6 @@
  * repository for more details.
  **********************************************************************/
 
-#include <SFML/Window.hpp>
-
 #include "level_two.h"
 #include "system/include/keyboard.h"
 #include "util/include/vector2.h"

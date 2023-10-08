@@ -16,8 +16,6 @@
 #include <chrono>
 #include <iostream>
 
-#include <SFML/Window.hpp>
-
 #include "core/include/animation.h"
 #include "core/include/application.h"
 #include "core/include/camera.h"
