@@ -29,11 +29,11 @@ class Shader
     /**************************************************************************************************
      * @brief Shader constructor.
      *
-     * @param vert_path Path to vertex shader source file.
-     * @param frag_path Path to fragment shader source file.
+     * @param vert_code Raw code of the vertex shader.
+     * @param frag_code Raw code of the fragment shader.
      *
      *************************************************************************************************/
-    Shader(const char* vert_path, const char* frag_path);
+    Shader(const char* vert_code, const char* frag_code);
 
     /**************************************************************************************************
      * @brief Use this shader program.

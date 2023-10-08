@@ -44,14 +44,6 @@ cc_library(
         "include/triangle_shape.h",
     ],
     copts = ["-Werror -Wall -Wextra -pedantic"],
-    data = [
-        ":shaders/default_shape.frag",
-        ":shaders/default_shape.vert",
-        ":shaders/default_text.frag",
-        ":shaders/default_text.vert",
-        ":shaders/default_texture.frag",
-        ":shaders/default_texture.vert",
-    ],
     linkopts = select({
         "@bazel_tools//src/conditions:windows": ["-lsfml-window -lsfml-system -lopengl32 -lwinmm -lgdi32 -lfreetype"],
         "//conditions:default": ["-lsfml-window -lsfml-system -lGL -lfreetype"],
