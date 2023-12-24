@@ -1,0 +1,3 @@
+ar -M <file.mri
+
+/mnt/c/msys64/mingw64/bin/g++.exe main.cpp -lrinvid -L /mnt/c/Users/fvasi/Desktop/dreamscape/Rinvid/make_bin -lsfml-window -lsfml-system -lopengl32 -lwinmm -lgdi32 -lfreetype

@@ -1,0 +1,9 @@
+create librinvid.a
+addlib libextern.a
+addlib librinvid_core.a
+addlib librinvid_gui.a
+addlib librinvid_system.a
+addlib libutil.a
+save
+end
+
