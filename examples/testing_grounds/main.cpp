@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2020 - 2023, Filip Vasiljevic
+ * Copyright (c) 2020 - 2024, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -33,6 +33,7 @@
 #include "core/include/triangle_shape.h"
 #include "gui/include/button.h"
 #include "system/include/keyboard.h"
+#include "system/include/mouse.h"
 #include "util/include/collision_detection.h"
 #include "util/include/vector3.h"
 
@@ -130,7 +131,7 @@ void TestingGrounds::update(double delta_time)
         quad_alive = false;
     }
 
-    button.update(get_application()->get_mouse_pos());
+    button.update(rinvid::system::Mouse::get_mouse_pos(get_application()));
 
     if (button.is_clicked())
     {

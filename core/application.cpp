@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2021 - 2023, Filip Vasiljevic
+ * Copyright (c) 2021 - 2024, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -106,14 +106,6 @@ void Application::run()
 void Application::set_screen(Screen* screen)
 {
     new_screen_ = screen;
-}
-
-Vector2<float> Application::get_mouse_pos() const
-{
-    sf::Vector2i mouse_position = sf::Mouse::getPosition(window_);
-
-    return Vector2<float>{static_cast<float>(mouse_position.x),
-                          static_cast<float>(mouse_position.y)};
 }
 
 void Application::set_fps(std::uint16_t fps)
