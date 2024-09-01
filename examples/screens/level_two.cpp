@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2022 - 2023, Filip Vasiljevic
+ * Copyright (c) 2022 - 2024, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -20,7 +20,7 @@ LevelTwo::LevelTwo(rinvid::Sprite* guardian_sprite) : guardian_sprite_{guardian_
 void LevelTwo::create()
 {
     guardian_sprite_->set_position(rinvid::Vector2<float>{250.0F, 425.0F});
-    guardian_sprite_->play("standing_right");
+    guardian_sprite_->get_animation().play("standing_right");
 }
 
 void LevelTwo::update(double delta_time)
@@ -35,25 +35,25 @@ void LevelTwo::update(double delta_time)
         Keyboard::is_key_pressed(Keyboard::Key::Right))
     {
         guardian_sprite_->move({180.0F * static_cast<float>(delta_time), 0.0F});
-        guardian_sprite_->play("treading_right");
+        guardian_sprite_->get_animation().play("treading_right");
         last_moved_right = true;
     }
     else if (Keyboard::is_key_pressed(Keyboard::Key::A) ||
              Keyboard::is_key_pressed(Keyboard::Key::Left))
     {
         guardian_sprite_->move({-180.0F * static_cast<float>(delta_time), 0.0F});
-        guardian_sprite_->play("treading_left");
+        guardian_sprite_->get_animation().play("treading_left");
         last_moved_right = false;
     }
     else
     {
         if (last_moved_right)
         {
-            guardian_sprite_->play("standing_right");
+            guardian_sprite_->get_animation().play("standing_right");
         }
         else
         {
-            guardian_sprite_->play("standing_left");
+            guardian_sprite_->get_animation().play("standing_left");
         }
     }
 }

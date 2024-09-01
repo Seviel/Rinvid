@@ -99,15 +99,15 @@ void TestingGrounds::create()
     polygon.set_color(rinvid::Color{1.0F, 1.0F, 1.0F, 1.0F});
     polygon.set_position(rinvid::Vector2<float>{500.0F, 500.0F});
 
-    auto              regions = clock_sprite.split_animation_frames(100, 100, 12, 1);
+    auto regions = clock_sprite.get_animation().split_animation_frames(100, 100, 12, 1);
     rinvid::Animation clock_animation{20.0, regions, rinvid::AnimationMode::Looping};
-    clock_sprite.add_animation("anim", clock_animation);
-    clock_sprite.play("anim");
+    clock_sprite.get_animation().add_animation("anim", clock_animation);
+    clock_sprite.get_animation().play("anim");
     clock_sprite.set_scale(1.5F);
     clock_sprite.set_opacity(0.3);
 
     button.setup(&button_texture, 100, 30, rinvid::Vector2<float>{250.0F, 450.0F});
-    auto button_regions = button.split_animation_frames(100, 30, 3, 1);
+    auto button_regions = button.get_animation().split_animation_frames(100, 30, 3, 1);
 
     button.set_idle({button_regions.at(0)});
     button.set_mouse_hovering({button_regions.at(1)});

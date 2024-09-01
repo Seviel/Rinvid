@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2022, Filip Vasiljevic
+ * Copyright (c) 2022 - 2024, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -23,11 +23,11 @@ namespace gui
 
 Button::Button() : idle_{}, mouse_hovering_{}, clicked_{}, is_clicked_{false}
 {
-    add_animation("idle", idle_);
-    add_animation("mouse_hovering", mouse_hovering_);
-    add_animation("clicked", clicked_);
+    sprite_animation_.add_animation("idle", idle_);
+    sprite_animation_.add_animation("mouse_hovering", mouse_hovering_);
+    sprite_animation_.add_animation("clicked", clicked_);
 
-    play("idle");
+    sprite_animation_.play("idle");
 }
 
 void Button::update(Vector2<float> mouse_pos)
@@ -43,18 +43,18 @@ void Button::update(Vector2<float> mouse_pos)
     {
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
         {
-            play("clicked");
+            sprite_animation_.play("clicked");
             is_clicked_ = true;
         }
         else
         {
-            play("mouse_hovering");
+            sprite_animation_.play("mouse_hovering");
             is_clicked_ = false;
         }
     }
     else
     {
-        play("idle");
+        sprite_animation_.play("idle");
         is_clicked_ = false;
     }
 }
@@ -62,19 +62,19 @@ void Button::update(Vector2<float> mouse_pos)
 void Button::set_idle(const std::vector<Rect>& regions)
 {
     idle_.setup(0.0, regions);
-    animations_.find("idle")->second = idle_;
+    sprite_animation_.set_animation_by_name("idle", idle_);
 }
 
 void Button::set_mouse_hovering(const std::vector<Rect>& regions)
 {
     mouse_hovering_.setup(0.0, regions);
-    animations_.find("mouse_hovering")->second = mouse_hovering_;
+    sprite_animation_.set_animation_by_name("mouse_hovering", mouse_hovering_);
 }
 
 void Button::set_clicked(const std::vector<Rect>& regions)
 {
     clicked_.setup(0.0, regions);
-    animations_.find("clicked")->second = clicked_;
+    sprite_animation_.set_animation_by_name("clicked", clicked_);
 }
 
 bool Button::is_clicked() const

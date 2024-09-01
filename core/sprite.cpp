@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2021 - 2022, Filip Vasiljevic
+ * Copyright (c) 2021 - 2024, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -14,16 +14,15 @@ namespace rinvid
 {
 
 Sprite::Sprite()
-    : animations_{}, regions_{}, current_animation_{nullptr}, texture_{nullptr}, width_{},
-      height_{}, top_left_{}, texture_offset_{}, opacity_{1.0F}, is_animated_{false}
+    : sprite_animation_{}, texture_{nullptr}, width_{}, height_{}, top_left_{}, texture_offset_{},
+      opacity_{1.0F}
 {
 }
 
 Sprite::Sprite(Texture* texture, std::int32_t width, std::int32_t height, Vector2<float> top_left,
                Vector2<float> texture_offset)
-    : animations_{}, regions_{}, current_animation_{nullptr}, texture_{texture}, width_{width},
-      height_{height}, top_left_{top_left}, texture_offset_{texture_offset}, opacity_{1.0F},
-      is_animated_{false}
+    : sprite_animation_{}, texture_{texture}, width_{width}, height_{height}, top_left_{top_left},
+      texture_offset_{texture_offset}, opacity_{1.0F}
 {
     texture_->update_vertices(texture_offset_, width_, height_);
 }
@@ -38,10 +37,10 @@ void Sprite::draw(double delta_time)
     origin_.x = top_left_.x + width_ / 2;
     origin_.y = top_left_.y + height_ / 2;
 
-    if (is_animated_)
+    if (sprite_animation_.is_active_)
     {
-        current_animation_->advance(delta_time);
-        Rect           texture_region = current_animation_->frame();
+        sprite_animation_.current_animation_->advance(delta_time);
+        Rect           texture_region = sprite_animation_.current_animation_->frame();
         Vector2<float> offset{texture_offset_};
         std::uint32_t  width  = texture_region.width;
         std::uint32_t  height = texture_region.height;
@@ -108,60 +107,6 @@ Rect Sprite::bounding_rect()
     return rect;
 }
 
-std::vector<Rect> Sprite::split_animation_frames(std::uint32_t width, std::uint32_t height,
-                                                 std::uint32_t cols, std::uint32_t rows)
-{
-    for (std::uint32_t i{0}; i < rows; ++i)
-    {
-        for (std::uint32_t j{0}; j < cols; ++j)
-        {
-            Rect rect{};
-            rect.position.x = texture_offset_.x + (j * width);
-            rect.position.y = texture_offset_.y + (i * height);
-            rect.width      = width;
-            rect.height     = height;
-
-            regions_.push_back(rect);
-        }
-    }
-
-    return regions_;
-}
-
-void Sprite::add_animation(std::string name, Animation animation)
-{
-    animations_.insert(std::pair<std::string, Animation>(name, animation));
-}
-
-void Sprite::play(std::string name, bool reset)
-{
-    is_animated_ = true;
-    if (current_animation_ == &(animations_.find(name)->second))
-    {
-        if (reset)
-        {
-            current_animation_->reset();
-        }
-    }
-    else
-    {
-        current_animation_ = &(animations_.find(name)->second);
-        current_animation_->reset();
-    }
-}
-
-bool Sprite::is_animation_finished()
-{
-    if (is_animated_)
-    {
-        return current_animation_->is_finished();
-    }
-    else
-    {
-        return true;
-    }
-}
-
 void Sprite::setup(Texture* texture, std::int32_t width, std::int32_t height,
                    Vector2<float> top_left, Vector2<float> texture_offset)
 {
@@ -177,6 +122,11 @@ void Sprite::setup(Texture* texture, std::int32_t width, std::int32_t height,
 void Sprite::set_opacity(float transparency)
 {
     opacity_ = transparency;
+}
+
+SpriteAnimation& Sprite::get_animation()
+{
+    return sprite_animation_;
 }
 
 } // namespace rinvid
