@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2022, Filip Vasiljevic
+ * Copyright (c) 2022 - 2024, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -24,7 +24,7 @@ int main()
     rinvid::Sprite  guardian_sprite{&guardian_tex, 30, 45, rinvid::Vector2<float>{50.0F, 425.0F},
                                    rinvid::Vector2<float>{0.0F, 0.0F}};
 
-    auto              regions = guardian_sprite.split_animation_frames(30, 45, 52, 1);
+    auto regions = guardian_sprite.get_animation().split_animation_frames(30, 45, 52, 1);
     rinvid::Animation standing_right{14.0,
                                      {regions[26], regions[27], regions[28], regions[29],
                                       regions[30], regions[31], regions[32], regions[33],
@@ -45,11 +45,11 @@ int main()
                                       regions[42], regions[43], regions[44], regions[45],
                                       regions[46], regions[47], regions[48], regions[49]},
                                      rinvid::AnimationMode::Looping};
-    guardian_sprite.add_animation("standing_right", standing_right);
-    guardian_sprite.add_animation("standing_left", standing_left);
-    guardian_sprite.add_animation("treading_left", treading_left);
-    guardian_sprite.add_animation("treading_right", treading_right);
-    guardian_sprite.play("standing_right");
+    guardian_sprite.get_animation().add_animation("standing_right", standing_right);
+    guardian_sprite.get_animation().add_animation("standing_left", standing_left);
+    guardian_sprite.get_animation().add_animation("treading_left", treading_left);
+    guardian_sprite.get_animation().add_animation("treading_right", treading_right);
+    guardian_sprite.get_animation().play("standing_right");
 
     LevelTwo level_two{&guardian_sprite};
     LevelOne level_one{&guardian_sprite, &level_two};
