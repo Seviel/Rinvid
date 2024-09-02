@@ -8,7 +8,6 @@
  **********************************************************************/
 
 #include "include/sprite.h"
-#include "include/texture.h"
 
 namespace rinvid
 {

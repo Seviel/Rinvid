@@ -10,18 +10,10 @@
 #ifndef CORE_INCLUDE_SPRITE_H
 #define CORE_INCLUDE_SPRITE_H
 
-#include <map>
-#include <string>
-#include <vector>
-#include <initializer_list>
-
-#include "core/include/animation.h"
-#include "core/include/drawable.h"
 #include "core/include/drawable_animated.h"
 #include "core/include/sprite_animation.h"
 #include "core/include/texture.h"
 #include "core/include/transformable.h"
-#include "extern/glm/glm/mat4x4.hpp"
 #include "util/include/rect.h"
 #include "util/include/vector2.h"
 
