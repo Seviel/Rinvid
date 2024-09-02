@@ -10,9 +10,9 @@
 #ifndef CORE_INCLUDE_SPRITE_ANIMATION_H
 #define CORE_INCLUDE_SPRITE_ANIMATION_H
 
-#include <map>
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 #include "core/include/animation.h"
 
@@ -130,7 +130,7 @@ class SpriteAnimation
     void set_animation_by_name(const std::string& name, Animation& animation);
 
   protected:
-    std::map<std::string, Animation> animations_;
+    std::unordered_map<std::string, Animation> animations_;
 
   private:
     std::vector<Rect> regions_;
