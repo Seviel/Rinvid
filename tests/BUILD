@@ -3,7 +3,9 @@ load("@rules_cc//cc:defs.bzl", "cc_binary")
 cc_binary(
     name = "rinvid_test",
     srcs = [
+        "include/sprite_test.h",
         "include/texture_test.h",
+        "sprite_test.cpp",
         "test_main.cpp",
         "texture_test.cpp",
     ],

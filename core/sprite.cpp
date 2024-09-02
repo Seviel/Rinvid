@@ -13,8 +13,8 @@ namespace rinvid
 {
 
 Sprite::Sprite()
-    : sprite_animation_{}, texture_{nullptr}, width_{}, height_{}, top_left_{}, texture_offset_{},
-      opacity_{1.0F}
+    : sprite_animation_{}, texture_{nullptr}, width_{0}, height_{0}, top_left_{0.0F, 0.0F},
+      texture_offset_{0.0F, 0.0F}, opacity_{1.0F}
 {
 }
 
