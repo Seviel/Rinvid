@@ -10,19 +10,11 @@
 #ifndef CORE_INCLUDE_SPRITE_ANIMATION_H
 #define CORE_INCLUDE_SPRITE_ANIMATION_H
 
-#include <map>
 #include <string>
 #include <vector>
-#include <initializer_list>
+#include <unordered_map>
 
 #include "core/include/animation.h"
-#include "core/include/drawable.h"
-#include "core/include/drawable_animated.h"
-#include "core/include/texture.h"
-#include "core/include/transformable.h"
-#include "extern/glm/glm/mat4x4.hpp"
-#include "util/include/rect.h"
-#include "util/include/vector2.h"
 
 namespace gui
 {
@@ -138,7 +130,7 @@ class SpriteAnimation
     void set_animation_by_name(const std::string& name, Animation& animation);
 
   protected:
-    std::map<std::string, Animation> animations_;
+    std::unordered_map<std::string, Animation> animations_;
 
   private:
     std::vector<Rect> regions_;
