@@ -35,6 +35,8 @@ bool load_image(const char* file_name, std::vector<std::uint8_t>& image_data, st
         return false;
     }
 
+    image_data.reserve(width * height * STBI_rgb_alpha);
+
     for (std::int32_t i{0}; i < width * height * STBI_rgb_alpha; ++i)
     {
         image_data.push_back(data[i]);
