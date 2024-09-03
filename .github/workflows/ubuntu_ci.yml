@@ -40,3 +40,7 @@ jobs:
         run: |
           bazel build //... -c dbg
           bazel build //... -c opt
+
+      - name: Run tests
+        run: |
+          bazel run //tests:rinvid_test --test_filter=*Util*
