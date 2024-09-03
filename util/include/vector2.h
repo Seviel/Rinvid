@@ -18,7 +18,7 @@ namespace rinvid
 template <typename T>
 struct Vector2
 {
-    Vector2()
+    Vector2() : x{}, y{}
     {
         static_assert(std::is_arithmetic<T>::value == true);
     }
