@@ -147,6 +147,6 @@ TEST_F(UtilTest, CollisionDetection_MoveUp)
 
 TEST_F(UtilTest, CollisionDetection_MoveDown)
 {
-    Vector2<float> move_vec{0.0F, static_cast<float>(-RECT_HEIGHT / 2)};
+    Vector2<float> move_vec{0.0F, static_cast<float>(RECT_HEIGHT / 2)};
     test_collision_detection(move_vec);
 }
