@@ -7,6 +7,9 @@
  * repository for more details.
  **********************************************************************/
 
+#ifndef TESTS_INCLUDE_TEXTURE_TEST_H
+#define TESTS_INCLUDE_TEXTURE_TEST_H
+
 #include <SFML/Window/Context.hpp>
 #include <gtest/gtest.h>
 
@@ -32,3 +35,5 @@ class TextureTest : public ::testing::Test
     // functions.
     sf::Context context_{};
 };
+
+#endif // TESTS_INCLUDE_TEXTURE_TEST_H
