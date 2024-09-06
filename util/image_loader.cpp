@@ -7,6 +7,7 @@
  * repository for more details.
  **********************************************************************/
 
+#include <chrono>
 #include <cstdint>
 #include <iostream>
 #include <string>
@@ -36,11 +37,7 @@ bool load_image(const char* file_name, std::vector<std::uint8_t>& image_data, st
     }
 
     image_data.reserve(width * height * STBI_rgb_alpha);
-
-    for (std::int32_t i{0}; i < width * height * STBI_rgb_alpha; ++i)
-    {
-        image_data.push_back(data[i]);
-    }
+    std::copy(data, data + (width * height * STBI_rgb_alpha), image_data.data());
 
     stbi_image_free(data);
 
