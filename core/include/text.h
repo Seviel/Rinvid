@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2023, Filip Vasiljevic
+ * Copyright (c) 2023 - 2024, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -40,6 +40,14 @@ class Text : public Drawable
      *
      *************************************************************************************************/
     virtual void draw() override;
+
+    /**************************************************************************************************
+     * @brief Draws the text with Shader.
+     *
+     * @param shader Shader to be used.
+     *
+     *************************************************************************************************/
+    virtual void draw(const Shader shader) override;
 
   private:
     struct Character

@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2021 - 2023, Filip Vasiljevic
+ * Copyright (c) 2021 - 2024, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -121,13 +121,10 @@ Texture::~Texture()
     }
 }
 
-void Texture::draw(const glm::mat4& transform, float opacity)
+void Texture::draw(const glm::mat4& transform, const Shader shader, float opacity)
 {
-    RinvidGfx::use_texture_default_shader();
-
-    RinvidGfx::update_mvp_matrix(transform, RinvidGfx::get_texture_default_shader_id());
-
-    const auto shader = RinvidGfx::get_texture_default_shader();
+    shader.use();
+    RinvidGfx::update_mvp_matrix(transform, shader.get_id());
     shader.set_float("opacity", opacity);
 
     GL_CALL(glBindTexture(GL_TEXTURE_2D, texture_id_));

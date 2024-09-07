@@ -50,12 +50,29 @@ class Sprite : public Transformable, public DrawableAnimated
     void draw() override;
 
     /**************************************************************************************************
+     * @brief Draw the sprite with shader.
+     *
+     * @param shader Shader to be used.
+     *
+     *************************************************************************************************/
+    virtual void draw(const Shader shader) override;
+
+    /**************************************************************************************************
      * @brief Draws the sprite.  Use this function for drawing animated sprites.
      *
      * @param delta_time Time passed in seconds since last frame
      *
      *************************************************************************************************/
     void draw(double delta_time) override;
+
+    /**************************************************************************************************
+     * @brief Draws the sprite with shader.  Use this function for drawing animated sprites.
+     *
+     * @param delta_time Time passed in seconds since last frame.
+     * @param shader Shader to be used.
+     *
+     *************************************************************************************************/
+    void draw(double delta_time, const Shader shader) override;
 
     /**************************************************************************************************
      * @brief Moves sprite by adding move_vector to its position vector.
