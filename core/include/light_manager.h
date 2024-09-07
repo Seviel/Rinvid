@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2023, Filip Vasiljevic
+ * Copyright (c) 2023 - 2024, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -16,7 +16,7 @@ namespace rinvid
 {
 
 /**************************************************************************************************
- * @brief A class for controlling lighting.
+ * @brief A class for controlling lighting. Only works if you're using default shaders.
  *
  * All functions and members are static.
  *

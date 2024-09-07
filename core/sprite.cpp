@@ -31,7 +31,18 @@ void Sprite::draw()
     draw(0.0);
 }
 
+void Sprite::draw(const Shader shader)
+{
+    draw(0.0, shader);
+}
+
 void Sprite::draw(double delta_time)
+{
+    const auto shader = RinvidGfx::get_texture_default_shader();
+    draw(delta_time, shader);
+}
+
+void Sprite::draw(double delta_time, const Shader shader)
 {
     origin_.x = top_left_.x + width_ / 2;
     origin_.y = top_left_.y + height_ / 2;
@@ -50,7 +61,7 @@ void Sprite::draw(double delta_time)
         texture_->update_vertices(offset, width, height);
     }
 
-    texture_->draw(get_transform(), opacity_);
+    texture_->draw(get_transform(), shader, opacity_);
 }
 
 void Sprite::move(const Vector2<float> move_vector)

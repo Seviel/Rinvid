@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2023, Filip Vasiljevic
+ * Copyright (c) 2023 - 2024, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -39,6 +39,14 @@ class DrawableAnimated : public Drawable
      *
      *************************************************************************************************/
     virtual void draw(double delta_time) = 0;
+
+    /**************************************************************************************************
+     * @brief Draws the animated object with shader applied.
+     *
+     * @param shader Shader to use.
+     *
+     *************************************************************************************************/
+    virtual void draw(double delta_time, const Shader shader) = 0;
 };
 
 } // namespace rinvid

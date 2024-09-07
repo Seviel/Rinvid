@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2023, Filip Vasiljevic
+ * Copyright (c) 2023 - 2024, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -83,6 +83,12 @@ Text::Text(std::string text, std::string font_path, Vector2<float> position, Col
 
 void Text::draw()
 {
+    const auto shader = RinvidGfx::get_text_default_shader();
+    draw(shader);
+}
+
+void Text::draw(const Shader shader)
+{
     float scale = 1.0F;
     float x     = position_.x;
     float y     = position_.y;
@@ -93,14 +99,13 @@ void Text::draw()
     x                = glm_pos.x;
     y                = glm_pos.y;
 
-    RinvidGfx::use_text_default_shader();
+    shader.use();
     glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(RinvidGfx::get_width()), 0.0f,
                                       static_cast<float>(RinvidGfx::get_height()));
-    GL_CALL(glUniformMatrix4fv(
-        glGetUniformLocation(RinvidGfx::get_text_default_shader_id(), "projection"), 1, GL_FALSE,
-        glm::value_ptr(projection)));
-    GL_CALL(glUniform3f(glGetUniformLocation(RinvidGfx::get_text_default_shader_id(), "text_color"),
-                        color_.r, color_.g, color_.b));
+    GL_CALL(glUniformMatrix4fv(glGetUniformLocation(shader.get_id(), "projection"), 1, GL_FALSE,
+                               glm::value_ptr(projection)));
+    GL_CALL(glUniform3f(glGetUniformLocation(shader.get_id(), "text_color"), color_.r, color_.g,
+                        color_.b));
     GL_CALL(glActiveTexture(GL_TEXTURE0));
     GL_CALL(glBindVertexArray(vertex_array_object_));
 

@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2020 - 2023, Filip Vasiljevic
+ * Copyright (c) 2020 - 2024, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -90,6 +90,14 @@ class FixedPolygonShape : public Shape, public Transformable, public Drawable
      *
      *************************************************************************************************/
     virtual void draw() override;
+
+    /**************************************************************************************************
+     * @brief Draw the shape with shader.
+     *
+     * @param shader Shader to be used.
+     *
+     *************************************************************************************************/
+    virtual void draw(const Shader shader) override;
 
     /**************************************************************************************************
      * @brief Move shape by adding move_vector to its position vector.
@@ -245,9 +253,15 @@ void FixedPolygonShape<number_of_vertices, draw_mode>::init_vertex_buffer()
 template <typename std::uint32_t number_of_vertices, GLenum draw_mode>
 void FixedPolygonShape<number_of_vertices, draw_mode>::draw()
 {
-    RinvidGfx::use_shape_default_shader();
-    RinvidGfx::update_mvp_matrix(get_transform(), RinvidGfx::get_shape_default_shader_id());
     const auto shader = RinvidGfx::get_shape_default_shader();
+    draw(shader);
+}
+
+template <typename std::uint32_t number_of_vertices, GLenum draw_mode>
+void FixedPolygonShape<number_of_vertices, draw_mode>::draw(Shader shader)
+{
+    shader.use();
+    RinvidGfx::update_mvp_matrix(get_transform(), shader.get_id());
     shader.set_float4("in_color", color_.r, color_.g, color_.b, color_.a);
 
     GL_CALL(glBindVertexArray(vertex_array_object_));
