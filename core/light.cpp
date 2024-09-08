@@ -65,7 +65,7 @@ Light::Light() : position_{0.0F, 0.0F}, intensity_{0.5F}, falloff_{0.5F}
                            remap(falloff_, 0.0F, 1.0F, quadratic_low, quadratic_high));
 }
 
-Light::Light(Vector2<float> position, float intensity, float falloff)
+Light::Light(Vector2f position, float intensity, float falloff)
     : position_{position}, intensity_{intensity}, falloff_{falloff}
 {
     ordinal_ = number_of_lights_;
@@ -104,13 +104,13 @@ Light::Light(Vector2<float> position, float intensity, float falloff)
                            remap(falloff_, 0.0F, 1.0F, quadratic_low, quadratic_high));
 }
 
-void Light::move(const Vector2<float> move_vector)
+void Light::move(const Vector2f move_vector)
 {
     position_.x += move_vector.x;
     position_.y += move_vector.y;
 }
 
-void Light::set_position(const Vector2<float> vector)
+void Light::set_position(const Vector2f vector)
 {
     position_ = vector;
 
@@ -172,9 +172,9 @@ void Light::switch_it(bool on)
 
 /// @todo This is bullshit, this should probably be handled in the shader and update method should
 /// not exist, revisit this later.
-void Light::update(Vector2<float> camera_pos)
+void Light::update(Vector2f camera_pos)
 {
-    Vector2<float> position = position_;
+    Vector2f position = position_;
     position.x -= camera_pos.x;
     position.y -= camera_pos.y;
     const auto texture_shader = RinvidGfx::get_texture_default_shader();

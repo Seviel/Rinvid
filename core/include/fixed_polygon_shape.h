@@ -49,7 +49,7 @@ class FixedPolygonShape : public Shape, public Transformable, public Drawable
      * @param vertices Vertices of the polygon
      *
      *************************************************************************************************/
-    FixedPolygonShape(std::vector<Vector2<float>> vertices);
+    FixedPolygonShape(std::vector<Vector2f> vertices);
 
     /**************************************************************************************************
      * @brief Copy constructor deleted.
@@ -105,7 +105,7 @@ class FixedPolygonShape : public Shape, public Transformable, public Drawable
      * @param move_vector Vector to be added to shape's position vector
      *
      *************************************************************************************************/
-    virtual void move(const Vector2<float> move_vector) override;
+    virtual void move(const Vector2f move_vector) override;
 
     /**************************************************************************************************
      * @brief Sets shape's position to the position of passed vector.
@@ -113,7 +113,7 @@ class FixedPolygonShape : public Shape, public Transformable, public Drawable
      * @param vector A new position vector of the shape
      *
      *************************************************************************************************/
-    virtual void set_position(const Vector2<float> vector) override;
+    virtual void set_position(const Vector2f vector) override;
 
     /**************************************************************************************************
      * @brief Returns bounding box rect of the shape
@@ -142,8 +142,8 @@ class FixedPolygonShape : public Shape, public Transformable, public Drawable
      *************************************************************************************************/
     void init_vertex_buffer();
 
-    const std::uint32_t         number_of_vertices_;
-    std::vector<Vector2<float>> vertices_;
+    const std::uint32_t   number_of_vertices_;
+    std::vector<Vector2f> vertices_;
 
     // Times 3 because each vertex has x, y, and z component.
     float gl_vertices_[number_of_vertices * 3];
@@ -160,8 +160,7 @@ class FixedPolygonShape : public Shape, public Transformable, public Drawable
 };
 
 template <typename std::uint32_t number_of_vertices, GLenum draw_mode>
-FixedPolygonShape<number_of_vertices, draw_mode>::FixedPolygonShape(
-    std::vector<Vector2<float>> vertices)
+FixedPolygonShape<number_of_vertices, draw_mode>::FixedPolygonShape(std::vector<Vector2f> vertices)
     : number_of_vertices_{number_of_vertices}, vertices_{vertices}, gl_vertices_{}
 {
     static_assert(number_of_vertices >= 3);
@@ -270,7 +269,7 @@ void FixedPolygonShape<number_of_vertices, draw_mode>::draw(Shader shader)
 }
 
 template <typename std::uint32_t number_of_vertices, GLenum draw_mode>
-void FixedPolygonShape<number_of_vertices, draw_mode>::move(const Vector2<float> move_vector)
+void FixedPolygonShape<number_of_vertices, draw_mode>::move(const Vector2f move_vector)
 {
     for (std::uint32_t i{0}; i < number_of_vertices; ++i)
     {
@@ -281,11 +280,11 @@ void FixedPolygonShape<number_of_vertices, draw_mode>::move(const Vector2<float>
 }
 
 template <typename std::uint32_t number_of_vertices, GLenum draw_mode>
-void FixedPolygonShape<number_of_vertices, draw_mode>::set_position(const Vector2<float> vector)
+void FixedPolygonShape<number_of_vertices, draw_mode>::set_position(const Vector2f vector)
 {
     calculate_origin();
 
-    Vector2<float> move_vector{};
+    Vector2f move_vector{};
 
     move_vector.x = vector.x - origin_.x;
     move_vector.y = vector.y - origin_.y;

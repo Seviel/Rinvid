@@ -85,7 +85,7 @@ class Texture
      * arguments passed by sprite.
      *
      *************************************************************************************************/
-    void update_vertices(Vector2<float> offset, std::uint32_t width, std::uint32_t height);
+    void update_vertices(Vector2f offset, std::uint32_t width, std::uint32_t height);
 
     std::int32_t width_{};
     std::int32_t height_{};

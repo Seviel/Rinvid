@@ -42,7 +42,7 @@ class Light
      * @param falloff How quickly does light lose strength with distance.
      *
      *************************************************************************************************/
-    Light(Vector2<float> position, float intensity, float falloff);
+    Light(Vector2f position, float intensity, float falloff);
 
     /**************************************************************************************************
      * @brief Moves the light by adding move_vector to its position vector.
@@ -50,7 +50,7 @@ class Light
      * @param move_vector Vector to be added to light's position vector
      *
      *************************************************************************************************/
-    void move(const Vector2<float> move_vector);
+    void move(const Vector2f move_vector);
 
     /**************************************************************************************************
      * @brief Sets light's position to the position of passed vector.
@@ -58,7 +58,7 @@ class Light
      * @param vector A new position vector of the light
      *
      *************************************************************************************************/
-    void set_position(const Vector2<float> vector);
+    void set_position(const Vector2f vector);
 
     /**************************************************************************************************
      * @brief Sets light's intensity.
@@ -91,7 +91,7 @@ class Light
      * @param camera_pos Position of the camera if there is any.
      *
      *************************************************************************************************/
-    void update(Vector2<float> camera_pos = {0.0F, 0.0F});
+    void update(Vector2f camera_pos = {0.0F, 0.0F});
 
   private:
     /**************************************************************************************************
@@ -100,7 +100,7 @@ class Light
      *************************************************************************************************/
     float remap(float value, float low1, float high1, float low2, float high2);
 
-    Vector2<float>      position_;
+    Vector2f            position_;
     float               intensity_;
     float               falloff_;
     std::int32_t        ordinal_;

@@ -25,15 +25,15 @@ void Camera::update()
     RinvidGfx::update_view(view);
 }
 
-void Camera::move(const Vector2<float> move_vector)
+void Camera::move(const Vector2f move_vector)
 {
     camera_pos_ += move_vector.y * camera_up_;
     camera_pos_ += glm::normalize(glm::cross(camera_front_, camera_up_)) * move_vector.x;
 }
 
-Vector2<float> Camera::get_pos() const
+Vector2f Camera::get_pos() const
 {
-    return Vector2<float>{camera_pos_.x, camera_pos_.y};
+    return Vector2f{camera_pos_.x, camera_pos_.y};
 }
 
 } // namespace rinvid

@@ -27,7 +27,7 @@ const glm::mat4& Transformable::get_transform()
     return transform_;
 }
 
-Vector2<float> Transformable::get_origin()
+Vector2f Transformable::get_origin()
 {
     return origin_;
 }

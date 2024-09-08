@@ -18,8 +18,8 @@ Sprite::Sprite()
 {
 }
 
-Sprite::Sprite(Texture* texture, std::int32_t width, std::int32_t height, Vector2<float> top_left,
-               Vector2<float> texture_offset)
+Sprite::Sprite(Texture* texture, std::int32_t width, std::int32_t height, Vector2f top_left,
+               Vector2f texture_offset)
     : sprite_animation_{}, texture_{texture}, width_{width}, height_{height}, top_left_{top_left},
       texture_offset_{texture_offset}, opacity_{1.0F}
 {
@@ -50,10 +50,10 @@ void Sprite::draw(double delta_time, const Shader shader)
     if (sprite_animation_.is_active_)
     {
         sprite_animation_.current_animation_->advance(delta_time);
-        Rect           texture_region = sprite_animation_.current_animation_->frame();
-        Vector2<float> offset{texture_offset_};
-        std::uint32_t  width  = texture_region.width;
-        std::uint32_t  height = texture_region.height;
+        Rect          texture_region = sprite_animation_.current_animation_->frame();
+        Vector2f      offset{texture_offset_};
+        std::uint32_t width  = texture_region.width;
+        std::uint32_t height = texture_region.height;
 
         offset.x += texture_region.position.x;
         offset.y += texture_region.position.y;
@@ -64,12 +64,12 @@ void Sprite::draw(double delta_time, const Shader shader)
     texture_->draw(get_transform(), shader, opacity_);
 }
 
-void Sprite::move(const Vector2<float> move_vector)
+void Sprite::move(const Vector2f move_vector)
 {
     top_left_.move(move_vector);
 }
 
-void Sprite::set_position(const Vector2<float> vector)
+void Sprite::set_position(const Vector2f vector)
 {
     top_left_.set(vector);
 }
@@ -117,8 +117,8 @@ Rect Sprite::bounding_rect()
     return rect;
 }
 
-void Sprite::setup(Texture* texture, std::int32_t width, std::int32_t height,
-                   Vector2<float> top_left, Vector2<float> texture_offset)
+void Sprite::setup(Texture* texture, std::int32_t width, std::int32_t height, Vector2f top_left,
+                   Vector2f texture_offset)
 {
     texture_        = texture;
     width_          = width;

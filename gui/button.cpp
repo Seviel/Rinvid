@@ -30,7 +30,7 @@ Button::Button() : idle_{}, mouse_hovering_{}, clicked_{}, is_clicked_{false}
     sprite_animation_.play("idle");
 }
 
-void Button::update(Vector2<float> mouse_pos)
+void Button::update(Vector2f mouse_pos)
 {
     glm::vec4   glm_mouse_pos{mouse_pos.x, mouse_pos.y, 1.0F, 1.0F};
     const auto& view = glm::inverse(RinvidGfx::get_view());

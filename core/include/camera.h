@@ -42,7 +42,7 @@ class Camera
      * @param move_vector Vector to be added to camera's position vector
      *
      *************************************************************************************************/
-    void move(const Vector2<float> move_vector);
+    void move(const Vector2f move_vector);
 
     /**************************************************************************************************
      * @brief Returns current camera position.
@@ -50,7 +50,7 @@ class Camera
      * @return camera position.
      *
      *************************************************************************************************/
-    Vector2<float> get_pos() const;
+    Vector2f get_pos() const;
 
   private:
     glm::vec3 camera_pos_;

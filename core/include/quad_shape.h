@@ -33,8 +33,7 @@ class QuadShape final : public FixedPolygonShape<4, GL_QUADS>
      * @param bottom_left bottom left point of the quad
      *
      *************************************************************************************************/
-    QuadShape(Vector2<float> top_left, Vector2<float> top_right, Vector2<float> bottom_right,
-              Vector2<float> bottom_left);
+    QuadShape(Vector2f top_left, Vector2f top_right, Vector2f bottom_right, Vector2f bottom_left);
 };
 
 } // namespace rinvid

@@ -62,7 +62,7 @@ TEST_F(UtilTest, Color_4)
 // Test Vector2
 TEST_F(UtilTest, Vector2_Construction)
 {
-    Vector2<float> vec2{};
+    Vector2f vec2{};
 
     EXPECT_EQ(vec2.x, 0.0F);
     EXPECT_EQ(vec2.y, 0.0F);
@@ -70,7 +70,7 @@ TEST_F(UtilTest, Vector2_Construction)
 
 TEST_F(UtilTest, Vector2_Construction_2)
 {
-    Vector2<float> vec2{5.0F, 8.0F};
+    Vector2f vec2{5.0F, 8.0F};
 
     EXPECT_EQ(vec2.x, 5.0F);
     EXPECT_EQ(vec2.y, 8.0F);
@@ -78,8 +78,8 @@ TEST_F(UtilTest, Vector2_Construction_2)
 
 TEST_F(UtilTest, Vector2_Move)
 {
-    Vector2<float> vec2{1.0F, 1.0F};
-    Vector2<float> move_vec{5.0F, 8.0F};
+    Vector2f vec2{1.0F, 1.0F};
+    Vector2f move_vec{5.0F, 8.0F};
 
     vec2.move(move_vec);
 
@@ -89,8 +89,8 @@ TEST_F(UtilTest, Vector2_Move)
 
 TEST_F(UtilTest, Vector2_Set)
 {
-    Vector2<float> vec2{1.0F, 1.0F};
-    Vector2<float> new_vec{5.0F, 8.0F};
+    Vector2f vec2{1.0F, 1.0F};
+    Vector2f new_vec{5.0F, 8.0F};
 
     vec2.set(new_vec);
 
@@ -105,11 +105,11 @@ static constexpr int32_t RECT_HEIGHT = 100;
 // Helper function for testing collision detection. Creates 2 rects at the same position, then moves
 // one of them 3 times. Expects that rects will still intersect after first two moves but won't
 // after third, so pass move_vec in accordance to that.
-static void test_collision_detection(Vector2<float> move_vec)
+static void test_collision_detection(Vector2f move_vec)
 {
-    Vector2<float> position{8.0F, 8.0F};
-    Rect           rect_1{position, RECT_WIDTH, RECT_HEIGHT};
-    Rect           rect_2{position, RECT_WIDTH, RECT_HEIGHT};
+    Vector2f position{8.0F, 8.0F};
+    Rect     rect_1{position, RECT_WIDTH, RECT_HEIGHT};
+    Rect     rect_2{position, RECT_WIDTH, RECT_HEIGHT};
 
     EXPECT_TRUE(intersects(rect_1, rect_2));
 
@@ -129,24 +129,24 @@ static void test_collision_detection(Vector2<float> move_vec)
 
 TEST_F(UtilTest, CollisionDetection_MoveLeft)
 {
-    Vector2<float> move_vec{static_cast<float>(-RECT_WIDTH / 2), 0.0F};
+    Vector2f move_vec{static_cast<float>(-RECT_WIDTH / 2), 0.0F};
     test_collision_detection(move_vec);
 }
 
 TEST_F(UtilTest, CollisionDetection_MoveRight)
 {
-    Vector2<float> move_vec{static_cast<float>(RECT_WIDTH / 2), 0.0F};
+    Vector2f move_vec{static_cast<float>(RECT_WIDTH / 2), 0.0F};
     test_collision_detection(move_vec);
 }
 
 TEST_F(UtilTest, CollisionDetection_MoveUp)
 {
-    Vector2<float> move_vec{0.0F, static_cast<float>(-RECT_HEIGHT / 2)};
+    Vector2f move_vec{0.0F, static_cast<float>(-RECT_HEIGHT / 2)};
     test_collision_detection(move_vec);
 }
 
 TEST_F(UtilTest, CollisionDetection_MoveDown)
 {
-    Vector2<float> move_vec{0.0F, static_cast<float>(RECT_HEIGHT / 2)};
+    Vector2f move_vec{0.0F, static_cast<float>(RECT_HEIGHT / 2)};
     test_collision_detection(move_vec);
 }

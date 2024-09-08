@@ -20,7 +20,7 @@
 namespace rinvid
 {
 
-Text::Text(std::string text, std::string font_path, Vector2<float> position, Color color,
+Text::Text(std::string text, std::string font_path, Vector2f position, Color color,
            std::uint32_t size)
     : text_{text}, position_{position}, color_{color}
 {

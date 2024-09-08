@@ -37,7 +37,7 @@ class Button : public Sprite
      * @param mouse_pos Vector indicating mouse position on the screen.
      *
      *************************************************************************************************/
-    void update(Vector2<float> mouse_pos);
+    void update(Vector2f mouse_pos);
 
     /**************************************************************************************************
      * @brief Sets animation regions for idle status (mouse is not hovering over button).

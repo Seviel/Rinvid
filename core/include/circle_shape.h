@@ -31,7 +31,7 @@ class CircleShape final : public FixedPolygonShape<180>
      * @param radius radius of the circle
      *
      *************************************************************************************************/
-    CircleShape(Vector2<float> center, float radius);
+    CircleShape(Vector2f center, float radius);
 };
 
 } // namespace rinvid

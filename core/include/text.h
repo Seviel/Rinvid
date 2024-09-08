@@ -32,7 +32,7 @@ class Text : public Drawable
      * @param size Font size.
      *
      *************************************************************************************************/
-    Text(std::string text, std::string font_path, Vector2<float> position, Color color,
+    Text(std::string text, std::string font_path, Vector2f position, Color color,
          std::uint32_t size);
 
     /**************************************************************************************************
@@ -58,13 +58,13 @@ class Text : public Drawable
         std::uint32_t advance;
     };
 
-    FT_Library     ft_lib_;
-    FT_Face        ft_face_;
-    std::uint32_t  vertex_array_object_;
-    std::uint32_t  vertex_buffer_object_;
-    std::string    text_;
-    Vector2<float> position_;
-    Color          color_;
+    FT_Library    ft_lib_;
+    FT_Face       ft_face_;
+    std::uint32_t vertex_array_object_;
+    std::uint32_t vertex_buffer_object_;
+    std::string   text_;
+    Vector2f      position_;
+    Color         color_;
 
     std::unordered_map<char, Character> characters_;
 };

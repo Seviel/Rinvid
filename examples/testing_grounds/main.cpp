@@ -49,30 +49,28 @@ class TestingGrounds : public rinvid::Screen
     void update(double delta_time) override;
 
     rinvid::Texture background_texture{"examples/testing_grounds/resources/rinvid_bg.png"};
-    rinvid::Sprite  background_sprite{&background_texture, 1920, 1080,
-                                     rinvid::Vector2<float>{0.0F, 0.0F},
-                                     rinvid::Vector2<float>{0.0F, 0.0F}};
+    rinvid::Sprite  background_sprite{&background_texture, 1920, 1080, rinvid::Vector2f{0.0F, 0.0F},
+                                     rinvid::Vector2f{0.0F, 0.0F}};
 
-    bool                  quad_alive{true};
-    rinvid::TriangleShape triangle{rinvid::Vector2<float>{400.0F, 200.0F},
-                                   rinvid::Vector2<float>{300.0F, 100.0F},
-                                   rinvid::Vector2<float>{500.0F, 100.0F}};
-    rinvid::QuadShape     quad{
-        rinvid::Vector2<float>{100.0F, 40.0F}, rinvid::Vector2<float>{150.0F, 40.0F},
-        rinvid::Vector2<float>{160.0F, 90.0F}, rinvid::Vector2<float>{90.0F, 90.0F}};
-    rinvid::RectangleShape       rectangle{rinvid::Vector2<float>{350.0F, 35.0F}, 100.0F, 50.0F};
-    rinvid::CircleShape          circle{rinvid::Vector2<float>{500.0F, 300.0f}, 100.0F};
+    bool                   quad_alive{true};
+    rinvid::TriangleShape  triangle{rinvid::Vector2f{400.0F, 200.0F},
+                                   rinvid::Vector2f{300.0F, 100.0F},
+                                   rinvid::Vector2f{500.0F, 100.0F}};
+    rinvid::QuadShape      quad{rinvid::Vector2f{100.0F, 40.0F}, rinvid::Vector2f{150.0F, 40.0F},
+                           rinvid::Vector2f{160.0F, 90.0F}, rinvid::Vector2f{90.0F, 90.0F}};
+    rinvid::RectangleShape rectangle{rinvid::Vector2f{350.0F, 35.0F}, 100.0F, 50.0F};
+    rinvid::CircleShape    circle{rinvid::Vector2f{500.0F, 300.0f}, 100.0F};
     rinvid::FixedPolygonShape<5> polygon{
-        {rinvid::Vector2<float>{100.0F, 100.0F}, rinvid::Vector2<float>{125.0F, 75.0F},
-         rinvid::Vector2<float>{150.0F, 100.0F}, rinvid::Vector2<float>{150.0F, 200.0F},
-         rinvid::Vector2<float>{100.0F, 200.0F}}};
+        {rinvid::Vector2f{100.0F, 100.0F}, rinvid::Vector2f{125.0F, 75.0F},
+         rinvid::Vector2f{150.0F, 100.0F}, rinvid::Vector2f{150.0F, 200.0F},
+         rinvid::Vector2f{100.0F, 200.0F}}};
     rinvid::Texture texture{"examples/testing_grounds/resources/logo.png"};
-    rinvid::Sprite  sprite{&texture, 100, 100, rinvid::Vector2<float>{200.0F, 200.0F},
-                          rinvid::Vector2<float>{0.0F, 0.0F}};
+    rinvid::Sprite  sprite{&texture, 100, 100, rinvid::Vector2f{200.0F, 200.0F},
+                          rinvid::Vector2f{0.0F, 0.0F}};
 
     rinvid::Texture clock_texture{"examples/testing_grounds/resources/clck.png"};
-    rinvid::Sprite  clock_sprite{&clock_texture, 100, 100, rinvid::Vector2<float>{650.0F, 450.0F},
-                                rinvid::Vector2<float>{0.0F, 0.0F}};
+    rinvid::Sprite  clock_sprite{&clock_texture, 100, 100, rinvid::Vector2f{650.0F, 450.0F},
+                                rinvid::Vector2f{0.0F, 0.0F}};
 
     rinvid::Texture     button_texture{"examples/testing_grounds/resources/default_button.png"};
     rinvid::gui::Button button{};
@@ -97,7 +95,7 @@ void TestingGrounds::create()
     rectangle.set_rotation(90.0F);
     circle.set_color(rinvid::Color{0.1F, 0.7F, 0.8F, 1.0F});
     polygon.set_color(rinvid::Color{1.0F, 1.0F, 1.0F, 1.0F});
-    polygon.set_position(rinvid::Vector2<float>{500.0F, 500.0F});
+    polygon.set_position(rinvid::Vector2f{500.0F, 500.0F});
 
     auto regions = clock_sprite.get_animation().split_animation_frames(100, 100, 12, 1);
     rinvid::Animation clock_animation{20.0, regions, rinvid::AnimationMode::Looping};
@@ -106,14 +104,14 @@ void TestingGrounds::create()
     clock_sprite.set_scale(1.5F);
     clock_sprite.set_opacity(0.3);
 
-    button.setup(&button_texture, 100, 30, rinvid::Vector2<float>{250.0F, 450.0F});
+    button.setup(&button_texture, 100, 30, rinvid::Vector2f{250.0F, 450.0F});
     auto button_regions = button.get_animation().split_animation_frames(100, 30, 3, 1);
 
     button.set_idle({button_regions.at(0)});
     button.set_mouse_hovering({button_regions.at(1)});
     button.set_clicked({button_regions.at(2)});
 
-    light_mid.set_position(rinvid::Vector2<float>{320.0F, 250.0F});
+    light_mid.set_position(rinvid::Vector2f{320.0F, 250.0F});
     light_mid.set_intensity(0.5F);
     light_mid.set_falloff(0.5F);
 
@@ -135,19 +133,19 @@ void TestingGrounds::update(double delta_time)
 
     if (button.is_clicked())
     {
-        quad.set_position(rinvid::Vector2<float>{100.0F, 40.0F});
+        quad.set_position(rinvid::Vector2f{100.0F, 40.0F});
         quad_alive = true;
     }
 
     if (Keyboard::is_key_pressed(Keyboard::Key::D) ||
         Keyboard::is_key_pressed(Keyboard::Key::Right))
     {
-        camera.move(rinvid::Vector2<float>{480.0F * static_cast<float>(delta_time), 0.0F});
+        camera.move(rinvid::Vector2f{480.0F * static_cast<float>(delta_time), 0.0F});
     }
 
     if (Keyboard::is_key_pressed(Keyboard::Key::A) || Keyboard::is_key_pressed(Keyboard::Key::Left))
     {
-        camera.move(rinvid::Vector2<float>{-480.0F * static_cast<float>(delta_time), 0.0F});
+        camera.move(rinvid::Vector2f{-480.0F * static_cast<float>(delta_time), 0.0F});
     }
 
     camera.update();
@@ -169,18 +167,18 @@ void TestingGrounds::update(double delta_time)
     button.draw(delta_time);
     text.draw();
 
-    triangle.move(rinvid::Vector2<float>{120.0F * static_cast<float>(delta_time), 0.0F});
-    rinvid::Vector2<float> triangle_origin = triangle.get_origin();
+    triangle.move(rinvid::Vector2f{120.0F * static_cast<float>(delta_time), 0.0F});
+    rinvid::Vector2f triangle_origin = triangle.get_origin();
     if (triangle_origin.x >= rinvid::RinvidGfx::get_width())
     {
-        triangle.set_position(rinvid::Vector2<float>{0.0F, triangle_origin.y});
+        triangle.set_position(rinvid::Vector2f{0.0F, triangle_origin.y});
     }
 
-    quad.move(rinvid::Vector2<float>{0.0F, 240.0F * static_cast<float>(delta_time)});
-    rinvid::Vector2<float> quad_origin = quad.get_origin();
+    quad.move(rinvid::Vector2f{0.0F, 240.0F * static_cast<float>(delta_time)});
+    rinvid::Vector2f quad_origin = quad.get_origin();
     if (quad_origin.y >= rinvid::RinvidGfx::get_height())
     {
-        quad.set_position(rinvid::Vector2<float>{quad_origin.x, 0.0F});
+        quad.set_position(rinvid::Vector2f{quad_origin.x, 0.0F});
     }
 
     sprite.rotate(60.0F * static_cast<float>(delta_time));

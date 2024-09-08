@@ -32,18 +32,17 @@ class ShapesScreen : public rinvid::Screen
                               rinvid::Color& base_color, rinvid::Color& active_color);
     void handle_movement(float& vertical_delta, float& horizontal_delta);
 
-    float                 vertical_delta{0.0F};
-    float                 horizontal_delta{0.0F};
-    rinvid::Color         base_color{0.1078431F, 0.6215686F, 0.5745098F, 1.0F};
-    rinvid::Color         active_color{1.0000000F, 0.6705882F, 0.2862745F, 1.0F};
-    rinvid::TriangleShape triangle{rinvid::Vector2<float>{400.0F, 500.0F},
-                                   rinvid::Vector2<float>{425.0F, 550.0F},
-                                   rinvid::Vector2<float>{375.0F, 550.0F}};
-    rinvid::QuadShape     quad{
-        rinvid::Vector2<float>{100.0F, 260.0F}, rinvid::Vector2<float>{150.0F, 260.0F},
-        rinvid::Vector2<float>{160.0F, 310.0F}, rinvid::Vector2<float>{90.0F, 310.0F}};
-    rinvid::RectangleShape rectangle{rinvid::Vector2<float>{400.0F, 50.0F}, 100.0F, 50.0F};
-    rinvid::CircleShape    circle{rinvid::Vector2<float>{670.0F, 280.0f}, 40.0F};
+    float                  vertical_delta{0.0F};
+    float                  horizontal_delta{0.0F};
+    rinvid::Color          base_color{0.1078431F, 0.6215686F, 0.5745098F, 1.0F};
+    rinvid::Color          active_color{1.0000000F, 0.6705882F, 0.2862745F, 1.0F};
+    rinvid::TriangleShape  triangle{rinvid::Vector2f{400.0F, 500.0F},
+                                   rinvid::Vector2f{425.0F, 550.0F},
+                                   rinvid::Vector2f{375.0F, 550.0F}};
+    rinvid::QuadShape      quad{rinvid::Vector2f{100.0F, 260.0F}, rinvid::Vector2f{150.0F, 260.0F},
+                           rinvid::Vector2f{160.0F, 310.0F}, rinvid::Vector2f{90.0F, 310.0F}};
+    rinvid::RectangleShape rectangle{rinvid::Vector2f{400.0F, 50.0F}, 100.0F, 50.0F};
+    rinvid::CircleShape    circle{rinvid::Vector2f{670.0F, 280.0f}, 40.0F};
     rinvid::Shape*         current_shape = nullptr;
 };
 
@@ -82,8 +81,8 @@ void ShapesScreen::update(double delta_time)
 
     handle_movement(vertical_delta, horizontal_delta);
 
-    current_shape->move(rinvid::Vector2<float>{horizontal_delta * static_cast<float>(delta_time),
-                                               vertical_delta * static_cast<float>(delta_time)});
+    current_shape->move(rinvid::Vector2f{horizontal_delta * static_cast<float>(delta_time),
+                                         vertical_delta * static_cast<float>(delta_time)});
 
     triangle.draw();
     quad.draw();

@@ -28,12 +28,11 @@ bool Mouse::is_button_pressed(MouseButton button)
     return sf::Mouse::isButtonPressed(sf_button);
 }
 
-Vector2<float> Mouse::get_mouse_pos(const Application* application)
+Vector2f Mouse::get_mouse_pos(const Application* application)
 {
     sf::Vector2i mouse_position = sf::Mouse::getPosition(application->window_);
 
-    return Vector2<float>{static_cast<float>(mouse_position.x),
-                          static_cast<float>(mouse_position.y)};
+    return Vector2f{static_cast<float>(mouse_position.x), static_cast<float>(mouse_position.y)};
 }
 
 } // namespace system

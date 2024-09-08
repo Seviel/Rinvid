@@ -16,8 +16,8 @@
 namespace rinvid
 {
 
-QuadShape::QuadShape(Vector2<float> top_left, Vector2<float> top_right, Vector2<float> bottom_right,
-                     Vector2<float> bottom_left)
+QuadShape::QuadShape(Vector2f top_left, Vector2f top_right, Vector2f bottom_right,
+                     Vector2f bottom_left)
 {
     vertices_.at(0) = top_left;
     vertices_.at(1) = top_right;
