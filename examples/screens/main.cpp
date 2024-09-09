@@ -21,8 +21,8 @@ int main()
     rinvid::Application screens_demo_app{640, 480, "Rinvid screens demo"};
 
     rinvid::Texture guardian_tex{"examples/screens/resources/guardian.png"};
-    rinvid::Sprite  guardian_sprite{&guardian_tex, 30, 45, rinvid::Vector2<float>{50.0F, 425.0F},
-                                   rinvid::Vector2<float>{0.0F, 0.0F}};
+    rinvid::Sprite  guardian_sprite{&guardian_tex, 30, 45, rinvid::Vector2f{50.0F, 425.0F},
+                                   rinvid::Vector2f{0.0F, 0.0F}};
 
     auto regions = guardian_sprite.get_animation().split_animation_frames(30, 45, 52, 1);
     rinvid::Animation standing_right{14.0,

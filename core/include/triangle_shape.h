@@ -32,7 +32,7 @@ class TriangleShape final : public FixedPolygonShape<3, GL_TRIANGLES>
      * @param vert3 vertex three
      *
      *************************************************************************************************/
-    TriangleShape(Vector2<float> vert1, Vector2<float> vert2, Vector2<float> vert3);
+    TriangleShape(Vector2f vert1, Vector2f vert2, Vector2f vert3);
 };
 
 } // namespace rinvid

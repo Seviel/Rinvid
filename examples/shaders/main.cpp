@@ -52,10 +52,8 @@ class ShadersScreen : public rinvid::Screen
     void update(double delta_time) override;
 
     Texture texture_{"examples/shaders/resources/logo.png"};
-    Sprite  sprite1_{&texture_, 100, 100, Vector2<float>{170.0F, 190.0F},
-                    Vector2<float>{0.0F, 0.0F}};
-    Sprite  sprite2_{&texture_, 100, 100, Vector2<float>{370.0F, 190.0F},
-                    Vector2<float>{0.0F, 0.0F}};
+    Sprite  sprite1_{&texture_, 100, 100, Vector2f{170.0F, 190.0F}, Vector2f{0.0F, 0.0F}};
+    Sprite  sprite2_{&texture_, 100, 100, Vector2f{370.0F, 190.0F}, Vector2f{0.0F, 0.0F}};
     Shader  shader_;
 };
 

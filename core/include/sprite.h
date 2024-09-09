@@ -40,8 +40,8 @@ class Sprite : public Transformable, public DrawableAnimated
      * multiuple sprites. Origin (0, 0) is top left point of the texture.
      *
      *************************************************************************************************/
-    Sprite(Texture* texture, std::int32_t width, std::int32_t height, Vector2<float> top_left,
-           Vector2<float> texture_offset = {0.0F, 0.0F});
+    Sprite(Texture* texture, std::int32_t width, std::int32_t height, Vector2f top_left,
+           Vector2f texture_offset = {0.0F, 0.0F});
 
     /**************************************************************************************************
      * @brief Draws the sprite. Use this function for sprites that are not animated.
@@ -80,7 +80,7 @@ class Sprite : public Transformable, public DrawableAnimated
      * @param move_vector Vector to be added to sprite's position vector
      *
      *************************************************************************************************/
-    void move(const Vector2<float> move_vector);
+    void move(const Vector2f move_vector);
 
     /**************************************************************************************************
      * @brief Sets sprite's position to the position of passed vector.
@@ -88,7 +88,7 @@ class Sprite : public Transformable, public DrawableAnimated
      * @param vector A new position vector of the sprite
      *
      *************************************************************************************************/
-    void set_position(const Vector2<float> vector);
+    void set_position(const Vector2f vector);
 
     /**************************************************************************************************
      * @brief Returns bounding box rect of the shape
@@ -108,8 +108,8 @@ class Sprite : public Transformable, public DrawableAnimated
      * @param texture_offset top left corner of texture region to use, (0, 0) of texture is top left
      *
      *************************************************************************************************/
-    void setup(Texture* texture, std::int32_t width, std::int32_t height, Vector2<float> top_left,
-               Vector2<float> texture_offset = {0.0F, 0.0F});
+    void setup(Texture* texture, std::int32_t width, std::int32_t height, Vector2f top_left,
+               Vector2f texture_offset = {0.0F, 0.0F});
 
     /**************************************************************************************************
      * @brief Sets transparency level of sprite.
@@ -132,12 +132,12 @@ class Sprite : public Transformable, public DrawableAnimated
     SpriteAnimation sprite_animation_;
 
   private:
-    Texture*       texture_;
-    std::int32_t   width_;
-    std::int32_t   height_;
-    Vector2<float> top_left_;
-    Vector2<float> texture_offset_;
-    float          opacity_;
+    Texture*     texture_;
+    std::int32_t width_;
+    std::int32_t height_;
+    Vector2f     top_left_;
+    Vector2f     texture_offset_;
+    float        opacity_;
 };
 
 } // namespace rinvid

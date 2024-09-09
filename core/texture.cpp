@@ -132,10 +132,10 @@ void Texture::draw(const glm::mat4& transform, const Shader shader, float opacit
     GL_CALL(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0));
 }
 
-void Texture::update_vertices(Vector2<float> offset, std::uint32_t width, std::uint32_t height)
+void Texture::update_vertices(Vector2f offset, std::uint32_t width, std::uint32_t height)
 {
     // Make center of texture (0, 0) for simplicity
-    Vector2<float> top_left{};
+    Vector2f top_left{};
     top_left.x = 0.0F - (width / 2.0F);
     top_left.y = 0.0F - (height / 2.0F);
 

@@ -29,8 +29,8 @@ TEST_F(SpriteTest, DefaultConstructor)
 // Test parameterized constructor
 TEST_F(SpriteTest, ParameterizedConstructor)
 {
-    Vector2<float> top_left{10.0F, 20.0F};
-    Sprite         sprite{mock_texture_, 100, 100, top_left};
+    Vector2f top_left{10.0F, 20.0F};
+    Sprite   sprite{mock_texture_, 100, 100, top_left};
 
     EXPECT_EQ(sprite.bounding_rect().width, 100);
     EXPECT_EQ(sprite.bounding_rect().height, 100);
@@ -43,8 +43,8 @@ TEST_F(SpriteTest, Draw)
 {
     auto number_of_errors = errors::get_error_count();
 
-    Vector2<float> top_left{10.0F, 20.0F};
-    Sprite         sprite{mock_texture_, 100, 200, top_left, {0.0F, 0.0F}};
+    Vector2f top_left{10.0F, 20.0F};
+    Sprite   sprite{mock_texture_, 100, 200, top_left, {0.0F, 0.0F}};
 
     EXPECT_NO_THROW(sprite.draw());
 
@@ -55,10 +55,10 @@ TEST_F(SpriteTest, Draw)
 // Test move
 TEST_F(SpriteTest, Move)
 {
-    Vector2<float> top_left{10.0F, 20.0F};
-    Sprite         sprite{mock_texture_, 100, 100, top_left, {0.0F, 0.0F}};
+    Vector2f top_left{10.0F, 20.0F};
+    Sprite   sprite{mock_texture_, 100, 100, top_left, {0.0F, 0.0F}};
 
-    Vector2<float> move_vector{5.0F, 5.0F};
+    Vector2f move_vector{5.0F, 5.0F};
     sprite.move(move_vector);
 
     EXPECT_EQ(sprite.bounding_rect().position.x, top_left.x + move_vector.x);
@@ -70,7 +70,7 @@ TEST_F(SpriteTest, SetPosition)
 {
     Sprite sprite{mock_texture_, 100, 100, {10.0F, 20.0F}, {0.0F, 0.0F}};
 
-    Vector2<float> new_position{30.0F, 40.0F};
+    Vector2f new_position{30.0F, 40.0F};
     sprite.set_position(new_position);
 
     EXPECT_EQ(sprite.bounding_rect().position.x, new_position.x);

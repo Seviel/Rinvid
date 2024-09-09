@@ -16,6 +16,11 @@ namespace rinvid
 {
 
 template <typename T>
+struct Vector2;
+
+typedef Vector2<float> Vector2f;
+
+template <typename T>
 struct Vector2
 {
     Vector2() : x{}, y{}

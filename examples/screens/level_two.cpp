@@ -19,7 +19,7 @@ LevelTwo::LevelTwo(rinvid::Sprite* guardian_sprite) : guardian_sprite_{guardian_
 
 void LevelTwo::create()
 {
-    guardian_sprite_->set_position(rinvid::Vector2<float>{250.0F, 425.0F});
+    guardian_sprite_->set_position(rinvid::Vector2f{250.0F, 425.0F});
     guardian_sprite_->get_animation().play("standing_right");
 }
 

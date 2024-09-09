@@ -37,8 +37,8 @@ class SpritesScreen : public rinvid::Screen
     rinvid::Color   base_color{0.1078431F, 0.6215686F, 0.5745098F, 1.0F};
     rinvid::Color   active_color{1.0000000F, 0.6705882F, 0.2862745F, 1.0F};
     rinvid::Texture robot_texture{"examples/sprites/resources/trashbot.png"};
-    rinvid::Sprite  robot_sprite{&robot_texture, 455, 455, rinvid::Vector2<float>{0.0F, 100.0F},
-                                rinvid::Vector2<float>{0.0F, 0.0F}};
+    rinvid::Sprite  robot_sprite{&robot_texture, 455, 455, rinvid::Vector2f{0.0F, 100.0F},
+                                rinvid::Vector2f{0.0F, 0.0F}};
 };
 
 void SpritesScreen::create()
@@ -95,7 +95,7 @@ void SpritesScreen::update(double delta_time)
         robot_sprite.get_animation().play(current_animation_state);
     }
 
-    robot_sprite.move(rinvid::Vector2<float>{horizontal_delta * static_cast<float>(delta_time), 0});
+    robot_sprite.move(rinvid::Vector2f{horizontal_delta * static_cast<float>(delta_time), 0});
 }
 
 void SpritesScreen::destroy()

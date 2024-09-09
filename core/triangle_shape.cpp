@@ -15,7 +15,7 @@
 namespace rinvid
 {
 
-TriangleShape::TriangleShape(Vector2<float> vert1, Vector2<float> vert2, Vector2<float> vert3)
+TriangleShape::TriangleShape(Vector2f vert1, Vector2f vert2, Vector2f vert3)
 {
     vertices_.at(0) = vert1;
     vertices_.at(1) = vert2;

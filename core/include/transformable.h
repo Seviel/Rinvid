@@ -46,7 +46,7 @@ class Transformable
      * @return Center point of object
      *
      *************************************************************************************************/
-    Vector2<float> get_origin();
+    Vector2f get_origin();
 
     /**************************************************************************************************
      * @brief Rotates object
@@ -122,7 +122,7 @@ class Transformable
         max_y = max_y_vector->y;
     }
 
-    Vector2<float> origin_;
+    Vector2f origin_;
 
   private:
     glm::mat4 transform_;

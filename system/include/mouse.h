@@ -46,7 +46,7 @@ class Mouse
      * @return Vector2 representing mouse position in 2D space
      *
      *************************************************************************************************/
-    static Vector2<float> get_mouse_pos(const Application* application);
+    static Vector2f get_mouse_pos(const Application* application);
 };
 
 } // namespace system

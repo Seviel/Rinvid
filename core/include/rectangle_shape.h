@@ -32,7 +32,7 @@ class RectangleShape final : public FixedPolygonShape<4, GL_QUADS>
      * @param height rectangle height
      *
      *************************************************************************************************/
-    RectangleShape(Vector2<float> center, float width, float height);
+    RectangleShape(Vector2f center, float width, float height);
 };
 
 } // namespace rinvid
