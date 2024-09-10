@@ -148,6 +148,11 @@ void TestingGrounds::update(double delta_time)
         camera.move(rinvid::Vector2f{-480.0F * static_cast<float>(delta_time), 0.0F});
     }
 
+    if (Keyboard::is_key_pressed(Keyboard::Key::Escape))
+    {
+        get_application()->exit();
+    }
+
     camera.update();
 
     light_mid.update(camera.get_pos());

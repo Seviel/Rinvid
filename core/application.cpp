@@ -113,6 +113,11 @@ void Application::set_fps(std::uint16_t fps)
     fps_ = fps;
 }
 
+void Application::exit()
+{
+    running_ = false;
+}
+
 void Application::handle_events(sf::Window& window, sf::Event& event)
 {
     while (window.pollEvent(event))
