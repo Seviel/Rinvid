@@ -10,6 +10,7 @@ cc_binary(
         ":resources/default_button.png",
         ":resources/logo.png",
         ":resources/rinvid_bg.png",
+        ":resources/wind.wav",
     ],
     linkopts = select({
         "@bazel_tools//src/conditions:windows": ["-lsfml-window -lsfml-system -lopengl32 -lwinmm -lgdi32"],
@@ -18,6 +19,7 @@ cc_binary(
     deps = [
         "//core:rinvid_core",
         "//gui:rinvid_gui",
+        "//sound:rinvid_sound",
         "//system:rinvid_system",
         "//util",
     ],
