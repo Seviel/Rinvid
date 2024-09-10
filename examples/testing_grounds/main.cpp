@@ -32,6 +32,7 @@
 #include "core/include/texture.h"
 #include "core/include/triangle_shape.h"
 #include "gui/include/button.h"
+#include "sound/include/sound.h"
 #include "system/include/keyboard.h"
 #include "system/include/mouse.h"
 #include "util/include/collision_detection.h"
@@ -85,6 +86,8 @@ class TestingGrounds : public rinvid::Screen
                       {250.0F, 375.0F},
                       {0.0F, 0.0F, 0.0F, 1.0F},
                       28};
+
+    rinvid::sound::Sound wind{"examples/testing_grounds/resources/wind.wav"};
 };
 
 void TestingGrounds::create()
@@ -118,6 +121,9 @@ void TestingGrounds::create()
     light_low.switch_it(false);
 
     rinvid::LightManager::activate_ambient_light(0.3F);
+
+    wind.set_volume(50.0F);
+    wind.play();
 }
 
 void TestingGrounds::update(double delta_time)
