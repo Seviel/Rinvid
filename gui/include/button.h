@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2022, Filip Vasiljevic
+ * Copyright (c) 2022 - 2024, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -71,11 +71,20 @@ class Button : public Sprite
      *************************************************************************************************/
     bool is_clicked() const;
 
+    /**************************************************************************************************
+     * @brief Checks whether button is "just clicked". Will return true only once per click.
+     *
+     * @return True if button is just clicked, false otherwise.
+     *
+     *************************************************************************************************/
+    bool just_clicked();
+
   private:
     Animation idle_;
     Animation mouse_hovering_;
     Animation clicked_;
     bool      is_clicked_;
+    bool      just_clicked_;
 };
 
 } // namespace gui

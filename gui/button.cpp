@@ -21,7 +21,7 @@ namespace rinvid
 namespace gui
 {
 
-Button::Button() : idle_{}, mouse_hovering_{}, clicked_{}, is_clicked_{false}
+Button::Button() : idle_{}, mouse_hovering_{}, clicked_{}, is_clicked_{false}, just_clicked_{false}
 {
     sprite_animation_.add_animation("idle", idle_);
     sprite_animation_.add_animation("mouse_hovering", mouse_hovering_);
@@ -43,6 +43,11 @@ void Button::update(Vector2f mouse_pos)
     {
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
         {
+            if (!is_clicked_)
+            {
+                just_clicked_ = true;
+            }
+
             sprite_animation_.play("clicked");
             is_clicked_ = true;
         }
@@ -80,6 +85,13 @@ void Button::set_clicked(const std::vector<Rect>& regions)
 bool Button::is_clicked() const
 {
     return is_clicked_;
+}
+
+bool Button::just_clicked()
+{
+    bool retval   = just_clicked_;
+    just_clicked_ = false;
+    return retval;
 }
 
 } // namespace gui
