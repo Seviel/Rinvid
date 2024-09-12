@@ -86,6 +86,22 @@ class Light
     void switch_it(bool on);
 
     /**************************************************************************************************
+     * @brief Returns light's intensity.
+     *
+     * @return Current light intensity.
+     *
+     *************************************************************************************************/
+    float get_intensity() const;
+
+    /**************************************************************************************************
+     * @brief Returns light's falloff.
+     *
+     * @return Current light falloff.
+     *
+     *************************************************************************************************/
+    float get_falloff() const;
+
+    /**************************************************************************************************
      * @brief Updates the light, should be called every frame.
      *
      * @param camera_pos Position of the camera if there is any.

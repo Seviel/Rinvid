@@ -170,6 +170,16 @@ void Light::switch_it(bool on)
     shape_shader.set_bool("light_active[" + std::to_string(ordinal_) + "]", on);
 }
 
+float Light::get_intensity() const
+{
+    return 1.0F - std::clamp(intensity_, 0.0F, 1.0F);
+}
+
+float Light::get_falloff() const
+{
+    return falloff_;
+}
+
 /// @todo This is bullshit, this should probably be handled in the shader and update method should
 /// not exist, revisit this later.
 void Light::update(Vector2f camera_pos)
