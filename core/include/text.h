@@ -64,6 +64,14 @@ class Text : public Drawable
     void move(const Vector2f move_vector);
 
     /**************************************************************************************************
+     * @brief Sets position of the text.
+     *
+     * @param position Vector New position.
+     *
+     *************************************************************************************************/
+    void set_position(const Vector2f position);
+
+    /**************************************************************************************************
      * @brief Sets the font size.
      *
      * @param new_size New size.

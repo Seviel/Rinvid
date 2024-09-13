@@ -104,6 +104,12 @@ void Text::move(const Vector2f move_vector)
     position_.move(move_vector);
 }
 
+void Text::set_position(const Vector2f position)
+{
+    position_   = position;
+    position_.y = RinvidGfx::get_height() - position_.y;
+}
+
 void Text::set_size(const std::uint32_t new_size)
 {
     size_ = new_size;
