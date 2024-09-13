@@ -20,6 +20,7 @@ cc_library(
         "texture.cpp",
         "transformable.cpp",
         "triangle_shape.cpp",
+        "ttf_lib.cpp",
     ],
     hdrs = [
         "include/animation.h",
@@ -44,6 +45,7 @@ cc_library(
         "include/texture.h",
         "include/transformable.h",
         "include/triangle_shape.h",
+        "include/ttf_lib.h",
     ],
     copts = ["-Werror -Wall -Wextra -pedantic"],
     linkopts = select({

@@ -16,69 +16,31 @@
 #include "core/include/rinvid_gfx.h"
 #include "core/include/rinvid_gl.h"
 #include "core/include/text.h"
+#include "core/include/ttf_lib.h"
 
 namespace rinvid
 {
 
 Text::Text(std::string text, std::string font_path, Vector2f position, Color color,
            std::uint32_t size)
-    : text_{text}, position_{position}, color_{color}
+    : size_{size}, text_{text}, position_{position}, color_{color}
 {
-    position_.y = RinvidGfx::get_height() - position_.y;
+    const auto* ft_lib = TTFLib::get_instance();
 
-    if (FT_Init_FreeType(&ft_lib_))
-    {
-        throw "Freetype: Could not init FreeType Library";
-    }
-
-    auto error = FT_New_Face(ft_lib_, font_path.c_str(), 0, &ft_face_);
+    auto error = FT_New_Face(*ft_lib, font_path.c_str(), 0, &ft_face_);
     if (error)
     {
         throw error;
     }
 
-    FT_Set_Pixel_Sizes(ft_face_, 0, size);
+    position_.y = RinvidGfx::get_height() - position_.y;
 
-    GL_CALL(glPixelStorei(GL_UNPACK_ALIGNMENT, 1));
+    generate_character_textures();
+}
 
-    for (unsigned char c = 0; c < 128; c++)
-    {
-        if (FT_Load_Char(ft_face_, c, FT_LOAD_RENDER))
-        {
-            throw "Freetype: Failed to load Glyph";
-        }
-
-        std::uint32_t texture;
-        GL_CALL(glGenTextures(1, &texture));
-        GL_CALL(glBindTexture(GL_TEXTURE_2D, texture));
-        GL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, ft_face_->glyph->bitmap.width,
-                             ft_face_->glyph->bitmap.rows, 0, GL_RED, GL_UNSIGNED_BYTE,
-                             ft_face_->glyph->bitmap.buffer));
-        GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
-        GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
-        GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
-        GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
-
-        Character character = {
-            texture, glm::ivec2(ft_face_->glyph->bitmap.width, ft_face_->glyph->bitmap.rows),
-            glm::ivec2(ft_face_->glyph->bitmap_left, ft_face_->glyph->bitmap_top),
-            static_cast<unsigned int>(ft_face_->glyph->advance.x)};
-        characters_.insert(std::pair<char, Character>(c, character));
-    }
-    GL_CALL(glBindTexture(GL_TEXTURE_2D, 0));
-
+Text::~Text()
+{
     FT_Done_Face(ft_face_);
-    FT_Done_FreeType(ft_lib_);
-
-    GL_CALL(glGenVertexArrays(1, &vertex_array_object_));
-    GL_CALL(glGenBuffers(1, &vertex_buffer_object_));
-    GL_CALL(glBindVertexArray(vertex_array_object_));
-    GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_object_));
-    GL_CALL(glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, NULL, GL_DYNAMIC_DRAW));
-    GL_CALL(glEnableVertexAttribArray(0));
-    GL_CALL(glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0));
-    GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, 0));
-    GL_CALL(glBindVertexArray(0));
 }
 
 void Text::draw()
@@ -135,6 +97,78 @@ void Text::draw(const Shader shader)
 
     GL_CALL(glBindVertexArray(0));
     GL_CALL(glBindTexture(GL_TEXTURE_2D, 0));
+}
+
+void Text::move(const Vector2f move_vector)
+{
+    position_.move(move_vector);
+}
+
+void Text::set_position(const Vector2f position)
+{
+    position_   = position;
+    position_.y = RinvidGfx::get_height() - position_.y;
+}
+
+void Text::set_size(const std::uint32_t new_size)
+{
+    size_ = new_size;
+    generate_character_textures();
+}
+
+void Text::set_color(const Color color)
+{
+    color_ = color;
+}
+
+void Text::set_text(const std::string& text)
+{
+    text_ = text;
+}
+
+void Text::generate_character_textures()
+{
+    characters_.clear();
+
+    FT_Set_Pixel_Sizes(ft_face_, 0, size_);
+
+    GL_CALL(glPixelStorei(GL_UNPACK_ALIGNMENT, 1));
+
+    for (unsigned char c = 0; c < 128; c++)
+    {
+        if (FT_Load_Char(ft_face_, c, FT_LOAD_RENDER))
+        {
+            throw "Freetype: Failed to load Glyph";
+        }
+
+        std::uint32_t texture;
+        GL_CALL(glGenTextures(1, &texture));
+        GL_CALL(glBindTexture(GL_TEXTURE_2D, texture));
+        GL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, ft_face_->glyph->bitmap.width,
+                             ft_face_->glyph->bitmap.rows, 0, GL_RED, GL_UNSIGNED_BYTE,
+                             ft_face_->glyph->bitmap.buffer));
+        GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
+        GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
+        GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+        GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+
+        Character character = {
+            texture, glm::ivec2(ft_face_->glyph->bitmap.width, ft_face_->glyph->bitmap.rows),
+            glm::ivec2(ft_face_->glyph->bitmap_left, ft_face_->glyph->bitmap_top),
+            static_cast<unsigned int>(ft_face_->glyph->advance.x)};
+        characters_.insert(std::pair<char, Character>(c, character));
+    }
+    GL_CALL(glBindTexture(GL_TEXTURE_2D, 0));
+
+    GL_CALL(glGenVertexArrays(1, &vertex_array_object_));
+    GL_CALL(glGenBuffers(1, &vertex_buffer_object_));
+    GL_CALL(glBindVertexArray(vertex_array_object_));
+    GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_object_));
+    GL_CALL(glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, NULL, GL_DYNAMIC_DRAW));
+    GL_CALL(glEnableVertexAttribArray(0));
+    GL_CALL(glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0));
+    GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, 0));
+    GL_CALL(glBindVertexArray(0));
 }
 
 } // namespace rinvid
