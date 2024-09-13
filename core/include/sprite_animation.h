@@ -35,8 +35,8 @@ class SpriteAnimation
      *
      *************************************************************************************************/
     SpriteAnimation()
-        : regions_{}, current_animation_{nullptr}, x_offset_{0.0F}, y_offset_{0.0F}, is_active_{
-                                                                                         false} {};
+        : regions_{}, current_animation_{nullptr}, x_offset_{0.0F}, y_offset_{0.0F},
+          is_active_{false} {};
 
     /**************************************************************************************************
      * @brief Constructor.
