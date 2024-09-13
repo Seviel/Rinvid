@@ -16,6 +16,7 @@
 #include "core/include/rinvid_gfx.h"
 #include "core/include/rinvid_gl.h"
 #include "core/include/text.h"
+#include "core/include/ttf_lib.h"
 
 namespace rinvid
 {
@@ -24,12 +25,9 @@ Text::Text(std::string text, std::string font_path, Vector2f position, Color col
            std::uint32_t size)
     : size_{size}, text_{text}, position_{position}, color_{color}
 {
-    if (FT_Init_FreeType(&ft_lib_))
-    {
-        throw "Freetype: Could not init FreeType Library";
-    }
+    const auto* ft_lib = TTFLib::get_instance();
 
-    auto error = FT_New_Face(ft_lib_, font_path.c_str(), 0, &ft_face_);
+    auto error = FT_New_Face(*ft_lib, font_path.c_str(), 0, &ft_face_);
     if (error)
     {
         throw error;
@@ -43,7 +41,6 @@ Text::Text(std::string text, std::string font_path, Vector2f position, Color col
 Text::~Text()
 {
     FT_Done_Face(ft_face_);
-    FT_Done_FreeType(ft_lib_);
 }
 
 void Text::draw()

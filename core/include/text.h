@@ -102,7 +102,6 @@ class Text : public Drawable
      *************************************************************************************************/
     void generate_character_textures();
 
-    FT_Library    ft_lib_;
     FT_Face       ft_face_;
     std::uint32_t vertex_array_object_;
     std::uint32_t vertex_buffer_object_;

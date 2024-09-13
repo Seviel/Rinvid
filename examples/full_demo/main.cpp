@@ -19,6 +19,7 @@
 #include "core/include/sprite.h"
 #include "core/include/text.h"
 #include "core/include/texture.h"
+#include "core/include/ttf_lib.h"
 #include "gui/include/button.h"
 #include "sound/include/sound.h"
 #include "system/include/keyboard.h"
@@ -289,6 +290,7 @@ void TestingGrounds::update(double delta_time)
 
 void TestingGrounds::destroy()
 {
+    TTFLib::destroy();
 }
 
 int main()
