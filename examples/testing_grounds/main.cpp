@@ -37,9 +37,21 @@
 #include "system/include/keyboard.h"
 #include "system/include/mouse.h"
 #include "util/include/collision_detection.h"
-#include "util/include/vector3.h"
+#include "util/include/vector2.h"
 
 using namespace rinvid::system;
+using namespace rinvid;
+
+struct TextParams
+{
+    std::string   text_;
+    std::uint32_t size_;
+    Vector2f      position_;
+    Color         color_;
+};
+
+TextParams text_params[2] = {{"Aloha!", 28U, {250.0F, 375.0F}, 0xFFFFFFFF},
+                             {"Bye!", 14U, {200.0F, 400.0F}, 0x00FF00FF}};
 
 class TestingGrounds : public rinvid::Screen
 {
@@ -142,6 +154,17 @@ void TestingGrounds::update(double delta_time)
     {
         quad.set_position(rinvid::Vector2f{100.0F, 40.0F});
         quad_alive = true;
+    }
+
+    if (button.just_clicked())
+    {
+        static std::uint32_t index = 0;
+        ++index;
+        index = index % 2;
+        text.set_text(text_params[index].text_);
+        text.set_color(text_params[index].color_);
+        text.set_position(text_params[index].position_);
+        text.set_size(text_params[index].size_);
     }
 
     if (Keyboard::is_key_pressed(Keyboard::Key::D) ||
