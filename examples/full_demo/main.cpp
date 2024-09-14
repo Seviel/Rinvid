@@ -68,11 +68,17 @@ class TestingGrounds : public Screen
 
     Button bell_button_{};
 
-    Text light_text_{"Light controls",
-                     "examples/full_demo/resources/aquifer.ttf",
-                     {20.0F, 400.0F},
-                     0xffffffff,
-                     18};
+    Text light_intensity_label_{"Light intensity",
+                                "examples/full_demo/resources/aquifer.ttf",
+                                {20.0F, 400.0F},
+                                0xffffffff,
+                                18};
+
+    Text light_falloff_label_{"Light falloff",
+                              "examples/full_demo/resources/aquifer.ttf",
+                              {20.0F, 475.0F},
+                              0xffffffff,
+                              18};
 
     Camera camera_{};
     Light  light_{};
@@ -128,19 +134,19 @@ void TestingGrounds::create()
     light_intensity_minus_button_.set_mouse_hovering({button_regions.at(1)});
     light_intensity_minus_button_.set_clicked({button_regions.at(2)});
 
-    light_falloff_plus_button_.setup(&plus_button_texture_, 100, 30, Vector2f{20.0F, 455.0F});
+    light_falloff_plus_button_.setup(&plus_button_texture_, 100, 30, Vector2f{20.0F, 495.0F});
 
     light_falloff_plus_button_.set_idle({button_regions.at(0)});
     light_falloff_plus_button_.set_mouse_hovering({button_regions.at(1)});
     light_falloff_plus_button_.set_clicked({button_regions.at(2)});
 
-    light_falloff_minus_button_.setup(&minus_button_texture_, 100, 30, Vector2f{130.0F, 455.0F});
+    light_falloff_minus_button_.setup(&minus_button_texture_, 100, 30, Vector2f{130.0F, 495.0F});
 
     light_falloff_minus_button_.set_idle({button_regions.at(0)});
     light_falloff_minus_button_.set_mouse_hovering({button_regions.at(1)});
     light_falloff_minus_button_.set_clicked({button_regions.at(2)});
 
-    bell_button_.setup(&bell_button_texture_, 100, 30, Vector2f{20.0F, 530.0F});
+    bell_button_.setup(&bell_button_texture_, 100, 30, Vector2f{20.0F, 550.0F});
 
     bell_button_.set_idle({button_regions.at(0)});
     bell_button_.set_mouse_hovering({button_regions.at(1)});
@@ -279,7 +285,8 @@ void TestingGrounds::draw_objects(double delta_time)
         button->draw(delta_time);
     }
 
-    light_text_.draw();
+    light_intensity_label_.draw();
+    light_falloff_label_.draw();
 }
 
 void TestingGrounds::update(double delta_time)
