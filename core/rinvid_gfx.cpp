@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2020 - 2023, Filip Vasiljevic
+ * Copyright (c) 2020 - 2024, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -33,9 +33,8 @@ const char* default_shape_frag =
     #define NUMBER_OF_LIGHTS 100\n\
     uniform bool  light_active[NUMBER_OF_LIGHTS];\n\
     uniform vec2  light_pos[NUMBER_OF_LIGHTS];\n\
-    uniform float light_constant[NUMBER_OF_LIGHTS];\n\
-    uniform float light_linear[NUMBER_OF_LIGHTS];\n\
-    uniform float light_quadratic[NUMBER_OF_LIGHTS];\n\
+    uniform float light_intensity[NUMBER_OF_LIGHTS];\n\
+    uniform float light_falloff[NUMBER_OF_LIGHTS];\n\
     vec4 apply_light(vec3 object_color, vec3 ambient, int light_number)\n\
     {\n\
         vec4 color = vec4(0.0, 0.0, 0.0, 0.0);\n\
@@ -44,11 +43,10 @@ const char* default_shape_frag =
             vec2  pixel       = gl_FragCoord.xy;\n\
             vec2  aux         = light_pos[light_number] - pixel;\n\
             float dist        = length(aux);\n\
-            vec3  attenuation = vec3(light_constant[light_number], light_linear[light_number],\n\
-                                     light_quadratic[light_number]);\n\
-            /// @todo Revisit this formula\n\
+            dist = dist / light_falloff[light_number];\n\
             float light_attenuation =\n\
-                1.0 / (attenuation.x + attenuation.y * dist + attenuation.z * dist * dist);\n\
+                1.0 / (0.1 + 0.1 * dist + 0.1 * dist * dist);\n\
+            light_attenuation = light_attenuation * light_intensity[light_number];\n\
             color = vec4(light_attenuation, light_attenuation, light_attenuation, 1.0) *\n\
                     vec4(object_color, 1.0);\n\
         }\n\
@@ -106,9 +104,8 @@ const char* default_texture_frag =
     #define NUMBER_OF_LIGHTS 100 \n\
     uniform bool light_active[NUMBER_OF_LIGHTS];\n\
     uniform vec2 light_pos[NUMBER_OF_LIGHTS];\n\
-    uniform float light_constant[NUMBER_OF_LIGHTS];\n\
-    uniform float light_linear[NUMBER_OF_LIGHTS];\n\
-    uniform float light_quadratic[NUMBER_OF_LIGHTS];\n\
+    uniform float light_intensity[NUMBER_OF_LIGHTS];\n\
+    uniform float light_falloff[NUMBER_OF_LIGHTS];\n\
     vec4 apply_light(vec3 object_color, vec3 ambient, int light_number)\n\
     {\n\
        vec4 color = vec4(0.0, 0.0, 0.0, 0.0);\n\
@@ -117,8 +114,9 @@ const char* default_texture_frag =
           vec2 pixel = gl_FragCoord.xy;\n\
           vec2 aux = light_pos[light_number] - pixel;\n\
           float dist = length(aux);\n\
-          vec3 attenuation = vec3(light_constant[light_number], light_linear[light_number], light_quadratic[light_number]);\n\
-          float light_attenuation = 1.0 / (attenuation.x + attenuation.y * dist + attenuation.z * dist * dist);\n\
+          dist = dist / light_falloff[light_number];\n\
+          float light_attenuation = 1.0 / (0.1 + 0.1 * dist + 0.1 * dist * dist);\n\
+          light_attenuation = light_attenuation * light_intensity[light_number];\n\
           color = vec4(light_attenuation, light_attenuation, light_attenuation, 1.0) * vec4(object_color, 1.0);\n\
        }\n\
        else \n\
