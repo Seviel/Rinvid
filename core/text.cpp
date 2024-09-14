@@ -33,8 +33,6 @@ Text::Text(std::string text, std::string font_path, Vector2f position, Color col
         throw error;
     }
 
-    position_.y = RinvidGfx::get_height() - position_.y;
-
     generate_character_textures();
 }
 
@@ -59,7 +57,7 @@ void Text::draw(const Shader shader)
     const auto& view = RinvidGfx::get_view();
     glm_pos          = view * glm_pos;
     x                = glm_pos.x;
-    y                = glm_pos.y;
+    y                = RinvidGfx::get_height() - glm_pos.y;
 
     shader.use();
     glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(RinvidGfx::get_width()), 0.0f,
@@ -106,8 +104,7 @@ void Text::move(const Vector2f move_vector)
 
 void Text::set_position(const Vector2f position)
 {
-    position_   = position;
-    position_.y = RinvidGfx::get_height() - position_.y;
+    position_ = position;
 }
 
 void Text::set_size(const std::uint32_t new_size)
