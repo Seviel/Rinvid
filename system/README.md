@@ -1,4 +1,4 @@
-# GUI
+# System
 
 This package provides access to keyboard and mouse
 
