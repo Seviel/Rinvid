@@ -20,8 +20,8 @@ Animation::Animation()
 }
 
 Animation::Animation(double framerate, std::vector<Rect> regions, AnimationMode mode)
-    : regions_{regions},
-      frame_time_{framerate != 0.0 ? (1.0 / framerate) : std::numeric_limits<double>::max()},
+    : regions_{regions}, frame_time_{framerate != 0.0 ? (1.0 / framerate)
+                                                      : std::numeric_limits<double>::max()},
       time_passed_{0.0}, mode_{mode}
 {
 }

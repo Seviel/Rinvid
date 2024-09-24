@@ -26,10 +26,19 @@ jobs:
       - name: Pull submodules
         run: git submodule update --init --recursive
 
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
       - name: Install dependencies
         run: |
           sudo apt update
-          sudo apt install bazel libsfml-dev libgtest-dev libfreetype-dev
+          sudo apt install bazel libsfml-dev libgtest-dev libfreetype-dev clang-format-11
+
+      - name: Run clang-format check
+        run: |
+          python verify_format.py
 
       - name: Update includes
         run: |
