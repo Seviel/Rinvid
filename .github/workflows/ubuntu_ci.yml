@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
       - uses: actions/checkout@v2
@@ -34,7 +34,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt update
-          sudo apt install bazel libsfml-dev libgtest-dev libfreetype-dev clang-format-11
+          sudo apt install bazel libsfml-dev libgtest-dev libfreetype-dev clang-format-12
 
       - name: Run clang-format check
         run: |
