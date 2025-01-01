@@ -1,7 +1,13 @@
 cc_library(
     name = "rinvid_gui",
-    srcs = ["button.cpp"],
-    hdrs = ["include/button.h"],
+    srcs = [
+        "button.cpp",
+        "label.cpp",
+    ],
+    hdrs = [
+        "include/button.h",
+        "include/label.h",
+    ],
     copts = ["-Werror -Wall -Wextra -pedantic"],
     linkopts = select({
         "@bazel_tools//src/conditions:windows": ["-lsfml-window -lsfml-system -lopengl32 -lwinmm -lgdi32"],
@@ -12,5 +18,7 @@ cc_library(
     ],
     deps = [
         "//core:rinvid_core",
+        "//extern",
+        "//util",
     ],
 )

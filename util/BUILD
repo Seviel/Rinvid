@@ -21,6 +21,7 @@ cc_library(
     visibility = [
         "//core:__subpackages__",
         "//examples:__subpackages__",
+        "//gui:__subpackages__",
     ],
     deps = [
         "//extern",
