@@ -3,3 +3,4 @@ bin
 *.o
 bazel*
 user.bazelrc
+MODULE.bazel.lock

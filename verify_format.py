@@ -2,7 +2,7 @@ import os
 import subprocess
 
 def is_clang_formatted(file_path):
-    result = subprocess.run(['clang-format-11', '-output-replacements-xml', file_path], capture_output=True, text=True)
+    result = subprocess.run(['clang-format-12', '-output-replacements-xml', file_path], capture_output=True, text=True)
     return '<replacement ' not in result.stdout
 
 def check_repo_for_clang_format(repo_path):
