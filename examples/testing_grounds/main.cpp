@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2020 - 2024, Filip Vasiljevic
+ * Copyright (c) 2020 - 2025, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -62,7 +62,7 @@ class TestingGrounds : public rinvid::Screen
   private:
     void update(double delta_time) override;
 
-    rinvid::Texture background_texture{"examples/testing_grounds/resources/rinvid_bg.png"};
+    rinvid::Texture background_texture{"resources/rinvid_bg.png"};
     rinvid::Sprite  background_sprite{&background_texture, 1920, 1080, rinvid::Vector2f{0.0F, 0.0F},
                                      rinvid::Vector2f{0.0F, 0.0F}};
 
@@ -78,15 +78,15 @@ class TestingGrounds : public rinvid::Screen
         {rinvid::Vector2f{100.0F, 100.0F}, rinvid::Vector2f{125.0F, 75.0F},
          rinvid::Vector2f{150.0F, 100.0F}, rinvid::Vector2f{150.0F, 200.0F},
          rinvid::Vector2f{100.0F, 200.0F}}};
-    rinvid::Texture texture{"examples/testing_grounds/resources/logo.png"};
+    rinvid::Texture texture{"resources/logo.png"};
     rinvid::Sprite  sprite{&texture, 100, 100, rinvid::Vector2f{200.0F, 200.0F},
                           rinvid::Vector2f{0.0F, 0.0F}};
 
-    rinvid::Texture clock_texture{"examples/testing_grounds/resources/clck.png"};
+    rinvid::Texture clock_texture{"resources/clck.png"};
     rinvid::Sprite  clock_sprite{&clock_texture, 100, 100, rinvid::Vector2f{650.0F, 450.0F},
                                 rinvid::Vector2f{0.0F, 0.0F}};
 
-    rinvid::Texture     button_texture{"examples/testing_grounds/resources/default_button.png"};
+    rinvid::Texture     button_texture{"resources/default_button.png"};
     rinvid::gui::Button button{};
 
     rinvid::Camera camera{};
@@ -94,13 +94,10 @@ class TestingGrounds : public rinvid::Screen
     rinvid::Light light_mid{};
     rinvid::Light light_low{{650.0F, 480.0F}, 0.5, 1.0};
 
-    rinvid::Text text{"Aloha!",
-                      "examples/testing_grounds/resources/aquifer.ttf",
-                      {250.0F, 375.0F},
-                      {0.0F, 0.0F, 0.0F, 1.0F},
-                      28};
+    rinvid::Text text{
+        "Aloha!", "resources/aquifer.ttf", {250.0F, 375.0F}, {0.0F, 0.0F, 0.0F, 1.0F}, 28};
 
-    rinvid::sound::Sound wind{"examples/testing_grounds/resources/wind.wav"};
+    rinvid::sound::Sound wind{"resources/wind.wav"};
 };
 
 void TestingGrounds::create()
