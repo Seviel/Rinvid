@@ -1,6 +1,3 @@
-set(CMAKE_C_COMPILER /mingw64/bin/gcc.exe)
-set(CMAKE_CXX_COMPILER /mingw64/bin/g++.exe)
-
 file(GLOB_RECURSE EXAMPLE_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
 
 add_executable(testing_grounds WIN32 ${EXAMPLE_SOURCES})
