@@ -21,7 +21,8 @@ file(
 
 target_sources(${PROJECT_NAME} PRIVATE ${SOURCES})
 
-target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -O3)
+target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror -O3)
+
 
 execute_process(COMMAND uname OUTPUT_VARIABLE uname)
 if(uname MATCHES "^MSYS" OR uname MATCHES "^MINGW")
