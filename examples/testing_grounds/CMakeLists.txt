@@ -9,12 +9,8 @@ target_link_libraries(testing_grounds PRIVATE rinvid)
 target_compile_options(testing_grounds PRIVATE -Werror -Wall -Wextra -pedantic
                                                -O3)
 
-# --- Handle resources (images, data, etc.) ---
-
-# # Path to resources set(EXAMPLE_RESOURCES_DIR
-# ${CMAKE_CURRENT_SOURCE_DIR}/resources)
-
-# # Copy resources to build directory so the executable can find them
-# add_custom_command(TARGET testing_grounds POST_BUILD COMMAND ${CMAKE_COMMAND}
-# -E copy_directory ${EXAMPLE_RESOURCES_DIR}
-# $<TARGET_FILE_DIR:testing_grounds>/resources )
+# Copy resources to build directory so the executable can find them
+set(EXAMPLE_RESOURCES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/resources)
+add_custom_command(TARGET testing_grounds POST_BUILD COMMAND ${CMAKE_COMMAND}
+-E copy_directory ${EXAMPLE_RESOURCES_DIR}
+$<TARGET_FILE_DIR:testing_grounds>/resources )
