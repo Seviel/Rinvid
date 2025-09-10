@@ -20,7 +20,6 @@ file(
   "extern/glad/src/*.c")
 
 target_sources(${PROJECT_NAME} PRIVATE ${SOURCES})
-
 target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror -O3)
 
 
