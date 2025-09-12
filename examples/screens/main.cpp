@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2022 - 2024, Filip Vasiljevic
+ * Copyright (c) 2022 - 2025, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -20,7 +20,7 @@ int main()
 {
     rinvid::Application screens_demo_app{640, 480, "Rinvid screens demo"};
 
-    rinvid::Texture guardian_tex{"examples/screens/resources/guardian.png"};
+    rinvid::Texture guardian_tex{"resources/guardian.png"};
     rinvid::Sprite  guardian_sprite{&guardian_tex, 30, 45, rinvid::Vector2f{50.0F, 425.0F},
                                    rinvid::Vector2f{0.0F, 0.0F}};
 
