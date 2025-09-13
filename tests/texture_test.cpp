@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2023, Filip Vasiljevic
+ * Copyright (c) 2023 - 2025, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -21,7 +21,7 @@ TEST_F(TextureTest, Constructor_ValidImageFile)
 {
     auto number_of_errors = errors::get_error_count();
 
-    const char* file_name = "tests/resources/valid_image.png";
+    const char* file_name = "resources/valid_image.png";
     Texture     texture{file_name};
 
     // Check that the number of errors did not increase.
@@ -43,7 +43,7 @@ TEST_F(TextureTest, MoveConstructor)
 {
     auto number_of_errors = errors::get_error_count();
 
-    Texture texture1{"tests/resources/valid_image.png"};
+    Texture texture1{"resources/valid_image.png"};
     Texture texture2{std::move(texture1)};
 
     // Check that the number of errors did not increase.
@@ -55,7 +55,7 @@ TEST_F(TextureTest, MoveAssignmentOperator)
 {
     auto number_of_errors = errors::get_error_count();
 
-    Texture texture1("tests/resources/valid_image.png");
+    Texture texture1("resources/valid_image.png");
     Texture texture2 = std::move(texture1);
 
     // Check that the number of errors did not increase.
@@ -67,7 +67,7 @@ TEST_F(TextureTest, Destructor)
 {
     auto number_of_errors = errors::get_error_count();
 
-    Texture* texture = new Texture("tests/resources/valid_image.png");
+    Texture* texture = new Texture("resources/valid_image.png");
     delete texture;
 
     // Check that the number of errors did not increase.

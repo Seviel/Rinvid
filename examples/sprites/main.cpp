@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2021 - 2024, Lazar Lukic
+ * Copyright (c) 2021 - 2025, Lazar Lukic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -36,7 +36,7 @@ class SpritesScreen : public rinvid::Screen
     std::string     current_animation_state{action + "_" + direction};
     rinvid::Color   base_color{0.1078431F, 0.6215686F, 0.5745098F, 1.0F};
     rinvid::Color   active_color{1.0000000F, 0.6705882F, 0.2862745F, 1.0F};
-    rinvid::Texture robot_texture{"examples/sprites/resources/trashbot.png"};
+    rinvid::Texture robot_texture{"resources/trashbot.png"};
     rinvid::Sprite  robot_sprite{&robot_texture, 455, 455, rinvid::Vector2f{0.0F, 100.0F},
                                 rinvid::Vector2f{0.0F, 0.0F}};
 };

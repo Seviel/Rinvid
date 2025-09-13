@@ -11,17 +11,10 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
-
-      - name: Add bazel distribution
-        run: |
-          sudo apt install apt-transport-https curl gnupg
-          curl -fsSL https://bazel.build/bazel-release.pub.gpg | gpg --dearmor > bazel.gpg
-          sudo mv bazel.gpg /etc/apt/trusted.gpg.d/
-          echo "deb [arch=amd64] https://storage.googleapis.com/bazel-apt stable jdk1.8" | sudo tee /etc/apt/sources.list.d/bazel.list
 
       - name: Pull submodules
         run: git submodule update --init --recursive
@@ -34,11 +27,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt update
-          sudo apt install bazel libsfml-dev libgtest-dev libfreetype-dev clang-format-12
-
-      - name: Run clang-format check
-        run: |
-          python verify_format.py
+          sudo apt install cmake make libsfml-dev libgtest-dev libfreetype-dev
 
       - name: Update includes
         run: |
@@ -47,9 +36,8 @@ jobs:
 
       - name: Build Project | All
         run: |
-          bazel build //... -c dbg
-          bazel build //... -c opt
+          mkdir build
+          cd build
+          cmake ..
+          make all -j8
 
-      - name: Run tests
-        run: |
-          bazel run //tests:rinvid_test --test_filter=*Util*

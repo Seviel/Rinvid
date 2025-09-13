@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2024, Filip Vasiljevic
+ * Copyright (c) 2024 - 2025, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -42,21 +42,21 @@ class TestingGrounds : public Screen
     void draw_objects(double delta_time);
     void update(double delta_time) override;
 
-    Texture background_texture_{"examples/full_demo/resources/rinvid_bg.png"};
+    Texture background_texture_{"resources/rinvid_bg.png"};
     Sprite  background_sprite_{&background_texture_, 1920, 1080, Vector2f{0.0F, 0.0F},
                               Vector2f{0.0F, 0.0F}};
-    Texture logo_texture_{"examples/full_demo/resources/logo.png"};
+    Texture logo_texture_{"resources/logo.png"};
     Sprite  logo_sprite_{&logo_texture_, 100, 100, Vector2f{150.0F, 100.0F}, Vector2f{0.0F, 0.0F}};
 
-    Texture clock_texture_{"examples/full_demo/resources/clck.png"};
+    Texture clock_texture_{"resources/clck.png"};
     Sprite clock_sprite_{&clock_texture_, 100, 100, Vector2f{150.0F, 250.0F}, Vector2f{0.0F, 0.0F}};
 
-    Texture rotation_button_texture_{"examples/full_demo/resources/rotation_button.png"};
-    Texture opacity_button_texture_{"examples/full_demo/resources/opacity_button.png"};
-    Texture run_reset_button_texture_{"examples/full_demo/resources/run_reset_button.png"};
-    Texture bell_button_texture_{"examples/full_demo/resources/bell_button.png"};
-    Texture plus_button_texture_{"examples/full_demo/resources/plus_button.png"};
-    Texture minus_button_texture_{"examples/full_demo/resources/minus_button.png"};
+    Texture rotation_button_texture_{"resources/rotation_button.png"};
+    Texture opacity_button_texture_{"resources/opacity_button.png"};
+    Texture run_reset_button_texture_{"resources/run_reset_button.png"};
+    Texture bell_button_texture_{"resources/bell_button.png"};
+    Texture plus_button_texture_{"resources/plus_button.png"};
+    Texture minus_button_texture_{"resources/minus_button.png"};
 
     Button logo_rotate_button_{};
     Button logo_transparency_button_{};
@@ -68,22 +68,16 @@ class TestingGrounds : public Screen
 
     Button bell_button_{};
 
-    Text light_intensity_label_{"Light intensity",
-                                "examples/full_demo/resources/aquifer.ttf",
-                                {20.0F, 400.0F},
-                                0xffffffff,
-                                18};
+    Text light_intensity_label_{
+        "Light intensity", "resources/aquifer.ttf", {20.0F, 400.0F}, 0xffffffff, 18};
 
-    Text light_falloff_label_{"Light falloff",
-                              "examples/full_demo/resources/aquifer.ttf",
-                              {20.0F, 475.0F},
-                              0xffffffff,
-                              18};
+    Text light_falloff_label_{
+        "Light falloff", "resources/aquifer.ttf", {20.0F, 475.0F}, 0xffffffff, 18};
 
     Camera camera_{};
     Light  light_{};
 
-    sound::Sound bell_sound_{"examples/full_demo/resources/bell.wav"};
+    sound::Sound bell_sound_{"resources/bell.wav"};
 
     bool logo_rotation_    = false;
     bool logo_transparent_ = false;

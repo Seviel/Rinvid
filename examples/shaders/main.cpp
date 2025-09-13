@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2024, Filip Vasiljevic
+ * Copyright (c) 2024 - 2025, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -51,7 +51,7 @@ class ShadersScreen : public rinvid::Screen
   private:
     void update(double delta_time) override;
 
-    Texture texture_{"examples/shaders/resources/logo.png"};
+    Texture texture_{"resources/logo.png"};
     Sprite  sprite1_{&texture_, 100, 100, Vector2f{170.0F, 190.0F}, Vector2f{0.0F, 0.0F}};
     Sprite  sprite2_{&texture_, 100, 100, Vector2f{370.0F, 190.0F}, Vector2f{0.0F, 0.0F}};
     Shader  shader_;
@@ -59,8 +59,8 @@ class ShadersScreen : public rinvid::Screen
 
 void ShadersScreen::create()
 {
-    auto vertex_shader_code   = load_shader_source("examples/shaders/resources/shader.vert");
-    auto fragment_shader_code = load_shader_source("examples/shaders/resources/shader.frag");
+    auto vertex_shader_code   = load_shader_source("resources/shader.vert");
+    auto fragment_shader_code = load_shader_source("resources/shader.frag");
     shader_                   = Shader(vertex_shader_code.c_str(), fragment_shader_code.c_str());
 }
 

@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2021 - 2023, Lazar Lukic
+ * Copyright (c) 2021 - 2025, Lazar Lukic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause

@@ -9,10 +9,9 @@ Rinvid is a small framework for 2D games and multimedia applications development
 ### Ubuntu
 
 These are instructions for Ubuntu 20.04, it would probably work on other Debian based distros:  
-First, you will need to install Bazel and SFML. [Bazel](https://bazel.build/) is a build system used by Rinvid. [SFML](https://www.sfml-dev.org/) is a lib that provides a simple interface to the various components of your PC and is used by Rinvid.  
+First, you will need to install  SFML, Gtest and Freetype.  
 ```shell
-sudo apt install npm  
-sudo npm install -g @bazel/bazelisk  
+sudo apt install cmake
 sudo apt install libsfml-dev  
 sudo apt install libgtest-dev  
 sudo apt install libfreetype-dev  
@@ -22,48 +21,47 @@ Note that Freetpye headers must be in root include directory, and not in any new
 cd /usr/include/freetype2  
 sudo cp -r * ../  
 ```
-After that, clone the repo (run `git submodule update --init --recursive` after cloning to initiate submodules) and inside any repo directory run:  
+After that, clone the repo (run `git submodule update --init --recursive` after cloning to initiate submodules) and then use CMake to build the lib and all examples:  
 ```shell    
-bazel run //examples/testing_grounds:test
+mkdir build
+cd build
+cmake ..
+make all -j8
 ```
-This will build and run a Rinvid test example. If it succeeds, you are all set.  
 
 ### Windows 10
 
 What you need to build Rinvid on Windows 10:
 
    1. [MinGW](https://www.mingw-w64.org/)  
-   2. [Bazel](https://bazel.build/)  
-   3. [MSYS](https://www.msys2.org/)
-   4. [SFML](https://www.sfml-dev.org/)  
-   5. [gtest](https://github.com/google/googletest)  
-   6. [Freetype](http://freetype.org/)  
+   2. [MSYS](https://www.msys2.org/)
+   3. [SFML](https://www.sfml-dev.org/)  
+   4. [gtest](https://github.com/google/googletest)  
+   5. [Freetype](http://freetype.org/)  
 
 #### Development environment setup
 
 1. Install [MSYS2](https://www.msys2.org/) - following all steps will also install MinGW via `pacman`
-2. Additionally, install SFML and gtest via `pacman` by executing the following commands in the MSYS2 terminal:
+2. Additionally, install CMake, SFML and gtest via `pacman` by executing the following commands in the MSYS2 terminal:
 ```shell
+pacman -Syu
+pacman -S mingw-w64-x86_64-cmake
 pacman -S mingw-w64-x86_64-sfml
 pacman -S mingw-w64-x86_64-gtest
 pacman -S mingw-w64-x86_64-freetype
 ```
-3. Install [Bazel](https://bazel.build/install/windows) - consider also to put Bazel in your `PATH` environment variable so you can call the `bazel` from your terminal no matter the of the current path position.
 4. Pull external dependencies by running the following command from the root of the project:
 ```shell
 git submodule update --init --recursive
 ```
 
-To verify your setup, run the following test example: 
-```shell
-bazel build //... --compiler=mingw-gcc
+From MSYS2 terminal, you can run the standard cmake build procedure: 
+```shell    
+mkdir build
+cd build
+cmake ..
+make all -j8
 ```
-#### A note on running examples on Windows:
-In order to run the examples that use resources (textures), you need to add an additional argument `--enable_runfiles` to the `bazel run` command, i.e:
-```shell
-bazel run //examples/testing_grounds:test --compiler=mingw-gcc --enable_runfiles  
-```
-And for `--enable_runfiles` to work, you need to enable [developer mode](https://docs.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development).
 
 ## External libraries used by Rinvid
 

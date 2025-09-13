@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2022, Filip Vasiljevic
+ * Copyright (c) 2022 - 2025, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -27,7 +27,7 @@ class LevelOne : public rinvid::Screen
   private:
     void update(double delta_time) override;
 
-    rinvid::Texture bg_level_one_tex{"examples/screens/resources/level_1.png"};
+    rinvid::Texture bg_level_one_tex{"resources/level_1.png"};
     rinvid::Sprite  bg_level_one_sprite{&bg_level_one_tex, 640, 480, rinvid::Vector2f{0.0F, 0.0F},
                                        rinvid::Vector2f{0.0F, 0.0F}};
 
