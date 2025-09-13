@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2020 - 2024, Filip Vasiljevic
+ * Copyright (c) 2020 - 2025, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -10,9 +10,18 @@
 #ifndef CORE_INCLUDE_FIXED_POLYGON_SHAPE_H
 #define CORE_INCLUDE_FIXED_POLYGON_SHAPE_H
 
+#include <cstdint>
 #include <vector>
 
-#include "core/include/drawable.h"
+#ifdef __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Woverloaded-virtual"
+#endif
+#include "core/include/drawable_animated.h"
+#ifdef __GNUC__
+#pragma GCC diagnostic pop
+#endif
+
 #include "core/include/rinvid_gfx.h"
 #include "core/include/shape.h"
 #include "util/include/error_handler.h"
@@ -35,8 +44,8 @@ class FixedPolygonShape : public Shape, public Transformable, public Drawable
     /**************************************************************************************************
      * @brief FixedPolygonShape constructor.
      *
-     * Initializes underlying OpenGl objects and internal vector of vertices. Use this constructor
-     * for initializing derived objects.
+     * Initializes underlying OpenGl objects and internal vector of vertices. Use this
+     *constructor for initializing derived objects.
      *
      *************************************************************************************************/
     FixedPolygonShape();
@@ -44,7 +53,8 @@ class FixedPolygonShape : public Shape, public Transformable, public Drawable
     /**************************************************************************************************
      * @brief FixedPolygonShape constructor.
      *
-     * Initializes underlying OpenGl objects. Use this constructor when creating arbitrary polygon.
+     * Initializes underlying OpenGl objects. Use this constructor when creating arbitrary
+     *polygon.
      *
      * @param vertices Vertices of the polygon
      *
@@ -150,8 +160,8 @@ class FixedPolygonShape : public Shape, public Transformable, public Drawable
 
   private:
     /**************************************************************************************************
-     * @brief Returns bounding box rect of the shape not accounting transformation. Used as helper
-     * when calculating origin
+     * @brief Returns bounding box rect of the shape not accounting transformation. Used as
+     *helper when calculating origin
      *
      * @return Bounding rect as if no transformations are applied to object
      *

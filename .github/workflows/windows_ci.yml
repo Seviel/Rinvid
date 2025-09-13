@@ -20,6 +20,7 @@ jobs:
     steps:
       - uses: msys2/setup-msys2@v2
         with:
+          msystem: MINGW64
           update: true
           install: >-
             base-devel
@@ -31,16 +32,15 @@ jobs:
         run: git submodule update --init --recursive
 
       - name: Install dependencies
-        run: pacman -S mingw-w64-x86_64-sfml --noconfirm
+        run: pacman -S mingw-w64-x86_64-sfml mingw-w64-x86_64-cmake mingw-w64-x86_64-make mingw-w64-x86_64-gcc --noconfirm
       
-      - name: Setup Bazel
-        run: curl.exe https://github.com/bazelbuild/bazel/releases/download/5.2.0/bazel-5.2.0-windows-x86_64.exe --output bazel.exe
-      
-      - name: Build Project | All
+      - name: Configure CMake | All
         run: |
-          ./bazel.exe build ... -c dbg --compiler=mingw-gcc
-          ./bazel.exe build ... -c opt --compiler=mingw-gcc
+          mkdir build
+          cd build
+          cmake -G "MinGW Makefiles" ..
 
-      - name: Run tests
+      - name: Build Project
         run: |
-          ./bazel.exe run //tests:rinvid_test --compiler=mingw-gcc
+          cd build
+          make all -j8

@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2021 - 2024, Filip Vasiljevic
+ * Copyright (c) 2021 - 2025, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -10,7 +10,17 @@
 #ifndef CORE_INCLUDE_SPRITE_H
 #define CORE_INCLUDE_SPRITE_H
 
+#ifdef __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Woverloaded-virtual"
+#endif
+
 #include "core/include/drawable_animated.h"
+
+#ifdef __GNUC__
+#pragma GCC diagnostic pop
+#endif
+
 #include "core/include/sprite_animation.h"
 #include "core/include/texture.h"
 #include "core/include/transformable.h"

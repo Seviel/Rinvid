@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2021, Filip Vasiljevic
+ * Copyright (c) 2021 - 2025, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -10,6 +10,7 @@
 #ifndef CORE_INCLUDE_ERROR_HANDLER_H
 #define CORE_INCLUDE_ERROR_HANDLER_H
 
+#include <cstdint>
 #include <string>
 
 /// @brief Uncomment bellow macro if you want to activate Rinvid debug mode. Debug mode allows
