@@ -21,22 +21,28 @@ file(
 
 target_sources(${PROJECT_NAME} PRIVATE ${SOURCES})
 target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror -O3)
-
+add_definitions(-DSFML_STATIC)
 
 execute_process(COMMAND uname OUTPUT_VARIABLE uname)
 if(uname MATCHES "^MSYS" OR uname MATCHES "^MINGW")
   target_link_libraries(
     rinvid
-    PRIVATE opengl32
-            winmm
+    PRIVATE sfml-audio-s
+            sfml-window-s
+            sfml-system-s
+            opengl32
             gdi32
+            winmm
             freetype
-            sfml-window
-            sfml-system
-            sfml-audio)
+            openal32
+            vorbisenc
+            vorbisfile
+            vorbis
+            ogg
+            flac)
 else()
-  target_link_libraries(rinvid PRIVATE GL freetype sfml-window sfml-system
-                                       sfml-audio)
+  target_link_libraries(rinvid PRIVATE pthread GL freetype sfml-window
+                                       sfml-system sfml-audio)
 endif()
 
 add_subdirectory(examples/full_demo)
