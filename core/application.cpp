@@ -34,6 +34,7 @@ Application::Application(std::uint32_t width, std::uint32_t height, const std::s
     {
         window_.create(sf::VideoMode::getDesktopMode(), title, sf::Style::Fullscreen);
         window_.setVerticalSyncEnabled(true);
+        window_.setFramerateLimit(fps_);
     }
     else
     {
@@ -51,8 +52,6 @@ Application::Application(std::uint32_t width, std::uint32_t height, const std::s
 
 void Application::run()
 {
-    constexpr std::uint32_t       microseconds_in_a_second = 1'000'000;
-    std::chrono::duration<double> delta_time{};
     std::chrono::duration<double> total_frame_time{};
     sf::Event                     event;
 
@@ -62,9 +61,6 @@ void Application::run()
     while (running_ == true)
     {
         auto start = std::chrono::high_resolution_clock::now();
-
-        double target_frame_time =
-            fps_ ? static_cast<double>(microseconds_in_a_second) / static_cast<double>(fps_) : 0.0;
 
         handle_events(window_, event);
 
@@ -87,18 +83,7 @@ void Application::run()
             current_screen_->set_application(this);
         }
 
-        auto end   = std::chrono::high_resolution_clock::now();
-        delta_time = end - start;
-
-#ifdef __unix__
-        if (delta_time.count() < target_frame_time)
-        {
-            usleep(target_frame_time - delta_time.count());
-        }
-#else
-        windows_sleep(target_frame_time - delta_time.count());
-#endif
-        end              = std::chrono::high_resolution_clock::now();
+        auto end         = std::chrono::high_resolution_clock::now();
         total_frame_time = end - start;
     }
 }
@@ -111,6 +96,7 @@ void Application::set_screen(Screen* screen)
 void Application::set_fps(std::uint16_t fps)
 {
     fps_ = fps;
+    window_.setFramerateLimit(fps_);
 }
 
 void Application::exit()
