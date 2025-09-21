@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2020 - 2023, Filip Vasiljevic
+ * Copyright (c) 2020 - 2025, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -13,6 +13,7 @@
 #include <cstdint>
 #include <memory>
 
+#include "core/include/application.h"
 #include "core/include/rinvid_gl.h"
 #include "core/include/shader.h"
 #include "extern/glm/glm/mat4x4.hpp"
@@ -43,7 +44,7 @@ class RinvidGfx
      * Should be called once, before any other Rinvid graphics related functions.
      *
      *************************************************************************************************/
-    static void init();
+    static void init(const Application* application);
 
     /**************************************************************************************************
      * @brief Sets viewport position and size.
@@ -199,17 +200,26 @@ class RinvidGfx
      *************************************************************************************************/
     static void use_text_default_shader();
 
+    /**************************************************************************************************
+     * @brief Returns application.
+     *
+     * @return Application.
+     *
+     *************************************************************************************************/
+    static const Application* get_application();
+
   private:
     static void init_default_shaders();
 
-    static glm::mat4    model_view_projection_;
-    static glm::mat4    view_;
-    static glm::mat4    projection_;
-    static Shader       shape_default_shader_;
-    static Shader       texture_default_shader_;
-    static Shader       text_default_shader_;
-    static std::int32_t width_;
-    static std::int32_t height_;
+    static glm::mat4          model_view_projection_;
+    static glm::mat4          view_;
+    static glm::mat4          projection_;
+    static Shader             shape_default_shader_;
+    static Shader             texture_default_shader_;
+    static Shader             text_default_shader_;
+    static std::int32_t       width_;
+    static std::int32_t       height_;
+    static const Application* application_;
 };
 
 } // namespace rinvid

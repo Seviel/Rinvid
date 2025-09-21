@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2023 - 2024, Filip Vasiljevic
+ * Copyright (c) 2023 - 2025, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -46,7 +46,7 @@ class Mouse
      * @return Vector2 representing mouse position in 2D space
      *
      *************************************************************************************************/
-    static Vector2f get_mouse_pos(const Application* application);
+    static Vector2f get_mouse_pos();
 };
 
 } // namespace system

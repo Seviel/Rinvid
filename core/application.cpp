@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2021 - 2024, Filip Vasiljevic
+ * Copyright (c) 2021 - 2025, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -44,7 +44,7 @@ Application::Application(std::uint32_t width, std::uint32_t height, const std::s
     gladLoadGLLoader(reinterpret_cast<GLADloadproc>(sf::Context::getFunction));
 #endif
 
-    RinvidGfx::init();
+    RinvidGfx::init(this);
     auto size = window_.getSize();
     RinvidGfx::set_viewport(0, 0, size.x, size.y);
 }

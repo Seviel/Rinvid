@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2020 - 2024, Filip Vasiljevic
+ * Copyright (c) 2020 - 2025, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -178,14 +178,15 @@ const char* default_text_frag =
         color = vec4(text_color, 1.0) * sampled;\n\
     }\n";
 
-glm::mat4    RinvidGfx::model_view_projection_{1.0F};
-glm::mat4    RinvidGfx::view_{1.0F};
-glm::mat4    RinvidGfx::projection_{1.0F};
-Shader       RinvidGfx::shape_default_shader_{};
-Shader       RinvidGfx::texture_default_shader_{};
-Shader       RinvidGfx::text_default_shader_{};
-std::int32_t RinvidGfx::width_{};
-std::int32_t RinvidGfx::height_{};
+glm::mat4          RinvidGfx::model_view_projection_{1.0F};
+glm::mat4          RinvidGfx::view_{1.0F};
+glm::mat4          RinvidGfx::projection_{1.0F};
+Shader             RinvidGfx::shape_default_shader_{};
+Shader             RinvidGfx::texture_default_shader_{};
+Shader             RinvidGfx::text_default_shader_{};
+std::int32_t       RinvidGfx::width_{};
+std::int32_t       RinvidGfx::height_{};
+const Application* RinvidGfx::application_{nullptr};
 
 void RinvidGfx::init_default_shaders()
 {
@@ -194,7 +195,7 @@ void RinvidGfx::init_default_shaders()
     text_default_shader_    = Shader(default_text_vert, default_text_frag);
 }
 
-void RinvidGfx::init()
+void RinvidGfx::init(const Application* application)
 {
     RinvidGfx::init_default_shaders();
     GL_CALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
@@ -202,6 +203,7 @@ void RinvidGfx::init()
     projection_            = glm::ortho(0.0F, static_cast<float>(RinvidGfx::get_width()),
                              static_cast<float>(RinvidGfx::get_height()), 0.0F, -1.0f, 1.0f);
     model_view_projection_ = projection_ * view_;
+    application_           = application;
 }
 
 void RinvidGfx::set_viewport(std::int32_t x, std::int32_t y, std::int32_t width,
@@ -296,6 +298,11 @@ void RinvidGfx::use_texture_default_shader()
 void RinvidGfx::use_text_default_shader()
 {
     text_default_shader_.use();
+}
+
+const Application* RinvidGfx::get_application()
+{
+    return application_;
 }
 
 } // namespace rinvid

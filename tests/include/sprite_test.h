@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2024, Filip Vasiljevic
+ * Copyright (c) 2024 - 2025, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -27,7 +27,8 @@ class SpriteTest : public ::testing::Test
 #ifdef _WIN32
         gladLoadGLLoader(reinterpret_cast<GLADloadproc>(sf::Context::getFunction));
 #endif
-        RinvidGfx::init();
+        Application* application{nullptr};
+        RinvidGfx::init(application);
 
         const char* file_name = {"tests/resources/valid_image.png"};
         mock_texture_         = new Texture{file_name};
