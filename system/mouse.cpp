@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2023 - 2024, Filip Vasiljevic
+ * Copyright (c) 2023 - 2025, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -9,6 +9,7 @@
 
 #include <SFML/Window.hpp>
 
+#include "core/include/rinvid_gfx.h"
 #include "include/mouse.h"
 
 namespace rinvid
@@ -28,9 +29,9 @@ bool Mouse::is_button_pressed(MouseButton button)
     return sf::Mouse::isButtonPressed(sf_button);
 }
 
-Vector2f Mouse::get_mouse_pos(const Application* application)
+Vector2f Mouse::get_mouse_pos()
 {
-    sf::Vector2i mouse_position = sf::Mouse::getPosition(application->window_);
+    sf::Vector2i mouse_position = sf::Mouse::getPosition(RinvidGfx::get_application()->window_);
 
     return Vector2f{static_cast<float>(mouse_position.x), static_cast<float>(mouse_position.y)};
 }

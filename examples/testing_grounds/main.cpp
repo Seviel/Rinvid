@@ -145,7 +145,7 @@ void TestingGrounds::update(double delta_time)
         quad_alive = false;
     }
 
-    button.update(rinvid::system::Mouse::get_mouse_pos(get_application()));
+    button.update();
 
     if (button.is_clicked())
     {

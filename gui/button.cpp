@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2022 - 2024, Filip Vasiljevic
+ * Copyright (c) 2022 - 2025, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -12,6 +12,7 @@
 #include <SFML/Window.hpp>
 
 #include "include/button.h"
+#include "system/include/mouse.h"
 #include "util/include/collision_detection.h"
 #include "util/include/vector2.h"
 
@@ -30,8 +31,9 @@ Button::Button() : idle_{}, mouse_hovering_{}, clicked_{}, is_clicked_{false}, j
     sprite_animation_.play("idle");
 }
 
-void Button::update(Vector2f mouse_pos)
+void Button::update()
 {
+    Vector2f    mouse_pos = system::Mouse::get_mouse_pos();
     glm::vec4   glm_mouse_pos{mouse_pos.x, mouse_pos.y, 1.0F, 1.0F};
     const auto& view = glm::inverse(RinvidGfx::get_view());
     glm_mouse_pos    = view * glm_mouse_pos;

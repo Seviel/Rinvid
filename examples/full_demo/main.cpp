@@ -164,10 +164,9 @@ void TestingGrounds::create()
 
 void TestingGrounds::button_control()
 {
-    auto mouse_pos = system::Mouse::get_mouse_pos(get_application());
     for (auto button : buttons_)
     {
-        button->update(mouse_pos);
+        button->update();
     }
 
     if (light_intensity_plus_button_.just_clicked())

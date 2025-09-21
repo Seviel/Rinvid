@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2022 - 2024, Filip Vasiljevic
+ * Copyright (c) 2022 - 2025, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -34,10 +34,8 @@ class Button : public Sprite
     /**************************************************************************************************
      * @brief Updates the button status (clicked status and animation) based on mouse position.
      *
-     * @param mouse_pos Vector indicating mouse position on the screen.
-     *
      *************************************************************************************************/
-    void update(Vector2f mouse_pos);
+    void update();
 
     /**************************************************************************************************
      * @brief Sets animation regions for idle status (mouse is not hovering over button).
