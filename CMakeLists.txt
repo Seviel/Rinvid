@@ -13,6 +13,7 @@ file(
   SOURCES
   "core/*.cpp"
   "gui/*.cpp"
+  "platformers/*.cpp"
   "sound/*.cpp"
   "system/*.cpp"
   "util/*.cpp"
