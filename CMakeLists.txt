@@ -47,6 +47,7 @@ else()
 endif()
 
 add_subdirectory(examples/full_demo)
+add_subdirectory(examples/physix)
 add_subdirectory(examples/primitive_shapes)
 add_subdirectory(examples/screens)
 add_subdirectory(examples/shaders)
