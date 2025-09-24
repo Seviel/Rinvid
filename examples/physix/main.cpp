@@ -39,12 +39,13 @@ class PhysixScreen : public rinvid::Screen
 void PhysixScreen::create()
 {
     sphere_sprite.set_max_velocity(1200.0F);
-    sphere_sprite.set_acceleration({0.0F, 800.0F});
+
+    platform_sprite.set_gravity_scale(0.0F);
 }
 
 void PhysixScreen::update(double delta_time)
 {
-    RinvidGfx::clear_screen(0.2F, 0.4F, 0.4F, 1.0F);
+    RinvidGfx::clear_screen(0.2F, 0.8F, 0.8F, 1.0F);
 
     sphere_sprite.update(delta_time);
 

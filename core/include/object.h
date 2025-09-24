@@ -85,6 +85,23 @@ class Object
     float get_max_velocity();
 
     /**************************************************************************************************
+     * @brief Changes scale to which this object is affected by gravity.
+     *
+     * @param gravity_scale Scale to which extent is this object affected by gravity, 0.0 being
+     * minimum.
+     *
+     *************************************************************************************************/
+    void set_gravity_scale(float gravity_scale);
+
+    /**************************************************************************************************
+     * @brief Returns scale to which this object is affected by gravity.
+     *
+     * @return Gravity scale.
+     *
+     *************************************************************************************************/
+    float get_gravity_scale();
+
+    /**************************************************************************************************
      * @brief Resets the position of the object.
      *
      * @param posiition New position.
@@ -109,7 +126,7 @@ class Object
 
   protected:
     float compute_velocity(double delta_time, float velocity, float acceleration,
-                           float max_velocity);
+                           float max_velocity, bool gravity = false);
 
     void update_motion(double delta_time);
 
@@ -118,6 +135,7 @@ class Object
     Vector2f     velocity_;
     Vector2f     acceleration_;
     float        max_velocity_;
+    float        gravity_scale_;
     std::int32_t width_;
     std::int32_t height_;
     bool         active_;

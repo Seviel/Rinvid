@@ -8,14 +8,15 @@
  **********************************************************************/
 
 #include "include/object.h"
+#include "platformers/include/world.h"
 
 namespace rinvid
 {
 
 Object::Object()
     : position_{0.0F, 0.0F}, previous_position_{0.0F, 0.0F}, velocity_{0.0F, 0.0F},
-      acceleration_{0.0F, 0.0F}, max_velocity_{0.0F}, width_{0}, height_{0}, active_{true},
-      immovable_{false}, collides_{true}
+      acceleration_{0.0F, 0.0F}, max_velocity_{0.0F}, gravity_scale_{1.0F}, width_{0}, height_{0},
+      active_{true}, immovable_{false}, collides_{true}
 {
 }
 
@@ -43,9 +44,10 @@ void Object::update_motion(double delta_time)
     velocity_.x += velocity_delta;
     position_.x += delta;
 
-    velocity_delta =
-        (compute_velocity(delta_time, velocity_.y, acceleration_.y, max_velocity_) - velocity_.y) /
-        2.0F;
+    velocity_delta = (compute_velocity(delta_time, velocity_.y, acceleration_.y, max_velocity_,
+                                       /* y axis is affected by gravity */ true) -
+                      velocity_.y) /
+                     2.0F;
     velocity_.y += velocity_delta;
     delta = velocity_.y * delta_time;
     velocity_.y += velocity_delta;
@@ -53,10 +55,17 @@ void Object::update_motion(double delta_time)
 }
 
 float Object::compute_velocity(double delta_time, float velocity, float acceleration,
-                               float max_velocity)
+                               float max_velocity, bool gravity)
 {
     if (acceleration != 0.0F)
+    {
         velocity += acceleration * delta_time;
+    }
+    if (gravity && gravity_scale_ > 0.0F)
+    {
+        velocity += (World::gravity * gravity_scale_) * delta_time;
+    }
+
     if ((velocity != 0.0F) && (max_velocity != 0.0F))
     {
         if (velocity > max_velocity)
@@ -64,6 +73,7 @@ float Object::compute_velocity(double delta_time, float velocity, float accelera
         else if (velocity < -max_velocity)
             velocity = -max_velocity;
     }
+
     return velocity;
 }
 
@@ -95,6 +105,16 @@ void Object::set_max_velocity(float max_velocity)
 float Object::get_max_velocity()
 {
     return max_velocity_;
+}
+
+void Object::set_gravity_scale(float gravity_scale)
+{
+    gravity_scale_ = gravity_scale;
+}
+
+float Object::get_gravity_scale()
+{
+    return gravity_scale_;
 }
 
 void Object::reset(Vector2f position)
