@@ -10,9 +10,17 @@
 #ifndef CORE_INCLUDE_OBJECT_H
 #define CORE_INCLUDE_OBJECT_H
 
+#include <cstdint>
+
+#include "util/include/vector2.h"
+
 namespace rinvid
 {
 
+/**************************************************************************************************
+ * @brief A movable object in the world.
+ *
+ *************************************************************************************************/
 class Object
 {
   public:
@@ -21,6 +29,100 @@ class Object
      *
      *************************************************************************************************/
     Object();
+
+    /**************************************************************************************************
+     * @brief Updates object state. Should be called each frame.
+     *
+     *************************************************************************************************/
+    void update(double delta_time);
+
+    /**************************************************************************************************
+     * @brief Sets the velocity of the object.
+     *
+     * @param velocity New velocity.
+     *
+     *************************************************************************************************/
+    void set_velocity(Vector2f velocity);
+
+    /**************************************************************************************************
+     * @brief Returns current velocity of the object.
+     *
+     * @return Current velocity.
+     *
+     *************************************************************************************************/
+    Vector2f get_velocity();
+
+    /**************************************************************************************************
+     * @brief Sets the acceleration of the object.
+     *
+     * @param acceleration New acceleration.
+     *
+     *************************************************************************************************/
+    void set_acceleration(Vector2f acceleration);
+
+    /**************************************************************************************************
+     * @brief Returns current acceleration of the object.
+     *
+     * @return Current acceleration.
+     *
+     *************************************************************************************************/
+    Vector2f get_acceleration();
+
+    /**************************************************************************************************
+     * @brief Sets the max_velocity of the object.
+     *
+     * @param max_velocity New max_velocity.
+     *
+     *************************************************************************************************/
+    void set_max_velocity(float max_velocity);
+
+    /**************************************************************************************************
+     * @brief Returns current max_velocity of the object.
+     *
+     * @return Current max_velocity.
+     *
+     *************************************************************************************************/
+    float get_max_velocity();
+
+    /**************************************************************************************************
+     * @brief Resets the position of the object.
+     *
+     * @param posiition New position.
+     *
+     *************************************************************************************************/
+    void reset(Vector2f position);
+
+    /**************************************************************************************************
+     * @brief Resizes the object.
+     *
+     * @param width New width.
+     * @param height New height.
+     *
+     *************************************************************************************************/
+    void resize(float width, float height);
+
+    /**************************************************************************************************
+     * @brief Makes object inactive.
+     *
+     *************************************************************************************************/
+    void kill();
+
+  protected:
+    float compute_velocity(double delta_time, float velocity, float acceleration,
+                           float max_velocity);
+
+    void update_motion(double delta_time);
+
+    Vector2f     position_;
+    Vector2f     previous_position_;
+    Vector2f     velocity_;
+    Vector2f     acceleration_;
+    float        max_velocity_;
+    std::int32_t width_;
+    std::int32_t height_;
+    bool         active_;
+    bool         immovable_;
+    bool         collides_;
 };
 
 } // namespace rinvid

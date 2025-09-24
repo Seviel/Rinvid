@@ -10,13 +10,13 @@
 #ifndef PLATFORMERS_INCLUDE_ENTITY_H
 #define PLATFORMERS_INCLUDE_ENTITY_H
 
-#include "core/include/sprite.h"
 #include "core/include/object.h"
+#include "core/include/sprite.h"
 
 namespace rinvid
 {
 
-class Entity : public Sprite, public Object
+class Entity : public Sprite
 {
   public:
     /**************************************************************************************************
