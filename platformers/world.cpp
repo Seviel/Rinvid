@@ -14,6 +14,8 @@
 namespace rinvid
 {
 
+constexpr float OVERLAP_BIAS = 1.0F;
+
 float World::gravity{800.0F};
 
 bool World::collide(Object& object_1, Object& object_2)
@@ -64,8 +66,7 @@ bool World::separate_x(Object& object_1, Object& object_2)
 
         if (intersects(obj1_rect, obj2_rect))
         {
-            /// @todo revisit this
-            float max_overlap = obj1_delta_abs + obj2_delta_abs + 4.0F;
+            float max_overlap = obj1_delta_abs + obj2_delta_abs + OVERLAP_BIAS;
 
             if (obj1_delta > obj2_delta)
             {
@@ -147,8 +148,7 @@ bool World::separate_y(Object& object_1, Object& object_2)
 
         if (intersects(obj1_rect, obj2_rect))
         {
-            /// @todo revisit this
-            float max_overlap = obj1_delta_abs + obj2_delta_abs + 4.0F;
+            float max_overlap = obj1_delta_abs + obj2_delta_abs + OVERLAP_BIAS;
 
             if (obj1_delta > obj2_delta)
             {
