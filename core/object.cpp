@@ -90,6 +90,26 @@ Vector2f Object::get_velocity()
     return velocity_;
 }
 
+void Object::set_x_velocity(float velocity)
+{
+    velocity_.x = velocity;
+}
+
+float Object::get_x_velocity()
+{
+    return velocity_.x;
+}
+
+void Object::set_y_velocity(float velocity)
+{
+    velocity_.y = velocity;
+}
+
+float Object::get_y_velocity()
+{
+    return velocity_.y;
+}
+
 void Object::set_acceleration(Vector2f acceleration)
 {
     acceleration_ = acceleration;

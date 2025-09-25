@@ -56,6 +56,38 @@ class Object
     Vector2f get_velocity();
 
     /**************************************************************************************************
+     * @brief Sets the velocity of the object on x axis.
+     *
+     * @param velocity New velocity on x axis.
+     *
+     *************************************************************************************************/
+    void set_x_velocity(float velocity);
+
+    /**************************************************************************************************
+     * @brief Returns current velocity of the object on x axis.
+     *
+     * @return Current velocity on x axis.
+     *
+     *************************************************************************************************/
+    float get_x_velocity();
+
+    /**************************************************************************************************
+     * @brief Sets the velocity of the object on y axis.
+     *
+     * @param velocity New velocity on y axis.
+     *
+     *************************************************************************************************/
+    void set_y_velocity(float velocity);
+
+    /**************************************************************************************************
+     * @brief Returns current velocity of the object on y axis.
+     *
+     * @return Current velocity on y axis.
+     *
+     *************************************************************************************************/
+    float get_y_velocity();
+
+    /**************************************************************************************************
      * @brief Sets the acceleration of the object.
      *
      * @param acceleration New acceleration.
