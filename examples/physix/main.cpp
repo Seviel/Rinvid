@@ -77,9 +77,11 @@ void PhysixScreen::update(double delta_time)
     World::collide(sphere_sprite, platform_sprite);
     World::collide(man, platform_sprite);
     World::collide(box_sprite, platform_sprite);
+
     World::collide(man, sphere_sprite);
-    World::collide(box_sprite, sphere_sprite);
     World::collide(man, box_sprite);
+
+    World::collide(box_sprite, sphere_sprite);
 
     sphere_sprite.draw(delta_time);
     platform_sprite.draw(delta_time);

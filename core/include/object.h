@@ -185,7 +185,7 @@ class Object
 
   protected:
     friend class World;
-    float compute_velocity(double delta_time, float velocity, float acceleration,
+    float compute_velocity(double delta_time, float velocity, float acceleration, float drag,
                            float max_velocity, bool gravity = false);
 
     void update_motion(double delta_time);
@@ -194,6 +194,7 @@ class Object
     Vector2f     previous_position_;
     Vector2f     velocity_;
     Vector2f     acceleration_;
+    Vector2f     drag_;
     float        max_velocity_;
     float        gravity_scale_;
     std::int32_t width_;

@@ -15,8 +15,8 @@ namespace rinvid
 
 Object::Object()
     : position_{0.0F, 0.0F}, previous_position_{0.0F, 0.0F}, velocity_{0.0F, 0.0F},
-      acceleration_{0.0F, 0.0F}, max_velocity_{0.0F}, gravity_scale_{1.0F}, width_{0}, height_{0},
-      active_{true}, movable_{true}, collides_{true}
+      acceleration_{0.0F, 0.0F}, drag_{800.0F, 0.0F}, max_velocity_{0.0F}, gravity_scale_{1.0F},
+      width_{0}, height_{0}, active_{true}, movable_{true}, collides_{true}
 {
 }
 
@@ -40,30 +40,48 @@ void Object::update_motion(double delta_time)
     float velocity_delta;
 
     velocity_delta =
-        (compute_velocity(delta_time, velocity_.x, acceleration_.x, max_velocity_) - velocity_.x) /
+        (compute_velocity(delta_time, velocity_.x, acceleration_.x, drag_.x, max_velocity_) -
+         velocity_.x) /
         2.0F;
     velocity_.x += velocity_delta;
     delta = velocity_.x * delta_time;
     velocity_.x += velocity_delta;
     position_.x += delta;
 
-    velocity_delta = (compute_velocity(delta_time, velocity_.y, acceleration_.y, max_velocity_,
-                                       /* y axis is affected by gravity */ true) -
-                      velocity_.y) /
-                     2.0F;
+    velocity_delta =
+        (compute_velocity(delta_time, velocity_.y, acceleration_.y, drag_.y, max_velocity_,
+                          /* y axis is affected by gravity */ true) -
+         velocity_.y) /
+        2.0F;
     velocity_.y += velocity_delta;
     delta = velocity_.y * delta_time;
     velocity_.y += velocity_delta;
     position_.y += delta;
 }
 
-float Object::compute_velocity(double delta_time, float velocity, float acceleration,
+float Object::compute_velocity(double delta_time, float velocity, float acceleration, float drag,
                                float max_velocity, bool gravity)
 {
     if (acceleration != 0.0F)
     {
         velocity += acceleration * delta_time;
     }
+    else if (drag != 0.0F)
+    {
+        if (velocity - drag > 0.0F)
+        {
+            velocity -= drag;
+        }
+        else if (velocity + drag < 0.0F)
+        {
+            velocity += drag;
+        }
+        else
+        {
+            velocity = 0.0F;
+        }
+    }
+
     if (gravity && gravity_scale_ > 0.0F)
     {
         velocity += (World::gravity * gravity_scale_) * delta_time;
