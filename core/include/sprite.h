@@ -107,7 +107,7 @@ class Sprite : public Transformable, public DrawableAnimated, public Object
      * @return Bounding rect
      *
      *************************************************************************************************/
-    Rect bounding_rect();
+    Rect bounding_rect() override;
 
     /**************************************************************************************************
      * @brief Sets texture, position and size of sprite.

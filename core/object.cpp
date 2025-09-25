@@ -16,18 +16,21 @@ namespace rinvid
 Object::Object()
     : position_{0.0F, 0.0F}, previous_position_{0.0F, 0.0F}, velocity_{0.0F, 0.0F},
       acceleration_{0.0F, 0.0F}, max_velocity_{0.0F}, gravity_scale_{1.0F}, width_{0}, height_{0},
-      active_{true}, immovable_{false}, collides_{true}
+      active_{true}, movable_{true}, collides_{true}
 {
 }
 
 void Object::update(double delta_time)
 {
-    if (active_ && !immovable_)
+    if (active_)
     {
         previous_position_.x = position_.x;
         previous_position_.y = position_.y;
 
-        update_motion(delta_time);
+        if (movable_)
+        {
+            update_motion(delta_time);
+        }
     }
 }
 
@@ -117,6 +120,16 @@ float Object::get_gravity_scale()
     return gravity_scale_;
 }
 
+void Object::set_movable(bool movable)
+{
+    movable_ = movable;
+}
+
+bool Object::get_movable()
+{
+    return movable_;
+}
+
 void Object::reset(Vector2f position)
 {
     position_ = position;
@@ -126,6 +139,11 @@ void Object::resize(float width, float height)
 {
     width_  = width;
     height_ = height;
+}
+
+Rect Object::bounding_rect()
+{
+    return Rect{position_, width_, height_};
 }
 
 void Object::kill()

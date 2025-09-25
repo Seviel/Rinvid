@@ -12,10 +12,13 @@
 
 #include <cstdint>
 
+#include "util/include/rect.h"
 #include "util/include/vector2.h"
 
 namespace rinvid
 {
+
+class World;
 
 /**************************************************************************************************
  * @brief A movable object in the world.
@@ -102,6 +105,22 @@ class Object
     float get_gravity_scale();
 
     /**************************************************************************************************
+     * @brief Changes whether the object can be moved.
+     *
+     * @param movable
+     *
+     *************************************************************************************************/
+    void set_movable(bool movable);
+
+    /**************************************************************************************************
+     * @brief Returns whether the object is movable.
+     *
+     * @return Movable.
+     *
+     *************************************************************************************************/
+    bool get_movable();
+
+    /**************************************************************************************************
      * @brief Resets the position of the object.
      *
      * @param posiition New position.
@@ -119,12 +138,21 @@ class Object
     void resize(float width, float height);
 
     /**************************************************************************************************
+     * @brief Returns bounding box rect of the object.
+     *
+     * @return Bounding rect.
+     *
+     *************************************************************************************************/
+    virtual Rect bounding_rect();
+
+    /**************************************************************************************************
      * @brief Makes object inactive.
      *
      *************************************************************************************************/
     void kill();
 
   protected:
+    friend class World;
     float compute_velocity(double delta_time, float velocity, float acceleration,
                            float max_velocity, bool gravity = false);
 
@@ -139,7 +167,7 @@ class Object
     std::int32_t width_;
     std::int32_t height_;
     bool         active_;
-    bool         immovable_;
+    bool         movable_;
     bool         collides_;
 };
 

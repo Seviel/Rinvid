@@ -7,14 +7,11 @@
  * repository for more details.
  **********************************************************************/
 
-#include "core/include/animation.h"
 #include "core/include/application.h"
-#include "core/include/rinvid_gfx.h"
-#include "core/include/rinvid_gl.h"
 #include "core/include/screen.h"
 #include "core/include/sprite.h"
 #include "core/include/texture.h"
-#include "system/include/keyboard.h"
+#include "platformers/include/world.h"
 #include "util/include/vector2.h"
 
 using namespace rinvid;
@@ -41,6 +38,7 @@ void PhysixScreen::create()
     sphere_sprite.set_max_velocity(1200.0F);
 
     platform_sprite.set_gravity_scale(0.0F);
+    platform_sprite.set_movable(false);
 }
 
 void PhysixScreen::update(double delta_time)
@@ -48,6 +46,9 @@ void PhysixScreen::update(double delta_time)
     RinvidGfx::clear_screen(0.2F, 0.8F, 0.8F, 1.0F);
 
     sphere_sprite.update(delta_time);
+    platform_sprite.update(delta_time);
+
+    World::collide(sphere_sprite, platform_sprite);
 
     sphere_sprite.draw(delta_time);
     platform_sprite.draw(delta_time);
