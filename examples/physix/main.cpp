@@ -28,8 +28,8 @@ class PhysixScreen : public rinvid::Screen
     void update(double delta_time) override;
 
     Texture platform_texture{"resources/plat.png"};
-    Sprite  platform_sprite{&platform_texture, 597, 62, Vector2f{101.0F, 500.0F},
-                           Vector2f{0.0F, 0.0F}};
+    Sprite  platform_1{&platform_texture, 597, 62, Vector2f{101.0F, 500.0F}, Vector2f{0.0F, 0.0F}};
+    Sprite  platform_2{&platform_texture, 597, 62, Vector2f{-400.0F, 300.0F}, Vector2f{0.0F, 0.0F}};
     Texture sphere_texture{"resources/sphere.png"};
     Sprite  sphere_sprite{&sphere_texture, 200, 201, Vector2f{400.0F, 20.0F}, Vector2f{0.0F, 0.0F}};
 
@@ -44,8 +44,11 @@ void PhysixScreen::create()
 {
     sphere_sprite.set_max_velocity(1200.0F);
 
-    platform_sprite.set_gravity_scale(0.0F);
-    platform_sprite.set_movable(false);
+    platform_1.set_gravity_scale(0.0F);
+    platform_1.set_movable(false);
+    platform_2.set_gravity_scale(0.0F);
+    platform_2.set_movable(false);
+    platform_2.set_allowed_collisions(UP);
 }
 
 void PhysixScreen::update(double delta_time)
@@ -54,9 +57,9 @@ void PhysixScreen::update(double delta_time)
 
     if (Keyboard::is_key_pressed(system::Keyboard::Key::Up))
     {
-        if (man.is_touching(Direction::Down))
+        if (man.is_touching(DOWN))
         {
-            man.set_y_velocity(-400.0F);
+            man.set_y_velocity(-500.0F);
         }
     }
     if (Keyboard::is_key_pressed(system::Keyboard::Key::Right))
@@ -73,13 +76,15 @@ void PhysixScreen::update(double delta_time)
     }
 
     sphere_sprite.update(delta_time);
-    platform_sprite.update(delta_time);
+    platform_1.update(delta_time);
+    platform_2.update(delta_time);
     box_sprite.update(delta_time);
     man.update(delta_time);
 
-    World::collide(sphere_sprite, platform_sprite);
-    World::collide(man, platform_sprite);
-    World::collide(box_sprite, platform_sprite);
+    World::collide(sphere_sprite, platform_1);
+    World::collide(man, platform_1);
+    World::collide(man, platform_2);
+    World::collide(box_sprite, platform_1);
 
     World::collide(man, sphere_sprite);
     World::collide(man, box_sprite);
@@ -87,9 +92,10 @@ void PhysixScreen::update(double delta_time)
     World::collide(box_sprite, sphere_sprite);
 
     sphere_sprite.draw(delta_time);
-    platform_sprite.draw(delta_time);
+    platform_1.draw(delta_time);
     box_sprite.draw(delta_time);
     man.draw(delta_time);
+    platform_2.draw(delta_time);
 }
 
 void PhysixScreen::destroy()

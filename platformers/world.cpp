@@ -71,31 +71,29 @@ bool World::separate_x(Object& object_1, Object& object_2)
             if (obj1_delta > obj2_delta)
             {
                 overlap = object_1.position_.x + object_1.width_ - object_2.position_.x;
-                if (overlap > max_overlap)
+                if ((overlap > max_overlap) || !(object_1.allowed_collisions_ & RIGHT) ||
+                    !(object_2.allowed_collisions_ & LEFT))
                 {
                     overlap = 0.0F;
                 }
                 else
                 {
-                    object_1.touching_ =
-                        static_cast<Direction>(object_1.touching_ | Direction::Right);
-                    object_2.touching_ =
-                        static_cast<Direction>(object_2.touching_ | Direction::Left);
+                    object_1.touching_ = (object_1.touching_ | RIGHT);
+                    object_2.touching_ = (object_2.touching_ | LEFT);
                 }
             }
             else if (obj1_delta < obj2_delta)
             {
                 overlap = object_1.position_.x - object_2.width_ - object_2.position_.x;
-                if (-overlap > max_overlap)
+                if ((-overlap > max_overlap) || !(object_1.allowed_collisions_ & LEFT) ||
+                    !(object_2.allowed_collisions_ & RIGHT))
                 {
                     overlap = 0.0F;
                 }
                 else
                 {
-                    object_1.touching_ =
-                        static_cast<Direction>(object_1.touching_ | Direction::Right);
-                    object_2.touching_ =
-                        static_cast<Direction>(object_2.touching_ | Direction::Left);
+                    object_1.touching_ = (object_1.touching_ | RIGHT);
+                    object_2.touching_ = (object_2.touching_ | LEFT);
                 }
             }
         }
@@ -167,29 +165,29 @@ bool World::separate_y(Object& object_1, Object& object_2)
             if (obj1_delta > obj2_delta)
             {
                 overlap = object_1.position_.y + object_1.height_ - object_2.position_.y;
-                if (overlap > max_overlap)
+                if ((overlap > max_overlap) || !(object_1.allowed_collisions_ & DOWN) ||
+                    !(object_2.allowed_collisions_ & UP))
                 {
                     overlap = 0.0F;
                 }
                 else
                 {
-                    object_1.touching_ =
-                        static_cast<Direction>(object_1.touching_ | Direction::Down);
-                    object_2.touching_ = static_cast<Direction>(object_2.touching_ | Direction::Up);
+                    object_1.touching_ = (object_1.touching_ | DOWN);
+                    object_2.touching_ = (object_2.touching_ | UP);
                 }
             }
             else if (obj1_delta < obj2_delta)
             {
                 overlap = object_1.position_.y - object_2.height_ - object_2.position_.y;
-                if (-overlap > max_overlap)
+                if ((-overlap > max_overlap) || !(object_1.allowed_collisions_ & UP) ||
+                    !(object_2.allowed_collisions_ & DOWN))
                 {
                     overlap = 0.0F;
                 }
                 else
                 {
-                    object_1.touching_ = static_cast<Direction>(object_1.touching_ | Direction::Up);
-                    object_2.touching_ =
-                        static_cast<Direction>(object_2.touching_ | Direction::Down);
+                    object_1.touching_ = (object_1.touching_ | UP);
+                    object_2.touching_ = (object_2.touching_ | DOWN);
                 }
             }
         }

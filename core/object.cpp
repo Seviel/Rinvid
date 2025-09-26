@@ -16,8 +16,8 @@ namespace rinvid
 Object::Object()
     : position_{0.0F, 0.0F}, previous_position_{0.0F, 0.0F}, velocity_{0.0F, 0.0F},
       acceleration_{0.0F, 0.0F}, drag_{800.0F, 0.0F}, max_velocity_{0.0F}, gravity_scale_{1.0F},
-      width_{0}, height_{0}, active_{true}, movable_{true}, collides_{true},
-      touching_{Direction::None}
+      width_{0}, height_{0}, active_{true}, movable_{true}, collides_{true}, touching_{NONE},
+      allowed_collisions_{ANY}
 {
 }
 
@@ -25,7 +25,7 @@ void Object::update(double delta_time)
 {
     if (active_)
     {
-        touching_            = Direction::None;
+        touching_            = NONE;
         previous_position_.x = position_.x;
         previous_position_.y = position_.y;
 
@@ -170,9 +170,14 @@ bool Object::get_movable()
     return movable_;
 }
 
-bool Object::is_touching(Direction direction)
+bool Object::is_touching(std::uint8_t direction)
 {
-    return (touching_ & direction) > Direction::None;
+    return (touching_ & direction) > NONE;
+}
+
+void Object::set_allowed_collisions(std::uint8_t directions)
+{
+    allowed_collisions_ = directions;
 }
 
 void Object::reset(Vector2f position)
