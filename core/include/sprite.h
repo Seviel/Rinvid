@@ -21,6 +21,7 @@
 #pragma GCC diagnostic pop
 #endif
 
+#include "core/include/object.h"
 #include "core/include/sprite_animation.h"
 #include "core/include/texture.h"
 #include "core/include/transformable.h"
@@ -30,7 +31,7 @@
 namespace rinvid
 {
 
-class Sprite : public Transformable, public DrawableAnimated
+class Sprite : public Transformable, public DrawableAnimated, public Object
 {
   public:
     /**************************************************************************************************
@@ -106,7 +107,7 @@ class Sprite : public Transformable, public DrawableAnimated
      * @return Bounding rect
      *
      *************************************************************************************************/
-    Rect bounding_rect();
+    Rect bounding_rect() override;
 
     /**************************************************************************************************
      * @brief Sets texture, position and size of sprite.
@@ -142,12 +143,9 @@ class Sprite : public Transformable, public DrawableAnimated
     SpriteAnimation sprite_animation_;
 
   private:
-    Texture*     texture_;
-    std::int32_t width_;
-    std::int32_t height_;
-    Vector2f     top_left_;
-    Vector2f     texture_offset_;
-    float        opacity_;
+    Texture* texture_;
+    Vector2f texture_offset_;
+    float    opacity_;
 };
 
 } // namespace rinvid

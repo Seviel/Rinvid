@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2021 - 2024, Filip Vasiljevic
+ * Copyright (c) 2021 - 2025, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -13,16 +13,17 @@ namespace rinvid
 {
 
 Sprite::Sprite()
-    : sprite_animation_{}, texture_{nullptr}, width_{0}, height_{0}, top_left_{0.0F, 0.0F},
-      texture_offset_{0.0F, 0.0F}, opacity_{1.0F}
+    : sprite_animation_{}, texture_{nullptr}, texture_offset_{0.0F, 0.0F}, opacity_{1.0F}
 {
 }
 
 Sprite::Sprite(Texture* texture, std::int32_t width, std::int32_t height, Vector2f top_left,
                Vector2f texture_offset)
-    : sprite_animation_{}, texture_{texture}, width_{width}, height_{height}, top_left_{top_left},
-      texture_offset_{texture_offset}, opacity_{1.0F}
+    : sprite_animation_{}, texture_{texture}, texture_offset_{texture_offset}, opacity_{1.0F}
 {
+    width_    = width;
+    height_   = height;
+    position_ = top_left;
     texture_->update_vertices(texture_offset_, width_, height_);
 }
 
@@ -44,8 +45,8 @@ void Sprite::draw(double delta_time)
 
 void Sprite::draw(double delta_time, const Shader shader)
 {
-    origin_.x = top_left_.x + width_ / 2;
-    origin_.y = top_left_.y + height_ / 2;
+    origin_.x = position_.x + width_ / 2;
+    origin_.y = position_.y + height_ / 2;
 
     if (sprite_animation_.is_active_)
     {
@@ -66,19 +67,19 @@ void Sprite::draw(double delta_time, const Shader shader)
 
 void Sprite::move(const Vector2f move_vector)
 {
-    top_left_.move(move_vector);
+    position_.move(move_vector);
 }
 
 void Sprite::set_position(const Vector2f vector)
 {
-    top_left_.set(vector);
+    position_.set(vector);
 }
 
 Rect Sprite::bounding_rect()
 {
     if (is_transformed() == false)
     {
-        return Rect{top_left_, width_, height_};
+        return Rect{position_, width_, height_};
     }
 
     Rect                   rect{};
@@ -86,19 +87,19 @@ Rect Sprite::bounding_rect()
 
     const auto& transform = get_transform();
 
-    glm::vec4 vertex{top_left_.x, top_left_.y, 1.0F, 1.0F};
+    glm::vec4 vertex{position_.x, position_.y, 1.0F, 1.0F};
     vertex = transform * vertex;
     glm_vertices.push_back(vertex);
 
-    vertex = glm::vec4{top_left_.x + width_, top_left_.y, 1.0F, 1.0F};
+    vertex = glm::vec4{position_.x + width_, position_.y, 1.0F, 1.0F};
     vertex = transform * vertex;
     glm_vertices.push_back(vertex);
 
-    vertex = glm::vec4{top_left_.x + width_, top_left_.y + height_, 1.0F, 1.0F};
+    vertex = glm::vec4{position_.x + width_, position_.y + height_, 1.0F, 1.0F};
     vertex = transform * vertex;
     glm_vertices.push_back(vertex);
 
-    vertex = glm::vec4{top_left_.x, top_left_.y + height_, 1.0F, 1.0F};
+    vertex = glm::vec4{position_.x, position_.y + height_, 1.0F, 1.0F};
     vertex = transform * vertex;
     glm_vertices.push_back(vertex);
 
@@ -123,7 +124,7 @@ void Sprite::setup(Texture* texture, std::int32_t width, std::int32_t height, Ve
     texture_        = texture;
     width_          = width;
     height_         = height;
-    top_left_       = top_left;
+    position_       = top_left;
     texture_offset_ = texture_offset;
 
     texture_->update_vertices(texture_offset_, width_, height_);
