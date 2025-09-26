@@ -20,6 +20,17 @@ namespace rinvid
 
 class World;
 
+enum Direction : std::uint8_t
+{
+    None  = 0x0,
+    Left  = 0x1,
+    Right = 0x2,
+    Up    = 0x4,
+    Down  = 0x8,
+    Wall  = Left | Right,
+    Any   = Left | Right | Up | Down
+};
+
 /**************************************************************************************************
  * @brief A movable object in the world.
  *
@@ -153,6 +164,19 @@ class Object
     bool get_movable();
 
     /**************************************************************************************************
+     * @brief Check whether object is touching any solid surface.
+     *
+     * @param direction For which direction do you want to check. You can check for multiple
+     * directions by using bitwise or operator. For example, use:
+     * direction = Direction::Left | Direction::Up to check if the object touches anything on its
+     * left or above it.
+     *
+     * @return Whether object is touching solid surface in given direction.
+     *
+     *************************************************************************************************/
+    bool is_touching(Direction direction);
+
+    /**************************************************************************************************
      * @brief Resets the position of the object.
      *
      * @param posiition New position.
@@ -202,6 +226,7 @@ class Object
     bool         active_;
     bool         movable_;
     bool         collides_;
+    Direction    touching_;
 };
 
 } // namespace rinvid

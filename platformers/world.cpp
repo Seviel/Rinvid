@@ -75,6 +75,13 @@ bool World::separate_x(Object& object_1, Object& object_2)
                 {
                     overlap = 0.0F;
                 }
+                else
+                {
+                    object_1.touching_ =
+                        static_cast<Direction>(object_1.touching_ | Direction::Right);
+                    object_2.touching_ =
+                        static_cast<Direction>(object_2.touching_ | Direction::Left);
+                }
             }
             else if (obj1_delta < obj2_delta)
             {
@@ -82,6 +89,13 @@ bool World::separate_x(Object& object_1, Object& object_2)
                 if (-overlap > max_overlap)
                 {
                     overlap = 0.0F;
+                }
+                else
+                {
+                    object_1.touching_ =
+                        static_cast<Direction>(object_1.touching_ | Direction::Right);
+                    object_2.touching_ =
+                        static_cast<Direction>(object_2.touching_ | Direction::Left);
                 }
             }
         }
@@ -157,6 +171,12 @@ bool World::separate_y(Object& object_1, Object& object_2)
                 {
                     overlap = 0.0F;
                 }
+                else
+                {
+                    object_1.touching_ =
+                        static_cast<Direction>(object_1.touching_ | Direction::Down);
+                    object_2.touching_ = static_cast<Direction>(object_2.touching_ | Direction::Up);
+                }
             }
             else if (obj1_delta < obj2_delta)
             {
@@ -164,6 +184,12 @@ bool World::separate_y(Object& object_1, Object& object_2)
                 if (-overlap > max_overlap)
                 {
                     overlap = 0.0F;
+                }
+                else
+                {
+                    object_1.touching_ = static_cast<Direction>(object_1.touching_ | Direction::Up);
+                    object_2.touching_ =
+                        static_cast<Direction>(object_2.touching_ | Direction::Down);
                 }
             }
         }

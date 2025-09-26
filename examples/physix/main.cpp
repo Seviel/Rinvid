@@ -54,7 +54,10 @@ void PhysixScreen::update(double delta_time)
 
     if (Keyboard::is_key_pressed(system::Keyboard::Key::Up))
     {
-        man.set_y_velocity(-400.0F);
+        if (man.is_touching(Direction::Down))
+        {
+            man.set_y_velocity(-400.0F);
+        }
     }
     if (Keyboard::is_key_pressed(system::Keyboard::Key::Right))
     {
