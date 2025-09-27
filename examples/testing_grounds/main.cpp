@@ -145,7 +145,7 @@ void TestingGrounds::update(double delta_time)
         quad_alive = false;
     }
 
-    button.update();
+    button.update_state();
 
     if (button.is_clicked())
     {

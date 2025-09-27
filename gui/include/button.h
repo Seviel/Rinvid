@@ -35,7 +35,7 @@ class Button : public Sprite
      * @brief Updates the button status (clicked status and animation) based on mouse position.
      *
      *************************************************************************************************/
-    void update();
+    void update_state();
 
     /**************************************************************************************************
      * @brief Sets animation regions for idle status (mouse is not hovering over button).

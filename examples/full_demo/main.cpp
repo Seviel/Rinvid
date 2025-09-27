@@ -166,7 +166,7 @@ void TestingGrounds::button_control()
 {
     for (auto button : buttons_)
     {
-        button->update();
+        button->update_state();
     }
 
     if (light_intensity_plus_button_.just_clicked())

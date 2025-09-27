@@ -31,7 +31,7 @@ Button::Button() : idle_{}, mouse_hovering_{}, clicked_{}, is_clicked_{false}, j
     sprite_animation_.play("idle");
 }
 
-void Button::update()
+void Button::update_state()
 {
     Vector2f    mouse_pos = system::Mouse::get_mouse_pos();
     glm::vec4   glm_mouse_pos{mouse_pos.x, mouse_pos.y, 1.0F, 1.0F};
