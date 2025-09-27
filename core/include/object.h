@@ -45,7 +45,7 @@ class Object
      * @brief Updates object state. Should be called each frame.
      *
      *************************************************************************************************/
-    void update(double delta_time);
+    virtual void update(double delta_time);
 
     /**************************************************************************************************
      * @brief Sets the velocity of the object.
