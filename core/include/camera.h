@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2022 - 2023, Filip Vasiljevic
+ * Copyright (c) 2022 - 2025, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -35,6 +35,14 @@ class Camera
      *
      *************************************************************************************************/
     void update();
+
+    /**************************************************************************************************
+     * @brief Sets camera position.
+     *
+     * @param position New position.
+     *
+     *************************************************************************************************/
+    void set_position(const Vector2f position);
 
     /**************************************************************************************************
      * @brief Moves the by adding move_vector to its position vector.

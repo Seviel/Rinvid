@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2022 - 2023, Filip Vasiljevic
+ * Copyright (c) 2022 - 2025, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -23,6 +23,15 @@ void Camera::update()
 {
     auto view = glm::lookAt(camera_pos_, camera_pos_ + camera_front_, camera_up_);
     RinvidGfx::update_view(view);
+}
+
+void Camera::set_position(const Vector2f position)
+{
+    Vector2f current_pos = get_pos();
+    Vector2f move_vector{};
+    move_vector.x = position.x - current_pos.x;
+    move_vector.y = position.y - current_pos.y;
+    move(move_vector);
 }
 
 void Camera::move(const Vector2f move_vector)
