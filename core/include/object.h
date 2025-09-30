@@ -48,6 +48,14 @@ class Object
     virtual void update(double delta_time);
 
     /**************************************************************************************************
+     * @brief Returns current position of the object.
+     *
+     * @return Current position.
+     *
+     *************************************************************************************************/
+    Vector2f get_position();
+
+    /**************************************************************************************************
      * @brief Sets the velocity of the object.
      *
      * @param velocity New velocity.

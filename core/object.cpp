@@ -110,6 +110,11 @@ Vector2f Object::get_velocity()
     return velocity_;
 }
 
+Vector2f Object::get_position()
+{
+    return position_;
+}
+
 void Object::set_x_velocity(float velocity)
 {
     velocity_.x = velocity;
