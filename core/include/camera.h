@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2022 - 2025, Filip Vasiljevic
+ * Copyright (c) 2022 - 2026, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -60,10 +60,42 @@ class Camera
      *************************************************************************************************/
     Vector2f get_pos() const;
 
+    /**************************************************************************************************
+     * @brief Sets limits to camera movement.
+     *
+     * @param upper_left x component of upper_left vector limits camera left movement, y component
+     * limits camera up movement.
+     * @param lower_right x component of lower_right vector limits camera right movement, y
+     * component limits camera down movement.
+     *
+     *************************************************************************************************/
+    void set_borders(Vector2f upper_left, Vector2f lower_right);
+
+    /**************************************************************************************************
+     * @brief Sets limits to camera movement on X axis.
+     *
+     * @param left Left limit of camera movement.
+     * @param right Right limit of camera movement.
+     *
+     *************************************************************************************************/
+    void set_x_borders(float left, float right);
+
+    /**************************************************************************************************
+     * @brief Sets limits to camera movement on Y axis.
+     *
+     * @param up Upper limit of camera movement.
+     * @param down Lower limit of camera movement.
+     *
+     *************************************************************************************************/
+    void set_y_borders(float up, float down);
+
   private:
     glm::vec3 camera_pos_;
     glm::vec3 camera_front_;
     glm::vec3 camera_up_;
+
+    Vector2f upper_left_border_;
+    Vector2f lower_right_border_;
 };
 
 } // namespace rinvid
