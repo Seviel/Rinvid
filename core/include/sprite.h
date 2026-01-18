@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2021 - 2025, Filip Vasiljevic
+ * Copyright (c) 2021 - 2026, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -40,6 +40,10 @@ class Sprite : public Transformable, public DrawableAnimated, public Object
      *************************************************************************************************/
     Sprite();
 
+    virtual ~Sprite()
+    {
+    }
+
     /**************************************************************************************************
      * @brief Sprite constructor.
      *
@@ -58,7 +62,7 @@ class Sprite : public Transformable, public DrawableAnimated, public Object
      * @brief Draws the sprite. Use this function for sprites that are not animated.
      *
      *************************************************************************************************/
-    void draw() override;
+    virtual void draw() override;
 
     /**************************************************************************************************
      * @brief Draw the sprite with shader.
@@ -74,7 +78,7 @@ class Sprite : public Transformable, public DrawableAnimated, public Object
      * @param delta_time Time passed in seconds since last frame
      *
      *************************************************************************************************/
-    void draw(double delta_time) override;
+    virtual void draw(double delta_time) override;
 
     /**************************************************************************************************
      * @brief Draws the sprite with shader.  Use this function for drawing animated sprites.
@@ -83,7 +87,7 @@ class Sprite : public Transformable, public DrawableAnimated, public Object
      * @param shader Shader to be used.
      *
      *************************************************************************************************/
-    void draw(double delta_time, const Shader shader) override;
+    virtual void draw(double delta_time, const Shader shader) override;
 
     /**************************************************************************************************
      * @brief Moves sprite by adding move_vector to its position vector.

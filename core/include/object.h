@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2025, Filip Vasiljevic
+ * Copyright (c) 2025 - 2026, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -40,6 +40,10 @@ class Object
      *
      *************************************************************************************************/
     Object();
+
+    virtual ~Object()
+    {
+    }
 
     /**************************************************************************************************
      * @brief Updates object state. Should be called each frame.
