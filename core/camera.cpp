@@ -15,7 +15,7 @@ namespace rinvid
 
 Camera::Camera()
     : camera_pos_{0.0F, 0.0F, 1.0F}, camera_front_{0.0F, 0.0F, -1.0F}, camera_up_{0.0F, 1.0F, 0.0F},
-      upper_left_border_{-10000.0F, -10000.0F}, lower_right_border_{-10000.0F, -10000.0F}
+      upper_left_border_{-10000.0F, -10000.0F}, lower_right_border_{10000.0F, 10000.0F}
 {
     camera_pos_ += 1.5F * camera_front_;
 }
