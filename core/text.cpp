@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2023 - 2024, Filip Vasiljevic
+ * Copyright (c) 2023 - 2026, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -21,9 +21,11 @@
 namespace rinvid
 {
 
+constexpr float LINE_SPACING = 1.08F;
+
 Text::Text(std::string text, std::string font_path, Vector2f position, Color color,
            std::uint32_t size)
-    : size_{size}, text_{text}, position_{position}, color_{color}
+    : size_{size}, text_{text}, position_{position}, color_{color}, max_width_{0.0F}
 {
     const auto* ft_lib = TTFLib::get_instance();
 
@@ -49,9 +51,8 @@ void Text::draw()
 
 void Text::draw(const Shader shader)
 {
-    float scale = 1.0F;
-    float x     = position_.x;
-    float y     = position_.y;
+    float x = position_.x;
+    float y = position_.y;
 
     glm::vec4   glm_pos{x, y, 1.0F, 1.0F};
     const auto& view = RinvidGfx::get_view();
@@ -69,16 +70,19 @@ void Text::draw(const Shader shader)
     GL_CALL(glActiveTexture(GL_TEXTURE0));
     GL_CALL(glBindVertexArray(vertex_array_object_));
 
+    float start_x = x;
+    float max_x   = start_x + max_width_;
+
     std::string::const_iterator c;
     for (c = text_.begin(); c != text_.end(); c++)
     {
         Character character = characters_[*c];
 
-        float xpos = x + character.bearing.x * scale;
-        float ypos = y - (character.size.y - character.bearing.y) * scale;
+        float xpos = x + character.bearing.x;
+        float ypos = y - (character.size.y - character.bearing.y);
 
-        float width          = character.size.x * scale;
-        float height         = character.size.y * scale;
+        float width          = character.size.x;
+        float height         = character.size.y;
         float vertices[6][4] = {
             {xpos, ypos + height, 0.0f, 0.0f},        {xpos, ypos, 0.0f, 1.0f},
             {xpos + width, ypos, 1.0f, 1.0f},
@@ -90,7 +94,23 @@ void Text::draw(const Shader shader)
         GL_CALL(glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices));
         GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, 0));
         GL_CALL(glDrawArrays(GL_TRIANGLES, 0, 6));
-        x += (character.advance >> 6) * scale;
+
+        std::uint32_t advance;
+        if (c != text_.begin() && x == start_x && *c == ' ')
+        {
+            advance = 0;
+        }
+        else
+        {
+            advance = (character.advance >> 6);
+        }
+        x += advance;
+
+        if (max_width_ > 0.0F && x > max_x)
+        {
+            x = start_x;
+            y -= std::ceil(static_cast<float>(size_) * LINE_SPACING);
+        }
     }
 
     GL_CALL(glBindVertexArray(0));
@@ -121,6 +141,11 @@ void Text::set_color(const Color color)
 void Text::set_text(const std::string& text)
 {
     text_ = text;
+}
+
+void Text::set_max_width(float max_width)
+{
+    max_width_ = max_width;
 }
 
 void Text::generate_character_textures()
