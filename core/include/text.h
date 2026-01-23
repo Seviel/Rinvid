@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2023 - 2025, Filip Vasiljevic
+ * Copyright (c) 2023 - 2026, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -98,6 +98,14 @@ class Text : public Drawable
      *************************************************************************************************/
     void set_text(const std::string& text);
 
+    /**************************************************************************************************
+     * @brief Sets max width of text.
+     *
+     * @param max_width
+     *
+     *************************************************************************************************/
+    void set_max_width(float max_width);
+
   private:
     struct Character
     {
@@ -120,6 +128,7 @@ class Text : public Drawable
     std::string   text_;
     Vector2f      position_;
     Color         color_;
+    float         max_width_;
 
     std::unordered_map<char, Character> characters_;
 };
