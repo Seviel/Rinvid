@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2025, Filip Vasiljevic
+ * Copyright (c) 2025 - 2026, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -18,11 +18,11 @@ constexpr float OVERLAP_BIAS = 1.0F;
 
 float World::gravity{800.0F};
 
-bool World::collide(Object& object_1, Object& object_2)
+bool World::collide(Object& object_1, Object& object_2, CollisionResolver resolve)
 {
     if (intersects(object_1.bounding_rect(), object_2.bounding_rect()))
     {
-        if (separate(object_1, object_2))
+        if (resolve(object_1, object_2))
         {
             return true;
         }

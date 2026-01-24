@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2025, Filip Vasiljevic
+ * Copyright (c) 2025 - 2026, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -14,6 +14,8 @@
 
 namespace rinvid
 {
+
+typedef bool (*CollisionResolver)(Object&, Object&);
 
 class World
 {
@@ -31,11 +33,13 @@ class World
      *
      * @param object_1
      * @param object_2
+     * @param resolve Pointer to function that decides how to resolve collision when it happens.
+     * Default is to separate objects.
      *
      * @return True if objects collide.
      *
      *************************************************************************************************/
-    static bool collide(Object& object_1, Object& object_2);
+    static bool collide(Object& object_1, Object& object_2, CollisionResolver resolve = separate);
 
     static float gravity;
 
