@@ -31,6 +31,50 @@ bool World::collide(Object& object_1, Object& object_2, CollisionResolver resolv
     return false;
 }
 
+bool World::collide(Object& object, std::vector<Object*> group, CollisionResolver resolve)
+{
+    bool result = false;
+
+    for (auto* group_object : group)
+    {
+        if (group_object == &object)
+        {
+            continue;
+        }
+
+        result |= World::collide(object, *group_object, resolve);
+    }
+
+    return result;
+}
+
+bool World::collide(std::vector<Object*> group, Object& object, CollisionResolver resolve)
+{
+    return World::collide(object, group, resolve);
+}
+
+/// @todo Think about optimizing this if it gets heavily used with many objects in the future.
+bool World::collide(std::vector<Object*> group_1, std::vector<Object*> group_2,
+                    CollisionResolver resolve)
+{
+    bool result = false;
+
+    for (auto* group_1_object : group_1)
+    {
+        for (auto* group_2_object : group_2)
+        {
+            if (group_1_object == group_2_object)
+            {
+                continue;
+            }
+
+            result |= World::collide(*group_1_object, *group_2_object, resolve);
+        }
+    }
+
+    return result;
+}
+
 bool World::separate(Object& object_1, Object& object_2)
 {
     bool x_separated = separate_x(object_1, object_2);
