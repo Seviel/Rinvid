@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2025, Filip Vasiljevic
+ * Copyright (c) 2025 - 2026, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -10,10 +10,14 @@
 #ifndef PLATFORMERS_INCLUDE_WORLD_H
 #define PLATFORMERS_INCLUDE_WORLD_H
 
+#include <vector>
+
 #include "core/include/object.h"
 
 namespace rinvid
 {
+
+typedef bool (*CollisionResolver)(Object&, Object&);
 
 class World
 {
@@ -27,15 +31,63 @@ class World
     }
 
     /**************************************************************************************************
-     * @brief Checks whether objects collide and handles collisions by separating them.
+     * @brief Checks whether objects collide and handles collision via callback function.
      *
      * @param object_1
      * @param object_2
+     * @param resolve Pointer to function that decides how to resolve collision when it happens.
+     * Default is to separate objects.
      *
      * @return True if objects collide.
      *
      *************************************************************************************************/
-    static bool collide(Object& object_1, Object& object_2);
+    static bool collide(Object& object_1, Object& object_2, CollisionResolver resolve = separate);
+
+    /**************************************************************************************************
+     * @brief Checks whether object collides with group of objects and handles collisions via
+     * callback function.
+     *
+     * @param object
+     * @param group
+     * @param resolve Pointer to function that decides how to resolve collision when it happens.
+     * Default is to separate objects.
+     *
+     * @return True if object collides with any of the objects from group.
+     *
+     *************************************************************************************************/
+    static bool collide(Object& object, std::vector<Object*> group,
+                        CollisionResolver resolve = separate);
+
+    /**************************************************************************************************
+     * @brief Checks whether object collides with group of objects and handles collisions via
+     * callback function.
+     *
+     * @param group
+     * @param object
+     * @param resolve Pointer to function that decides how to resolve collision when it happens.
+     * Default is to separate objects.
+     *
+     * @return True if object collides with any of the objects from group.
+     *
+     *************************************************************************************************/
+    static bool collide(std::vector<Object*> group, Object& object,
+                        CollisionResolver resolve = separate);
+
+    /**************************************************************************************************
+     * @brief Checks whether object collides with group of objects and handles collisions via
+     * callback function.
+     * WARNING: This function is probably not optimal for large number of objects.
+     *
+     * @param group_1
+     * @param group_2
+     * @param resolve Pointer to function that decides how to resolve collision when it happens.
+     * Default is to separate objects.
+     *
+     * @return True if aby objects from group collide.
+     *
+     *************************************************************************************************/
+    static bool collide(std::vector<Object*> group_1, std::vector<Object*> group_2,
+                        CollisionResolver resolve = separate);
 
     static float gravity;
 
