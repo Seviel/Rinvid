@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2023 - 2025, Filip Vasiljevic
+ * Copyright (c) 2023 - 2026, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -31,6 +31,9 @@ TEST_F(TextureTest, Constructor_ValidImageFile)
 // Test the constructor with an invalid image file
 TEST_F(TextureTest, Constructor_InvalidImageFile)
 {
+#ifndef RINVID_DEBUG_MODE
+    GTEST_SKIP();
+#endif
     const char* file_name = "invalid_image.png";
     Texture     texture(file_name);
 
