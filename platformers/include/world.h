@@ -55,7 +55,7 @@ class World
      * @return True if object collides with any of the objects from group.
      *
      *************************************************************************************************/
-    static bool collide(Object& object, std::vector<Object*> group,
+    static bool collide(Object& object, const std::vector<Object*>& group,
                         CollisionResolver resolve = separate);
 
     /**************************************************************************************************
@@ -70,7 +70,7 @@ class World
      * @return True if object collides with any of the objects from group.
      *
      *************************************************************************************************/
-    static bool collide(std::vector<Object*> group, Object& object,
+    static bool collide(const std::vector<Object*>& group, Object& object,
                         CollisionResolver resolve = separate);
 
     /**************************************************************************************************
@@ -86,7 +86,7 @@ class World
      * @return True if aby objects from group collide.
      *
      *************************************************************************************************/
-    static bool collide(std::vector<Object*> group_1, std::vector<Object*> group_2,
+    static bool collide(const std::vector<Object*>& group_1, const std::vector<Object*>& group_2,
                         CollisionResolver resolve = separate);
 
     static float gravity;

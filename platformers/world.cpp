@@ -31,7 +31,7 @@ bool World::collide(Object& object_1, Object& object_2, CollisionResolver resolv
     return false;
 }
 
-bool World::collide(Object& object, std::vector<Object*> group, CollisionResolver resolve)
+bool World::collide(Object& object, const std::vector<Object*>& group, CollisionResolver resolve)
 {
     bool result = false;
 
@@ -48,13 +48,13 @@ bool World::collide(Object& object, std::vector<Object*> group, CollisionResolve
     return result;
 }
 
-bool World::collide(std::vector<Object*> group, Object& object, CollisionResolver resolve)
+bool World::collide(const std::vector<Object*>& group, Object& object, CollisionResolver resolve)
 {
     return World::collide(object, group, resolve);
 }
 
 /// @todo Think about optimizing this if it gets heavily used with many objects in the future.
-bool World::collide(std::vector<Object*> group_1, std::vector<Object*> group_2,
+bool World::collide(const std::vector<Object*>& group_1, const std::vector<Object*>& group_2,
                     CollisionResolver resolve)
 {
     bool result = false;
