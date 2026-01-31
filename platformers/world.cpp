@@ -14,7 +14,7 @@
 namespace rinvid
 {
 
-constexpr float OVERLAP_BIAS = 1.0F;
+constexpr float OVERLAP_BIAS = 2.0F;
 
 float World::gravity{800.0F};
 
