@@ -19,6 +19,7 @@
 #include "core/include/rinvid_gfx.h"
 #include "core/include/screen.h"
 #include "core/include/sprite.h"
+#include "core/include/sprite_object.h"
 #include "core/include/text.h"
 #include "core/include/texture.h"
 #include "core/include/ttf_lib.h"
@@ -54,14 +55,15 @@ class TestingGrounds : public Screen
     Texture clock_texture_{"resources/clck.png"};
     Sprite clock_sprite_{&clock_texture_, 100, 100, Vector2f{150.0F, 250.0F}, Vector2f{0.0F, 0.0F}};
 
-    Texture player_texture_{"resources/guardian.png"};
-    Sprite player_sprite_{&player_texture_, 30, 45, Vector2f{400.0F, 250.0F}, Vector2f{0.0F, 0.0F}};
+    Texture      player_texture_{"resources/guardian.png"};
+    SpriteObject player_sprite_{&player_texture_, 30, 45, Vector2f{400.0F, 250.0F},
+                                Vector2f{0.0F, 0.0F}};
 
     Object         platform_{};
     RectangleShape platform_gfx_{{0.0F, 0.0F}, 200.0F, 50.0F};
 
-    Texture box_texture_{"resources/box.png"};
-    Sprite  box_sprite_{&box_texture_, 75, 75, Vector2f{475.0F, 20.0F}, Vector2f{0.0F, 0.0F}};
+    Texture      box_texture_{"resources/box.png"};
+    SpriteObject box_sprite_{&box_texture_, 75, 75, Vector2f{475.0F, 20.0F}, Vector2f{0.0F, 0.0F}};
 
     Texture rotation_button_texture_{"resources/rotation_button.png"};
     Texture opacity_button_texture_{"resources/opacity_button.png"};

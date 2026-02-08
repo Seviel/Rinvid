@@ -12,6 +12,7 @@
 
 #include <cstdint>
 
+#include "data_types/include/rect_pod.h"
 #include "util/include/rect.h"
 #include "util/include/vector2.h"
 
@@ -32,7 +33,7 @@ constexpr std::uint8_t ANY   = LEFT | RIGHT | UP | DOWN;
  * @brief A movable object in the world.
  *
  *************************************************************************************************/
-class Object
+class Object : public virtual RectPOD
 {
   public:
     /**************************************************************************************************
@@ -233,15 +234,12 @@ class Object
 
     void update_motion(double delta_time);
 
-    Vector2f     position_;
     Vector2f     previous_position_;
     Vector2f     velocity_;
     Vector2f     acceleration_;
     Vector2f     drag_;
     float        max_velocity_;
     float        gravity_scale_;
-    std::int32_t width_;
-    std::int32_t height_;
     bool         active_;
     bool         movable_;
     bool         collides_;

@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2025, Filip Vasiljevic
+ * Copyright (c) 2025 - 2026, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -10,6 +10,7 @@
 #include "core/include/application.h"
 #include "core/include/screen.h"
 #include "core/include/sprite.h"
+#include "core/include/sprite_object.h"
 #include "core/include/texture.h"
 #include "platformers/include/world.h"
 #include "system/include/keyboard.h"
@@ -27,17 +28,20 @@ class PhysixScreen : public rinvid::Screen
   private:
     void update(double delta_time) override;
 
-    Texture platform_texture{"resources/plat.png"};
-    Sprite  platform_1{&platform_texture, 597, 62, Vector2f{101.0F, 500.0F}, Vector2f{0.0F, 0.0F}};
-    Sprite  platform_2{&platform_texture, 597, 62, Vector2f{-400.0F, 300.0F}, Vector2f{0.0F, 0.0F}};
-    Texture sphere_texture{"resources/sphere.png"};
-    Sprite  sphere_sprite{&sphere_texture, 200, 201, Vector2f{400.0F, 20.0F}, Vector2f{0.0F, 0.0F}};
+    Texture      platform_texture{"resources/plat.png"};
+    SpriteObject platform_1{&platform_texture, 597, 62, Vector2f{101.0F, 500.0F},
+                            Vector2f{0.0F, 0.0F}};
+    SpriteObject platform_2{&platform_texture, 597, 62, Vector2f{-400.0F, 300.0F},
+                            Vector2f{0.0F, 0.0F}};
+    Texture      sphere_texture{"resources/sphere.png"};
+    SpriteObject sphere_sprite{&sphere_texture, 200, 201, Vector2f{400.0F, 20.0F},
+                               Vector2f{0.0F, 0.0F}};
 
-    Texture man_texture{"resources/man.png"};
-    Sprite  man{&man_texture, 68, 150, Vector2f{100.0F, 20.0F}, Vector2f{0.0F, 0.0F}};
+    Texture      man_texture{"resources/man.png"};
+    SpriteObject man{&man_texture, 68, 150, Vector2f{100.0F, 20.0F}, Vector2f{0.0F, 0.0F}};
 
-    Texture box_texture{"resources/box.png"};
-    Sprite  box_sprite{&box_texture, 75, 75, Vector2f{250.0F, 20.0F}, Vector2f{0.0F, 0.0F}};
+    Texture      box_texture{"resources/box.png"};
+    SpriteObject box_sprite{&box_texture, 75, 75, Vector2f{250.0F, 20.0F}, Vector2f{0.0F, 0.0F}};
 };
 
 void PhysixScreen::create()
