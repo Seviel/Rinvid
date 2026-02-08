@@ -21,17 +21,17 @@
 #pragma GCC diagnostic pop
 #endif
 
-#include "core/include/object.h"
 #include "core/include/sprite_animation.h"
 #include "core/include/texture.h"
 #include "core/include/transformable.h"
+#include "data_types/include/rect_pod.h"
 #include "util/include/rect.h"
 #include "util/include/vector2.h"
 
 namespace rinvid
 {
 
-class Sprite : public Transformable, public DrawableAnimated, public Object
+class Sprite : public virtual RectPOD, public Transformable, public DrawableAnimated
 {
   public:
     /**************************************************************************************************
@@ -106,12 +106,12 @@ class Sprite : public Transformable, public DrawableAnimated, public Object
     void set_position(const Vector2f vector);
 
     /**************************************************************************************************
-     * @brief Returns bounding box rect of the shape
+     * @brief Returns bounding box rect of the sprite.
      *
      * @return Bounding rect
      *
      *************************************************************************************************/
-    Rect bounding_rect() override;
+    Rect bounding_rect();
 
     /**************************************************************************************************
      * @brief Sets texture, position and size of sprite.

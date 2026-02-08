@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2025, Filip Vasiljevic
+ * Copyright (c) 2025 - 2026, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -14,10 +14,9 @@ namespace rinvid
 {
 
 Object::Object()
-    : position_{0.0F, 0.0F}, previous_position_{0.0F, 0.0F}, velocity_{0.0F, 0.0F},
+    : previous_position_{0.0F, 0.0F}, velocity_{0.0F, 0.0F},
       acceleration_{0.0F, 0.0F}, drag_{800.0F, 0.0F}, max_velocity_{0.0F}, gravity_scale_{1.0F},
-      width_{0}, height_{0}, active_{true}, movable_{true}, collides_{true}, touching_{NONE},
-      allowed_collisions_{ANY}
+      active_{true}, movable_{true}, collides_{true}, touching_{NONE}, allowed_collisions_{ANY}
 {
 }
 
