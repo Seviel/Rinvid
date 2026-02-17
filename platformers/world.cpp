@@ -14,9 +14,20 @@
 namespace rinvid
 {
 
-constexpr float OVERLAP_BIAS = 2.0F;
+static constexpr float DEFAULT_GRAVITY      = 800.0F;
+static constexpr float DEFAULT_OVERLAP_BIAS = 2.0F;
 
-float World::gravity{800.0F};
+static float OVERLAP_BIAS = DEFAULT_OVERLAP_BIAS;
+
+float World::gravity{DEFAULT_GRAVITY};
+
+void World::set_gravity(float gravity)
+{
+    World::gravity = gravity;
+
+    std::int32_t overlap_bias_factor = static_cast<std::int32_t>(gravity / DEFAULT_GRAVITY);
+    OVERLAP_BIAS = static_cast<std::int32_t>(DEFAULT_OVERLAP_BIAS) << overlap_bias_factor;
+}
 
 bool World::collide(Object& object_1, Object& object_2, CollisionResolver resolve)
 {
