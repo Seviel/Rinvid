@@ -14,9 +14,9 @@ namespace rinvid
 {
 
 Object::Object()
-    : previous_position_{0.0F, 0.0F}, velocity_{0.0F, 0.0F},
-      acceleration_{0.0F, 0.0F}, drag_{800.0F, 0.0F}, max_velocity_{0.0F}, gravity_scale_{1.0F},
-      active_{true}, movable_{true}, collides_{true}, touching_{NONE}, allowed_collisions_{ANY}
+    : previous_position_{0.0F, 0.0F}, velocity_{0.0F, 0.0F}, acceleration_{0.0F, 0.0F},
+      drag_{800.0F, 0.0F}, max_velocity_{0.0F}, gravity_scale_{1.0F}, active_{true},
+      collides_{true}, movable_{YES}, touching_{NONE}, allowed_collisions_{ANY}
 {
 }
 
@@ -40,24 +40,30 @@ void Object::update_motion(double delta_time)
     float delta;
     float velocity_delta;
 
-    velocity_delta =
-        (compute_velocity(delta_time, velocity_.x, acceleration_.x, drag_.x, max_velocity_) -
-         velocity_.x) /
-        2.0F;
-    velocity_.x += velocity_delta;
-    delta = velocity_.x * delta_time;
-    velocity_.x += velocity_delta;
-    position_.x += delta;
+    if (movable_ & HORIZONTALLY)
+    {
+        velocity_delta =
+            (compute_velocity(delta_time, velocity_.x, acceleration_.x, drag_.x, max_velocity_) -
+             velocity_.x) /
+            2.0F;
+        velocity_.x += velocity_delta;
+        delta = velocity_.x * delta_time;
+        velocity_.x += velocity_delta;
+        position_.x += delta;
+    }
 
-    velocity_delta =
-        (compute_velocity(delta_time, velocity_.y, acceleration_.y, drag_.y, max_velocity_,
-                          /* y axis is affected by gravity */ true) -
-         velocity_.y) /
-        2.0F;
-    velocity_.y += velocity_delta;
-    delta = velocity_.y * delta_time;
-    velocity_.y += velocity_delta;
-    position_.y += delta;
+    if (movable_ & VERTICALLY)
+    {
+        velocity_delta =
+            (compute_velocity(delta_time, velocity_.y, acceleration_.y, drag_.y, max_velocity_,
+                              /* y axis is affected by gravity */ true) -
+             velocity_.y) /
+            2.0F;
+        velocity_.y += velocity_delta;
+        delta = velocity_.y * delta_time;
+        velocity_.y += velocity_delta;
+        position_.y += delta;
+    }
 }
 
 float Object::compute_velocity(double delta_time, float velocity, float acceleration, float drag,
@@ -164,14 +170,19 @@ float Object::get_gravity_scale()
     return gravity_scale_;
 }
 
-void Object::set_movable(bool movable)
+void Object::set_movable(std::uint8_t movable)
 {
     movable_ = movable;
 }
 
-bool Object::get_movable()
+bool Object::is_movable(std::uint8_t axes)
 {
-    return movable_;
+    if ((axes == YES) || (axes == NOT))
+    {
+        return movable_ == axes;
+    }
+
+    return (movable_ & axes) != NOT;
 }
 
 bool Object::is_touching(std::uint8_t direction)

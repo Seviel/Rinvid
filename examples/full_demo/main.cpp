@@ -195,7 +195,7 @@ void TestingGrounds::create()
 
     platform_.reset(Vector2f{350.0F, 400.0F});
     platform_.resize(200.0F, 50.0F);
-    platform_.set_movable(false);
+    platform_.set_movable(NOT);
     platform_gfx_.set_position(Vector2f{450.0F, 425.0F});
     platform_gfx_.set_color(0x88888888);
 

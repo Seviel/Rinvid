@@ -49,9 +49,9 @@ void PhysixScreen::create()
     sphere_sprite.set_max_velocity(1200.0F);
 
     platform_1.set_gravity_scale(0.0F);
-    platform_1.set_movable(false);
+    platform_1.set_movable(NOT);
     platform_2.set_gravity_scale(0.0F);
-    platform_2.set_movable(false);
+    platform_2.set_movable(NOT);
     platform_2.set_allowed_collisions(UP);
 }
 
