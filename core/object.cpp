@@ -13,11 +13,16 @@
 namespace rinvid
 {
 
-Object::Object()
+Object::Object(bool kinematic)
     : previous_position_{0.0F, 0.0F}, velocity_{0.0F, 0.0F}, acceleration_{0.0F, 0.0F},
       drag_{800.0F, 0.0F}, max_velocity_{0.0F}, gravity_scale_{1.0F}, active_{true},
-      collides_{true}, movable_{YES}, touching_{NONE}, allowed_collisions_{ANY}
+      collides_{true}, kinematic_{kinematic}, movable_{YES}, touching_{NONE},
+      allowed_collisions_{ANY}
 {
+    if (kinematic)
+    {
+        gravity_scale_ = 0.0F;
+    }
 }
 
 void Object::update(double delta_time)
@@ -162,7 +167,10 @@ float Object::get_max_velocity()
 
 void Object::set_gravity_scale(float gravity_scale)
 {
-    gravity_scale_ = gravity_scale;
+    if (!kinematic_)
+    {
+        gravity_scale_ = gravity_scale;
+    }
 }
 
 float Object::get_gravity_scale()
@@ -183,6 +191,12 @@ bool Object::is_movable(std::uint8_t axes)
     }
 
     return (movable_ & axes) != NOT;
+}
+
+void Object::set_kinematic(bool kinematic)
+{
+    kinematic_     = kinematic;
+    gravity_scale_ = 0.0F;
 }
 
 bool Object::is_touching(std::uint8_t direction)

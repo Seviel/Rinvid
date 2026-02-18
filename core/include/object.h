@@ -44,10 +44,13 @@ class Object : public virtual RectPOD
 {
   public:
     /**************************************************************************************************
-     * @brief Default constructor.
+     * @brief Object constructor.
+     *
+     * @param kinematic Kinematic objects can move but aren't affected by external forces like
+     * gravity for example.
      *
      *************************************************************************************************/
-    Object();
+    Object(bool kinematic = false);
 
     virtual ~Object()
     {
@@ -185,6 +188,16 @@ class Object : public virtual RectPOD
     bool is_movable(std::uint8_t axes = YES);
 
     /**************************************************************************************************
+     * @brief Changes whether the object is kinematic. Kinematic objects aren't affected by external
+     * forces, for example they won't budge when colliding with another objects, and they aren't
+     * affected by gravity.
+     *
+     * @param kinematic
+     *
+     *************************************************************************************************/
+    void set_kinematic(bool kinematic);
+
+    /**************************************************************************************************
      * @brief Check whether object is touching any solid surface.
      *
      * @param direction For which direction do you want to check. You can check for multiple
@@ -253,6 +266,7 @@ class Object : public virtual RectPOD
     float        gravity_scale_;
     bool         active_;
     bool         collides_;
+    bool         kinematic_;
     std::uint8_t movable_;
     std::uint8_t touching_;
     std::uint8_t allowed_collisions_;
