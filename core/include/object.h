@@ -21,6 +21,7 @@ namespace rinvid
 
 class World;
 
+// Constants related to 'touching' property
 constexpr std::uint8_t NONE  = 0x0;
 constexpr std::uint8_t LEFT  = 0x1;
 constexpr std::uint8_t RIGHT = 0x2;
@@ -28,6 +29,12 @@ constexpr std::uint8_t UP    = 0x4;
 constexpr std::uint8_t DOWN  = 0x8;
 constexpr std::uint8_t WALL  = LEFT | RIGHT;
 constexpr std::uint8_t ANY   = LEFT | RIGHT | UP | DOWN;
+
+// Constants related to 'movable' property
+constexpr std::uint8_t NOT          = 0x0;
+constexpr std::uint8_t HORIZONTALLY = 0x1;
+constexpr std::uint8_t VERTICALLY   = 0x2;
+constexpr std::uint8_t YES          = HORIZONTALLY | VERTICALLY;
 
 /**************************************************************************************************
  * @brief A movable object in the world.
@@ -37,10 +44,13 @@ class Object : public virtual RectPOD
 {
   public:
     /**************************************************************************************************
-     * @brief Default constructor.
+     * @brief Object constructor.
+     *
+     * @param kinematic Kinematic objects can move but aren't affected by external forces like
+     * gravity for example.
      *
      *************************************************************************************************/
-    Object();
+    Object(bool kinematic = false);
 
     virtual ~Object()
     {
@@ -160,18 +170,32 @@ class Object : public virtual RectPOD
     /**************************************************************************************************
      * @brief Changes whether the object can be moved.
      *
-     * @param movable
+     * @param movable Directions in which object can be moved. Possible values: NOT, YES,
+     * VERTICALLY, HORIZONTALLY
      *
      *************************************************************************************************/
-    void set_movable(bool movable);
+    void set_movable(std::uint8_t movable);
 
     /**************************************************************************************************
-     * @brief Returns whether the object is movable.
+     * @brief Returns whether the object is movable on given axes.
      *
-     * @return Movable.
+     * @param axes On which axes to perform the check. Possible values: NOT, YES, VERTICALLY,
+     * HORIZONTALLY
+     *
+     * @return Is it movable on given axes.
      *
      *************************************************************************************************/
-    bool get_movable();
+    bool is_movable(std::uint8_t axes = YES);
+
+    /**************************************************************************************************
+     * @brief Changes whether the object is kinematic. Kinematic objects aren't affected by external
+     * forces, for example they won't budge when colliding with another objects, and they aren't
+     * affected by gravity.
+     *
+     * @param kinematic
+     *
+     *************************************************************************************************/
+    void set_kinematic(bool kinematic);
 
     /**************************************************************************************************
      * @brief Check whether object is touching any solid surface.
@@ -241,8 +265,9 @@ class Object : public virtual RectPOD
     float        max_velocity_;
     float        gravity_scale_;
     bool         active_;
-    bool         movable_;
     bool         collides_;
+    bool         kinematic_;
+    std::uint8_t movable_;
     std::uint8_t touching_;
     std::uint8_t allowed_collisions_;
 };

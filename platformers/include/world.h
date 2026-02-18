@@ -31,6 +31,15 @@ class World
     }
 
     /**************************************************************************************************
+     * @brief Sets world gravity which affects how fast objects accelerate downwards when falling.
+     *
+     * @param gravity New gravity level. Default is 800.0F which gives kinda slow floaty fall
+     * effect.
+     *
+     *************************************************************************************************/
+    static void set_gravity(float gravity);
+
+    /**************************************************************************************************
      * @brief Checks whether objects collide and handles collision via callback function.
      *
      * @param object_1

@@ -14,9 +14,20 @@
 namespace rinvid
 {
 
-constexpr float OVERLAP_BIAS = 2.0F;
+static constexpr float DEFAULT_GRAVITY      = 800.0F;
+static constexpr float DEFAULT_OVERLAP_BIAS = 2.0F;
 
-float World::gravity{800.0F};
+static float OVERLAP_BIAS = DEFAULT_OVERLAP_BIAS;
+
+float World::gravity{DEFAULT_GRAVITY};
+
+void World::set_gravity(float gravity)
+{
+    World::gravity = gravity;
+
+    std::int32_t overlap_bias_factor = static_cast<std::int32_t>(gravity / DEFAULT_GRAVITY);
+    OVERLAP_BIAS = static_cast<std::int32_t>(DEFAULT_OVERLAP_BIAS) << overlap_bias_factor;
+}
 
 bool World::collide(Object& object_1, Object& object_2, CollisionResolver resolve)
 {
@@ -149,7 +160,8 @@ bool World::separate_x(Object& object_1, Object& object_2)
         float obj1_velocity = object_1.velocity_.x;
         float obj2_velocity = object_2.velocity_.x;
 
-        if (object_1.movable_ && object_2.movable_)
+        if ((object_1.movable_ & HORIZONTALLY) && (!object_1.kinematic_) &&
+            (object_2.movable_ & HORIZONTALLY) && (!object_2.kinematic_))
         {
             overlap *= 0.5F;
             object_1.position_.x -= overlap;
@@ -160,12 +172,12 @@ bool World::separate_x(Object& object_1, Object& object_2)
             object_1.velocity_.x = average;
             object_2.velocity_.x = average;
         }
-        else if (object_1.movable_)
+        else if ((object_1.movable_ & HORIZONTALLY) && (!object_1.kinematic_))
         {
             object_1.position_.x -= overlap;
             object_1.velocity_.x = obj2_velocity;
         }
-        else if (object_2.movable_)
+        else if ((object_2.movable_ & HORIZONTALLY) && (!object_2.kinematic_))
         {
             object_2.position_.x += overlap;
             object_2.velocity_.x = obj1_velocity;
@@ -243,7 +255,8 @@ bool World::separate_y(Object& object_1, Object& object_2)
         float obj1_velocity = object_1.velocity_.y;
         float obj2_velocity = object_2.velocity_.y;
 
-        if (object_1.movable_ && object_2.movable_)
+        if ((object_1.movable_ & VERTICALLY) && (!object_1.kinematic_) &&
+            (object_2.movable_ & VERTICALLY) && (!object_2.kinematic_))
         {
             overlap *= 0.5F;
             object_1.position_.y -= overlap;
@@ -254,12 +267,12 @@ bool World::separate_y(Object& object_1, Object& object_2)
             object_1.velocity_.y = average;
             object_2.velocity_.y = average;
         }
-        else if (object_1.movable_)
+        else if ((object_1.movable_ & VERTICALLY) && (!object_1.kinematic_))
         {
             object_1.position_.y -= overlap;
             object_1.velocity_.y = obj2_velocity;
         }
-        else if (object_2.movable_)
+        else if ((object_2.movable_ & VERTICALLY) && (!object_2.kinematic_))
         {
             object_2.position_.y += overlap;
             object_2.velocity_.y = obj1_velocity;
