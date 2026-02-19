@@ -168,6 +168,22 @@ class Object : public virtual RectPOD
     float get_gravity_scale();
 
     /**************************************************************************************************
+     * @brief Sets drag (the rate of slowing down of object).
+     *
+     * @param drag Drag in pixels per second on each axis.
+     *
+     *************************************************************************************************/
+    void set_drag(Vector2f drag);
+
+    /**************************************************************************************************
+     * @brief Returns drag (the rate of slowing down of object).
+     *
+     * @return Drag in pixels per second on each axis.
+     *
+     *************************************************************************************************/
+    Vector2f get_drag();
+
+    /**************************************************************************************************
      * @brief Changes whether the object can be moved.
      *
      * @param movable Directions in which object can be moved. Possible values: NOT, YES,

@@ -178,6 +178,16 @@ float Object::get_gravity_scale()
     return gravity_scale_;
 }
 
+void Object::set_drag(Vector2f drag)
+{
+    drag_ = drag;
+}
+
+Vector2f Object::get_drag()
+{
+    return drag_;
+}
+
 void Object::set_movable(std::uint8_t movable)
 {
     movable_ = movable;
