@@ -100,7 +100,6 @@ class World
 
     static float gravity;
 
-  private:
     /**************************************************************************************************
      * @brief Called by 'collide' if objects collided to separate them.
      *
@@ -112,6 +111,7 @@ class World
      *************************************************************************************************/
     static bool separate(Object& object_1, Object& object_2);
 
+  private:
     /**************************************************************************************************
      * @brief Called by 'separate' to separate objects on x axis.
      *
