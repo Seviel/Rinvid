@@ -242,7 +242,7 @@ class Object : public virtual RectPOD
      * @param posiition New position.
      *
      *************************************************************************************************/
-    void reset(Vector2f position);
+    virtual void reset(Vector2f position);
 
     /**************************************************************************************************
      * @brief Resizes the object.

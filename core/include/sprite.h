@@ -95,7 +95,7 @@ class Sprite : public virtual RectPOD, public Transformable, public DrawableAnim
      * @param move_vector Vector to be added to sprite's position vector
      *
      *************************************************************************************************/
-    void move(const Vector2f move_vector);
+    virtual void move(const Vector2f move_vector);
 
     /**************************************************************************************************
      * @brief Sets sprite's position to the position of passed vector.
@@ -103,7 +103,7 @@ class Sprite : public virtual RectPOD, public Transformable, public DrawableAnim
      * @param vector A new position vector of the sprite
      *
      *************************************************************************************************/
-    void set_position(const Vector2f vector);
+    virtual void set_position(const Vector2f vector);
 
     /**************************************************************************************************
      * @brief Returns bounding box rect of the sprite.
