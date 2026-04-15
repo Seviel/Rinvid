@@ -4,6 +4,10 @@ project("rinvid")
 
 set(CMAKE_CXX_STANDARD 17)
 
+option(RINVID_BUILD_TESTS "Build Rinvid tests" ON)
+set(RINVID_GTEST_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/extern/googletest"
+    CACHE PATH "Path to a local GoogleTest source checkout")
+
 add_library(${PROJECT_NAME})
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
@@ -54,4 +58,6 @@ add_subdirectory(examples/shaders)
 add_subdirectory(examples/sprites)
 add_subdirectory(examples/testing_grounds)
 
-add_subdirectory(tests)
+if(RINVID_BUILD_TESTS)
+  add_subdirectory(tests)
+endif()
