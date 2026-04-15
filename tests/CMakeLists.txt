@@ -1,10 +1,23 @@
+if(NOT EXISTS "${RINVID_GTEST_SOURCE_DIR}/CMakeLists.txt")
+  message(
+    FATAL_ERROR
+      "GoogleTest source not found.\n"
+      "Expected a checkout at: ${RINVID_GTEST_SOURCE_DIR}\n"
+      "Clone or unpack googletest there, or configure with:\n"
+      "  -DRINVID_GTEST_SOURCE_DIR=/absolute/path/to/googletest")
+endif()
+
+set(BUILD_GMOCK OFF CACHE BOOL "" FORCE)
+set(INSTALL_GTEST OFF CACHE BOOL "" FORCE)
+add_subdirectory("${RINVID_GTEST_SOURCE_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/googletest"
+                 EXCLUDE_FROM_ALL)
+
 file(GLOB_RECURSE EXAMPLE_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
 
 add_executable(rinvid_test WIN32 ${EXAMPLE_SOURCES})
 
 target_include_directories(rinvid_test PRIVATE ${PROJECT_SOURCE_DIR})
-target_link_libraries(rinvid_test PRIVATE rinvid
-                                        gtest)
+target_link_libraries(rinvid_test PRIVATE rinvid gtest)
 target_compile_options(rinvid_test PRIVATE -Werror -Wall -Wextra -pedantic
                                                -O3)
 

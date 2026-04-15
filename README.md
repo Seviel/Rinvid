@@ -9,11 +9,11 @@ Rinvid is a small framework for 2D games and multimedia applications development
 ### Ubuntu
 
 These are instructions for Ubuntu 20.04, it would probably work on other Debian based distros:  
-First, you will need to install  SFML, Gtest and Freetype.  
+First, you will need to install SFML, Ninja and Freetype.  
 ```shell
 sudo apt install cmake
+sudo apt install ninja-build
 sudo apt install libsfml-dev  
-sudo apt install libgtest-dev  
 sudo apt install libfreetype-dev  
 ```
 Note that Freetpye headers must be in root include directory, and not in any new one. To make sure that's the case, you can run:  
@@ -21,12 +21,12 @@ Note that Freetpye headers must be in root include directory, and not in any new
 cd /usr/include/freetype2  
 sudo cp -r * ../  
 ```
-After that, clone the repo (run `git submodule update --init --recursive` after cloning to initiate submodules) and then use CMake to build the lib and all examples:  
+After that, clone the repo (run `git submodule update --init --recursive` after cloning to initiate submodules) and then use CMake and Ninja to build the lib and all examples:  
 ```shell    
 mkdir build
 cd build
-cmake ..
-make all -j8
+cmake -S .. -B . -G Ninja
+ninja all
 ```
 
 ### Windows 10
@@ -36,31 +36,42 @@ What you need to build Rinvid on Windows 10:
    1. [MinGW](https://www.mingw-w64.org/)  
    2. [MSYS](https://www.msys2.org/)
    3. [SFML](https://www.sfml-dev.org/)  
-   4. [gtest](https://github.com/google/googletest)  
+   4. [gtest](https://github.com/google/googletest) source checkout
    5. [Freetype](http://freetype.org/)  
+   6. [Ninja](https://ninja-build.org/)
 
 #### Development environment setup
 
 1. Install [MSYS2](https://www.msys2.org/) - following all steps will also install MinGW via `pacman`
-2. Additionally, install CMake, SFML and gtest via `pacman` by executing the following commands in the MSYS2 terminal:
+2. Additionally, install CMake, Ninja, SFML and Freetype via `pacman` by executing the following commands in the MSYS2 terminal:
 ```shell
 pacman -Syu
 pacman -S mingw-w64-x86_64-cmake
+pacman -S mingw-w64-x86_64-ninja
 pacman -S mingw-w64-x86_64-sfml
-pacman -S mingw-w64-x86_64-gtest
 pacman -S mingw-w64-x86_64-freetype
 ```
-4. Pull external dependencies by running the following command from the root of the project:
+3. Pull external dependencies by running the following command from the root of the project:
 ```shell
 git submodule update --init --recursive
 ```
+4. Clone GoogleTest source into `extern/googletest` from the root of the Rinvid project:
+```shell
+git clone https://github.com/google/googletest.git extern/googletest
+```
+You can also point CMake to a different checkout with `-DRINVID_GTEST_SOURCE_DIR=/absolute/path/to/googletest`.
 
-From MSYS2 terminal, you can run the standard cmake build procedure: 
+From the MinGW64 MSYS2 terminal, you can run the Ninja build procedure: 
 ```shell    
 mkdir build
 cd build
-cmake ..
-make all -j8
+/mingw64/bin/cmake -S .. -B . -G Ninja
+ninja all
+```
+
+To build without tests, configure with:
+```shell
+/mingw64/bin/cmake -S .. -B . -G Ninja -DRINVID_BUILD_TESTS=OFF
 ```
 
 ## External libraries used by Rinvid
