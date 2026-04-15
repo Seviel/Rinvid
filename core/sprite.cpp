@@ -15,6 +15,9 @@ namespace rinvid
 Sprite::Sprite()
     : sprite_animation_{}, texture_{nullptr}, texture_offset_{0.0F, 0.0F}, opacity_{1.0F}
 {
+    position_ = Vector2f{0.0F, 0.0F};
+    width_    = 0;
+    height_   = 0;
 }
 
 Sprite::Sprite(Texture* texture, std::int32_t width, std::int32_t height, Vector2f top_left,
