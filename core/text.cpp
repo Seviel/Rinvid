@@ -7,8 +7,9 @@
  * repository for more details.
  **********************************************************************/
 
+#include <cmath>
 #include <iostream>
-#include <map>
+#include <utility>
 
 #include "extern/glm/glm/glm.hpp"
 #include "extern/glm/glm/gtc/type_ptr.hpp"
@@ -23,9 +24,9 @@ namespace rinvid
 
 constexpr float LINE_SPACING = 1.08F;
 
-Text::Text(std::string text, std::string font_path, Vector2f position, Color color,
+Text::Text(std::string text, const std::string& font_path, Vector2f position, Color color,
            std::uint32_t size)
-    : size_{size}, text_{text}, position_{position}, color_{color}, max_width_{0.0F}
+    : size_{size}, text_{std::move(text)}, position_{position}, color_{color}, max_width_{0.0F}
 {
     const auto* ft_lib = TTFLib::get_instance();
 
@@ -76,7 +77,7 @@ void Text::draw(const Shader shader)
     std::string::const_iterator c;
     for (c = text_.begin(); c != text_.end(); c++)
     {
-        Character character = characters_[*c];
+        const Character& character = characters_[*c];
 
         float xpos = x + character.bearing.x;
         float ypos = y - (character.size.y - character.bearing.y);
@@ -151,6 +152,7 @@ void Text::set_max_width(float max_width)
 void Text::generate_character_textures()
 {
     characters_.clear();
+    characters_.reserve(128U);
 
     FT_Set_Pixel_Sizes(ft_face_, 0, size_);
 
@@ -178,7 +180,7 @@ void Text::generate_character_textures()
             texture, glm::ivec2(ft_face_->glyph->bitmap.width, ft_face_->glyph->bitmap.rows),
             glm::ivec2(ft_face_->glyph->bitmap_left, ft_face_->glyph->bitmap_top),
             static_cast<unsigned int>(ft_face_->glyph->advance.x)};
-        characters_.insert(std::pair<char, Character>(c, character));
+        characters_.emplace(static_cast<char>(c), character);
     }
     GL_CALL(glBindTexture(GL_TEXTURE_2D, 0));
 

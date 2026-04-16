@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2020 - 2025, Filip Vasiljevic
+ * Copyright (c) 2020 - 2026, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -10,7 +10,9 @@
 #ifndef CORE_INCLUDE_FIXED_POLYGON_SHAPE_H
 #define CORE_INCLUDE_FIXED_POLYGON_SHAPE_H
 
+#include <algorithm>
 #include <cstdint>
+#include <utility>
 #include <vector>
 
 #ifdef __GNUC__
@@ -171,7 +173,7 @@ class FixedPolygonShape : public Shape, public Transformable, public Drawable
 
 template <typename std::uint32_t number_of_vertices, GLenum draw_mode>
 FixedPolygonShape<number_of_vertices, draw_mode>::FixedPolygonShape(std::vector<Vector2f> vertices)
-    : number_of_vertices_{number_of_vertices}, vertices_{vertices}, gl_vertices_{}
+    : number_of_vertices_{number_of_vertices}, vertices_{std::move(vertices)}, gl_vertices_{}
 {
     static_assert(number_of_vertices >= 3);
 
@@ -182,16 +184,11 @@ FixedPolygonShape<number_of_vertices, draw_mode>::FixedPolygonShape(std::vector<
 
 template <typename std::uint32_t number_of_vertices, GLenum draw_mode>
 FixedPolygonShape<number_of_vertices, draw_mode>::FixedPolygonShape()
-    : number_of_vertices_{number_of_vertices}, vertices_{}, gl_vertices_{}
+    : number_of_vertices_{number_of_vertices}, vertices_{number_of_vertices}, gl_vertices_{}
 {
     static_assert(number_of_vertices >= 3);
 
     init_vertex_buffer();
-
-    for (std::uint32_t i{0}; i < number_of_vertices; ++i)
-    {
-        vertices_.emplace_back();
-    }
 }
 
 template <typename std::uint32_t number_of_vertices, GLenum draw_mode>
@@ -317,14 +314,13 @@ Rect FixedPolygonShape<number_of_vertices, draw_mode>::bounding_rect()
 
     Rect                   rect{};
     std::vector<glm::vec4> glm_vertices{};
+    glm_vertices.reserve(vertices_.size());
 
     const auto& transform = get_transform();
 
-    for (auto vec : vertices_)
+    for (const auto& vec : vertices_)
     {
-        glm::vec4 vert{vec.x, vec.y, 1.0F, 1.0F};
-        vert = transform * vert;
-        glm_vertices.push_back(vert);
+        glm_vertices.emplace_back(transform * glm::vec4{vec.x, vec.y, 1.0F, 1.0F});
     }
 
     float min_x{};

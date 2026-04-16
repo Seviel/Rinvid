@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2025, Filip Vasiljevic
+ * Copyright (c) 2025 - 2026, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -31,7 +31,7 @@ class Label : public Text
      * @brief Label constructor.
      *
      *************************************************************************************************/
-    Label(std::string text, std::string font_path, Vector2f position, Color color,
+    Label(std::string text, const std::string& font_path, Vector2f position, Color color,
           std::uint32_t size);
 };
 

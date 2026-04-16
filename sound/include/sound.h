@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2024, Filip Vasiljevic
+ * Copyright (c) 2024 - 2026, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -31,7 +31,7 @@ class Sound
      * @param file_path Path to sound file to load.
      *
      *************************************************************************************************/
-    Sound(std::string file_path);
+    Sound(const std::string& file_path);
 
     /**************************************************************************************************
      * @brief Plays or resumes (if it has been paused) sound.

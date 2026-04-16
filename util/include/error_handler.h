@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2021 - 2025, Filip Vasiljevic
+ * Copyright (c) 2021 - 2026, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -90,7 +90,7 @@ std::uint32_t get_error_count();
  * @return True if error with this description has occured.
  *
  *************************************************************************************************/
-bool has_error_occured(std::string description);
+bool has_error_occured(const std::string& description);
 
 } // namespace errors
 } // namespace rinvid

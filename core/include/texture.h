@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2021 - 2024, Filip Vasiljevic
+ * Copyright (c) 2021 - 2026, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -11,7 +11,6 @@
 #define CORE_INCLUDE_TEXTURE_H
 
 #include <cstdint>
-#include <vector>
 
 #include "core/include/rinvid_gfx.h"
 #include "extern/glm/glm/mat4x4.hpp"
@@ -103,8 +102,6 @@ class Texture
         0, 1, 3, // first triangle
         1, 2, 3  // second triangle
     };
-
-    std::vector<std::uint8_t> image_data_{};
 };
 
 } // namespace rinvid

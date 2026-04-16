@@ -10,6 +10,7 @@
 #ifndef CORE_INCLUDE_TEXT_H
 #define CORE_INCLUDE_TEXT_H
 
+#include <string>
 #include <unordered_map>
 
 #include <ft2build.h>
@@ -35,7 +36,7 @@ class Text : public Drawable
      * @param size Font size.
      *
      *************************************************************************************************/
-    Text(std::string text, std::string font_path, Vector2f position, Color color,
+    Text(std::string text, const std::string& font_path, Vector2f position, Color color,
          std::uint32_t size);
 
     /**************************************************************************************************
