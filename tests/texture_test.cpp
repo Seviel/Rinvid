@@ -10,6 +10,7 @@
 #include <gtest/gtest.h>
 
 #include "core/include/application.h"
+#include "core/include/sprite.h"
 #include "core/include/texture.h"
 #include "include/texture_test.h"
 #include "util/include/error_handler.h"
@@ -59,9 +60,28 @@ TEST_F(TextureTest, MoveAssignmentOperator)
     auto number_of_errors = errors::get_error_count();
 
     Texture texture1("resources/valid_image.png");
-    Texture texture2 = std::move(texture1);
+    Texture texture2{"resources/valid_image.png"};
+    texture2 = std::move(texture1);
 
     // Check that the number of errors did not increase.
+    ASSERT_TRUE(number_of_errors == errors::get_error_count());
+}
+
+TEST_F(TextureTest, MovedTextureCanStillBeUsedForDrawing)
+{
+    auto number_of_errors = errors::get_error_count();
+
+    Application* application{nullptr};
+    RinvidGfx::init(application);
+
+    Texture texture1{"resources/valid_image.png"};
+    Texture texture2{"resources/valid_image.png"};
+    texture2 = std::move(texture1);
+
+    Sprite sprite{&texture2, 1, 1, {0.0F, 0.0F}};
+
+    EXPECT_NO_THROW(sprite.draw());
+
     ASSERT_TRUE(number_of_errors == errors::get_error_count());
 }
 

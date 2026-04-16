@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2024, Filip Vasiljevic
+ * Copyright (c) 2024 - 2026, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -12,6 +12,7 @@
 #include "include/util_test.h"
 #include "util/include/collision_detection.h"
 #include "util/include/color.h"
+#include "util/include/rect.h"
 #include "util/include/vector2.h"
 
 using namespace rinvid;
@@ -57,6 +58,16 @@ TEST_F(UtilTest, Color_4)
     EXPECT_NEAR(color.g, 0.498F, tolerance);
     EXPECT_NEAR(color.b, 1.0F, tolerance);
     EXPECT_NEAR(color.a, 0.0F, tolerance);
+}
+
+TEST_F(UtilTest, Color_FloatConstructor)
+{
+    Color color{0.25F, 0.5F, 0.75F, 1.0F};
+
+    EXPECT_FLOAT_EQ(color.r, 0.25F);
+    EXPECT_FLOAT_EQ(color.g, 0.5F);
+    EXPECT_FLOAT_EQ(color.b, 0.75F);
+    EXPECT_FLOAT_EQ(color.a, 1.0F);
 }
 
 // Test Vector2
@@ -113,7 +124,7 @@ static void test_collision_detection(Vector2f move_vec)
 
     EXPECT_TRUE(intersects(rect_1, rect_2));
 
-    auto& rect_2_pos = rect_1.position;
+    auto& rect_2_pos = rect_2.position;
     rect_2_pos.move(move_vec);
 
     EXPECT_TRUE(intersects(rect_1, rect_2));
@@ -149,4 +160,32 @@ TEST_F(UtilTest, CollisionDetection_MoveDown)
 {
     Vector2f move_vec{0.0F, static_cast<float>(RECT_HEIGHT / 2)};
     test_collision_detection(move_vec);
+}
+
+TEST_F(UtilTest, CollisionDetection_TouchingEdgesCountsAsIntersection)
+{
+    Rect rect_1{{0.0F, 0.0F}, 10, 10};
+    Rect rect_2{{10.0F, 0.0F}, 10, 10};
+
+    EXPECT_TRUE(intersects(rect_1, rect_2));
+}
+
+TEST_F(UtilTest, CollisionDetection_DiagonalGapDoesNotIntersect)
+{
+    Rect rect_1{{0.0F, 0.0F}, 10, 10};
+    Rect rect_2{{11.0F, 11.0F}, 10, 10};
+
+    EXPECT_FALSE(intersects(rect_1, rect_2));
+}
+
+TEST_F(UtilTest, RectScale_ShrinksAroundCenterAndReturnsSelf)
+{
+    Rect  rect{{10.0F, 20.0F}, 100, 60};
+    Rect& scaled_rect = rect.scale(0.5F);
+
+    EXPECT_EQ(&scaled_rect, &rect);
+    EXPECT_FLOAT_EQ(rect.position.x, 35.0F);
+    EXPECT_FLOAT_EQ(rect.position.y, 35.0F);
+    EXPECT_EQ(rect.width, 50);
+    EXPECT_EQ(rect.height, 30);
 }

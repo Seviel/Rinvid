@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2024, Filip Vasiljevic
+ * Copyright (c) 2024 - 2026, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -52,6 +52,16 @@ TEST_F(SpriteTest, Draw)
     ASSERT_TRUE(number_of_errors == errors::get_error_count());
 }
 
+TEST_F(SpriteTest, Draw_UpdatesOriginToCenter)
+{
+    Sprite sprite{mock_texture_, 100, 200, {10.0F, 20.0F}, {0.0F, 0.0F}};
+
+    sprite.draw();
+
+    EXPECT_FLOAT_EQ(sprite.get_origin().x, 60.0F);
+    EXPECT_FLOAT_EQ(sprite.get_origin().y, 120.0F);
+}
+
 // Test move
 TEST_F(SpriteTest, Move)
 {
@@ -77,6 +87,18 @@ TEST_F(SpriteTest, SetPosition)
     EXPECT_EQ(sprite.bounding_rect().position.y, new_position.y);
 }
 
+TEST_F(SpriteTest, Setup_UpdatesSpriteGeometry)
+{
+    Sprite sprite{};
+
+    sprite.setup(mock_texture_, 64, 32, {15.0F, 25.0F}, {0.0F, 0.0F});
+
+    EXPECT_EQ(sprite.bounding_rect().width, 64);
+    EXPECT_EQ(sprite.bounding_rect().height, 32);
+    EXPECT_EQ(sprite.bounding_rect().position.x, 15.0F);
+    EXPECT_EQ(sprite.bounding_rect().position.y, 25.0F);
+}
+
 // Test bounding_rect method without transformation
 TEST_F(SpriteTest, BoundingRect)
 {
@@ -99,4 +121,20 @@ TEST_F(SpriteTest, Transformed)
     sprite.rotate(10.0F);
 
     EXPECT_TRUE(sprite.is_transformed());
+}
+
+TEST_F(SpriteTest, AnimatedDraw_AdvancesAnimation)
+{
+    auto number_of_errors = errors::get_error_count();
+
+    Sprite            sprite{mock_texture_, 100, 100, {10.0F, 20.0F}, {0.0F, 0.0F}};
+    std::vector<Rect> frames{{{0.0F, 0.0F}, 1, 1}, {{1.0F, 0.0F}, 1, 1}};
+    Animation         animation{1.0, frames};
+
+    sprite.get_animation().add_animation("blink", animation);
+    sprite.get_animation().play("blink");
+
+    EXPECT_NO_THROW(sprite.draw(1.0));
+    EXPECT_TRUE(sprite.get_animation().is_animation_finished());
+    ASSERT_TRUE(number_of_errors == errors::get_error_count());
 }
