@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2024, Filip Vasiljevic
+ * Copyright (c) 2024 - 2026, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -12,7 +12,7 @@
 namespace rinvid::sound
 {
 
-Sound::Sound(std::string file_path)
+Sound::Sound(const std::string& file_path)
 {
     if (!buffer_.loadFromFile(file_path))
     {

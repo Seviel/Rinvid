@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2021 - 2022, Filip Vasiljevic
+ * Copyright (c) 2021 - 2026, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -7,9 +7,8 @@
  * repository for more details.
  **********************************************************************/
 
-#include <chrono>
+#include <cstddef>
 #include <cstdint>
-#include <iostream>
 #include <string>
 #include <vector>
 
@@ -36,8 +35,9 @@ bool load_image(const char* file_name, std::vector<std::uint8_t>& image_data, st
         return false;
     }
 
-    image_data.reserve(width * height * STBI_rgb_alpha);
-    std::copy(data, data + (width * height * STBI_rgb_alpha), image_data.data());
+    const auto image_size =
+        static_cast<std::size_t>(width) * static_cast<std::size_t>(height) * STBI_rgb_alpha;
+    image_data.assign(data, data + image_size);
 
     stbi_image_free(data);
 

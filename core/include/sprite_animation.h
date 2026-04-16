@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2024, Filip Vasiljevic
+ * Copyright (c) 2024 - 2026, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -12,6 +12,7 @@
 
 #include <string>
 #include <vector>
+#include <type_traits>
 #include <unordered_map>
 
 #include "core/include/animation.h"
@@ -35,8 +36,8 @@ class SpriteAnimation
      *
      *************************************************************************************************/
     SpriteAnimation()
-        : regions_{}, current_animation_{nullptr}, x_offset_{0.0F}, y_offset_{0.0F}, is_active_{
-                                                                                         false} {};
+        : regions_{}, current_animation_{nullptr}, x_offset_{0.0F}, y_offset_{0.0F},
+          is_active_{false} {};
 
     /**************************************************************************************************
      * @brief Constructor.
@@ -79,6 +80,7 @@ class SpriteAnimation
         static_assert(std::is_integral<T>::value == true, "T must be of integral type");
 
         std::vector<Rect> regions{};
+        regions.reserve(region_indices.size());
 
         for (auto index : region_indices)
         {
@@ -108,7 +110,7 @@ class SpriteAnimation
      * if this is set to true.
      *
      *************************************************************************************************/
-    void play(std::string name, bool reset = false);
+    void play(const std::string& name, bool reset = false);
 
     /**************************************************************************************************
      * @brief Checks whether animation being currently played is finished, if animation is in Normal

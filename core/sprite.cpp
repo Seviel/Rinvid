@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2021 - 2025, Filip Vasiljevic
+ * Copyright (c) 2021 - 2026, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -87,24 +87,16 @@ Rect Sprite::bounding_rect()
 
     Rect                   rect{};
     std::vector<glm::vec4> glm_vertices{};
+    glm_vertices.reserve(4U);
 
     const auto& transform = get_transform();
 
-    glm::vec4 vertex{position_.x, position_.y, 1.0F, 1.0F};
-    vertex = transform * vertex;
-    glm_vertices.push_back(vertex);
-
-    vertex = glm::vec4{position_.x + width_, position_.y, 1.0F, 1.0F};
-    vertex = transform * vertex;
-    glm_vertices.push_back(vertex);
-
-    vertex = glm::vec4{position_.x + width_, position_.y + height_, 1.0F, 1.0F};
-    vertex = transform * vertex;
-    glm_vertices.push_back(vertex);
-
-    vertex = glm::vec4{position_.x, position_.y + height_, 1.0F, 1.0F};
-    vertex = transform * vertex;
-    glm_vertices.push_back(vertex);
+    glm_vertices.emplace_back(transform * glm::vec4{position_.x, position_.y, 1.0F, 1.0F});
+    glm_vertices.emplace_back(transform * glm::vec4{position_.x + width_, position_.y, 1.0F, 1.0F});
+    glm_vertices.emplace_back(transform *
+                              glm::vec4{position_.x + width_, position_.y + height_, 1.0F, 1.0F});
+    glm_vertices.emplace_back(transform *
+                              glm::vec4{position_.x, position_.y + height_, 1.0F, 1.0F});
 
     float min_x{};
     float max_x{};

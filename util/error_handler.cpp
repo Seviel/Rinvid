@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2021, Filip Vasiljevic
+ * Copyright (c) 2021 - 2026, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -40,12 +40,12 @@ void put_error_to_log(const std::string& error_description)
     }
 
     errors.insert(error_description);
-    std::cout << error_description << std::endl;
+    std::cout << error_description << '\n';
 
 #ifdef RINVID_DEBUG_MODE_OUTPUT_TO_FILE
     std::ofstream error_log;
     error_log.open("rinvid_error.log", std::ios_base::app);
-    error_log << error_description << std::endl;
+    error_log << error_description << '\n';
     error_log.close();
 #endif
 }
@@ -62,12 +62,12 @@ void put_error_to_log(const char* error_description)
     }
 
     errors.insert(error_description);
-    std::cout << error_description << std::endl;
+    std::cout << error_description << '\n';
 
 #ifdef RINVID_DEBUG_MODE_OUTPUT_TO_FILE
     std::ofstream error_log;
     error_log.open("rinvid_error.log", std::ios_base::app);
-    error_log << error_description << std::endl;
+    error_log << error_description << '\n';
     error_log.close();
 #endif
 }
@@ -122,7 +122,7 @@ std::uint32_t get_error_count()
     return errors.size();
 }
 
-bool has_error_occured(std::string description)
+bool has_error_occured(const std::string& description)
 {
     return errors.find(description) != errors.end();
 }

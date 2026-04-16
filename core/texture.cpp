@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2021 - 2024, Filip Vasiljevic
+ * Copyright (c) 2021 - 2026, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -9,6 +9,7 @@
 
 #include <iostream>
 #include <iterator>
+#include <vector>
 
 #include "core/include/rinvid_gfx.h"
 #include "core/include/rinvid_gl.h"
@@ -43,7 +44,8 @@ Texture::Texture(const char* file_name)
                                   (void*)(3 * sizeof(float))));
     GL_CALL(glEnableVertexAttribArray(1));
 
-    bool result = load_image(file_name, image_data_, width_, height_);
+    std::vector<std::uint8_t> image_data{};
+    bool                      result = load_image(file_name, image_data, width_, height_);
     if (result == false)
     {
         errors::put_error_to_log(std::string{file_name} +
@@ -57,7 +59,7 @@ Texture::Texture(const char* file_name)
     GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
     GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
     GL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width_, height_, 0, GL_RGBA, GL_UNSIGNED_BYTE,
-                         image_data_.data()));
+                         image_data.data()));
 }
 
 Texture::Texture(Texture&& other)
