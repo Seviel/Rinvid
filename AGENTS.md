@@ -62,7 +62,7 @@ If this file conflicts with those docs or the existing codebase, prefer the repo
 
 Preferred validation is through CMake builds that match the repo setup.
 
-On Windows, use the MinGW64 MSYS2 terminal for local configure/build/test work. Do not assume PowerShell is the normal Windows workflow for this repository.
+On Windows, use the MinGW64 MSYS2 environment for local configure/build/test work. Do not assume PowerShell is the normal Windows workflow for this repository.
 
 ### Configure
 
@@ -102,7 +102,7 @@ If `ctest` is not configured by the generator, run the produced `rinvid_test` ex
 
 ### Windows notes
 
-For Windows local development, follow the repo README workflow from a MinGW64 MSYS2 terminal. Prefer Ninja for local builds unless the task specifically needs to mirror CI's `MinGW Makefiles` generator.
+For Windows local development, follow the repo README workflow from a MinGW64 MSYS2 shell. Prefer Ninja for local builds unless the task specifically needs to mirror CI's `MinGW Makefiles` generator.
 
 Example local Windows flow:
 
@@ -113,6 +113,14 @@ cmake -S .. -B . -G Ninja
 ninja all
 ./tests/rinvid_test.exe
 ```
+
+Verified command pattern from Windows:
+
+```sh
+C:\msys64\usr\bin\bash.exe -lc 'export PATH=/mingw64/bin:/usr/bin:$PATH; cd /c/Users/fvasi/Desktop/dreamscape/repos/Rinvid; cmake -S . -B build -G Ninja; cmake --build build -j2'
+```
+
+If an automated environment cannot start `bash.exe` correctly, that is an environment/sandbox limitation rather than the documented Rinvid Windows workflow.
 
 ### Formatting
 
