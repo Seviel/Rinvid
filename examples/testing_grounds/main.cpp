@@ -226,8 +226,7 @@ void TestingGrounds::destroy()
 int main()
 {
     rinvid::Application testing_grounds_app{1920, 1080, "Rinvid testing grounds", true};
-    TestingGrounds      testing_grounds_screen{};
-    testing_grounds_app.set_screen(&testing_grounds_screen);
+    testing_grounds_app.set_screen(std::make_unique<TestingGrounds>());
     testing_grounds_app.set_fps(120);
     testing_grounds_app.run();
 

@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2021, Filip Vasiljevic
+ * Copyright (c) 2021 - 2026, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -18,6 +18,8 @@ class Application;
 class Screen
 {
   public:
+    virtual ~Screen() = default;
+
     /**************************************************************************************************
      * @brief Returns the application that currently renders this screen.
      *
@@ -50,7 +52,7 @@ class Screen
 
     virtual void update(double delta_time) = 0;
 
-    Application* application_;
+    Application* application_{nullptr};
 };
 
 } // namespace rinvid
