@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2021 - 2025, Lazar Lukic
+ * Copyright (c) 2021 - 2026, Lazar Lukic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -129,8 +129,7 @@ void ShapesScreen::handle_movement(float& vertical_delta, float& horizontal_delt
 int main()
 {
     rinvid::Application shapes_app{800, 600, "Rinvid primitive shapes example"};
-    ShapesScreen        shapes_screen{};
-    shapes_app.set_screen(&shapes_screen);
+    shapes_app.set_screen(std::make_unique<ShapesScreen>());
     shapes_app.set_fps(120);
     shapes_app.run();
 

@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2024 - 2025, Filip Vasiljevic
+ * Copyright (c) 2024 - 2026, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -78,9 +78,8 @@ void ShadersScreen::destroy()
 
 int main()
 {
-    Application   shaders_app{640, 480, "Rinvid shaders demo"};
-    ShadersScreen shaders_screen{};
-    shaders_app.set_screen(&shaders_screen);
+    Application shaders_app{640, 480, "Rinvid shaders demo"};
+    shaders_app.set_screen(std::make_unique<ShadersScreen>());
     shaders_app.run();
 
     return 0;

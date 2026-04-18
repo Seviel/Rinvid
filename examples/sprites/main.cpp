@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2021 - 2025, Lazar Lukic
+ * Copyright (c) 2021 - 2026, Lazar Lukic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -162,8 +162,7 @@ bool SpritesScreen::handle_animation_state(std::string& action, std::string& dir
 int main()
 {
     rinvid::Application sprites_app{800, 600, "Sprites example"};
-    SpritesScreen       sprites_screen{};
-    sprites_app.set_screen(&sprites_screen);
+    sprites_app.set_screen(std::make_unique<SpritesScreen>());
     sprites_app.set_fps(120);
     sprites_app.run();
 

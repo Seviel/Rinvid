@@ -385,9 +385,8 @@ void TestingGrounds::destroy()
 
 int main()
 {
-    Application    testing_grounds_app{800, 600, "Rinvid"};
-    TestingGrounds testing_grounds_screen{};
-    testing_grounds_app.set_screen(&testing_grounds_screen);
+    Application testing_grounds_app{800, 600, "Rinvid"};
+    testing_grounds_app.set_screen(std::make_unique<TestingGrounds>());
     testing_grounds_app.set_fps(120);
     testing_grounds_app.run();
 

@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2021 - 2025, Filip Vasiljevic
+ * Copyright (c) 2021 - 2026, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -50,6 +50,11 @@ Application::Application(std::uint32_t width, std::uint32_t height, const std::s
     RinvidGfx::set_viewport(0, 0, size.x, size.y);
 }
 
+Application::~Application()
+{
+    destroy_current_screen();
+}
+
 void Application::run()
 {
     std::chrono::duration<double> total_frame_time{};
@@ -58,6 +63,8 @@ void Application::run()
     window_.setActive(true);
 
     running_ = true;
+    activate_pending_screen();
+
     while (running_ == true)
     {
         auto start = std::chrono::high_resolution_clock::now();
@@ -71,26 +78,22 @@ void Application::run()
 
         window_.display();
 
-        if (new_screen_)
+        if (running_ == true)
         {
-            if (current_screen_)
-            {
-                current_screen_->destroy();
-            }
-            current_screen_ = new_screen_;
-            new_screen_     = nullptr;
-            current_screen_->create();
-            current_screen_->set_application(this);
+            activate_pending_screen();
         }
 
         auto end         = std::chrono::high_resolution_clock::now();
         total_frame_time = end - start;
     }
+
+    destroy_current_screen();
+    new_screen_.reset();
 }
 
-void Application::set_screen(Screen* screen)
+void Application::set_screen(std::unique_ptr<Screen> screen)
 {
-    new_screen_ = screen;
+    new_screen_ = std::move(screen);
 }
 
 void Application::set_fps(std::uint16_t fps)
@@ -102,6 +105,29 @@ void Application::set_fps(std::uint16_t fps)
 void Application::exit()
 {
     running_ = false;
+}
+
+void Application::activate_pending_screen()
+{
+    if (!new_screen_)
+    {
+        return;
+    }
+
+    destroy_current_screen();
+
+    current_screen_ = std::move(new_screen_);
+    current_screen_->set_application(this);
+    current_screen_->create();
+}
+
+void Application::destroy_current_screen()
+{
+    if (current_screen_ != nullptr)
+    {
+        current_screen_->destroy();
+        current_screen_.reset();
+    }
 }
 
 void Application::handle_events(sf::Window& window, sf::Event& event)

@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2021 - 2025, Filip Vasiljevic
+ * Copyright (c) 2021 - 2026, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -11,6 +11,7 @@
 #define CORE_INCLUDE_APPLICATION_H
 
 #include <cstdint>
+#include <memory>
 #include <string>
 
 #include <SFML/Window.hpp>
@@ -42,6 +43,8 @@ class Application
     Application(std::uint32_t width, std::uint32_t height, const std::string& title,
                 bool fullscreen = false, std::uint16_t fps = 60U);
 
+    ~Application();
+
     /**************************************************************************************************
      * @brief Runs the application at selected FPS
      *
@@ -51,10 +54,10 @@ class Application
     /**************************************************************************************************
      * @brief Sets the current screen (state) of the application
      *
-     * @param screen Screen to render
+     * @param screen Screen to render. Ownership is transfered to the application.
      *
      *************************************************************************************************/
-    void set_screen(Screen* screen);
+    void set_screen(std::unique_ptr<Screen> screen);
 
     /**************************************************************************************************
      * @brief Sets the framerate of the application
@@ -73,13 +76,15 @@ class Application
 
   private:
     friend class rinvid::system::Mouse;
+    void activate_pending_screen();
+    void destroy_current_screen();
     void handle_events(sf::Window& window, sf::Event& event);
 
-    sf::Window    window_;
-    Screen*       current_screen_;
-    Screen*       new_screen_;
-    std::uint16_t fps_;
-    bool          running_;
+    sf::Window              window_;
+    std::unique_ptr<Screen> current_screen_;
+    std::unique_ptr<Screen> new_screen_;
+    std::uint16_t           fps_;
+    bool                    running_;
 };
 
 } // namespace rinvid

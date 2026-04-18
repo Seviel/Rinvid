@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2022 - 2025, Filip Vasiljevic
+ * Copyright (c) 2022 - 2026, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -51,9 +51,7 @@ int main()
     guardian_sprite.get_animation().add_animation("treading_right", treading_right);
     guardian_sprite.get_animation().play("standing_right");
 
-    LevelTwo level_two{&guardian_sprite};
-    LevelOne level_one{&guardian_sprite, &level_two};
-    screens_demo_app.set_screen(&level_one);
+    screens_demo_app.set_screen(std::make_unique<LevelOne>(&guardian_sprite));
     screens_demo_app.run();
 
     return 0;

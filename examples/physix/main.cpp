@@ -108,9 +108,8 @@ void PhysixScreen::destroy()
 
 int main()
 {
-    Application  physix_app{800, 600, "Physix example"};
-    PhysixScreen physix_screen{};
-    physix_app.set_screen(&physix_screen);
+    Application physix_app{800, 600, "Physix example"};
+    physix_app.set_screen(std::make_unique<PhysixScreen>());
     physix_app.run();
 
     return 0;

@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2022 - 2024, Filip Vasiljevic
+ * Copyright (c) 2022 - 2026, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -7,13 +7,15 @@
  * repository for more details.
  **********************************************************************/
 
+#include <memory>
+
 #include "level_one.h"
+#include "level_two.h"
 #include "system/include/keyboard.h"
 
 using namespace rinvid::system;
 
-LevelOne::LevelOne(rinvid::Sprite* guardian_sprite, rinvid::Screen* next_level)
-    : guardian_sprite_{guardian_sprite}, next_level_{next_level}
+LevelOne::LevelOne(rinvid::Sprite* guardian_sprite) : guardian_sprite_{guardian_sprite}
 {
 }
 
@@ -57,7 +59,7 @@ void LevelOne::update(double delta_time)
 
     if (guardian_sprite_->get_origin().x > 500)
     {
-        this->get_application()->set_screen(next_level_);
+        this->get_application()->set_screen(std::make_unique<LevelTwo>(guardian_sprite_));
     }
 }
 
