@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2023 - 2024, Filip Vasiljevic
+ * Copyright (c) 2023 - 2026, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -26,13 +26,13 @@ class DrawableAnimated : public Drawable
      * @brief DrawableAnimated constructor.
      *
      *************************************************************************************************/
-    DrawableAnimated(){};
+    DrawableAnimated() {};
 
     /**************************************************************************************************
      * @brief DrawableAnimated virtual destructor.
      *
      *************************************************************************************************/
-    virtual ~DrawableAnimated(){};
+    virtual ~DrawableAnimated() {};
 
     /**************************************************************************************************
      * @brief Draws the animated object.

@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2020 - 2025, Filip Vasiljevic
+ * Copyright (c) 2020 - 2026, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -200,8 +200,9 @@ void RinvidGfx::init(const Application* application)
     RinvidGfx::init_default_shaders();
     GL_CALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
     GL_CALL(glEnable(GL_BLEND));
-    projection_            = glm::ortho(0.0F, static_cast<float>(RinvidGfx::get_width()),
+    projection_ = glm::ortho(0.0F, static_cast<float>(RinvidGfx::get_width()),
                              static_cast<float>(RinvidGfx::get_height()), 0.0F, -1.0f, 1.0f);
+
     model_view_projection_ = projection_ * view_;
     application_           = application;
 }
@@ -262,8 +263,9 @@ std::int32_t RinvidGfx::get_height()
 
 void RinvidGfx::update_mvp_matrix(const glm::mat4& model, std::uint32_t shader_id)
 {
-    projection_               = glm::ortho(0.0F, static_cast<float>(RinvidGfx::get_width()),
+    projection_ = glm::ortho(0.0F, static_cast<float>(RinvidGfx::get_width()),
                              static_cast<float>(RinvidGfx::get_height()), 0.0F, -1.0f, 1.0f);
+
     model_view_projection_    = projection_ * view_ * model;
     std::int32_t mvp_location = glGetUniformLocation(shader_id, "model_view_projection");
     rinvid::errors::handle_gl_errors(__FILE__, __LINE__);
