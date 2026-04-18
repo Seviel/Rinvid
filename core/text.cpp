@@ -33,15 +33,31 @@ Text::Text(std::string text, const std::string& font_path, Vector2f position, Co
     auto error = FT_New_Face(*ft_lib, font_path.c_str(), 0, &ft_face_);
     if (error)
     {
+        TTFLib::release();
         throw error;
     }
 
-    generate_character_textures();
+    try
+    {
+        generate_character_textures();
+    }
+    catch (...)
+    {
+        FT_Done_Face(ft_face_);
+        ft_face_ = nullptr;
+        TTFLib::release();
+        throw;
+    }
 }
 
 Text::~Text()
 {
-    FT_Done_Face(ft_face_);
+    if (ft_face_ != nullptr)
+    {
+        FT_Done_Face(ft_face_);
+    }
+
+    TTFLib::release();
 }
 
 void Text::draw()

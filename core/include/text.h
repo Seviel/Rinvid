@@ -122,10 +122,10 @@ class Text : public Drawable
      *************************************************************************************************/
     void generate_character_textures();
 
-    FT_Face       ft_face_;
-    std::uint32_t vertex_array_object_;
-    std::uint32_t vertex_buffer_object_;
-    std::uint32_t size_;
+    FT_Face       ft_face_{nullptr};
+    std::uint32_t vertex_array_object_{};
+    std::uint32_t vertex_buffer_object_{};
+    std::uint32_t size_{};
     std::string   text_;
     Vector2f      position_;
     Color         color_;
