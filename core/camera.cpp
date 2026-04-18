@@ -7,6 +7,8 @@
  * repository for more details.
  **********************************************************************/
 
+#include <algorithm>
+
 #include "core/include/camera.h"
 #include "core/include/rinvid_gfx.h"
 

@@ -14,30 +14,32 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Pull submodules
-        run: git submodule update --init --recursive
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - uses: actions/checkout@v4
         with:
-          python-version: '3.x'
+          submodules: recursive
 
       - name: Install dependencies
         run: |
           sudo apt update
-          sudo apt install cmake make libsfml-dev libgtest-dev libfreetype-dev
+          sudo apt install --yes \
+            cmake \
+            ninja-build \
+            libsfml-dev \
+            libfreetype-dev \
+            libgl1-mesa-dev \
+            libgl1-mesa-dri \
+            xvfb \
+            xauth
 
-      - name: Update includes
+      - name: Configure CMake
         run: |
-          cd /usr/include/freetype2
-          sudo cp -r * ../
+          cmake -S . -B build -G Ninja
 
-      - name: Build Project | All
+      - name: Build Project
+        run: cmake --build build --parallel
+
+      - name: Run tests
         run: |
-          mkdir build
-          cd build
-          cmake ..
-          make all -j8
+          xvfb-run --auto-servernum --server-args="-screen 0 1280x1024x24" \
+            ctest --test-dir build --output-on-failure -V
 
