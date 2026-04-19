@@ -12,7 +12,7 @@
 
 #include <cstdint>
 
-#include "util/include/vector2.h"
+#include <rinvid/util/vector2.h>
 
 namespace rinvid
 {

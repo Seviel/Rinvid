@@ -13,8 +13,9 @@
 #include <algorithm>
 #include <vector>
 
-#include "extern/glm/glm/mat4x4.hpp"
-#include "util/include/vector2.h"
+#include <glm/mat4x4.hpp>
+
+#include <rinvid/util/vector2.h>
 
 namespace rinvid
 {

@@ -12,7 +12,7 @@
 
 #include <vector>
 
-#include "core/include/object.h"
+#include <rinvid/core/object.h>
 
 namespace rinvid
 {

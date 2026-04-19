@@ -9,7 +9,8 @@
 
 #include <gtest/gtest.h>
 
-#include "core/include/animation.h"
+#include <rinvid/core/animation.h>
+
 #include "include/animation_test.h"
 
 using namespace rinvid;

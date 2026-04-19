@@ -13,7 +13,7 @@
 #include <string>
 #include <vector>
 
-#include "util/include/rect.h"
+#include <rinvid/util/rect.h>
 
 namespace rinvid
 {

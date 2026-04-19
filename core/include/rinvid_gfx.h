@@ -13,10 +13,11 @@
 #include <cstdint>
 #include <memory>
 
-#include "core/include/application.h"
-#include "core/include/rinvid_gl.h"
-#include "core/include/shader.h"
-#include "extern/glm/glm/mat4x4.hpp"
+#include <glm/mat4x4.hpp>
+
+#include <rinvid/core/application.h>
+#include <rinvid/core/rinvid_gl.h>
+#include <rinvid/core/shader.h>
 
 namespace rinvid
 {

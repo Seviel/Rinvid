@@ -7,14 +7,15 @@
  * repository for more details.
  **********************************************************************/
 
-#include "core/include/animation.h"
-#include "core/include/application.h"
-#include "core/include/screen.h"
-#include "core/include/sprite.h"
-#include "core/include/texture.h"
+#include <rinvid/core/animation.h>
+#include <rinvid/core/application.h>
+#include <rinvid/core/screen.h>
+#include <rinvid/core/sprite.h>
+#include <rinvid/core/texture.h>
+#include <rinvid/util/vector2.h>
+
 #include "level_one.h"
 #include "level_two.h"
-#include "util/include/vector2.h"
 
 int main()
 {
@@ -22,7 +23,7 @@ int main()
 
     rinvid::Texture guardian_tex{"resources/guardian.png"};
     rinvid::Sprite  guardian_sprite{&guardian_tex, 30, 45, rinvid::Vector2f{50.0F, 425.0F},
-                                   rinvid::Vector2f{0.0F, 0.0F}};
+                                    rinvid::Vector2f{0.0F, 0.0F}};
 
     auto regions = guardian_sprite.get_animation().split_animation_frames(30, 45, 52, 1);
     rinvid::Animation standing_right{14.0,

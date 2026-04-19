@@ -16,8 +16,8 @@
 
 #include <SFML/Window.hpp>
 
-#include "core/include/screen.h"
-#include "util/include/vector2.h"
+#include <rinvid/core/screen.h>
+#include <rinvid/util/vector2.h>
 
 namespace rinvid
 {

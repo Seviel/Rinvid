@@ -10,9 +10,9 @@
 #ifndef GUI_INCLUDE_LABEL_H
 #define GUI_INCLUDE_LABEL_H
 
-#include "extern/glm/glm/glm.hpp"
+#include <glm/glm.hpp>
 
-#include "core/include/text.h"
+#include <rinvid/core/text.h>
 
 namespace rinvid
 {

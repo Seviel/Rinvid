@@ -7,15 +7,15 @@
  * repository for more details.
  **********************************************************************/
 
-#include "core/include/animation.h"
-#include "core/include/application.h"
-#include "core/include/rinvid_gfx.h"
-#include "core/include/rinvid_gl.h"
-#include "core/include/screen.h"
-#include "core/include/sprite.h"
-#include "core/include/texture.h"
-#include "system/include/keyboard.h"
-#include "util/include/vector2.h"
+#include <rinvid/core/animation.h>
+#include <rinvid/core/application.h>
+#include <rinvid/core/rinvid_gfx.h>
+#include <rinvid/core/rinvid_gl.h>
+#include <rinvid/core/screen.h>
+#include <rinvid/core/sprite.h>
+#include <rinvid/core/texture.h>
+#include <rinvid/system/keyboard.h>
+#include <rinvid/util/vector2.h>
 
 using namespace rinvid::system;
 

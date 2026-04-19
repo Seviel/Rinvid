@@ -10,9 +10,9 @@
 #ifndef CORE_INCLUDE_QUAD_SHAPE_H
 #define CORE_INCLUDE_QUAD_SHAPE_H
 
-#include "core/include/fixed_polygon_shape.h"
-#include "core/include/shape.h"
-#include "util/include/vector2.h"
+#include <rinvid/core/fixed_polygon_shape.h>
+#include <rinvid/core/shape.h>
+#include <rinvid/util/vector2.h>
 
 namespace rinvid
 {

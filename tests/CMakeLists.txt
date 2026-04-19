@@ -16,7 +16,7 @@ file(GLOB_RECURSE EXAMPLE_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
 
 add_executable(rinvid_test ${EXAMPLE_SOURCES})
 
-target_include_directories(rinvid_test PRIVATE ${PROJECT_SOURCE_DIR})
+target_include_directories(rinvid_test PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(rinvid_test PRIVATE rinvid gtest)
 target_compile_options(rinvid_test PRIVATE -Werror -Wall -Wextra -pedantic
                                                -O3)

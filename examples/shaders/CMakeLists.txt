@@ -2,7 +2,6 @@ file(GLOB_RECURSE EXAMPLE_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
 
 add_executable(shaders WIN32 ${EXAMPLE_SOURCES})
 
-target_include_directories(shaders PRIVATE ${PROJECT_SOURCE_DIR})
 target_link_libraries(shaders PRIVATE rinvid)
 target_compile_options(shaders PRIVATE -Werror -Wall -Wextra -pedantic -O3)
 

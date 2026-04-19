@@ -12,9 +12,9 @@
 
 #include <cstdint>
 
-#include "data_types/include/rect_pod.h"
-#include "util/include/rect.h"
-#include "util/include/vector2.h"
+#include <rinvid/data_types/rect_pod.h>
+#include <rinvid/util/rect.h>
+#include <rinvid/util/vector2.h>
 
 namespace rinvid
 {

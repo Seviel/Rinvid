@@ -10,11 +10,11 @@
 #ifndef CORE_INCLUDE_CAMERA_H
 #define CORE_INCLUDE_CAMERA_H
 
-#include "extern/glm/glm/glm.hpp"
-#include "extern/glm/glm/gtc/matrix_transform.hpp"
-#include "extern/glm/glm/gtc/type_ptr.hpp"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
-#include "util/include/vector2.h"
+#include <rinvid/util/vector2.h>
 
 namespace rinvid
 {

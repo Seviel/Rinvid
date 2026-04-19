@@ -10,7 +10,7 @@
 #ifndef CORE_INCLUDE_DRAWABLE_H
 #define CORE_INCLUDE_DRAWABLE_H
 
-#include "core/include/shader.h"
+#include <rinvid/core/shader.h>
 
 namespace rinvid
 {

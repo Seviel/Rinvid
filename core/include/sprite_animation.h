@@ -15,7 +15,7 @@
 #include <type_traits>
 #include <unordered_map>
 
-#include "core/include/animation.h"
+#include <rinvid/core/animation.h>
 
 namespace gui
 {
