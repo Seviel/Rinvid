@@ -12,9 +12,9 @@
 
 #include <cstdint>
 
-#include "core/include/transformable.h"
-#include "util/include/color.h"
-#include "util/include/vector2.h"
+#include <rinvid/core/transformable.h>
+#include <rinvid/util/color.h>
+#include <rinvid/util/vector2.h>
 
 namespace rinvid
 {

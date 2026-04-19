@@ -9,11 +9,12 @@
 
 #include <gtest/gtest.h>
 
-#include "core/include/application.h"
-#include "core/include/sprite.h"
-#include "core/include/texture.h"
+#include <rinvid/core/application.h>
+#include <rinvid/core/sprite.h>
+#include <rinvid/core/texture.h>
+#include <rinvid/util/error_handler.h>
+
 #include "include/texture_test.h"
-#include "util/include/error_handler.h"
 
 using namespace rinvid;
 

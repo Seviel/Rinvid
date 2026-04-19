@@ -13,8 +13,8 @@
 #include <memory>
 #include <string>
 
-#include "core/include/rinvid_gl.h"
-#include "util/include/error_handler.h"
+#include <rinvid/core/rinvid_gl.h>
+#include <rinvid/util/error_handler.h>
 
 class Shader
 {

@@ -12,9 +12,9 @@
 
 #include <cstdint>
 
-#include "util/include/color.h"
-#include "util/include/vector2.h"
-#include "util/include/vector3.h"
+#include <rinvid/util/color.h>
+#include <rinvid/util/vector2.h>
+#include <rinvid/util/vector3.h>
 
 #define MAX_NUMBER_OF_LIGHTS 100
 

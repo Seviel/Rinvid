@@ -10,7 +10,7 @@
 #ifndef CORE_INCLUDE_DRAWABLE_ANIMATED_H
 #define CORE_INCLUDE_DRAWABLE_ANIMATED_H
 
-#include "core/include/drawable.h"
+#include <rinvid/core/drawable.h>
 
 namespace rinvid
 {

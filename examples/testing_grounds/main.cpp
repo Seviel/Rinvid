@@ -16,28 +16,28 @@
 #include <chrono>
 #include <iostream>
 
-#include "core/include/animation.h"
-#include "core/include/application.h"
-#include "core/include/camera.h"
-#include "core/include/circle_shape.h"
-#include "core/include/light.h"
-#include "core/include/light_manager.h"
-#include "core/include/quad_shape.h"
-#include "core/include/rectangle_shape.h"
-#include "core/include/rinvid_gfx.h"
-#include "core/include/rinvid_gl.h"
-#include "core/include/screen.h"
-#include "core/include/sprite.h"
-#include "core/include/text.h"
-#include "core/include/texture.h"
-#include "core/include/triangle_shape.h"
-#include "core/include/ttf_lib.h"
-#include "gui/include/button.h"
-#include "sound/include/sound.h"
-#include "system/include/keyboard.h"
-#include "system/include/mouse.h"
-#include "util/include/collision_detection.h"
-#include "util/include/vector2.h"
+#include <rinvid/core/animation.h>
+#include <rinvid/core/application.h>
+#include <rinvid/core/camera.h>
+#include <rinvid/core/circle_shape.h>
+#include <rinvid/core/light.h>
+#include <rinvid/core/light_manager.h>
+#include <rinvid/core/quad_shape.h>
+#include <rinvid/core/rectangle_shape.h>
+#include <rinvid/core/rinvid_gfx.h>
+#include <rinvid/core/rinvid_gl.h>
+#include <rinvid/core/screen.h>
+#include <rinvid/core/sprite.h>
+#include <rinvid/core/text.h>
+#include <rinvid/core/texture.h>
+#include <rinvid/core/triangle_shape.h>
+#include <rinvid/core/ttf_lib.h>
+#include <rinvid/gui/button.h>
+#include <rinvid/sound/sound.h>
+#include <rinvid/system/keyboard.h>
+#include <rinvid/system/mouse.h>
+#include <rinvid/util/collision_detection.h>
+#include <rinvid/util/vector2.h>
 
 using namespace rinvid::system;
 using namespace rinvid;

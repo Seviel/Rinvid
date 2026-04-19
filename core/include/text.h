@@ -16,11 +16,11 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
-#include "extern/glm/glm/glm.hpp"
+#include <glm/glm.hpp>
 
-#include "core/include/drawable.h"
-#include "util/include/color.h"
-#include "util/include/vector2.h"
+#include <rinvid/core/drawable.h>
+#include <rinvid/util/color.h>
+#include <rinvid/util/vector2.h>
 
 namespace rinvid
 {

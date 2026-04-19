@@ -11,9 +11,10 @@
 
 #include <gtest/gtest.h>
 
-#include "core/include/rinvid_gfx.h"
-#include "core/include/shader.h"
-#include "tests/include/opengl_test.h"
+#include <rinvid/core/rinvid_gfx.h>
+#include <rinvid/core/shader.h>
+
+#include "include/opengl_test.h"
 
 namespace
 {

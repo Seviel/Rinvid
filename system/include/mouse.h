@@ -10,8 +10,8 @@
 #ifndef SYSTEM_INCLUDE_MOUSE_H
 #define SYSTEM_INCLUDE_MOUSE_H
 
-#include "core/include/application.h"
-#include "util/include/vector2.h"
+#include <rinvid/core/application.h>
+#include <rinvid/util/vector2.h>
 
 namespace rinvid
 {

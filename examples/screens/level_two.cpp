@@ -8,8 +8,8 @@
  **********************************************************************/
 
 #include "level_two.h"
-#include "system/include/keyboard.h"
-#include "util/include/vector2.h"
+#include <rinvid/system/keyboard.h>
+#include <rinvid/util/vector2.h>
 
 using namespace rinvid::system;
 

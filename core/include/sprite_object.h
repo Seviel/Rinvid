@@ -10,10 +10,10 @@
 #ifndef CORE_INCLUDE_SPRITE_OBJECT_H
 #define CORE_INCLUDE_SPRITE_OBJECT_H
 
-#include "core/include/object.h"
-#include "core/include/sprite.h"
-#include "core/include/texture.h"
-#include "util/include/vector2.h"
+#include <rinvid/core/object.h>
+#include <rinvid/core/sprite.h>
+#include <rinvid/core/texture.h>
+#include <rinvid/util/vector2.h>
 
 namespace rinvid
 {

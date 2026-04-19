@@ -10,10 +10,10 @@
 #include <gtest/gtest.h>
 
 #include "include/util_test.h"
-#include "util/include/collision_detection.h"
-#include "util/include/color.h"
-#include "util/include/rect.h"
-#include "util/include/vector2.h"
+#include <rinvid/util/collision_detection.h>
+#include <rinvid/util/color.h>
+#include <rinvid/util/rect.h>
+#include <rinvid/util/vector2.h>
 
 using namespace rinvid;
 

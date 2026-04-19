@@ -15,9 +15,9 @@
 #include <SFML/Window/Context.hpp>
 #include <gtest/gtest.h>
 
-#include "core/include/rinvid_gfx.h"
-#include "core/include/rinvid_gl.h"
-#include "core/include/ttf_lib.h"
+#include <rinvid/core/rinvid_gfx.h>
+#include <rinvid/core/rinvid_gl.h>
+#include <rinvid/core/ttf_lib.h>
 
 class OpenGLTest : public ::testing::Test
 {

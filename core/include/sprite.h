@@ -15,18 +15,18 @@
 #pragma GCC diagnostic ignored "-Woverloaded-virtual"
 #endif
 
-#include "core/include/drawable_animated.h"
+#include <rinvid/core/drawable_animated.h>
 
 #ifdef __GNUC__
 #pragma GCC diagnostic pop
 #endif
 
-#include "core/include/sprite_animation.h"
-#include "core/include/texture.h"
-#include "core/include/transformable.h"
-#include "data_types/include/rect_pod.h"
-#include "util/include/rect.h"
-#include "util/include/vector2.h"
+#include <rinvid/core/sprite_animation.h>
+#include <rinvid/core/texture.h>
+#include <rinvid/core/transformable.h>
+#include <rinvid/data_types/rect_pod.h>
+#include <rinvid/util/rect.h>
+#include <rinvid/util/vector2.h>
 
 namespace rinvid
 {

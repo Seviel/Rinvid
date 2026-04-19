@@ -10,7 +10,7 @@
 #ifndef UTIL_COLLISION_DETECTION_H
 #define UTIL_COLLISION_DETECTION_H
 
-#include "util/include/rect.h"
+#include <rinvid/util/rect.h>
 
 namespace rinvid
 {
