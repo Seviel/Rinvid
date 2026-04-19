@@ -53,6 +53,11 @@ Application::Application(std::uint32_t width, std::uint32_t height, const std::s
 Application::~Application()
 {
     destroy_current_screen();
+
+    if (window_.setActive(true))
+    {
+        RinvidGfx::shutdown();
+    }
 }
 
 void Application::run()
@@ -89,6 +94,8 @@ void Application::run()
 
     destroy_current_screen();
     new_screen_.reset();
+
+    RinvidGfx::shutdown();
 }
 
 void Application::set_screen(std::unique_ptr<Screen> screen)

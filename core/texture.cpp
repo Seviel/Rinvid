@@ -21,6 +21,33 @@
 namespace rinvid
 {
 
+void Texture::release_gl_resources()
+{
+    if (texture_id_ != 0)
+    {
+        GL_CALL(glDeleteTextures(1, &texture_id_));
+        texture_id_ = 0;
+    }
+
+    if (element_buffer_object_ != 0)
+    {
+        GL_CALL(glDeleteBuffers(1, &element_buffer_object_));
+        element_buffer_object_ = 0;
+    }
+
+    if (vertex_buffer_obecjt_ != 0)
+    {
+        GL_CALL(glDeleteBuffers(1, &vertex_buffer_obecjt_));
+        vertex_buffer_obecjt_ = 0;
+    }
+
+    if (vertex_array_object_ != 0)
+    {
+        GL_CALL(glDeleteVertexArrays(1, &vertex_array_object_));
+        vertex_array_object_ = 0;
+    }
+}
+
 Texture::Texture(const char* file_name)
 {
     GL_CALL(glGenVertexArrays(1, &vertex_array_object_));
@@ -78,10 +105,19 @@ Texture::Texture(Texture&& other)
     other.vertex_buffer_obecjt_  = 0;
     other.element_buffer_object_ = 0;
     other.texture_id_            = 0;
+    other.width_                 = 0;
+    other.height_                = 0;
 }
 
 Texture& Texture::operator=(Texture&& other)
 {
+    if (this == &other)
+    {
+        return *this;
+    }
+
+    release_gl_resources();
+
     this->width_                 = other.width_;
     this->height_                = other.height_;
     this->vertex_array_object_   = other.vertex_array_object_;
@@ -96,31 +132,15 @@ Texture& Texture::operator=(Texture&& other)
     other.vertex_buffer_obecjt_  = 0;
     other.element_buffer_object_ = 0;
     other.texture_id_            = 0;
+    other.width_                 = 0;
+    other.height_                = 0;
 
     return *this;
 }
 
 Texture::~Texture()
 {
-    if (texture_id_ != 0)
-    {
-        GL_CALL(glDeleteTextures(1, &texture_id_));
-    }
-
-    if (element_buffer_object_ != 0)
-    {
-        GL_CALL(glDeleteBuffers(1, &element_buffer_object_));
-    }
-
-    if (vertex_buffer_obecjt_ != 0)
-    {
-        GL_CALL(glDeleteBuffers(1, &vertex_buffer_obecjt_));
-    }
-
-    if (vertex_array_object_ != 0)
-    {
-        GL_CALL(glDeleteVertexArrays(1, &vertex_array_object_));
-    }
+    release_gl_resources();
 }
 
 void Texture::draw(const glm::mat4& transform, const Shader shader, float opacity)

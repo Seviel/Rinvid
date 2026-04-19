@@ -24,6 +24,36 @@ namespace rinvid
 
 constexpr float LINE_SPACING = 1.08F;
 
+void Text::release_character_textures()
+{
+    for (auto& [character_key, character] : characters_)
+    {
+        (void)character_key;
+        if (character.texture_id != 0U)
+        {
+            GL_CALL(glDeleteTextures(1, &character.texture_id));
+            character.texture_id = 0U;
+        }
+    }
+
+    characters_.clear();
+}
+
+void Text::release_vertex_buffer()
+{
+    if (vertex_buffer_object_ != 0U)
+    {
+        GL_CALL(glDeleteBuffers(1, &vertex_buffer_object_));
+        vertex_buffer_object_ = 0U;
+    }
+
+    if (vertex_array_object_ != 0U)
+    {
+        GL_CALL(glDeleteVertexArrays(1, &vertex_array_object_));
+        vertex_array_object_ = 0U;
+    }
+}
+
 Text::Text(std::string text, const std::string& font_path, Vector2f position, Color color,
            std::uint32_t size)
     : size_{size}, text_{std::move(text)}, position_{position}, color_{color}, max_width_{0.0F}
@@ -52,6 +82,9 @@ Text::Text(std::string text, const std::string& font_path, Vector2f position, Co
 
 Text::~Text()
 {
+    release_character_textures();
+    release_vertex_buffer();
+
     if (ft_face_ != nullptr)
     {
         FT_Done_Face(ft_face_);
@@ -167,38 +200,60 @@ void Text::set_max_width(float max_width)
 
 void Text::generate_character_textures()
 {
-    characters_.clear();
-    characters_.reserve(128U);
+    std::unordered_map<char, Character> new_characters{};
+    new_characters.reserve(128U);
 
     FT_Set_Pixel_Sizes(ft_face_, 0, size_);
 
     GL_CALL(glPixelStorei(GL_UNPACK_ALIGNMENT, 1));
 
-    for (unsigned char c = 0; c < 128; c++)
+    try
     {
-        if (FT_Load_Char(ft_face_, c, FT_LOAD_RENDER))
+        for (unsigned char c = 0; c < 128; c++)
         {
-            throw "Freetype: Failed to load Glyph";
+            if (FT_Load_Char(ft_face_, c, FT_LOAD_RENDER))
+            {
+                throw "Freetype: Failed to load Glyph";
+            }
+
+            std::uint32_t texture{};
+            GL_CALL(glGenTextures(1, &texture));
+            GL_CALL(glBindTexture(GL_TEXTURE_2D, texture));
+            GL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, ft_face_->glyph->bitmap.width,
+                                 ft_face_->glyph->bitmap.rows, 0, GL_RED, GL_UNSIGNED_BYTE,
+                                 ft_face_->glyph->bitmap.buffer));
+            GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
+            GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
+            GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+            GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+
+            Character character = {
+                texture, glm::ivec2(ft_face_->glyph->bitmap.width, ft_face_->glyph->bitmap.rows),
+                glm::ivec2(ft_face_->glyph->bitmap_left, ft_face_->glyph->bitmap_top),
+                static_cast<unsigned int>(ft_face_->glyph->advance.x)};
+            new_characters.emplace(static_cast<char>(c), character);
+        }
+    }
+    catch (...)
+    {
+        for (auto& [character_key, character] : new_characters)
+        {
+            (void)character_key;
+            if (character.texture_id != 0U)
+            {
+                GL_CALL(glDeleteTextures(1, &character.texture_id));
+            }
         }
 
-        std::uint32_t texture;
-        GL_CALL(glGenTextures(1, &texture));
-        GL_CALL(glBindTexture(GL_TEXTURE_2D, texture));
-        GL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, ft_face_->glyph->bitmap.width,
-                             ft_face_->glyph->bitmap.rows, 0, GL_RED, GL_UNSIGNED_BYTE,
-                             ft_face_->glyph->bitmap.buffer));
-        GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
-        GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
-        GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
-        GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
-
-        Character character = {
-            texture, glm::ivec2(ft_face_->glyph->bitmap.width, ft_face_->glyph->bitmap.rows),
-            glm::ivec2(ft_face_->glyph->bitmap_left, ft_face_->glyph->bitmap_top),
-            static_cast<unsigned int>(ft_face_->glyph->advance.x)};
-        characters_.emplace(static_cast<char>(c), character);
+        throw;
     }
+
     GL_CALL(glBindTexture(GL_TEXTURE_2D, 0));
+
+    release_character_textures();
+    release_vertex_buffer();
+
+    characters_ = std::move(new_characters);
 
     GL_CALL(glGenVertexArrays(1, &vertex_array_object_));
     GL_CALL(glGenBuffers(1, &vertex_buffer_object_));

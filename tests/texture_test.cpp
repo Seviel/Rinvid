@@ -81,6 +81,7 @@ TEST_F(TextureTest, MovedTextureCanStillBeUsedForDrawing)
     Sprite sprite{&texture2, 1, 1, {0.0F, 0.0F}};
 
     EXPECT_NO_THROW(sprite.draw());
+    RinvidGfx::shutdown();
 
     ASSERT_TRUE(number_of_errors == errors::get_error_count());
 }

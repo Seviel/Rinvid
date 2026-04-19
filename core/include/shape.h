@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2020 - 2023, Filip Vasiljevic
+ * Copyright (c) 2020 - 2026, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -96,6 +96,8 @@ class Shape
     std::uint32_t vertex_buffer_object_;
 
   private:
+    void release_gl_resources();
+
     /**************************************************************************************************
      * @brief Calculates center point of a shape.
      *
