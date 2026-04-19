@@ -16,6 +16,8 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
+#include "extern/glm/glm/glm.hpp"
+
 #include "core/include/drawable.h"
 #include "util/include/color.h"
 #include "util/include/vector2.h"
@@ -38,6 +40,14 @@ class Text : public Drawable
      *************************************************************************************************/
     Text(std::string text, const std::string& font_path, Vector2f position, Color color,
          std::uint32_t size);
+
+    Text(const Text& other) = delete;
+
+    Text& operator=(const Text& other) = delete;
+
+    Text(Text&& other) = delete;
+
+    Text& operator=(Text&& other) = delete;
 
     /**************************************************************************************************
      * @brief Destructor. Releases font related resources.
@@ -121,6 +131,10 @@ class Text : public Drawable
      *
      *************************************************************************************************/
     void generate_character_textures();
+
+    void release_character_textures();
+
+    void release_vertex_buffer();
 
     FT_Face       ft_face_{nullptr};
     std::uint32_t vertex_array_object_{};

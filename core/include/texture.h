@@ -68,6 +68,8 @@ class Texture
   private:
     friend class Sprite;
 
+    void release_gl_resources();
+
     /**************************************************************************************************
      * @brief Internal function called by sprite. Draws part of texture specified by sprite calling
      * it.

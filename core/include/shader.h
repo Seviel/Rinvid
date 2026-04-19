@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2022 - 2023, Filip Vasiljevic
+ * Copyright (c) 2022 - 2026, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -10,6 +10,7 @@
 #ifndef CORE_INCLUDE_SHADER_H
 #define CORE_INCLUDE_SHADER_H
 
+#include <memory>
 #include <string>
 
 #include "core/include/rinvid_gl.h"
@@ -34,6 +35,16 @@ class Shader
      *
      *************************************************************************************************/
     Shader(const char* vert_code, const char* frag_code);
+
+    ~Shader() = default;
+
+    Shader(const Shader& other) = default;
+
+    Shader& operator=(const Shader& other) = default;
+
+    Shader(Shader&& other) = default;
+
+    Shader& operator=(Shader&& other) = default;
 
     /**************************************************************************************************
      * @brief Use this shader program.
@@ -94,7 +105,9 @@ class Shader
     std::uint32_t get_id() const;
 
   private:
-    std::uint32_t id_;
+    struct ProgramHandle;
+
+    std::shared_ptr<ProgramHandle> program_handle_;
 };
 
 #endif // CORE_INCLUDE_SHADER_H

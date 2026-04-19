@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2020 - 2025, Filip Vasiljevic
+ * Copyright (c) 2020 - 2026, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -45,6 +45,12 @@ class RinvidGfx
      *
      *************************************************************************************************/
     static void init(const Application* application);
+
+    /**************************************************************************************************
+     * @brief Releases Rinvid internal graphics resources.
+     *
+     *************************************************************************************************/
+    static void shutdown();
 
     /**************************************************************************************************
      * @brief Sets viewport position and size.

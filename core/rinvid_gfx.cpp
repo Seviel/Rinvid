@@ -207,6 +207,14 @@ void RinvidGfx::init(const Application* application)
     application_           = application;
 }
 
+void RinvidGfx::shutdown()
+{
+    shape_default_shader_   = Shader{};
+    texture_default_shader_ = Shader{};
+    text_default_shader_    = Shader{};
+    application_            = nullptr;
+}
+
 void RinvidGfx::set_viewport(std::int32_t x, std::int32_t y, std::int32_t width,
                              std::int32_t heigth)
 {
