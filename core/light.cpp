@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2023 - 2024, Filip Vasiljevic
+ * Copyright (c) 2023 - 2026, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -9,8 +9,8 @@
 
 #include <algorithm>
 
-#include "core/include/light.h"
-#include "core/include/rinvid_gfx.h"
+#include <rinvid/core/light.h>
+#include <rinvid/core/rinvid_gfx.h>
 
 /// @todo Revisit these constants
 constexpr float falloff_low{10.0F};

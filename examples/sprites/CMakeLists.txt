@@ -2,7 +2,6 @@ file(GLOB_RECURSE EXAMPLE_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
 
 add_executable(sprites WIN32 ${EXAMPLE_SOURCES})
 
-target_include_directories(sprites PRIVATE ${PROJECT_SOURCE_DIR})
 target_link_libraries(sprites PRIVATE rinvid)
 target_compile_options(sprites PRIVATE -Werror -Wall -Wextra -pedantic -O3)
 

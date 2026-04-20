@@ -7,10 +7,10 @@
  * repository for more details.
  **********************************************************************/
 
-#include "include/shape.h"
-#include "core/include/rinvid_gl.h"
-#include "util/include/color.h"
-#include "util/include/error_handler.h"
+#include <rinvid/core/rinvid_gl.h>
+#include <rinvid/core/shape.h>
+#include <rinvid/util/color.h>
+#include <rinvid/util/error_handler.h>
 
 namespace rinvid
 {

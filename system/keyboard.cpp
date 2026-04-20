@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2023, Filip Vasiljevic
+ * Copyright (c) 2023 - 2026, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -7,7 +7,7 @@
  * repository for more details.
  **********************************************************************/
 
-#include "include/keyboard.h"
+#include <rinvid/system/keyboard.h>
 
 namespace rinvid
 {

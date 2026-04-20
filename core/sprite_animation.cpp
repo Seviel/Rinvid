@@ -10,7 +10,7 @@
 #include <cstddef>
 #include <utility>
 
-#include "include/sprite_animation.h"
+#include <rinvid/core/sprite_animation.h>
 
 namespace rinvid
 {

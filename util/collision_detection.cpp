@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2021, Filip Vasiljevic
+ * Copyright (c) 2021 - 2026, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -7,8 +7,8 @@
  * repository for more details.
  **********************************************************************/
 
-#include "util/include/collision_detection.h"
-#include "util/include/rect.h"
+#include <rinvid/util/collision_detection.h>
+#include <rinvid/util/rect.h>
 
 namespace rinvid
 {

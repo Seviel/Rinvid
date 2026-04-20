@@ -16,10 +16,10 @@
 #define GL_GLEXT_PROTOTYPES
 #include <SFML/OpenGL.hpp>
 #else
-#include "extern/glad/include/glad/glad.h"
+#include <glad/glad.h>
 #endif
 
-#include "util/include/error_handler.h"
+#include <rinvid/util/error_handler.h>
 
 namespace rinvid
 {

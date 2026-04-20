@@ -86,9 +86,7 @@ GLAPI int gladLoadGL(void);
 
 GLAPI int gladLoadGLLoader(GLADloadproc);
 
-/* MANUAL PATCH START */
-#include "extern/glad/include/KHR/khrplatform.h"
-/* MANUAL PATCH END */
+#include <KHR/khrplatform.h>
 typedef unsigned int GLenum;
 typedef unsigned char GLboolean;
 typedef unsigned int GLbitfield;

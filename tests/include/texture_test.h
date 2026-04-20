@@ -10,7 +10,7 @@
 #ifndef TESTS_INCLUDE_TEXTURE_TEST_H
 #define TESTS_INCLUDE_TEXTURE_TEST_H
 
-#include "tests/include/opengl_test.h"
+#include "include/opengl_test.h"
 
 class TextureTest : public OpenGLTest
 {

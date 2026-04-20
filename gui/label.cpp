@@ -9,7 +9,7 @@
 
 #include <utility>
 
-#include "include/label.h"
+#include <rinvid/gui/label.h>
 
 namespace rinvid
 {

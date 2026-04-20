@@ -108,15 +108,15 @@ std::int32_t message_count;
 3.2 Every header shall be enclosed in a unique include guard  
 Include guards shall be in all caps. Include guards shall consist of full path to file, excluding name of root repo directory and including file name, separated by underscores. Dots in file names shall be replaced by underscores.
 
-Example for file rinvid/core/include/circle_shape.h:
+Example for file include/rinvid/core/circle_shape.h:
 
 ```cpp
-#ifndef CORE_INCLUDE_CIRCLE_SHAPE_H
-#define CORE_INCLUDE_CIRCLE_SHAPE_H
+#ifndef INCLUDE_RINVID_CORE_CIRCLE_SHAPE_H
+#define INCLUDE_RINVID_CORE_CIRCLE_SHAPE_H
 
 // contents of the header file
 
-#endif // CORE_INCLUDE_CIRCLE_SHAPE_H
+#endif // INCLUDE_RINVID_CORE_CIRCLE_SHAPE_H
 ```
 
 ## 4. Classes

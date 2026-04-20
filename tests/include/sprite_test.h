@@ -16,8 +16,8 @@
 
 #include <SFML/Window/Context.hpp>
 
-#include "core/include/rinvid_gl.h"
-#include "core/include/texture.h"
+#include <rinvid/core/rinvid_gl.h>
+#include <rinvid/core/texture.h>
 
 using namespace rinvid;
 

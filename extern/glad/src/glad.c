@@ -22,9 +22,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-/* MANUAL PATCH START */
-#include "extern/glad/include/glad/glad.h"
-/* MANUAL PATCH END */
+#include <glad/glad.h>
 
 static void* get_proc(const char *namez);
 

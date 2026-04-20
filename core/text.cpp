@@ -11,13 +11,13 @@
 #include <iostream>
 #include <utility>
 
-#include "extern/glm/glm/glm.hpp"
-#include "extern/glm/glm/gtc/type_ptr.hpp"
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
-#include "core/include/rinvid_gfx.h"
-#include "core/include/rinvid_gl.h"
-#include "core/include/text.h"
-#include "core/include/ttf_lib.h"
+#include <rinvid/core/rinvid_gfx.h>
+#include <rinvid/core/rinvid_gl.h>
+#include <rinvid/core/text.h>
+#include <rinvid/core/ttf_lib.h>
 
 namespace rinvid
 {

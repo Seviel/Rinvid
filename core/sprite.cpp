@@ -7,7 +7,7 @@
  * repository for more details.
  **********************************************************************/
 
-#include "include/sprite.h"
+#include <rinvid/core/sprite.h>
 
 namespace rinvid
 {

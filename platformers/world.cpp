@@ -7,9 +7,9 @@
  * repository for more details.
  **********************************************************************/
 
-#include "include/world.h"
-#include "core/include/object.h"
-#include "util/include/collision_detection.h"
+#include <rinvid/core/object.h>
+#include <rinvid/platformers/world.h>
+#include <rinvid/util/collision_detection.h>
 
 namespace rinvid
 {

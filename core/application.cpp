@@ -17,11 +17,11 @@
 #include <iostream>
 
 #ifdef _WIN32
-#include "util/include/windows_utils.h"
+#include <rinvid/util/windows_utils.h>
 #endif // _WIN32
-#include "core/include/rinvid_gfx.h"
-#include "include/application.h"
-#include "util/include/vector2.h"
+#include <rinvid/core/application.h>
+#include <rinvid/core/rinvid_gfx.h>
+#include <rinvid/util/vector2.h>
 
 namespace rinvid
 {
