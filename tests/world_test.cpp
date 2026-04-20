@@ -9,9 +9,10 @@
 
 #include <gtest/gtest.h>
 
-#include "core/include/object.h"
-#include "platformers/include/world.h"
-#include "tests/include/world_test.h"
+#include <rinvid/core/object.h>
+#include <rinvid/platformers/world.h>
+
+#include "include/world_test.h"
 
 using namespace rinvid;
 

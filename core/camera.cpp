@@ -9,8 +9,8 @@
 
 #include <algorithm>
 
-#include "core/include/camera.h"
-#include "core/include/rinvid_gfx.h"
+#include <rinvid/core/camera.h>
+#include <rinvid/core/rinvid_gfx.h>
 
 namespace rinvid
 {

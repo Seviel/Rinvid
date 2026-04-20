@@ -13,9 +13,15 @@ find_package(Freetype REQUIRED)
 add_library(${PROJECT_NAME})
 add_library(rinvid_extern OBJECT)
 
-target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
-target_include_directories(${PROJECT_NAME} PUBLIC ${FREETYPE_INCLUDE_DIRS})
-target_include_directories(rinvid_extern PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(
+  ${PROJECT_NAME}
+  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
+         ${CMAKE_CURRENT_SOURCE_DIR}/extern/glad/include
+         ${CMAKE_CURRENT_SOURCE_DIR}/extern/glm
+         ${FREETYPE_INCLUDE_DIRS}
+  PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/extern/stb)
+target_include_directories(rinvid_extern PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}
+                                                 ${CMAKE_CURRENT_SOURCE_DIR}/extern/glad/include)
 
 file(
   GLOB_RECURSE

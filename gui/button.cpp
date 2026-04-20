@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2022 - 2025, Filip Vasiljevic
+ * Copyright (c) 2022 - 2026, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -11,10 +11,10 @@
 
 #include <SFML/Window.hpp>
 
-#include "include/button.h"
-#include "system/include/mouse.h"
-#include "util/include/collision_detection.h"
-#include "util/include/vector2.h"
+#include <rinvid/gui/button.h>
+#include <rinvid/system/mouse.h>
+#include <rinvid/util/collision_detection.h>
+#include <rinvid/util/vector2.h>
 
 namespace rinvid
 {

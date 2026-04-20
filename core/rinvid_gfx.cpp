@@ -7,10 +7,11 @@
  * repository for more details.
  **********************************************************************/
 
-#include "include/rinvid_gfx.h"
-#include "extern/glm/glm/gtc/type_ptr.hpp"
-#include "extern/glm/glm/gtx/transform.hpp"
-#include "util/include/error_handler.h"
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/transform.hpp>
+
+#include <rinvid/core/rinvid_gfx.h>
+#include <rinvid/util/error_handler.h>
 
 namespace rinvid
 {

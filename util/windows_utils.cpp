@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2021, Filip Vasiljevic
+ * Copyright (c) 2021 - 2026, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -11,7 +11,7 @@
 
 #include <windows.h>
 
-#include "util/include/windows_utils.h"
+#include <rinvid/util/windows_utils.h>
 
 namespace rinvid
 {

@@ -20,7 +20,7 @@ Examples live in `examples/` and are built by default. Tests live in `tests/` an
 ## Important repo layout
 
 - `CMakeLists.txt`: root build definition for the `rinvid` library and all examples
-- `core/include`, `gui/include`, `platformers/include`, `sound/include`, `system/include`, `util/include`, `data_types/include`: public headers
+- `include/rinvid/`: public headers grouped by module (`core/`, `gui/`, `platformers/`, `sound/`, `system/`, `util/`, `data_types/`)
 - `tests/`: GoogleTest-based test executable `rinvid_test`
 - `examples/testing_grounds/`: scratch/demo area for in-progress features
 - `extern/`: vendored third-party code and docs
@@ -40,7 +40,7 @@ If this file conflicts with those docs or the existing codebase, prefer the repo
 
 1. Do not modify `extern/` unless the task is explicitly about updating vendored dependencies or third-party docs.
 2. Keep new production code within the existing module structure instead of creating ad hoc top-level folders.
-3. Put public headers in the relevant `*/include/` directory and implementations beside the module `.cpp` files.
+3. Put public headers in `include/rinvid/<module>/` and implementations beside the module `.cpp` files.
 4. Preserve the license banner at the top of source and header files. New C/C++ source files should include the same BSD 2-Clause notice format used elsewhere in the repo.
 5. Keep header extensions as `.h`.
 6. Preserve include ordering:

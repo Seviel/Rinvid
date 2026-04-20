@@ -11,9 +11,10 @@
 
 #include <gtest/gtest.h>
 
-#include "core/include/text.h"
-#include "core/include/ttf_lib.h"
-#include "tests/include/opengl_test.h"
+#include <rinvid/core/text.h>
+#include <rinvid/core/ttf_lib.h>
+
+#include "include/opengl_test.h"
 
 namespace
 {

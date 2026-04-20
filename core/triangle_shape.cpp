@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2020 - 2023, Filip Vasiljevic
+ * Copyright (c) 2020 - 2026, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -7,10 +7,10 @@
  * repository for more details.
  **********************************************************************/
 
-#include "include/triangle_shape.h"
-#include "core/include/rinvid_gfx.h"
-#include "core/include/rinvid_gl.h"
-#include "util/include/vector3.h"
+#include <rinvid/core/rinvid_gfx.h>
+#include <rinvid/core/rinvid_gl.h>
+#include <rinvid/core/triangle_shape.h>
+#include <rinvid/util/vector3.h>
 
 namespace rinvid
 {

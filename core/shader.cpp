@@ -11,7 +11,7 @@
 #include <iostream>
 #include <sstream>
 
-#include "core/include/shader.h"
+#include <rinvid/core/shader.h>
 
 struct Shader::ProgramHandle
 {

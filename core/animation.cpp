@@ -10,7 +10,7 @@
 #include <limits>
 #include <utility>
 
-#include "include/animation.h"
+#include <rinvid/core/animation.h>
 
 namespace rinvid
 {

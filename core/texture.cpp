@@ -11,12 +11,13 @@
 #include <iterator>
 #include <vector>
 
-#include "core/include/rinvid_gfx.h"
-#include "core/include/rinvid_gl.h"
-#include "extern/glm/glm/gtc/type_ptr.hpp"
-#include "include/texture.h"
-#include "util/include/error_handler.h"
-#include "util/include/image_loader.h"
+#include <glm/gtc/type_ptr.hpp>
+
+#include <rinvid/core/rinvid_gfx.h>
+#include <rinvid/core/rinvid_gl.h>
+#include <rinvid/core/texture.h>
+#include <rinvid/util/error_handler.h>
+#include <rinvid/util/image_loader.h>
 
 namespace rinvid
 {

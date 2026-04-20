@@ -7,7 +7,7 @@
  * repository for more details.
  **********************************************************************/
 
-#include "include/sound.h"
+#include <rinvid/sound/sound.h>
 
 namespace rinvid::sound
 {

@@ -12,9 +12,9 @@
 #include <string>
 #include <vector>
 
-#include "extern/stb/stb_image.h"
-#include "util/include/error_handler.h"
-#include "util/include/image_loader.h"
+#include <rinvid/util/error_handler.h>
+#include <rinvid/util/image_loader.h>
+#include <stb_image.h>
 
 namespace rinvid
 {

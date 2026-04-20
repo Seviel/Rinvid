@@ -7,7 +7,7 @@
  * repository for more details.
  **********************************************************************/
 
-#include "core/include/ttf_lib.h"
+#include <rinvid/core/ttf_lib.h>
 
 namespace rinvid
 {
