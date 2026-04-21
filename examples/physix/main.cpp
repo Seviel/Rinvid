@@ -8,6 +8,7 @@
  **********************************************************************/
 
 #include <rinvid/core/application.h>
+#include <rinvid/core/rinvid_gfx.h>
 #include <rinvid/core/screen.h>
 #include <rinvid/core/sprite.h>
 #include <rinvid/core/sprite_object.h>

@@ -16,6 +16,7 @@
 
 #include <SFML/Window/Context.hpp>
 
+#include <rinvid/core/rinvid_gfx.h>
 #include <rinvid/core/rinvid_gl.h>
 #include <rinvid/core/texture.h>
 
@@ -50,8 +51,7 @@ class SpriteTest : public ::testing::Test
             GTEST_SKIP() << "Required OpenGL 3.0 functions are unavailable";
         }
 #endif
-        Application* application{nullptr};
-        RinvidGfx::init(application);
+        RinvidGfx::init(nullptr);
 
         const char* file_name = {"tests/resources/valid_image.png"};
         mock_texture_         = new Texture{file_name};
@@ -61,6 +61,7 @@ class SpriteTest : public ::testing::Test
     {
         delete mock_texture_;
         mock_texture_ = nullptr;
+        RinvidGfx::shutdown();
     }
 
     Texture* mock_texture_{nullptr};

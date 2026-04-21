@@ -11,6 +11,7 @@
 
 #include <SFML/Window.hpp>
 
+#include <rinvid/core/rinvid_gfx.h>
 #include <rinvid/gui/button.h>
 #include <rinvid/system/mouse.h>
 #include <rinvid/util/collision_detection.h>
