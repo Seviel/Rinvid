@@ -8,6 +8,7 @@
  **********************************************************************/
 
 #include "level_two.h"
+#include <rinvid/core/rinvid_gfx.h>
 #include <rinvid/system/keyboard.h>
 #include <rinvid/util/vector2.h>
 

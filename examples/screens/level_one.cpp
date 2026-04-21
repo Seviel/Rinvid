@@ -11,6 +11,7 @@
 
 #include "level_one.h"
 #include "level_two.h"
+#include <rinvid/core/rinvid_gfx.h>
 #include <rinvid/system/keyboard.h>
 
 using namespace rinvid::system;

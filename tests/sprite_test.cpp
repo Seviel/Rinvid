@@ -7,6 +7,8 @@
  * repository for more details.
  **********************************************************************/
 
+#include <array>
+
 #include <gtest/gtest.h>
 
 #include <rinvid/core/sprite.h>
@@ -15,6 +17,22 @@
 #include "include/sprite_test.h"
 
 using namespace rinvid;
+
+namespace
+{
+
+std::array<float, 20> read_bound_sprite_vertices()
+{
+    GLint vertex_buffer_object{};
+    GL_CALL(glGetVertexAttribiv(0, GL_VERTEX_ATTRIB_ARRAY_BUFFER_BINDING, &vertex_buffer_object));
+
+    std::array<float, 20> vertices{};
+    GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, static_cast<GLuint>(vertex_buffer_object)));
+    GL_CALL(glGetBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices.data()));
+    return vertices;
+}
+
+} // namespace
 
 // Test default constructor
 TEST_F(SpriteTest, DefaultConstructor)
@@ -137,5 +155,26 @@ TEST_F(SpriteTest, AnimatedDraw_AdvancesAnimation)
 
     EXPECT_NO_THROW(sprite.draw(1.0));
     EXPECT_TRUE(sprite.get_animation().is_animation_finished());
+    ASSERT_TRUE(number_of_errors == errors::get_error_count());
+}
+
+TEST_F(SpriteTest, SharedTextureSpritesKeepIndependentGeometry)
+{
+    auto number_of_errors = errors::get_error_count();
+
+    Sprite sprite_1{mock_texture_, 100, 100, {10.0F, 20.0F}, {0.0F, 0.0F}};
+    Sprite sprite_2{mock_texture_, 64, 32, {200.0F, 100.0F}, {5.0F, 10.0F}};
+
+    sprite_1.draw();
+    const auto sprite_1_vertices_before = read_bound_sprite_vertices();
+
+    sprite_2.draw();
+    const auto sprite_2_vertices = read_bound_sprite_vertices();
+
+    sprite_1.draw();
+    const auto sprite_1_vertices_after = read_bound_sprite_vertices();
+
+    EXPECT_NE(sprite_1_vertices_before, sprite_2_vertices);
+    EXPECT_EQ(sprite_1_vertices_before, sprite_1_vertices_after);
     ASSERT_TRUE(number_of_errors == errors::get_error_count());
 }

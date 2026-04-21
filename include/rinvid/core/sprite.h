@@ -10,6 +10,8 @@
 #ifndef INCLUDE_RINVID_CORE_SPRITE_H
 #define INCLUDE_RINVID_CORE_SPRITE_H
 
+#include <cstdint>
+
 #ifdef __GNUC__
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Woverloaded-virtual"
@@ -40,9 +42,35 @@ class Sprite : public virtual RectPOD, public Transformable, public DrawableAnim
      *************************************************************************************************/
     Sprite();
 
-    virtual ~Sprite()
-    {
-    }
+    /**************************************************************************************************
+     * @brief Copy constructor deleted.
+     *
+     *************************************************************************************************/
+    Sprite(const Sprite& other) = delete;
+
+    /**************************************************************************************************
+     * @brief Copy assignment operator deleted.
+     *
+     *************************************************************************************************/
+    Sprite& operator=(const Sprite& other) = delete;
+
+    /**************************************************************************************************
+     * @brief Move constructor deleted.
+     *
+     *************************************************************************************************/
+    Sprite(Sprite&& other) = delete;
+
+    /**************************************************************************************************
+     * @brief Move assignment operator deleted.
+     *
+     *************************************************************************************************/
+    Sprite& operator=(Sprite&& other) = delete;
+
+    /**************************************************************************************************
+     * @brief Destructor.
+     *
+     *************************************************************************************************/
+    virtual ~Sprite();
 
     /**************************************************************************************************
      * @brief Sprite constructor.
@@ -147,9 +175,26 @@ class Sprite : public virtual RectPOD, public Transformable, public DrawableAnim
     SpriteAnimation sprite_animation_;
 
   private:
+    void ensure_vertex_buffer_initialized();
+    void init_vertex_buffer();
+    void release_gl_resources();
+    void update_vertices(Vector2f offset, std::uint32_t width, std::uint32_t height);
+
     Texture* texture_;
     Vector2f texture_offset_;
     float    opacity_;
+
+    std::uint32_t vertex_array_object_{};
+    std::uint32_t vertex_buffer_object_{};
+    std::uint32_t element_buffer_object_{};
+
+    // There are four vertices with 5 elements each, elements are: x, y, z coordinate and x and y
+    // texture coordinate, hence 4 * 5.
+    float               gl_vertices_[4 * 5]{};
+    const std::uint32_t indices_[6] = {
+        0, 1, 3, // first triangle
+        1, 2, 3  // second triangle
+    };
 };
 
 } // namespace rinvid
