@@ -28,7 +28,6 @@ namespace rinvid
 class SpriteAnimation
 {
     friend class Sprite;
-    friend class Button;
 
   public:
     /**************************************************************************************************
@@ -36,7 +35,7 @@ class SpriteAnimation
      *
      *************************************************************************************************/
     SpriteAnimation()
-        : regions_{}, current_animation_{nullptr}, x_offset_{0.0F}, y_offset_{0.0F},
+        : regions_{}, current_animation_name_{}, x_offset_{0.0F}, y_offset_{0.0F},
           is_active_{false} {};
 
     /**************************************************************************************************
@@ -47,7 +46,7 @@ class SpriteAnimation
      *
      *************************************************************************************************/
     SpriteAnimation(float x_offset, float y_offset)
-        : regions_{}, current_animation_{nullptr}, x_offset_{x_offset}, y_offset_{y_offset},
+        : regions_{}, current_animation_name_{}, x_offset_{x_offset}, y_offset_{y_offset},
           is_active_{false} {};
 
     /**************************************************************************************************
@@ -135,8 +134,13 @@ class SpriteAnimation
     std::unordered_map<std::string, Animation> animations_;
 
   private:
+    Animation*       get_animation_by_name(const std::string& name);
+    const Animation* get_animation_by_name(const std::string& name) const;
+    Animation*       get_current_animation();
+    const Animation* get_current_animation() const;
+
     std::vector<Rect> regions_;
-    Animation*        current_animation_;
+    std::string       current_animation_name_;
     float             x_offset_;
     float             y_offset_;
     bool              is_active_;

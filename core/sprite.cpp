@@ -68,16 +68,24 @@ void Sprite::draw(double delta_time, const Shader shader)
 
     if (sprite_animation_.is_active_)
     {
-        sprite_animation_.current_animation_->advance(delta_time);
-        Rect          texture_region = sprite_animation_.current_animation_->frame();
-        Vector2f      offset{texture_offset_};
-        std::uint32_t width  = texture_region.width;
-        std::uint32_t height = texture_region.height;
+        Animation* current_animation = sprite_animation_.get_current_animation();
+        if (current_animation == nullptr)
+        {
+            sprite_animation_.is_active_ = false;
+        }
+        else
+        {
+            current_animation->advance(delta_time);
+            Rect          texture_region = current_animation->frame();
+            Vector2f      offset{texture_offset_};
+            std::uint32_t width  = texture_region.width;
+            std::uint32_t height = texture_region.height;
 
-        offset.x += texture_region.position.x;
-        offset.y += texture_region.position.y;
+            offset.x += texture_region.position.x;
+            offset.y += texture_region.position.y;
 
-        update_vertices(offset, width, height);
+            update_vertices(offset, width, height);
+        }
     }
 
     ensure_vertex_buffer_initialized();
