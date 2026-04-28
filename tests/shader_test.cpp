@@ -37,6 +37,8 @@ constexpr const char* fragment_shader_source =
 
 } // namespace
 
+using namespace rinvid;
+
 TEST_F(OpenGLTest, ShaderMoveAssignment_LeavesDestinationUsable)
 {
     Shader shader_1{vertex_shader_source, fragment_shader_source};

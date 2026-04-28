@@ -13,6 +13,9 @@
 
 #include <rinvid/core/shader.h>
 
+namespace rinvid
+{
+
 struct Shader::ProgramHandle
 {
     ~ProgramHandle()
@@ -115,3 +118,5 @@ std::uint32_t Shader::get_id() const
 
     return program_handle_->id_;
 }
+
+} // namespace rinvid

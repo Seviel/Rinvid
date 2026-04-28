@@ -16,6 +16,9 @@
 #include <rinvid/core/rinvid_gl.h>
 #include <rinvid/util/error_handler.h>
 
+namespace rinvid
+{
+
 class Shader
 {
   public:
@@ -109,5 +112,7 @@ class Shader
 
     std::shared_ptr<ProgramHandle> program_handle_;
 };
+
+} // namespace rinvid
 
 #endif // INCLUDE_RINVID_CORE_SHADER_H
