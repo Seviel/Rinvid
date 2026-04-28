@@ -11,7 +11,7 @@
 
 #include <SFML/Window.hpp>
 
-#include <rinvid/core/rinvid_gfx.h>
+#include <rinvid/core/render_context.h>
 #include <rinvid/gui/button.h>
 #include <rinvid/system/mouse.h>
 #include <rinvid/util/collision_detection.h>
@@ -34,9 +34,16 @@ Button::Button() : idle_{}, mouse_hovering_{}, clicked_{}, is_clicked_{false}, j
 
 void Button::update_state()
 {
-    Vector2f    mouse_pos = system::Mouse::get_mouse_pos();
-    glm::vec4   glm_mouse_pos{mouse_pos.x, mouse_pos.y, 1.0F, 1.0F};
-    const auto& view = glm::inverse(RinvidGfx::get_view());
+    Vector2f  mouse_pos = system::Mouse::get_mouse_pos();
+    glm::vec4 glm_mouse_pos{mouse_pos.x, mouse_pos.y, 1.0F, 1.0F};
+
+    RenderContext* render_context = RenderContext::get_active_context();
+    if (render_context == nullptr)
+    {
+        return;
+    }
+
+    const auto& view = glm::inverse(render_context->get_view());
     glm_mouse_pos    = view * glm_mouse_pos;
     mouse_pos.x      = glm_mouse_pos.x;
     mouse_pos.y      = glm_mouse_pos.y;

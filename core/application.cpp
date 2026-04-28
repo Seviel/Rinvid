@@ -20,7 +20,7 @@
 #include <rinvid/util/windows_utils.h>
 #endif // _WIN32
 #include <rinvid/core/application.h>
-#include <rinvid/core/rinvid_gfx.h>
+#include <rinvid/core/rinvid_gl.h>
 #include <rinvid/util/vector2.h>
 
 namespace rinvid
@@ -28,7 +28,8 @@ namespace rinvid
 
 Application::Application(std::uint32_t width, std::uint32_t height, const std::string& title,
                          bool fullscreen, std::uint16_t fps)
-    : window_{}, current_screen_{nullptr}, new_screen_{nullptr}, fps_{fps}, running_{false}
+    : window_{}, context_{}, current_screen_{nullptr}, new_screen_{nullptr}, fps_{fps},
+      running_{false}
 {
     if (fullscreen)
     {
@@ -45,9 +46,9 @@ Application::Application(std::uint32_t width, std::uint32_t height, const std::s
     gladLoadGLLoader(reinterpret_cast<GLADloadproc>(sf::Context::getFunction));
 #endif
 
-    RinvidGfx::init(this);
+    context_.init(this, window_);
     auto size = window_.getSize();
-    RinvidGfx::set_viewport(0, 0, size.x, size.y);
+    context_.get_render_context().set_viewport(0, 0, size.x, size.y);
 }
 
 Application::~Application()
@@ -56,7 +57,7 @@ Application::~Application()
 
     if (window_.setActive(true))
     {
-        RinvidGfx::shutdown();
+        context_.shutdown();
     }
 }
 
@@ -95,7 +96,7 @@ void Application::run()
     destroy_current_screen();
     new_screen_.reset();
 
-    RinvidGfx::shutdown();
+    context_.shutdown();
 }
 
 void Application::set_screen(std::unique_ptr<Screen> screen)
@@ -112,6 +113,26 @@ void Application::set_fps(std::uint16_t fps)
 void Application::exit()
 {
     running_ = false;
+}
+
+ApplicationContext& Application::get_context()
+{
+    return context_;
+}
+
+const ApplicationContext& Application::get_context() const
+{
+    return context_;
+}
+
+RenderContext& Application::get_render_context()
+{
+    return context_.get_render_context();
+}
+
+const RenderContext& Application::get_render_context() const
+{
+    return context_.get_render_context();
 }
 
 void Application::activate_pending_screen()
@@ -147,7 +168,8 @@ void Application::handle_events(sf::Window& window, sf::Event& event)
                 running_ = false;
                 break;
             case sf::Event::Resized:
-                rinvid::RinvidGfx::set_viewport(0, 0, event.size.width, event.size.height);
+                context_.get_render_context().set_viewport(0, 0, event.size.width,
+                                                           event.size.height);
                 break;
             default:
                 break;

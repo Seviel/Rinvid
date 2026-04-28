@@ -10,7 +10,7 @@
 #include <algorithm>
 
 #include <rinvid/core/light.h>
-#include <rinvid/core/rinvid_gfx.h>
+#include <rinvid/core/render_context.h>
 
 /// @todo Revisit these constants
 constexpr float falloff_low{10.0F};
@@ -23,6 +23,16 @@ namespace rinvid
 {
 
 std::int32_t Light::number_of_lights_{0};
+
+namespace
+{
+
+RenderContext* get_render_context()
+{
+    return RenderContext::get_active_context();
+}
+
+} // namespace
 
 float Light::remap(float value, float low1, float high1, float low2, float high2)
 {
@@ -40,21 +50,27 @@ Light::Light() : position_{0.0F, 0.0F}, intensity_{0.5F}, falloff_{0.5F}
         throw "Maximum number of light sources exceeded!";
     }
 
-    const auto texture_shader = RinvidGfx::get_texture_default_shader();
+    RenderContext* render_context = get_render_context();
+    if (render_context == nullptr)
+    {
+        return;
+    }
+
+    const auto texture_shader = render_context->get_texture_default_shader();
     texture_shader.use();
     texture_shader.set_bool("light_active[" + std::to_string(ordinal_) + "]", true);
     texture_shader.set_float2("light_pos[" + std::to_string(ordinal_) + "]", position_.x,
-                              RinvidGfx::get_height() - position_.y);
+                              render_context->get_height() - position_.y);
     texture_shader.set_float("light_intensity[" + std::to_string(ordinal_) + "]",
                              remap(intensity_, 0.0F, 1.0F, intensity_low, intensity_high));
     texture_shader.set_float("light_falloff[" + std::to_string(ordinal_) + "]",
                              remap(falloff_, 0.0F, 1.0F, falloff_low, falloff_high));
 
-    const auto shape_shader = RinvidGfx::get_shape_default_shader();
+    const auto shape_shader = render_context->get_shape_default_shader();
     shape_shader.use();
     shape_shader.set_bool("light_active[" + std::to_string(ordinal_) + "]", true);
     shape_shader.set_float2("light_pos[" + std::to_string(ordinal_) + "]", position_.x,
-                            RinvidGfx::get_height() - position_.y);
+                            render_context->get_height() - position_.y);
     shape_shader.set_float("light_intensity[" + std::to_string(ordinal_) + "]",
                            remap(intensity_, 0.0F, 1.0F, intensity_low, intensity_high));
     shape_shader.set_float("light_falloff[" + std::to_string(ordinal_) + "]",
@@ -75,21 +91,27 @@ Light::Light(Vector2f position, float intensity, float falloff)
         throw "Maximum number of light sources exceeded!";
     }
 
-    const auto texture_shader = RinvidGfx::get_texture_default_shader();
+    RenderContext* render_context = get_render_context();
+    if (render_context == nullptr)
+    {
+        return;
+    }
+
+    const auto texture_shader = render_context->get_texture_default_shader();
     texture_shader.use();
     texture_shader.set_bool("light_active[" + std::to_string(ordinal_) + "]", true);
     texture_shader.set_float2("light_pos[" + std::to_string(ordinal_) + "]", position_.x,
-                              RinvidGfx::get_height() - position_.y);
+                              render_context->get_height() - position_.y);
     texture_shader.set_float("light_intensity[" + std::to_string(ordinal_) + "]",
                              remap(intensity_, 0.0F, 1.0F, intensity_low, intensity_high));
     texture_shader.set_float("light_falloff[" + std::to_string(ordinal_) + "]",
                              remap(falloff_, 0.0F, 1.0F, falloff_low, falloff_high));
 
-    const auto shape_shader = RinvidGfx::get_shape_default_shader();
+    const auto shape_shader = render_context->get_shape_default_shader();
     shape_shader.use();
     shape_shader.set_bool("light_active[" + std::to_string(ordinal_) + "]", true);
     shape_shader.set_float2("light_pos[" + std::to_string(ordinal_) + "]", position_.x,
-                            RinvidGfx::get_height() - position_.y);
+                            render_context->get_height() - position_.y);
     shape_shader.set_float("light_intensity[" + std::to_string(ordinal_) + "]",
                            remap(intensity_, 0.0F, 1.0F, intensity_low, intensity_high));
     shape_shader.set_float("light_falloff[" + std::to_string(ordinal_) + "]",
@@ -106,27 +128,39 @@ void Light::set_position(const Vector2f vector)
 {
     position_ = vector;
 
-    const auto texture_shader = RinvidGfx::get_texture_default_shader();
+    RenderContext* render_context = get_render_context();
+    if (render_context == nullptr)
+    {
+        return;
+    }
+
+    const auto texture_shader = render_context->get_texture_default_shader();
     texture_shader.use();
     texture_shader.set_float2("light_pos[" + std::to_string(ordinal_) + "]", position_.x,
-                              RinvidGfx::get_height() - position_.y);
+                              render_context->get_height() - position_.y);
 
-    const auto shape_shader = RinvidGfx::get_shape_default_shader();
+    const auto shape_shader = render_context->get_shape_default_shader();
     shape_shader.use();
     shape_shader.set_float2("light_pos[" + std::to_string(ordinal_) + "]", position_.x,
-                            RinvidGfx::get_height() - position_.y);
+                            render_context->get_height() - position_.y);
 }
 
 void Light::set_intensity(float intensity)
 {
     intensity_ = std::clamp(intensity, 0.0F, 1.0F);
 
-    const auto texture_shader = RinvidGfx::get_texture_default_shader();
+    RenderContext* render_context = get_render_context();
+    if (render_context == nullptr)
+    {
+        return;
+    }
+
+    const auto texture_shader = render_context->get_texture_default_shader();
     texture_shader.use();
     texture_shader.set_float("light_intensity[" + std::to_string(ordinal_) + "]",
                              remap(intensity_, 0.0F, 1.0F, intensity_low, intensity_high));
 
-    const auto shape_shader = RinvidGfx::get_shape_default_shader();
+    const auto shape_shader = render_context->get_shape_default_shader();
     shape_shader.use();
     shape_shader.set_float("light_intensity[" + std::to_string(ordinal_) + "]",
                            remap(intensity_, 0.0F, 1.0F, intensity_low, intensity_high));
@@ -136,12 +170,18 @@ void Light::set_falloff(float falloff)
 {
     falloff_ = 1.0F - std::clamp(falloff, 0.0F, 1.0F);
 
-    const auto texture_shader = RinvidGfx::get_texture_default_shader();
+    RenderContext* render_context = get_render_context();
+    if (render_context == nullptr)
+    {
+        return;
+    }
+
+    const auto texture_shader = render_context->get_texture_default_shader();
     texture_shader.use();
     texture_shader.set_float("light_falloff[" + std::to_string(ordinal_) + "]",
                              remap(falloff_, 0.0F, 1.0F, falloff_low, falloff_high));
 
-    const auto shape_shader = RinvidGfx::get_shape_default_shader();
+    const auto shape_shader = render_context->get_shape_default_shader();
     shape_shader.use();
     shape_shader.set_float("light_falloff[" + std::to_string(ordinal_) + "]",
                            remap(falloff_, 0.0F, 1.0F, falloff_low, falloff_high));
@@ -149,11 +189,17 @@ void Light::set_falloff(float falloff)
 
 void Light::switch_it(bool on)
 {
-    const auto texture_shader = RinvidGfx::get_texture_default_shader();
+    RenderContext* render_context = get_render_context();
+    if (render_context == nullptr)
+    {
+        return;
+    }
+
+    const auto texture_shader = render_context->get_texture_default_shader();
     texture_shader.use();
     texture_shader.set_bool("light_active[" + std::to_string(ordinal_) + "]", on);
 
-    const auto shape_shader = RinvidGfx::get_shape_default_shader();
+    const auto shape_shader = render_context->get_shape_default_shader();
     shape_shader.use();
     shape_shader.set_bool("light_active[" + std::to_string(ordinal_) + "]", on);
 }
@@ -175,15 +221,22 @@ void Light::update(Vector2f camera_pos)
     Vector2f position = position_;
     position.x -= camera_pos.x;
     position.y -= camera_pos.y;
-    const auto texture_shader = RinvidGfx::get_texture_default_shader();
+
+    RenderContext* render_context = get_render_context();
+    if (render_context == nullptr)
+    {
+        return;
+    }
+
+    const auto texture_shader = render_context->get_texture_default_shader();
     texture_shader.use();
     texture_shader.set_float2("light_pos[" + std::to_string(ordinal_) + "]", position.x,
-                              RinvidGfx::get_height() - position.y);
+                              render_context->get_height() - position.y);
 
-    const auto shape_shader = RinvidGfx::get_shape_default_shader();
+    const auto shape_shader = render_context->get_shape_default_shader();
     shape_shader.use();
     shape_shader.set_float2("light_pos[" + std::to_string(ordinal_) + "]", position.x,
-                            RinvidGfx::get_height() - position.y);
+                            render_context->get_height() - position.y);
 }
 
 } // namespace rinvid

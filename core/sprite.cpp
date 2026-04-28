@@ -7,7 +7,7 @@
  * repository for more details.
  **********************************************************************/
 
-#include <rinvid/core/rinvid_gfx.h>
+#include <rinvid/core/render_context.h>
 #include <rinvid/core/rinvid_gl.h>
 #include <rinvid/core/sprite.h>
 
@@ -46,7 +46,13 @@ void Sprite::draw(const Shader shader)
 
 void Sprite::draw(double delta_time)
 {
-    const auto shader = RinvidGfx::get_texture_default_shader();
+    RenderContext* render_context = RenderContext::get_active_context();
+    if (render_context == nullptr)
+    {
+        return;
+    }
+
+    const auto shader = render_context->get_texture_default_shader();
     draw(delta_time, shader);
 }
 
@@ -76,8 +82,14 @@ void Sprite::draw(double delta_time, const Shader shader)
 
     ensure_vertex_buffer_initialized();
 
+    RenderContext* render_context = RenderContext::get_active_context();
+    if (render_context == nullptr)
+    {
+        return;
+    }
+
     shader.use();
-    RinvidGfx::update_mvp_matrix(get_transform(), shader.get_id());
+    render_context->update_mvp_matrix(get_transform(), shader.get_id());
     shader.set_float("opacity", opacity_);
 
     texture_->bind();

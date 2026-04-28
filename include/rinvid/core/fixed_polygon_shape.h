@@ -24,7 +24,7 @@
 #pragma GCC diagnostic pop
 #endif
 
-#include <rinvid/core/rinvid_gfx.h>
+#include <rinvid/core/render_context.h>
 #include <rinvid/core/shape.h>
 #include <rinvid/util/error_handler.h>
 #include <rinvid/util/rect.h>
@@ -259,15 +259,27 @@ void FixedPolygonShape<number_of_vertices, draw_mode>::init_vertex_buffer()
 template <typename std::uint32_t number_of_vertices, GLenum draw_mode>
 void FixedPolygonShape<number_of_vertices, draw_mode>::draw()
 {
-    const auto shader = RinvidGfx::get_shape_default_shader();
+    RenderContext* render_context = RenderContext::get_active_context();
+    if (render_context == nullptr)
+    {
+        return;
+    }
+
+    const auto shader = render_context->get_shape_default_shader();
     draw(shader);
 }
 
 template <typename std::uint32_t number_of_vertices, GLenum draw_mode>
 void FixedPolygonShape<number_of_vertices, draw_mode>::draw(Shader shader)
 {
+    RenderContext* render_context = RenderContext::get_active_context();
+    if (render_context == nullptr)
+    {
+        return;
+    }
+
     shader.use();
-    RinvidGfx::update_mvp_matrix(get_transform(), shader.get_id());
+    render_context->update_mvp_matrix(get_transform(), shader.get_id());
     shader.set_float4("in_color", color_.r, color_.g, color_.b, color_.a);
 
     GL_CALL(glBindVertexArray(vertex_array_object_));

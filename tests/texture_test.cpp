@@ -9,7 +9,6 @@
 
 #include <gtest/gtest.h>
 
-#include <rinvid/core/application.h>
 #include <rinvid/core/sprite.h>
 #include <rinvid/core/texture.h>
 #include <rinvid/util/error_handler.h>
@@ -72,9 +71,6 @@ TEST_F(TextureTest, MovedTextureCanStillBeUsedForDrawing)
 {
     auto number_of_errors = errors::get_error_count();
 
-    Application* application{nullptr};
-    RinvidGfx::init(application);
-
     Texture texture1{"resources/valid_image.png"};
     Texture texture2{"resources/valid_image.png"};
     texture2 = std::move(texture1);
@@ -82,7 +78,6 @@ TEST_F(TextureTest, MovedTextureCanStillBeUsedForDrawing)
     Sprite sprite{&texture2, 1, 1, {0.0F, 0.0F}};
 
     EXPECT_NO_THROW(sprite.draw());
-    RinvidGfx::shutdown();
 
     ASSERT_TRUE(number_of_errors == errors::get_error_count());
 }
