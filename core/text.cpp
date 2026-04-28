@@ -14,7 +14,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include <rinvid/core/rinvid_gfx.h>
+#include <rinvid/core/render_context.h>
 #include <rinvid/core/rinvid_gl.h>
 #include <rinvid/core/text.h>
 #include <rinvid/core/ttf_lib.h>
@@ -95,24 +95,36 @@ Text::~Text()
 
 void Text::draw()
 {
-    const auto shader = RinvidGfx::get_text_default_shader();
+    RenderContext* render_context = RenderContext::get_active_context();
+    if (render_context == nullptr)
+    {
+        return;
+    }
+
+    const auto shader = render_context->get_text_default_shader();
     draw(shader);
 }
 
 void Text::draw(const Shader shader)
 {
+    RenderContext* render_context = RenderContext::get_active_context();
+    if (render_context == nullptr)
+    {
+        return;
+    }
+
     float x = position_.x;
     float y = position_.y;
 
     glm::vec4   glm_pos{x, y, 1.0F, 1.0F};
-    const auto& view = RinvidGfx::get_view();
+    const auto& view = render_context->get_view();
     glm_pos          = view * glm_pos;
     x                = glm_pos.x;
-    y                = RinvidGfx::get_height() - glm_pos.y;
+    y                = render_context->get_height() - glm_pos.y;
 
     shader.use();
-    glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(RinvidGfx::get_width()), 0.0f,
-                                      static_cast<float>(RinvidGfx::get_height()));
+    glm::mat4 projection = glm::ortho(0.0F, static_cast<float>(render_context->get_width()), 0.0F,
+                                      static_cast<float>(render_context->get_height()));
     GL_CALL(glUniformMatrix4fv(glGetUniformLocation(shader.get_id(), "projection"), 1, GL_FALSE,
                                glm::value_ptr(projection)));
     GL_CALL(glUniform3f(glGetUniformLocation(shader.get_id(), "text_color"), color_.r, color_.g,

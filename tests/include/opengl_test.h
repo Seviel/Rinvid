@@ -15,7 +15,7 @@
 #include <SFML/Window/Context.hpp>
 #include <gtest/gtest.h>
 
-#include <rinvid/core/rinvid_gfx.h>
+#include <rinvid/core/render_context.h>
 #include <rinvid/core/rinvid_gl.h>
 #include <rinvid/core/ttf_lib.h>
 
@@ -48,13 +48,18 @@ class OpenGLTest : public ::testing::Test
             GTEST_SKIP() << "Required OpenGL 3.0 functions are unavailable";
         }
 #endif
+
+        render_context_.set_viewport(0, 0, 32, 32);
+        render_context_.init(nullptr);
     }
 
     void TearDown() override
     {
-        rinvid::RinvidGfx::shutdown();
+        render_context_.shutdown();
         rinvid::TTFLib::destroy();
     }
+
+    rinvid::RenderContext render_context_{};
 
   private:
     sf::Context context_{};

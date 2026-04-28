@@ -125,6 +125,16 @@ const ApplicationContext& Application::get_context() const
     return context_;
 }
 
+RenderContext& Application::get_render_context()
+{
+    return context_.get_render_context();
+}
+
+const RenderContext& Application::get_render_context() const
+{
+    return context_.get_render_context();
+}
+
 void Application::activate_pending_screen()
 {
     if (!new_screen_)

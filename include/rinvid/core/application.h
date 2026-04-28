@@ -86,6 +86,22 @@ class Application
      *************************************************************************************************/
     const ApplicationContext& get_context() const;
 
+    /**************************************************************************************************
+     * @brief Returns render context.
+     *
+     * @return Render context.
+     *
+     *************************************************************************************************/
+    RenderContext& get_render_context();
+
+    /**************************************************************************************************
+     * @brief Returns render context.
+     *
+     * @return Render context.
+     *
+     *************************************************************************************************/
+    const RenderContext& get_render_context() const;
+
   private:
     void activate_pending_screen();
     void destroy_current_screen();

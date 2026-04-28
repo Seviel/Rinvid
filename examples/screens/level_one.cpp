@@ -11,7 +11,7 @@
 
 #include "level_one.h"
 #include "level_two.h"
-#include <rinvid/core/rinvid_gfx.h>
+#include <rinvid/core/render_context.h>
 #include <rinvid/system/keyboard.h>
 
 using namespace rinvid::system;
@@ -26,7 +26,7 @@ void LevelOne::create()
 
 void LevelOne::update(double delta_time)
 {
-    rinvid::RinvidGfx::clear_screen(0.0F, 0.0F, 0.0F, 1.0F);
+    get_render_context().clear_screen(0.0F, 0.0F, 0.0F, 1.0F);
 
     bg_level_one_sprite.draw();
     guardian_sprite_->draw(delta_time);

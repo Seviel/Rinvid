@@ -11,7 +11,7 @@
 
 #include <gtest/gtest.h>
 
-#include <rinvid/core/rinvid_gfx.h>
+#include <rinvid/core/render_context.h>
 #include <rinvid/core/shader.h>
 
 #include "include/opengl_test.h"
@@ -49,24 +49,22 @@ TEST_F(OpenGLTest, ShaderMoveAssignment_LeavesDestinationUsable)
     EXPECT_NO_THROW(shader_2.use());
 }
 
-TEST_F(OpenGLTest, RinvidGfxShutdown_ReleasesDefaultShadersAndAllowsReinit)
+TEST_F(OpenGLTest, RenderContextShutdown_ReleasesDefaultShadersAndAllowsReinit)
 {
-    rinvid::RinvidGfx::set_viewport(0, 0, 32, 32);
-    rinvid::RinvidGfx::init(nullptr);
+    EXPECT_NE(render_context_.get_shape_default_shader_id(), 0U);
+    EXPECT_NE(render_context_.get_texture_default_shader_id(), 0U);
+    EXPECT_NE(render_context_.get_text_default_shader_id(), 0U);
 
-    EXPECT_NE(rinvid::RinvidGfx::get_shape_default_shader_id(), 0U);
-    EXPECT_NE(rinvid::RinvidGfx::get_texture_default_shader_id(), 0U);
-    EXPECT_NE(rinvid::RinvidGfx::get_text_default_shader_id(), 0U);
+    render_context_.shutdown();
 
-    rinvid::RinvidGfx::shutdown();
+    EXPECT_EQ(render_context_.get_shape_default_shader_id(), 0U);
+    EXPECT_EQ(render_context_.get_texture_default_shader_id(), 0U);
+    EXPECT_EQ(render_context_.get_text_default_shader_id(), 0U);
 
-    EXPECT_EQ(rinvid::RinvidGfx::get_shape_default_shader_id(), 0U);
-    EXPECT_EQ(rinvid::RinvidGfx::get_texture_default_shader_id(), 0U);
-    EXPECT_EQ(rinvid::RinvidGfx::get_text_default_shader_id(), 0U);
+    render_context_.set_viewport(0, 0, 32, 32);
+    render_context_.init(nullptr);
 
-    rinvid::RinvidGfx::init(nullptr);
-
-    EXPECT_NE(rinvid::RinvidGfx::get_shape_default_shader_id(), 0U);
-    EXPECT_NE(rinvid::RinvidGfx::get_texture_default_shader_id(), 0U);
-    EXPECT_NE(rinvid::RinvidGfx::get_text_default_shader_id(), 0U);
+    EXPECT_NE(render_context_.get_shape_default_shader_id(), 0U);
+    EXPECT_NE(render_context_.get_texture_default_shader_id(), 0U);
+    EXPECT_NE(render_context_.get_text_default_shader_id(), 0U);
 }

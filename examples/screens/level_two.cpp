@@ -8,7 +8,7 @@
  **********************************************************************/
 
 #include "level_two.h"
-#include <rinvid/core/rinvid_gfx.h>
+#include <rinvid/core/render_context.h>
 #include <rinvid/system/keyboard.h>
 #include <rinvid/util/vector2.h>
 
@@ -26,7 +26,7 @@ void LevelTwo::create()
 
 void LevelTwo::update(double delta_time)
 {
-    rinvid::RinvidGfx::clear_screen(0.0F, 0.0F, 0.0F, 1.0F);
+    get_render_context().clear_screen(0.0F, 0.0F, 0.0F, 1.0F);
 
     bg_level_two_sprite.draw();
     guardian_sprite_->draw(delta_time);

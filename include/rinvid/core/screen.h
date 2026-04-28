@@ -14,6 +14,7 @@ namespace rinvid
 {
 
 class Application;
+class RenderContext;
 
 class Screen
 {
@@ -26,10 +27,23 @@ class Screen
      * @return Pointer to application
      *
      *************************************************************************************************/
-    Application* get_application()
-    {
-        return application_;
-    }
+    Application* get_application();
+
+    /**************************************************************************************************
+     * @brief Returns render context of the application that currently renders this screen.
+     *
+     * @return Render context.
+     *
+     *************************************************************************************************/
+    RenderContext& get_render_context();
+
+    /**************************************************************************************************
+     * @brief Returns render context of the application that currently renders this screen.
+     *
+     * @return Render context.
+     *
+     *************************************************************************************************/
+    const RenderContext& get_render_context() const;
 
     /**************************************************************************************************
      * @brief Initializes screen. Should be called right after constructing the object.
@@ -45,10 +59,7 @@ class Screen
 
   private:
     friend class Application;
-    void set_application(Application* application)
-    {
-        application_ = application;
-    }
+    void set_application(Application* application);
 
     virtual void update(double delta_time) = 0;
 

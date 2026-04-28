@@ -65,6 +65,14 @@ class RenderContext
     ~RenderContext() = default;
 
     /**************************************************************************************************
+     * @brief Returns currently active render context.
+     *
+     * @return Active render context.
+     *
+     *************************************************************************************************/
+    static RenderContext* get_active_context();
+
+    /**************************************************************************************************
      * @brief Initializes render state.
      *
      * @param application Application that owns this render context.
@@ -235,6 +243,8 @@ class RenderContext
     const Application* get_application() const;
 
   private:
+    static RenderContext* active_context_;
+
     void init_default_shaders();
 
     glm::mat4          model_view_projection_{1.0F};

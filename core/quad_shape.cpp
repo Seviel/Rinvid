@@ -10,7 +10,6 @@
 #include <rinvid/core/rinvid_gl.h>
 
 #include <rinvid/core/quad_shape.h>
-#include <rinvid/core/rinvid_gfx.h>
 #include <rinvid/util/vector3.h>
 
 namespace rinvid

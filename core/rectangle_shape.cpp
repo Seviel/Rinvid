@@ -8,7 +8,6 @@
  **********************************************************************/
 
 #include <rinvid/core/rectangle_shape.h>
-#include <rinvid/core/rinvid_gfx.h>
 #include <rinvid/core/rinvid_gl.h>
 #include <rinvid/util/vector3.h>
 

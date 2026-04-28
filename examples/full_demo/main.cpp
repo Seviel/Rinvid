@@ -16,7 +16,7 @@
 #include <rinvid/core/light_manager.h>
 #include <rinvid/core/object.h>
 #include <rinvid/core/rectangle_shape.h>
-#include <rinvid/core/rinvid_gfx.h>
+#include <rinvid/core/render_context.h>
 #include <rinvid/core/screen.h>
 #include <rinvid/core/sprite.h>
 #include <rinvid/core/sprite_object.h>
@@ -352,7 +352,7 @@ void TestingGrounds::handle_logic(double delta_time)
 
 void TestingGrounds::draw_objects(double delta_time)
 {
-    RinvidGfx::clear_screen(0.0F, 0.0F, 0.0F, 1.0F);
+    get_render_context().clear_screen(0.0F, 0.0F, 0.0F, 1.0F);
 
     background_sprite_.draw();
 

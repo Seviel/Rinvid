@@ -24,7 +24,7 @@
 #include <rinvid/core/light_manager.h>
 #include <rinvid/core/quad_shape.h>
 #include <rinvid/core/rectangle_shape.h>
-#include <rinvid/core/rinvid_gfx.h>
+#include <rinvid/core/render_context.h>
 #include <rinvid/core/rinvid_gl.h>
 #include <rinvid/core/screen.h>
 #include <rinvid/core/sprite.h>
@@ -138,7 +138,7 @@ void TestingGrounds::create()
 
 void TestingGrounds::update(double delta_time)
 {
-    rinvid::RinvidGfx::clear_screen(0.0F, 0.0F, 0.0F, 1.0F);
+    get_render_context().clear_screen(0.0F, 0.0F, 0.0F, 1.0F);
 
     if (intersects(triangle.bounding_rect(), quad.bounding_rect()))
     {
@@ -201,14 +201,14 @@ void TestingGrounds::update(double delta_time)
 
     triangle.move(rinvid::Vector2f{120.0F * static_cast<float>(delta_time), 0.0F});
     rinvid::Vector2f triangle_origin = triangle.get_origin();
-    if (triangle_origin.x >= rinvid::RinvidGfx::get_width())
+    if (triangle_origin.x >= get_render_context().get_width())
     {
         triangle.set_position(rinvid::Vector2f{0.0F, triangle_origin.y});
     }
 
     quad.move(rinvid::Vector2f{0.0F, 240.0F * static_cast<float>(delta_time)});
     rinvid::Vector2f quad_origin = quad.get_origin();
-    if (quad_origin.y >= rinvid::RinvidGfx::get_height())
+    if (quad_origin.y >= get_render_context().get_height())
     {
         quad.set_position(rinvid::Vector2f{quad_origin.x, 0.0F});
     }

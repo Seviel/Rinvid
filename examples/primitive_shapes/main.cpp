@@ -11,7 +11,7 @@
 #include <rinvid/core/circle_shape.h>
 #include <rinvid/core/quad_shape.h>
 #include <rinvid/core/rectangle_shape.h>
-#include <rinvid/core/rinvid_gfx.h>
+#include <rinvid/core/render_context.h>
 #include <rinvid/core/rinvid_gl.h>
 #include <rinvid/core/screen.h>
 #include <rinvid/core/triangle_shape.h>
@@ -57,7 +57,7 @@ void ShapesScreen::create()
 
 void ShapesScreen::update(double delta_time)
 {
-    rinvid::RinvidGfx::clear_screen(0.2F, 0.4F, 0.4F, 1.0F);
+    get_render_context().clear_screen(0.2F, 0.4F, 0.4F, 1.0F);
 
     vertical_delta   = 0.0F;
     horizontal_delta = 0.0F;

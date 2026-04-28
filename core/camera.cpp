@@ -10,7 +10,7 @@
 #include <algorithm>
 
 #include <rinvid/core/camera.h>
-#include <rinvid/core/rinvid_gfx.h>
+#include <rinvid/core/render_context.h>
 
 namespace rinvid
 {
@@ -25,7 +25,14 @@ Camera::Camera()
 void Camera::update()
 {
     auto view = glm::lookAt(camera_pos_, camera_pos_ + camera_front_, camera_up_);
-    RinvidGfx::update_view(view);
+
+    RenderContext* render_context = RenderContext::get_active_context();
+    if (render_context == nullptr)
+    {
+        return;
+    }
+
+    render_context->update_view(view);
 }
 
 void Camera::set_position(const Vector2f position)

@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2020 - 2026, Filip Vasiljevic
+ * Copyright (c) 2026, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -10,11 +10,13 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/transform.hpp>
 
-#include <rinvid/core/application_context.h>
-#include <rinvid/core/rinvid_gfx.h>
+#include <rinvid/core/render_context.h>
 #include <rinvid/util/error_handler.h>
 
 namespace rinvid
+{
+
+namespace
 {
 
 const char* default_shape_vert =
@@ -180,6 +182,15 @@ const char* default_text_frag =
         color = vec4(text_color, 1.0) * sampled;\n\
     }\n";
 
+} // namespace
+
+RenderContext* RenderContext::active_context_{nullptr};
+
+RenderContext* RenderContext::get_active_context()
+{
+    return active_context_;
+}
+
 void RenderContext::init_default_shaders()
 {
     shape_default_shader_   = Shader(default_shape_vert, default_shape_frag);
@@ -189,6 +200,8 @@ void RenderContext::init_default_shaders()
 
 void RenderContext::init(const Application* application)
 {
+    active_context_ = this;
+
     init_default_shaders();
     GL_CALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
     GL_CALL(glEnable(GL_BLEND));
@@ -205,6 +218,11 @@ void RenderContext::shutdown()
     texture_default_shader_ = Shader{};
     text_default_shader_    = Shader{};
     application_            = nullptr;
+
+    if (active_context_ == this)
+    {
+        active_context_ = nullptr;
+    }
 }
 
 void RenderContext::set_viewport(std::int32_t x, std::int32_t y, std::int32_t width,
@@ -315,125 +333,6 @@ void RenderContext::use_text_default_shader() const
 const Application* RenderContext::get_application() const
 {
     return application_;
-}
-
-RenderContext RinvidGfx::fallback_render_context_{};
-
-RenderContext& RinvidGfx::render_context()
-{
-    ApplicationContext* context = ApplicationContext::get_active_context();
-    if (context != nullptr)
-    {
-        return context->get_render_context();
-    }
-
-    return fallback_render_context_;
-}
-
-void RinvidGfx::init(const Application* application)
-{
-    render_context().init(application);
-}
-
-void RinvidGfx::shutdown()
-{
-    render_context().shutdown();
-}
-
-void RinvidGfx::set_viewport(std::int32_t x, std::int32_t y, std::int32_t width,
-                             std::int32_t heigth)
-{
-    render_context().set_viewport(x, y, width, heigth);
-}
-
-void RinvidGfx::clear_screen(float r, float g, float b, float a)
-{
-    render_context().clear_screen(r, g, b, a);
-}
-
-std::uint32_t RinvidGfx::get_shape_default_shader_id()
-{
-    return render_context().get_shape_default_shader_id();
-}
-
-std::uint32_t RinvidGfx::get_texture_default_shader_id()
-{
-    return render_context().get_texture_default_shader_id();
-}
-
-std::uint32_t RinvidGfx::get_text_default_shader_id()
-{
-    return render_context().get_text_default_shader_id();
-}
-
-const Shader RinvidGfx::get_shape_default_shader()
-{
-    return render_context().get_shape_default_shader();
-}
-
-const Shader RinvidGfx::get_texture_default_shader()
-{
-    return render_context().get_texture_default_shader();
-}
-
-const Shader RinvidGfx::get_text_default_shader()
-{
-    return render_context().get_text_default_shader();
-}
-
-std::int32_t RinvidGfx::get_width()
-{
-    return render_context().get_width();
-}
-
-std::int32_t RinvidGfx::get_height()
-{
-    return render_context().get_height();
-}
-
-float RinvidGfx::get_opengl_x_coord(float absolute_coord)
-{
-    return render_context().get_opengl_x_coord(absolute_coord);
-}
-
-float RinvidGfx::get_opengl_y_coord(float absolute_coord)
-{
-    return render_context().get_opengl_y_coord(absolute_coord);
-}
-
-void RinvidGfx::update_mvp_matrix(const glm::mat4& model, std::uint32_t shader_id)
-{
-    render_context().update_mvp_matrix(model, shader_id);
-}
-
-void RinvidGfx::update_view(const glm::mat4& view)
-{
-    render_context().update_view(view);
-}
-
-const glm::mat4& RinvidGfx::get_view()
-{
-    return render_context().get_view();
-}
-
-void RinvidGfx::use_shape_default_shader()
-{
-    render_context().use_shape_default_shader();
-}
-
-void RinvidGfx::use_texture_default_shader()
-{
-    render_context().use_texture_default_shader();
-}
-
-void RinvidGfx::use_text_default_shader()
-{
-    render_context().use_text_default_shader();
-}
-
-const Application* RinvidGfx::get_application()
-{
-    return render_context().get_application();
 }
 
 } // namespace rinvid

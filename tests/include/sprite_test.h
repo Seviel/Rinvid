@@ -16,7 +16,7 @@
 
 #include <SFML/Window/Context.hpp>
 
-#include <rinvid/core/rinvid_gfx.h>
+#include <rinvid/core/render_context.h>
 #include <rinvid/core/rinvid_gl.h>
 #include <rinvid/core/texture.h>
 
@@ -51,7 +51,8 @@ class SpriteTest : public ::testing::Test
             GTEST_SKIP() << "Required OpenGL 3.0 functions are unavailable";
         }
 #endif
-        RinvidGfx::init(nullptr);
+        render_context_.set_viewport(0, 0, 32, 32);
+        render_context_.init(nullptr);
 
         const char* file_name = {"tests/resources/valid_image.png"};
         mock_texture_         = new Texture{file_name};
@@ -61,10 +62,11 @@ class SpriteTest : public ::testing::Test
     {
         delete mock_texture_;
         mock_texture_ = nullptr;
-        RinvidGfx::shutdown();
+        render_context_.shutdown();
     }
 
-    Texture* mock_texture_{nullptr};
+    Texture*      mock_texture_{nullptr};
+    RenderContext render_context_{};
 
   private:
     // Since we don't have/need window in unit tests, we need active OpenGL context to be able to

@@ -13,7 +13,7 @@
 #include <string>
 
 #include <rinvid/core/application.h>
-#include <rinvid/core/rinvid_gfx.h>
+#include <rinvid/core/render_context.h>
 #include <rinvid/core/screen.h>
 #include <rinvid/core/sprite.h>
 #include <rinvid/core/texture.h>
@@ -67,7 +67,7 @@ void ShadersScreen::create()
 void ShadersScreen::update(double delta_time)
 {
     (void)delta_time;
-    RinvidGfx::clear_screen(0.0F, 0.0F, 0.0F, 1.0F);
+    get_render_context().clear_screen(0.0F, 0.0F, 0.0F, 1.0F);
     sprite1_.draw(shader_);
     sprite2_.draw();
 }

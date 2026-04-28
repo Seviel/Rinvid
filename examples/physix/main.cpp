@@ -8,7 +8,7 @@
  **********************************************************************/
 
 #include <rinvid/core/application.h>
-#include <rinvid/core/rinvid_gfx.h>
+#include <rinvid/core/render_context.h>
 #include <rinvid/core/screen.h>
 #include <rinvid/core/sprite.h>
 #include <rinvid/core/sprite_object.h>
@@ -58,7 +58,7 @@ void PhysixScreen::create()
 
 void PhysixScreen::update(double delta_time)
 {
-    RinvidGfx::clear_screen(0.2F, 0.8F, 0.8F, 1.0F);
+    get_render_context().clear_screen(0.2F, 0.8F, 0.8F, 1.0F);
 
     if (Keyboard::is_key_pressed(system::Keyboard::Key::Up))
     {
