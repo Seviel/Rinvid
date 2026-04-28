@@ -16,16 +16,12 @@
 
 #include <SFML/Window.hpp>
 
+#include <rinvid/core/application_context.h>
 #include <rinvid/core/screen.h>
 #include <rinvid/util/vector2.h>
 
 namespace rinvid
 {
-
-namespace system
-{
-class Mouse;
-}
 
 class Application
 {
@@ -74,13 +70,29 @@ class Application
      *************************************************************************************************/
     void exit();
 
+    /**************************************************************************************************
+     * @brief Returns application context.
+     *
+     * @return Application context.
+     *
+     *************************************************************************************************/
+    ApplicationContext& get_context();
+
+    /**************************************************************************************************
+     * @brief Returns application context.
+     *
+     * @return Application context.
+     *
+     *************************************************************************************************/
+    const ApplicationContext& get_context() const;
+
   private:
-    friend class rinvid::system::Mouse;
     void activate_pending_screen();
     void destroy_current_screen();
     void handle_events(sf::Window& window, sf::Event& event);
 
     sf::Window              window_;
+    ApplicationContext      context_;
     std::unique_ptr<Screen> current_screen_;
     std::unique_ptr<Screen> new_screen_;
     std::uint16_t           fps_;

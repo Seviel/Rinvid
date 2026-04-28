@@ -10,6 +10,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/transform.hpp>
 
+#include <rinvid/core/application_context.h>
 #include <rinvid/core/rinvid_gfx.h>
 #include <rinvid/util/error_handler.h>
 
@@ -179,36 +180,26 @@ const char* default_text_frag =
         color = vec4(text_color, 1.0) * sampled;\n\
     }\n";
 
-glm::mat4          RinvidGfx::model_view_projection_{1.0F};
-glm::mat4          RinvidGfx::view_{1.0F};
-glm::mat4          RinvidGfx::projection_{1.0F};
-Shader             RinvidGfx::shape_default_shader_{};
-Shader             RinvidGfx::texture_default_shader_{};
-Shader             RinvidGfx::text_default_shader_{};
-std::int32_t       RinvidGfx::width_{};
-std::int32_t       RinvidGfx::height_{};
-const Application* RinvidGfx::application_{nullptr};
-
-void RinvidGfx::init_default_shaders()
+void RenderContext::init_default_shaders()
 {
     shape_default_shader_   = Shader(default_shape_vert, default_shape_frag);
     texture_default_shader_ = Shader(default_texture_vert, default_texture_frag);
     text_default_shader_    = Shader(default_text_vert, default_text_frag);
 }
 
-void RinvidGfx::init(const Application* application)
+void RenderContext::init(const Application* application)
 {
-    RinvidGfx::init_default_shaders();
+    init_default_shaders();
     GL_CALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
     GL_CALL(glEnable(GL_BLEND));
-    projection_ = glm::ortho(0.0F, static_cast<float>(RinvidGfx::get_width()),
-                             static_cast<float>(RinvidGfx::get_height()), 0.0F, -1.0f, 1.0f);
+    projection_ = glm::ortho(0.0F, static_cast<float>(get_width()),
+                             static_cast<float>(get_height()), 0.0F, -1.0F, 1.0F);
 
     model_view_projection_ = projection_ * view_;
     application_           = application;
 }
 
-void RinvidGfx::shutdown()
+void RenderContext::shutdown()
 {
     shape_default_shader_   = Shader{};
     texture_default_shader_ = Shader{};
@@ -216,64 +207,74 @@ void RinvidGfx::shutdown()
     application_            = nullptr;
 }
 
-void RinvidGfx::set_viewport(std::int32_t x, std::int32_t y, std::int32_t width,
-                             std::int32_t heigth)
+void RenderContext::set_viewport(std::int32_t x, std::int32_t y, std::int32_t width,
+                                 std::int32_t heigth)
 {
-    RinvidGfx::width_  = width;
-    RinvidGfx::height_ = heigth;
+    width_  = width;
+    height_ = heigth;
     GL_CALL(glViewport(x, y, width, heigth));
 }
 
-void RinvidGfx::clear_screen(float r, float g, float b, float a)
+void RenderContext::clear_screen(float r, float g, float b, float a)
 {
     GL_CALL(glClearColor(r, g, b, a));
     GL_CALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 }
 
-std::uint32_t RinvidGfx::get_shape_default_shader_id()
+std::uint32_t RenderContext::get_shape_default_shader_id() const
 {
     return shape_default_shader_.get_id();
 }
 
-std::uint32_t RinvidGfx::get_texture_default_shader_id()
+std::uint32_t RenderContext::get_texture_default_shader_id() const
 {
     return texture_default_shader_.get_id();
 }
 
-std::uint32_t RinvidGfx::get_text_default_shader_id()
+std::uint32_t RenderContext::get_text_default_shader_id() const
 {
     return text_default_shader_.get_id();
 }
 
-const Shader RinvidGfx::get_shape_default_shader()
+const Shader RenderContext::get_shape_default_shader() const
 {
     return shape_default_shader_;
 }
 
-const Shader RinvidGfx::get_texture_default_shader()
+const Shader RenderContext::get_texture_default_shader() const
 {
     return texture_default_shader_;
 }
 
-const Shader RinvidGfx::get_text_default_shader()
+const Shader RenderContext::get_text_default_shader() const
 {
     return text_default_shader_;
 }
 
-std::int32_t RinvidGfx::get_width()
+std::int32_t RenderContext::get_width() const
 {
     return width_;
 }
 
-std::int32_t RinvidGfx::get_height()
+std::int32_t RenderContext::get_height() const
 {
     return height_;
 }
 
-void RinvidGfx::update_mvp_matrix(const glm::mat4& model, std::uint32_t shader_id)
+float RenderContext::get_opengl_x_coord(float absolute_coord) const
 {
-    projection_ = glm::ortho(0.0F, static_cast<float>(RinvidGfx::get_width()),
-                             static_cast<float>(RinvidGfx::get_height()), 0.0F, -1.0f, 1.0f);
+    return ((absolute_coord / width_) * 2.0F) - 1.0F;
+}
+
+float RenderContext::get_opengl_y_coord(float absolute_coord) const
+{
+    return -1.0F * (((absolute_coord / height_) * 2.0F) - 1.0F);
+}
+
+void RenderContext::update_mvp_matrix(const glm::mat4& model, std::uint32_t shader_id)
+{
+    projection_ = glm::ortho(0.0F, static_cast<float>(get_width()),
+                             static_cast<float>(get_height()), 0.0F, -1.0F, 1.0F);
 
     model_view_projection_    = projection_ * view_ * model;
     std::int32_t mvp_location = glGetUniformLocation(shader_id, "model_view_projection");
@@ -286,34 +287,153 @@ void RinvidGfx::update_mvp_matrix(const glm::mat4& model, std::uint32_t shader_i
     GL_CALL(glUniformMatrix4fv(mvp_location, 1, GL_FALSE, glm::value_ptr(model_view_projection_)));
 }
 
-void RinvidGfx::update_view(const glm::mat4& view)
+void RenderContext::update_view(const glm::mat4& view)
 {
     view_ = view;
 }
 
-const glm::mat4& RinvidGfx::get_view()
+const glm::mat4& RenderContext::get_view() const
 {
     return view_;
 }
 
-void RinvidGfx::use_shape_default_shader()
+void RenderContext::use_shape_default_shader() const
 {
     shape_default_shader_.use();
 }
 
-void RinvidGfx::use_texture_default_shader()
+void RenderContext::use_texture_default_shader() const
 {
     texture_default_shader_.use();
 }
 
-void RinvidGfx::use_text_default_shader()
+void RenderContext::use_text_default_shader() const
 {
     text_default_shader_.use();
 }
 
-const Application* RinvidGfx::get_application()
+const Application* RenderContext::get_application() const
 {
     return application_;
+}
+
+RenderContext RinvidGfx::fallback_render_context_{};
+
+RenderContext& RinvidGfx::render_context()
+{
+    ApplicationContext* context = ApplicationContext::get_active_context();
+    if (context != nullptr)
+    {
+        return context->get_render_context();
+    }
+
+    return fallback_render_context_;
+}
+
+void RinvidGfx::init(const Application* application)
+{
+    render_context().init(application);
+}
+
+void RinvidGfx::shutdown()
+{
+    render_context().shutdown();
+}
+
+void RinvidGfx::set_viewport(std::int32_t x, std::int32_t y, std::int32_t width,
+                             std::int32_t heigth)
+{
+    render_context().set_viewport(x, y, width, heigth);
+}
+
+void RinvidGfx::clear_screen(float r, float g, float b, float a)
+{
+    render_context().clear_screen(r, g, b, a);
+}
+
+std::uint32_t RinvidGfx::get_shape_default_shader_id()
+{
+    return render_context().get_shape_default_shader_id();
+}
+
+std::uint32_t RinvidGfx::get_texture_default_shader_id()
+{
+    return render_context().get_texture_default_shader_id();
+}
+
+std::uint32_t RinvidGfx::get_text_default_shader_id()
+{
+    return render_context().get_text_default_shader_id();
+}
+
+const Shader RinvidGfx::get_shape_default_shader()
+{
+    return render_context().get_shape_default_shader();
+}
+
+const Shader RinvidGfx::get_texture_default_shader()
+{
+    return render_context().get_texture_default_shader();
+}
+
+const Shader RinvidGfx::get_text_default_shader()
+{
+    return render_context().get_text_default_shader();
+}
+
+std::int32_t RinvidGfx::get_width()
+{
+    return render_context().get_width();
+}
+
+std::int32_t RinvidGfx::get_height()
+{
+    return render_context().get_height();
+}
+
+float RinvidGfx::get_opengl_x_coord(float absolute_coord)
+{
+    return render_context().get_opengl_x_coord(absolute_coord);
+}
+
+float RinvidGfx::get_opengl_y_coord(float absolute_coord)
+{
+    return render_context().get_opengl_y_coord(absolute_coord);
+}
+
+void RinvidGfx::update_mvp_matrix(const glm::mat4& model, std::uint32_t shader_id)
+{
+    render_context().update_mvp_matrix(model, shader_id);
+}
+
+void RinvidGfx::update_view(const glm::mat4& view)
+{
+    render_context().update_view(view);
+}
+
+const glm::mat4& RinvidGfx::get_view()
+{
+    return render_context().get_view();
+}
+
+void RinvidGfx::use_shape_default_shader()
+{
+    render_context().use_shape_default_shader();
+}
+
+void RinvidGfx::use_texture_default_shader()
+{
+    render_context().use_texture_default_shader();
+}
+
+void RinvidGfx::use_text_default_shader()
+{
+    render_context().use_text_default_shader();
+}
+
+const Application* RinvidGfx::get_application()
+{
+    return render_context().get_application();
 }
 
 } // namespace rinvid

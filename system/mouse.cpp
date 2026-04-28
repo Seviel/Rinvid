@@ -9,7 +9,7 @@
 
 #include <SFML/Window.hpp>
 
-#include <rinvid/core/rinvid_gfx.h>
+#include <rinvid/core/application_context.h>
 #include <rinvid/system/mouse.h>
 
 namespace rinvid
@@ -31,7 +31,13 @@ bool Mouse::is_button_pressed(MouseButton button)
 
 Vector2f Mouse::get_mouse_pos()
 {
-    sf::Vector2i mouse_position = sf::Mouse::getPosition(RinvidGfx::get_application()->window_);
+    ApplicationContext* context = ApplicationContext::get_active_context();
+    if (context == nullptr || context->get_window() == nullptr)
+    {
+        return Vector2f{};
+    }
+
+    sf::Vector2i mouse_position = sf::Mouse::getPosition(*context->get_window());
 
     return Vector2f{static_cast<float>(mouse_position.x), static_cast<float>(mouse_position.y)};
 }
