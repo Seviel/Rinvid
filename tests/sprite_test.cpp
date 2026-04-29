@@ -8,6 +8,7 @@
  **********************************************************************/
 
 #include <array>
+#include <string>
 
 #include <gtest/gtest.h>
 
@@ -152,6 +153,27 @@ TEST_F(SpriteTest, AnimatedDraw_AdvancesAnimation)
 
     sprite.get_animation().add_animation("blink", animation);
     sprite.get_animation().play("blink");
+
+    EXPECT_NO_THROW(sprite.draw(1.0));
+    EXPECT_TRUE(sprite.get_animation().is_animation_finished());
+    ASSERT_TRUE(number_of_errors == errors::get_error_count());
+}
+
+TEST_F(SpriteTest, AnimatedDraw_RemainsStableAfterAddingAnimations)
+{
+    auto number_of_errors = errors::get_error_count();
+
+    Sprite            sprite{mock_texture_, 100, 100, {10.0F, 20.0F}, {0.0F, 0.0F}};
+    std::vector<Rect> frames{{{0.0F, 0.0F}, 1, 1}, {{1.0F, 0.0F}, 1, 1}};
+    Animation         animation{1.0, frames};
+
+    sprite.get_animation().add_animation("blink", animation);
+    sprite.get_animation().play("blink");
+
+    for (std::uint32_t i = 0U; i < 256U; ++i)
+    {
+        sprite.get_animation().add_animation("extra_" + std::to_string(i), animation);
+    }
 
     EXPECT_NO_THROW(sprite.draw(1.0));
     EXPECT_TRUE(sprite.get_animation().is_animation_finished());

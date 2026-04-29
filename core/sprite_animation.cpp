@@ -11,6 +11,7 @@
 #include <utility>
 
 #include <rinvid/core/sprite_animation.h>
+#include <rinvid/util/error_handler.h>
 
 namespace rinvid
 {
@@ -43,23 +44,72 @@ void SpriteAnimation::add_animation(std::string name, Animation animation)
     animations_.emplace(std::move(name), std::move(animation));
 }
 
+Animation* SpriteAnimation::get_animation_by_name(const std::string& name)
+{
+    auto animation = animations_.find(name);
+    if (animation == animations_.end())
+    {
+        return nullptr;
+    }
+
+    return &animation->second;
+}
+
+const Animation* SpriteAnimation::get_animation_by_name(const std::string& name) const
+{
+    auto animation = animations_.find(name);
+    if (animation == animations_.end())
+    {
+        return nullptr;
+    }
+
+    return &animation->second;
+}
+
+Animation* SpriteAnimation::get_current_animation()
+{
+    if (current_animation_name_.empty())
+    {
+        return nullptr;
+    }
+
+    return get_animation_by_name(current_animation_name_);
+}
+
+const Animation* SpriteAnimation::get_current_animation() const
+{
+    if (current_animation_name_.empty())
+    {
+        return nullptr;
+    }
+
+    return get_animation_by_name(current_animation_name_);
+}
+
 void SpriteAnimation::play(const std::string& name, bool reset)
 {
-    auto       animation      = animations_.find(name);
-    Animation* next_animation = &(animation->second);
+    Animation* next_animation = get_animation_by_name(name);
+    if (next_animation == nullptr)
+    {
+        errors::put_error_to_log("SpriteAnimation::play error: animation '" + name +
+                                 "' does not exist");
+        is_active_ = false;
+        current_animation_name_.clear();
+        return;
+    }
 
     is_active_ = true;
-    if (current_animation_ == next_animation)
+    if (current_animation_name_ == name)
     {
         if (reset)
         {
-            current_animation_->reset();
+            next_animation->reset();
         }
     }
     else
     {
-        current_animation_ = next_animation;
-        current_animation_->reset();
+        current_animation_name_ = name;
+        next_animation->reset();
     }
 }
 
@@ -67,7 +117,15 @@ bool SpriteAnimation::is_animation_finished()
 {
     if (is_active_)
     {
-        return current_animation_->is_finished();
+        Animation* current_animation = get_current_animation();
+        if (current_animation == nullptr)
+        {
+            is_active_ = false;
+            current_animation_name_.clear();
+            return true;
+        }
+
+        return current_animation->is_finished();
     }
     else
     {
@@ -81,7 +139,11 @@ void SpriteAnimation::set_animation_by_name(const std::string& name, Animation& 
     if (anim != animations_.end())
     {
         anim->second = animation;
+        return;
     }
+
+    errors::put_error_to_log("SpriteAnimation::set_animation_by_name error: animation '" + name +
+                             "' does not exist");
 }
 
 } // namespace rinvid
