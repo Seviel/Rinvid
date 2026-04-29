@@ -12,11 +12,11 @@
 #include <sstream>
 #include <string>
 
-#include <rinvid/core/application.h>
 #include <rinvid/core/render_context.h>
-#include <rinvid/core/screen.h>
 #include <rinvid/core/sprite.h>
 #include <rinvid/core/texture.h>
+#include <rinvid/system/application.h>
+#include <rinvid/system/screen.h>
 #include <rinvid/util/vector2.h>
 
 using namespace rinvid;

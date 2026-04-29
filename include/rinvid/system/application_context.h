@@ -7,8 +7,8 @@
  * repository for more details.
  **********************************************************************/
 
-#ifndef INCLUDE_RINVID_CORE_APPLICATION_CONTEXT_H
-#define INCLUDE_RINVID_CORE_APPLICATION_CONTEXT_H
+#ifndef INCLUDE_RINVID_SYSTEM_APPLICATION_CONTEXT_H
+#define INCLUDE_RINVID_SYSTEM_APPLICATION_CONTEXT_H
 
 #include <rinvid/core/render_context.h>
 
@@ -131,4 +131,4 @@ class ApplicationContext
 
 } // namespace rinvid
 
-#endif // INCLUDE_RINVID_CORE_APPLICATION_CONTEXT_H
+#endif // INCLUDE_RINVID_SYSTEM_APPLICATION_CONTEXT_H

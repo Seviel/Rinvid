@@ -7,8 +7,8 @@
  * repository for more details.
  **********************************************************************/
 
-#ifndef INCLUDE_RINVID_CORE_OBJECT_H
-#define INCLUDE_RINVID_CORE_OBJECT_H
+#ifndef INCLUDE_RINVID_PLATFORMERS_OBJECT_H
+#define INCLUDE_RINVID_PLATFORMERS_OBJECT_H
 
 #include <cstdint>
 
@@ -290,4 +290,4 @@ class Object : public virtual RectPOD
 
 } // namespace rinvid
 
-#endif // INCLUDE_RINVID_CORE_OBJECT_H
+#endif // INCLUDE_RINVID_PLATFORMERS_OBJECT_H

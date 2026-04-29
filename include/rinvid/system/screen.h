@@ -7,8 +7,8 @@
  * repository for more details.
  **********************************************************************/
 
-#ifndef INCLUDE_RINVID_CORE_SCREEN_H
-#define INCLUDE_RINVID_CORE_SCREEN_H
+#ifndef INCLUDE_RINVID_SYSTEM_SCREEN_H
+#define INCLUDE_RINVID_SYSTEM_SCREEN_H
 
 namespace rinvid
 {
@@ -68,4 +68,4 @@ class Screen
 
 } // namespace rinvid
 
-#endif // INCLUDE_RINVID_CORE_SCREEN_H
+#endif // INCLUDE_RINVID_SYSTEM_SCREEN_H

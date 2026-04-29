@@ -17,7 +17,6 @@
 #include <iostream>
 
 #include <rinvid/core/animation.h>
-#include <rinvid/core/application.h>
 #include <rinvid/core/camera.h>
 #include <rinvid/core/circle_shape.h>
 #include <rinvid/core/light.h>
@@ -26,7 +25,6 @@
 #include <rinvid/core/rectangle_shape.h>
 #include <rinvid/core/render_context.h>
 #include <rinvid/core/rinvid_gl.h>
-#include <rinvid/core/screen.h>
 #include <rinvid/core/sprite.h>
 #include <rinvid/core/text.h>
 #include <rinvid/core/texture.h>
@@ -34,8 +32,10 @@
 #include <rinvid/core/ttf_lib.h>
 #include <rinvid/gui/button.h>
 #include <rinvid/sound/sound.h>
+#include <rinvid/system/application.h>
 #include <rinvid/system/keyboard.h>
 #include <rinvid/system/mouse.h>
+#include <rinvid/system/screen.h>
 #include <rinvid/util/collision_detection.h>
 #include <rinvid/util/vector2.h>
 

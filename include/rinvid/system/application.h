@@ -7,8 +7,8 @@
  * repository for more details.
  **********************************************************************/
 
-#ifndef INCLUDE_RINVID_CORE_APPLICATION_H
-#define INCLUDE_RINVID_CORE_APPLICATION_H
+#ifndef INCLUDE_RINVID_SYSTEM_APPLICATION_H
+#define INCLUDE_RINVID_SYSTEM_APPLICATION_H
 
 #include <cstdint>
 #include <memory>
@@ -16,8 +16,8 @@
 
 #include <SFML/Window.hpp>
 
-#include <rinvid/core/application_context.h>
-#include <rinvid/core/screen.h>
+#include <rinvid/system/application_context.h>
+#include <rinvid/system/screen.h>
 #include <rinvid/util/vector2.h>
 
 namespace rinvid
@@ -117,4 +117,4 @@ class Application
 
 } // namespace rinvid
 
-#endif // INCLUDE_RINVID_CORE_APPLICATION_H
+#endif // INCLUDE_RINVID_SYSTEM_APPLICATION_H

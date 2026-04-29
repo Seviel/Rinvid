@@ -9,7 +9,7 @@
 
 #include <gtest/gtest.h>
 
-#include <rinvid/core/object.h>
+#include <rinvid/platformers/object.h>
 #include <rinvid/platformers/world.h>
 
 #include "include/world_test.h"
