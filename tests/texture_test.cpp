@@ -29,6 +29,20 @@ TEST_F(TextureTest, Constructor_ValidImageFile)
     ASSERT_TRUE(number_of_errors == errors::get_error_count());
 }
 
+TEST_F(TextureTest, Constructor_RawPixels)
+{
+    auto number_of_errors = errors::get_error_count();
+
+    std::vector<std::uint8_t> image_data{255U, 0U, 0U,   255U, 0U,   255U, 0U,   255U,
+                                         0U,   0U, 255U, 255U, 255U, 255U, 255U, 255U};
+    Texture                   texture{image_data, 2, 2};
+    Sprite                    sprite{&texture, 2, 2, {0.0F, 0.0F}};
+
+    EXPECT_NO_THROW(sprite.draw());
+
+    ASSERT_TRUE(number_of_errors == errors::get_error_count());
+}
+
 // Test the constructor with an invalid image file
 TEST_F(TextureTest, Constructor_InvalidImageFile)
 {
