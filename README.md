@@ -74,6 +74,19 @@ To build without tests, configure with:
 /mingw64/bin/cmake -S .. -B . -G Ninja -DRINVID_BUILD_TESTS=OFF
 ```
 
+To enable benchmark builds during configure:
+```shell
+/mingw64/bin/cmake -S .. -B . -G Ninja -DRINVID_BUILD_BENCHMARKS=ON
+```
+
+The benchmark executable is `rinvid_benchmark`. The current sprite-scene benchmark generates random
+RGBA textures in memory, with random dimensions between `50x50` and `500x500`, and uses Google
+Benchmark command-line flags such as:
+```shell
+./benchmarks/rinvid_benchmark.exe --benchmark_dry_run
+./benchmarks/rinvid_benchmark.exe --benchmark_filter=DrawRandomSpriteScene
+```
+
 ## External libraries used by Rinvid
 
 [SFML](https://www.sfml-dev.org/)  
@@ -81,4 +94,5 @@ To build without tests, configure with:
 [glm](https://github.com/g-truc/glm)  
 [GLAD](https://glad.dav1d.de/)  
 [gtest](https://github.com/google/googletest)  
+[Google Benchmark](https://github.com/google/benchmark)  
 [Freetype](http://freetype.org/)
