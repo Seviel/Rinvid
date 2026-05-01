@@ -7,14 +7,14 @@
  * repository for more details.
  **********************************************************************/
 
-#include <rinvid/core/application.h>
 #include <rinvid/core/render_context.h>
-#include <rinvid/core/screen.h>
 #include <rinvid/core/sprite.h>
-#include <rinvid/core/sprite_object.h>
 #include <rinvid/core/texture.h>
+#include <rinvid/platformers/sprite_object.h>
 #include <rinvid/platformers/world.h>
+#include <rinvid/system/application.h>
 #include <rinvid/system/keyboard.h>
+#include <rinvid/system/screen.h>
 #include <rinvid/util/vector2.h>
 
 using namespace rinvid;

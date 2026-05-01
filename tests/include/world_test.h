@@ -12,7 +12,7 @@
 
 #include <gtest/gtest.h>
 
-#include <rinvid/core/object.h>
+#include <rinvid/platformers/object.h>
 
 using namespace rinvid;
 

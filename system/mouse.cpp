@@ -9,7 +9,7 @@
 
 #include <SFML/Window.hpp>
 
-#include <rinvid/core/application_context.h>
+#include <rinvid/system/application_context.h>
 #include <rinvid/system/mouse.h>
 
 namespace rinvid

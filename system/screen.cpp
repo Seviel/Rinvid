@@ -7,24 +7,30 @@
  * repository for more details.
  **********************************************************************/
 
-#include <rinvid/core/sprite_object.h>
+#include <rinvid/system/application.h>
+#include <rinvid/system/screen.h>
 
 namespace rinvid
 {
 
-SpriteObject::SpriteObject()
+Application* Screen::get_application()
 {
+    return application_;
 }
 
-SpriteObject::SpriteObject(Texture* texture, std::int32_t width, std::int32_t height,
-                           Vector2f top_left, Vector2f texture_offset)
-    : Sprite(texture, width, height, top_left, texture_offset)
+RenderContext& Screen::get_render_context()
 {
+    return application_->get_render_context();
 }
 
-Rect SpriteObject::bounding_rect()
+const RenderContext& Screen::get_render_context() const
 {
-    return Sprite::bounding_rect();
+    return application_->get_render_context();
+}
+
+void Screen::set_application(Application* application)
+{
+    application_ = application;
 }
 
 } // namespace rinvid

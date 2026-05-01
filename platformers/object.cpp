@@ -7,7 +7,7 @@
  * repository for more details.
  **********************************************************************/
 
-#include <rinvid/core/object.h>
+#include <rinvid/platformers/object.h>
 #include <rinvid/platformers/world.h>
 
 namespace rinvid

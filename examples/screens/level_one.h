@@ -12,10 +12,10 @@
 
 #include <memory>
 
-#include <rinvid/core/application.h>
-#include <rinvid/core/screen.h>
 #include <rinvid/core/sprite.h>
 #include <rinvid/core/texture.h>
+#include <rinvid/system/application.h>
+#include <rinvid/system/screen.h>
 
 class LevelOne : public rinvid::Screen
 {

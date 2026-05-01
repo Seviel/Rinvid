@@ -7,15 +7,15 @@
  * repository for more details.
  **********************************************************************/
 
-#include <rinvid/core/application.h>
 #include <rinvid/core/circle_shape.h>
 #include <rinvid/core/quad_shape.h>
 #include <rinvid/core/rectangle_shape.h>
 #include <rinvid/core/render_context.h>
 #include <rinvid/core/rinvid_gl.h>
-#include <rinvid/core/screen.h>
 #include <rinvid/core/triangle_shape.h>
+#include <rinvid/system/application.h>
 #include <rinvid/system/keyboard.h>
+#include <rinvid/system/screen.h>
 #include <rinvid/util/vector2.h>
 
 using namespace rinvid::system;

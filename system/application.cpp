@@ -19,8 +19,9 @@
 #ifdef _WIN32
 #include <rinvid/util/windows_utils.h>
 #endif // _WIN32
-#include <rinvid/core/application.h>
+
 #include <rinvid/core/rinvid_gl.h>
+#include <rinvid/system/application.h>
 #include <rinvid/util/vector2.h>
 
 namespace rinvid

@@ -7,12 +7,12 @@
  * repository for more details.
  **********************************************************************/
 
-#ifndef INCLUDE_RINVID_CORE_SPRITE_OBJECT_H
-#define INCLUDE_RINVID_CORE_SPRITE_OBJECT_H
+#ifndef INCLUDE_RINVID_PLATFORMERS_SPRITE_OBJECT_H
+#define INCLUDE_RINVID_PLATFORMERS_SPRITE_OBJECT_H
 
-#include <rinvid/core/object.h>
 #include <rinvid/core/sprite.h>
 #include <rinvid/core/texture.h>
+#include <rinvid/platformers/object.h>
 #include <rinvid/util/vector2.h>
 
 namespace rinvid
@@ -58,4 +58,4 @@ class SpriteObject : public Sprite, public Object
 
 } // namespace rinvid
 
-#endif // INCLUDE_RINVID_CORE_SPRITE_OBJECT_H
+#endif // INCLUDE_RINVID_PLATFORMERS_SPRITE_OBJECT_H
