@@ -31,10 +31,19 @@ namespace
 
 constexpr std::uint32_t BENCHMARK_WINDOW_WIDTH{1280U};
 constexpr std::uint32_t BENCHMARK_WINDOW_HEIGHT{720U};
+constexpr std::uint32_t PINNED_CATEGORY_COUNT{100U};
 constexpr double        FIXED_DELTA_TIME{1.0 / 60.0};
 constexpr const char*   FONT_RESOURCE_PATH{"resources/aquifer.ttf"};
 constexpr std::int32_t  MIN_TEXTURE_SIZE{50};
 constexpr std::int32_t  MAX_TEXTURE_SIZE{500};
+
+enum class VaryingCategory
+{
+    Sprites,
+    Shapes,
+    Text,
+    Lights
+};
 
 struct SpriteSetup
 {
@@ -196,6 +205,47 @@ FullStressBenchmarkRuntime& get_full_stress_runtime()
     return runtime;
 }
 
+StressSceneCounts make_counts_with_varying_category(std::uint32_t   fixed_count,
+                                                    std::uint32_t   varying_count,
+                                                    VaryingCategory varying_category)
+{
+    StressSceneCounts counts = make_uniform_stress_scene_counts(fixed_count);
+
+    switch (varying_category)
+    {
+        case VaryingCategory::Sprites:
+            counts.sprite_count_ = varying_count;
+            break;
+        case VaryingCategory::Shapes:
+            counts.shape_count_ = varying_count;
+            break;
+        case VaryingCategory::Text:
+            counts.text_count_ = varying_count;
+            break;
+        case VaryingCategory::Lights:
+            counts.light_count_ = varying_count;
+            break;
+    }
+
+    return counts;
+}
+
+void run_full_stress_benchmark_case(benchmark::State& state, const StressSceneCounts& counts)
+{
+    auto& runtime = get_full_stress_runtime();
+
+    runtime.run_frame(counts);
+    state.SetLabel(format_stress_scene_counts(counts));
+
+    for (auto _ : state)
+    {
+        runtime.run_frame(counts);
+    }
+
+    state.counters["frames_per_second"] =
+        benchmark::Counter(static_cast<double>(state.iterations()), benchmark::Counter::kIsRate);
+}
+
 BENCHMARK_DEFINE_F(SpriteSceneBenchmark, DrawRandomSpriteScene)(benchmark::State& state)
 {
     for (auto _ : state)
@@ -216,22 +266,78 @@ BENCHMARK_REGISTER_F(SpriteSceneBenchmark, DrawRandomSpriteScene)
 
 static void FullStressFrame(benchmark::State& state)
 {
-    auto&                   runtime = get_full_stress_runtime();
     const StressSceneCounts counts =
         make_uniform_stress_scene_counts(static_cast<std::uint32_t>(state.range(0)));
 
-    runtime.run_frame(counts);
+    run_full_stress_benchmark_case(state, counts);
+}
 
-    for (auto _ : state)
-    {
-        runtime.run_frame(counts);
-    }
+static void FullStressFrameVarySprites(benchmark::State& state)
+{
+    const StressSceneCounts counts = make_counts_with_varying_category(
+        PINNED_CATEGORY_COUNT, static_cast<std::uint32_t>(state.range(0)),
+        VaryingCategory::Sprites);
 
-    state.counters["frames_per_second"] =
-        benchmark::Counter(static_cast<double>(state.iterations()), benchmark::Counter::kIsRate);
+    run_full_stress_benchmark_case(state, counts);
+}
+
+static void FullStressFrameVaryShapes(benchmark::State& state)
+{
+    const StressSceneCounts counts = make_counts_with_varying_category(
+        PINNED_CATEGORY_COUNT, static_cast<std::uint32_t>(state.range(0)), VaryingCategory::Shapes);
+
+    run_full_stress_benchmark_case(state, counts);
+}
+
+static void FullStressFrameVaryText(benchmark::State& state)
+{
+    const StressSceneCounts counts = make_counts_with_varying_category(
+        PINNED_CATEGORY_COUNT, static_cast<std::uint32_t>(state.range(0)), VaryingCategory::Text);
+
+    run_full_stress_benchmark_case(state, counts);
+}
+
+static void FullStressFrameVaryLights(benchmark::State& state)
+{
+    const StressSceneCounts counts = make_counts_with_varying_category(
+        PINNED_CATEGORY_COUNT, static_cast<std::uint32_t>(state.range(0)), VaryingCategory::Lights);
+
+    run_full_stress_benchmark_case(state, counts);
 }
 
 BENCHMARK(FullStressFrame)
+    ->Arg(10)
+    ->Arg(25)
+    ->Arg(50)
+    ->Arg(100)
+    ->UseRealTime()
+    ->Unit(benchmark::kMillisecond);
+
+BENCHMARK(FullStressFrameVarySprites)
+    ->Arg(10)
+    ->Arg(25)
+    ->Arg(50)
+    ->Arg(100)
+    ->UseRealTime()
+    ->Unit(benchmark::kMillisecond);
+
+BENCHMARK(FullStressFrameVaryShapes)
+    ->Arg(10)
+    ->Arg(25)
+    ->Arg(50)
+    ->Arg(100)
+    ->UseRealTime()
+    ->Unit(benchmark::kMillisecond);
+
+BENCHMARK(FullStressFrameVaryText)
+    ->Arg(10)
+    ->Arg(25)
+    ->Arg(50)
+    ->Arg(100)
+    ->UseRealTime()
+    ->Unit(benchmark::kMillisecond);
+
+BENCHMARK(FullStressFrameVaryLights)
     ->Arg(10)
     ->Arg(25)
     ->Arg(50)
