@@ -15,15 +15,7 @@
 #include <utility>
 #include <vector>
 
-#ifdef __GNUC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Woverloaded-virtual"
-#endif
-#include <rinvid/core/drawable_animated.h>
-#ifdef __GNUC__
-#pragma GCC diagnostic pop
-#endif
-
+#include <rinvid/core/drawable.h>
 #include <rinvid/core/render_context.h>
 #include <rinvid/core/shape.h>
 #include <rinvid/util/error_handler.h>
