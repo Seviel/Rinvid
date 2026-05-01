@@ -19,5 +19,20 @@ file(GLOB_RECURSE BENCHMARK_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
 
 add_executable(rinvid_benchmark ${BENCHMARK_SOURCES})
 
-target_link_libraries(rinvid_benchmark PRIVATE rinvid benchmark::benchmark_main)
+target_link_libraries(rinvid_benchmark PRIVATE rinvid perf_stress_common benchmark::benchmark_main)
 target_compile_options(rinvid_benchmark PRIVATE -Werror -Wall -Wextra -pedantic -O3)
+
+set(BENCHMARK_FONT_RESOURCE ${PROJECT_SOURCE_DIR}/examples/testing_grounds/resources/aquifer.ttf)
+add_custom_command(TARGET rinvid_benchmark POST_BUILD COMMAND ${CMAKE_COMMAND} -E
+                                                             make_directory
+                                                             $<TARGET_FILE_DIR:rinvid_benchmark>/resources)
+add_custom_command(TARGET rinvid_benchmark POST_BUILD COMMAND ${CMAKE_COMMAND} -E
+                                                             copy_if_different
+                                                             ${BENCHMARK_FONT_RESOURCE}
+                                                             $<TARGET_FILE_DIR:rinvid_benchmark>/resources/aquifer.ttf)
+add_custom_command(TARGET rinvid_benchmark POST_BUILD COMMAND ${CMAKE_COMMAND} -E make_directory
+                                                             ${PROJECT_BINARY_DIR}/resources)
+add_custom_command(TARGET rinvid_benchmark POST_BUILD COMMAND ${CMAKE_COMMAND} -E
+                                                             copy_if_different
+                                                             ${BENCHMARK_FONT_RESOURCE}
+                                                             ${PROJECT_BINARY_DIR}/resources/aquifer.ttf)

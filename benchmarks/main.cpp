@@ -10,8 +10,12 @@
 #include <cstdint>
 #include <memory>
 #include <random>
+#include <string>
 #include <utility>
 #include <vector>
+
+#include <SFML/Window/Event.hpp>
+#include <SFML/Window/Window.hpp>
 
 #include <benchmark/benchmark.h>
 
@@ -20,11 +24,15 @@
 #include <rinvid/core/texture.h>
 #include <rinvid/system/application.h>
 
+#include "stress_scene.h"
+
 namespace
 {
 
 constexpr std::uint32_t BENCHMARK_WINDOW_WIDTH{1280U};
 constexpr std::uint32_t BENCHMARK_WINDOW_HEIGHT{720U};
+constexpr double        FIXED_DELTA_TIME{1.0 / 60.0};
+constexpr const char*   FONT_RESOURCE_PATH{"resources/aquifer.ttf"};
 constexpr std::int32_t  MIN_TEXTURE_SIZE{50};
 constexpr std::int32_t  MAX_TEXTURE_SIZE{500};
 
@@ -151,6 +159,43 @@ class SpriteSceneBenchmark : public benchmark::Fixture
     std::vector<std::unique_ptr<rinvid::Sprite>>  sprites_;
 };
 
+class FullStressBenchmarkRuntime
+{
+  public:
+    FullStressBenchmarkRuntime()
+        : application_{BENCHMARK_WINDOW_WIDTH, BENCHMARK_WINDOW_HEIGHT, "Rinvid full stress", false,
+                       0U},
+          stress_scene_{FONT_RESOURCE_PATH, BENCHMARK_WINDOW_WIDTH, BENCHMARK_WINDOW_HEIGHT,
+                        make_uniform_stress_scene_counts(100U)}
+    {
+        stress_scene_.set_active_counts(make_uniform_stress_scene_counts(10U));
+    }
+
+    void run_frame(const StressSceneCounts& counts)
+    {
+        stress_scene_.set_active_counts(counts);
+
+        sf::Event event{};
+        while (application_.get_context().get_window()->pollEvent(event))
+        {
+        }
+
+        stress_scene_.step(FIXED_DELTA_TIME);
+        stress_scene_.render();
+        application_.get_context().get_window()->display();
+    }
+
+  private:
+    rinvid::Application application_;
+    StressSceneContent  stress_scene_;
+};
+
+FullStressBenchmarkRuntime& get_full_stress_runtime()
+{
+    static FullStressBenchmarkRuntime runtime{};
+    return runtime;
+}
+
 BENCHMARK_DEFINE_F(SpriteSceneBenchmark, DrawRandomSpriteScene)(benchmark::State& state)
 {
     for (auto _ : state)
@@ -167,6 +212,31 @@ BENCHMARK_REGISTER_F(SpriteSceneBenchmark, DrawRandomSpriteScene)
     ->Arg(250)
     ->Arg(500)
     ->Arg(1000)
+    ->Unit(benchmark::kMillisecond);
+
+static void FullStressFrame(benchmark::State& state)
+{
+    auto&                   runtime = get_full_stress_runtime();
+    const StressSceneCounts counts =
+        make_uniform_stress_scene_counts(static_cast<std::uint32_t>(state.range(0)));
+
+    runtime.run_frame(counts);
+
+    for (auto _ : state)
+    {
+        runtime.run_frame(counts);
+    }
+
+    state.counters["frames_per_second"] =
+        benchmark::Counter(static_cast<double>(state.iterations()), benchmark::Counter::kIsRate);
+}
+
+BENCHMARK(FullStressFrame)
+    ->Arg(10)
+    ->Arg(25)
+    ->Arg(50)
+    ->Arg(100)
+    ->UseRealTime()
     ->Unit(benchmark::kMillisecond);
 
 } // namespace

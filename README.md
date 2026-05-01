@@ -85,7 +85,15 @@ Benchmark command-line flags such as:
 ```shell
 ./benchmarks/rinvid_benchmark.exe --benchmark_dry_run
 ./benchmarks/rinvid_benchmark.exe --benchmark_filter=DrawRandomSpriteScene
+./benchmarks/rinvid_benchmark.exe --benchmark_filter=FullStressFrame
 ```
+
+There is also a runnable stress example app:
+```shell
+./examples/perf_stress/perf_stress.exe
+```
+It renders moving random textures, shapes, lights, and text, and lets you switch between `10`,
+`25`, `50`, and `100` objects of each category with the `1`-`4` keys.
 
 ## External libraries used by Rinvid
 
