@@ -5,8 +5,11 @@ project("rinvid")
 set(CMAKE_CXX_STANDARD 17)
 
 option(RINVID_BUILD_TESTS "Build Rinvid tests" ON)
+option(RINVID_BUILD_BENCHMARKS "Build Rinvid benchmarks" OFF)
 set(RINVID_GTEST_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/extern/googletest"
     CACHE PATH "Path to a local GoogleTest source checkout")
+set(RINVID_BENCHMARK_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/extern/benchmark"
+    CACHE PATH "Path to a local Google Benchmark source checkout")
 
 find_package(Freetype REQUIRED)
 
@@ -122,12 +125,17 @@ else()
 endif()
 
 add_subdirectory(examples/full_demo)
+add_subdirectory(examples/perf_stress)
 add_subdirectory(examples/physix)
 add_subdirectory(examples/primitive_shapes)
 add_subdirectory(examples/screens)
 add_subdirectory(examples/shaders)
 add_subdirectory(examples/sprites)
 add_subdirectory(examples/testing_grounds)
+
+if(RINVID_BUILD_BENCHMARKS)
+  add_subdirectory(benchmarks)
+endif()
 
 if(RINVID_BUILD_TESTS)
   enable_testing()

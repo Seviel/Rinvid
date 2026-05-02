@@ -18,6 +18,18 @@
 namespace rinvid
 {
 
+void Texture::init_gl_texture(const std::uint8_t* image_data)
+{
+    GL_CALL(glGenTextures(1, &texture_id_));
+    GL_CALL(glBindTexture(GL_TEXTURE_2D, texture_id_));
+    GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
+    GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
+    GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+    GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+    GL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width_, height_, 0, GL_RGBA, GL_UNSIGNED_BYTE,
+                         image_data));
+}
+
 void Texture::release_gl_resources()
 {
     if (texture_id_ != 0)
@@ -37,14 +49,14 @@ Texture::Texture(const char* file_name)
                                  " image loading failed during texture creation");
     }
 
-    GL_CALL(glGenTextures(1, &texture_id_));
-    GL_CALL(glBindTexture(GL_TEXTURE_2D, texture_id_));
-    GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
-    GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
-    GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
-    GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
-    GL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width_, height_, 0, GL_RGBA, GL_UNSIGNED_BYTE,
-                         image_data.data()));
+    init_gl_texture(image_data.data());
+}
+
+Texture::Texture(const std::vector<std::uint8_t>& image_data, std::int32_t width,
+                 std::int32_t height)
+    : width_{width}, height_{height}
+{
+    init_gl_texture(image_data.data());
 }
 
 Texture::Texture(Texture&& other)

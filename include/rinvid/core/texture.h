@@ -11,6 +11,7 @@
 #define INCLUDE_RINVID_CORE_TEXTURE_H
 
 #include <cstdint>
+#include <vector>
 
 namespace rinvid
 {
@@ -25,6 +26,16 @@ class Texture
      *
      *************************************************************************************************/
     Texture(const char* file_name);
+
+    /**************************************************************************************************
+     * @brief Texture constructor from raw RGBA pixels.
+     *
+     * @param image_data Image data in RGBA8 format.
+     * @param width Texture width in pixels.
+     * @param height Texture height in pixels.
+     *
+     *************************************************************************************************/
+    Texture(const std::vector<std::uint8_t>& image_data, std::int32_t width, std::int32_t height);
 
     /**************************************************************************************************
      * @brief Copy constructor deleted.
@@ -65,6 +76,7 @@ class Texture
 
     void release_gl_resources();
     void bind() const;
+    void init_gl_texture(const std::uint8_t* image_data);
 
     std::int32_t  width_{};
     std::int32_t  height_{};

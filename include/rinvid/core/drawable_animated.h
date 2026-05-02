@@ -34,6 +34,8 @@ class DrawableAnimated : public Drawable
      *************************************************************************************************/
     virtual ~DrawableAnimated() {};
 
+    using Drawable::draw;
+
     /**************************************************************************************************
      * @brief Draws the animated object.
      *
