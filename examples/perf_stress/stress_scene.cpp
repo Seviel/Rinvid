@@ -305,7 +305,7 @@ void StressSceneContent::set_active_counts(const StressSceneCounts& counts)
 
     for (std::size_t index{0U}; index < lights_.size(); ++index)
     {
-        lights_.at(index).light_->switch_it(index < active_counts_.light_count_);
+        lights_.at(index).light_->set_active(index < active_counts_.light_count_);
     }
 }
 
@@ -377,7 +377,6 @@ void StressSceneContent::step(double delta_time)
         bounce_coordinate(light.position_.y, light.velocity_.y, 0.0F,
                           static_cast<float>(viewport_height_));
         light.light_->set_position(light.position_);
-        light.light_->update();
     }
 }
 

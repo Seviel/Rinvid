@@ -25,12 +25,27 @@ class LightManager
 {
   public:
     /**************************************************************************************************
+     * @brief Sets ambient lighting.
+     *
+     * @param enabled True if ambient lighting should be enabled.
+     * @param strength Intensity in 0.0 - 1.0 range.
+     *
+     *************************************************************************************************/
+    static void set_ambient_light(bool enabled, float strength = 0.1F);
+
+    /**************************************************************************************************
      * @brief Activates ambient lighting
      *
      * @param strength Intensity in 0.0 - 1.0 range
      *
      *************************************************************************************************/
     static void activate_ambient_light(float strength = 0.1F);
+
+    /**************************************************************************************************
+     * @brief Deactivates ambient lighting.
+     *
+     *************************************************************************************************/
+    static void deactivate_ambient_light();
 };
 
 } // namespace rinvid

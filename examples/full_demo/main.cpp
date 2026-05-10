@@ -164,7 +164,7 @@ void TestingGrounds::create()
     light_.set_intensity(0.5F);
     light_.set_falloff(0.3F);
 
-    LightManager::activate_ambient_light(0.5F);
+    LightManager::activate_ambient_light(0.2F);
 
     regions = player_sprite_.get_animation().split_animation_frames(30, 45, 52, 1);
     rinvid::Animation standing_right{14.0,
@@ -307,8 +307,6 @@ void TestingGrounds::handle_logic(double delta_time)
     }
 
     camera_.update();
-
-    light_.update(camera_.get_pos());
 
     button_control();
 

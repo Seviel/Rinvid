@@ -10,6 +10,7 @@
 #ifndef INCLUDE_RINVID_CORE_SHADER_H
 #define INCLUDE_RINVID_CORE_SHADER_H
 
+#include <cstdint>
 #include <memory>
 #include <string>
 
@@ -109,6 +110,8 @@ class Shader
 
   private:
     struct ProgramHandle;
+
+    std::int32_t get_uniform_location(const std::string& name) const;
 
     std::shared_ptr<ProgramHandle> program_handle_;
 };
