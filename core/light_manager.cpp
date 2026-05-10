@@ -17,6 +17,16 @@ namespace rinvid
 
 void LightManager::activate_ambient_light(float strength)
 {
+    set_ambient_light(true, strength);
+}
+
+void LightManager::deactivate_ambient_light()
+{
+    set_ambient_light(false, 0.0F);
+}
+
+void LightManager::set_ambient_light(bool enabled, float strength)
+{
     strength = std::clamp(strength, 0.0F, 1.0F);
 
     RenderContext* render_context = RenderContext::get_active_context();
@@ -25,15 +35,7 @@ void LightManager::activate_ambient_light(float strength)
         return;
     }
 
-    const auto shape_shader = render_context->get_shape_default_shader();
-    shape_shader.use();
-    shape_shader.set_bool("use_ambient_light", true);
-    shape_shader.set_float("ambient_strength", strength);
-
-    const auto texture_shader = render_context->get_texture_default_shader();
-    texture_shader.use();
-    texture_shader.set_bool("use_ambient_light", true);
-    texture_shader.set_float("ambient_strength", strength);
+    render_context->set_default_ambient_light(enabled, strength);
 }
 
 } // namespace rinvid

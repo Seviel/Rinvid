@@ -10,6 +10,7 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <unordered_map>
 
 #include <rinvid/core/shader.h>
 
@@ -26,7 +27,8 @@ struct Shader::ProgramHandle
         }
     }
 
-    std::uint32_t id_{};
+    std::uint32_t                                         id_{};
+    mutable std::unordered_map<std::string, std::int32_t> uniform_locations_{};
 };
 
 Shader::Shader(const char* vert_code, const char* frag_code)
@@ -55,7 +57,7 @@ void Shader::use() const
 
 void Shader::set_bool(const std::string& name, bool value) const
 {
-    std::int32_t location = glGetUniformLocation(get_id(), name.c_str());
+    std::int32_t location = get_uniform_location(name);
     if (location == -1)
     {
         rinvid::errors::put_error_to_log("glGetUniformLocation error: invalid uniform name");
@@ -66,7 +68,7 @@ void Shader::set_bool(const std::string& name, bool value) const
 
 void Shader::set_int(const std::string& name, std::int32_t value) const
 {
-    std::int32_t location = glGetUniformLocation(get_id(), name.c_str());
+    std::int32_t location = get_uniform_location(name);
     if (location == -1)
     {
         rinvid::errors::put_error_to_log("glGetUniformLocation error: invalid uniform name");
@@ -77,7 +79,7 @@ void Shader::set_int(const std::string& name, std::int32_t value) const
 
 void Shader::set_float(const std::string& name, float value) const
 {
-    std::int32_t location = glGetUniformLocation(get_id(), name.c_str());
+    std::int32_t location = get_uniform_location(name);
     if (location == -1)
     {
         rinvid::errors::put_error_to_log("glGetUniformLocation error: invalid uniform name");
@@ -88,7 +90,7 @@ void Shader::set_float(const std::string& name, float value) const
 
 void Shader::set_float2(const std::string& name, float value1, float value2) const
 {
-    std::int32_t location = glGetUniformLocation(get_id(), name.c_str());
+    std::int32_t location = get_uniform_location(name);
     if (location == -1)
     {
         rinvid::errors::put_error_to_log("glGetUniformLocation error: invalid uniform name");
@@ -100,13 +102,31 @@ void Shader::set_float2(const std::string& name, float value1, float value2) con
 void Shader::set_float4(const std::string& name, float value1, float value2, float value3,
                         float value4) const
 {
-    std::int32_t location = glGetUniformLocation(get_id(), name.c_str());
+    std::int32_t location = get_uniform_location(name);
     if (location == -1)
     {
         rinvid::errors::put_error_to_log("glGetUniformLocation error: invalid uniform name");
         return;
     }
     GL_CALL(glUniform4f(location, value1, value2, value3, value4));
+}
+
+std::int32_t Shader::get_uniform_location(const std::string& name) const
+{
+    if (!program_handle_)
+    {
+        return -1;
+    }
+
+    auto location = program_handle_->uniform_locations_.find(name);
+    if (location != program_handle_->uniform_locations_.end())
+    {
+        return location->second;
+    }
+
+    const std::int32_t resolved_location = glGetUniformLocation(get_id(), name.c_str());
+    program_handle_->uniform_locations_.emplace(name, resolved_location);
+    return resolved_location;
 }
 
 std::uint32_t Shader::get_id() const

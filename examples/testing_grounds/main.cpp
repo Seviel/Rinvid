@@ -125,10 +125,10 @@ void TestingGrounds::create()
     button.set_clicked({button_regions.at(2)});
 
     light_mid.set_position(rinvid::Vector2f{320.0F, 250.0F});
-    light_mid.set_intensity(0.5F);
-    light_mid.set_falloff(0.5F);
+    light_mid.set_intensity(0.4F);
+    light_mid.set_falloff(0.6F);
 
-    light_low.switch_it(false);
+    light_low.set_active(false);
 
     rinvid::LightManager::activate_ambient_light(0.3F);
 
@@ -181,8 +181,6 @@ void TestingGrounds::update(double delta_time)
     }
 
     camera.update();
-
-    light_mid.update(camera.get_pos());
 
     background_sprite.draw();
 

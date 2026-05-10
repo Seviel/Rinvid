@@ -11,6 +11,7 @@
 #define INCLUDE_RINVID_CORE_RENDER_CONTEXT_H
 
 #include <cstdint>
+#include <vector>
 
 #include <glm/mat4x4.hpp>
 
@@ -20,6 +21,7 @@ namespace rinvid
 {
 
 class Application;
+class Light;
 
 /**************************************************************************************************
  * @brief Owns render state for one application context.
@@ -154,6 +156,88 @@ class RenderContext
     const Shader get_text_default_shader() const;
 
     /**************************************************************************************************
+     * @brief Updates default shader light data. Intended for internal Rinvid use.
+     *
+     * @param light_index Index of the light in the default light buffer.
+     * @param position_x World-space X coordinate.
+     * @param position_y World-space Y coordinate.
+     * @param intensity Light intensity used by the shader.
+     * @param falloff Light falloff used by the shader.
+     *
+     *************************************************************************************************/
+    void set_default_light(std::uint32_t light_index, float position_x, float position_y,
+                           float intensity, float falloff);
+
+    /**************************************************************************************************
+     * @brief Acquires a default shader light slot. Intended for internal Rinvid use.
+     *
+     * @param light Light that owns the slot.
+     * @param active Whether the light should contribute to lighting.
+     *
+     * @return Acquired light slot index.
+     *
+     *************************************************************************************************/
+    std::int32_t acquire_default_light_slot(const Light* light, bool active);
+
+    /**************************************************************************************************
+     * @brief Replaces the owner of a default shader light slot. Intended for internal Rinvid use.
+     *
+     * @param light_index Light slot index.
+     * @param old_light Previous owner of the slot.
+     * @param new_light New owner of the slot.
+     *
+     *************************************************************************************************/
+    void replace_default_light_slot(std::int32_t light_index, const Light* old_light,
+                                    const Light* new_light);
+
+    /**************************************************************************************************
+     * @brief Releases a default shader light slot. Intended for internal Rinvid use.
+     *
+     * @param light_index Light slot index.
+     * @param light Light that owns the slot.
+     *
+     *************************************************************************************************/
+    void release_default_light_slot(std::int32_t light_index, const Light* light);
+
+    /**************************************************************************************************
+     * @brief Updates default shader light activity. Intended for internal Rinvid use.
+     *
+     * @param light_index Light slot index.
+     * @param light Light that owns the slot.
+     * @param active Whether the light should contribute to lighting.
+     *
+     *************************************************************************************************/
+    void set_default_light_active(std::int32_t light_index, const Light* light, bool active);
+
+    /**************************************************************************************************
+     * @brief Checks whether a default shader light slot belongs to a light.
+     *
+     * @param light_index Light slot index.
+     * @param light Light that may own the slot.
+     *
+     * @return True if the slot belongs to light.
+     *
+     *************************************************************************************************/
+    bool owns_default_light_slot(std::int32_t light_index, const Light* light) const;
+
+    /**************************************************************************************************
+     * @brief Updates number of lights read by default shaders. Intended for internal Rinvid use.
+     *
+     * @param light_count Number of light entries to read.
+     *
+     *************************************************************************************************/
+    void set_default_light_count(std::uint32_t light_count);
+
+    /**************************************************************************************************
+     * @brief Updates default shader ambient lighting. Intended for internal Rinvid use.
+     *
+     * @param enabled Whether ambient lighting is enabled.
+     * @param strength Ambient light strength.
+     *
+     *************************************************************************************************/
+    void set_default_ambient_light(bool enabled, float strength);
+
+    /**************************************************************************************************
      * @brief Returns screen width.
      *
      * @return Screen width.
@@ -245,7 +329,31 @@ class RenderContext
   private:
     static RenderContext* active_context_;
 
+    struct DefaultLightData
+    {
+        float position_x_{};
+        float position_y_{};
+        float intensity_{};
+        float falloff_{1.0F};
+    };
+
+    struct DefaultLightSlot
+    {
+        const Light* owner_{nullptr};
+        bool         active_{false};
+    };
+
     void init_default_shaders();
+    void init_default_light_buffer();
+    void release_default_light_buffer();
+    void ensure_default_light_capacity(std::uint32_t light_count);
+    void mark_default_light_data_dirty(std::uint32_t light_index);
+    void bind_default_light_buffer() const;
+    void init_default_shader_lighting_uniforms() const;
+    void update_default_lighting_uniforms() const;
+    void sync_default_lighting();
+
+    std::uint32_t get_default_light_count() const;
 
     glm::mat4          model_view_projection_{1.0F};
     glm::mat4          view_{1.0F};
@@ -256,6 +364,19 @@ class RenderContext
     std::int32_t       width_{};
     std::int32_t       height_{};
     const Application* application_{nullptr};
+
+    std::vector<DefaultLightData> default_light_data_{};
+    std::vector<DefaultLightSlot> default_light_slots_{};
+    std::uint32_t                 default_light_buffer_object_{};
+    std::uint32_t                 default_light_texture_object_{};
+    std::uint32_t                 default_light_capacity_{};
+    std::uint32_t                 default_light_count_{};
+    std::uint32_t                 default_light_dirty_begin_{};
+    std::uint32_t                 default_light_dirty_end_{};
+    float                         default_ambient_light_strength_{0.1F};
+    bool                          default_light_data_dirty_{};
+    bool                          default_light_uniforms_dirty_{true};
+    bool                          default_ambient_light_enabled_{};
 };
 
 } // namespace rinvid

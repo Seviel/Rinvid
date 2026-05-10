@@ -12,14 +12,12 @@
 
 #include <cstdint>
 
-#include <rinvid/util/color.h>
 #include <rinvid/util/vector2.h>
-#include <rinvid/util/vector3.h>
-
-#define MAX_NUMBER_OF_LIGHTS 100
 
 namespace rinvid
 {
+
+class RenderContext;
 
 /**************************************************************************************************
  * @brief A light source. Only works if you're using default shaders.
@@ -33,6 +31,38 @@ class Light
      *
      *************************************************************************************************/
     Light();
+
+    /**************************************************************************************************
+     * @brief Copy constructor.
+     *
+     * The copied light receives its own renderer slot.
+     *
+     *************************************************************************************************/
+    Light(const Light& other);
+
+    /**************************************************************************************************
+     * @brief Copy assignment operator.
+     *
+     *************************************************************************************************/
+    Light& operator=(const Light& other);
+
+    /**************************************************************************************************
+     * @brief Move constructor.
+     *
+     *************************************************************************************************/
+    Light(Light&& other) noexcept;
+
+    /**************************************************************************************************
+     * @brief Move assignment operator.
+     *
+     *************************************************************************************************/
+    Light& operator=(Light&& other) noexcept;
+
+    /**************************************************************************************************
+     * @brief Destructor.
+     *
+     *************************************************************************************************/
+    ~Light();
 
     /**************************************************************************************************
      * @brief Light constructor.
@@ -86,6 +116,30 @@ class Light
     void switch_it(bool on);
 
     /**************************************************************************************************
+     * @brief Sets whether light contributes to default shader lighting.
+     *
+     * @param active True if light should contribute to lighting.
+     *
+     *************************************************************************************************/
+    void set_active(bool active);
+
+    /**************************************************************************************************
+     * @brief Returns whether light contributes to default shader lighting.
+     *
+     * @return True if light is active.
+     *
+     *************************************************************************************************/
+    bool is_active() const;
+
+    /**************************************************************************************************
+     * @brief Returns light's position.
+     *
+     * @return Current light position.
+     *
+     *************************************************************************************************/
+    Vector2f get_position() const;
+
+    /**************************************************************************************************
      * @brief Returns light's intensity.
      *
      * @return Current light intensity.
@@ -102,9 +156,12 @@ class Light
     float get_falloff() const;
 
     /**************************************************************************************************
-     * @brief Updates the light, should be called every frame.
+     * @brief Synchronizes light state with renderer.
      *
-     * @param camera_pos Position of the camera if there is any.
+     * Usually not needed after calling setters. The camera_pos parameter is kept for
+     * compatibility and ignored because default lighting uses world-space positions.
+     *
+     * @param camera_pos Ignored.
      *
      *************************************************************************************************/
     void update(Vector2f camera_pos = {0.0F, 0.0F});
@@ -114,13 +171,18 @@ class Light
      * @brief Helper function to remap a floating point value from one range to another.
      *
      *************************************************************************************************/
-    float remap(float value, float low1, float high1, float low2, float high2);
+    static float remap(float value, float low1, float high1, float low2, float high2);
 
-    Vector2f            position_;
-    float               intensity_;
-    float               falloff_;
-    std::int32_t        ordinal_;
-    static std::int32_t number_of_lights_;
+    void acquire_slot();
+    void release_slot();
+    void upload();
+
+    Vector2f       position_;
+    float          intensity_;
+    float          falloff_;
+    std::int32_t   ordinal_;
+    bool           active_;
+    RenderContext* render_context_;
 };
 
 } // namespace rinvid

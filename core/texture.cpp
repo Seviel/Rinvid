@@ -97,6 +97,7 @@ Texture::~Texture()
 
 void Texture::bind() const
 {
+    GL_CALL(glActiveTexture(GL_TEXTURE0));
     GL_CALL(glBindTexture(GL_TEXTURE_2D, texture_id_));
 }
 
