@@ -14,9 +14,9 @@
 #include <string>
 
 /// @brief Uncomment bellow macro if you want to activate Rinvid debug mode. Debug mode allows
-/// error messages to be printed in console (and to file if you choose to), but also it causes some
-/// performance overhead. Activate debug mode only during debugging and never on "release" builds or
-/// when measuring performance, etc.
+/// diagnostic error messages to be printed in console (and to file if you choose to), but also it
+/// causes some performance overhead. Activate debug mode only during debugging and never on
+/// "release" builds or when measuring performance, etc.
 // #define RINVID_DEBUG_MODE
 
 /// @brief Uncomment bellow macro if you want error messages to be written to file. This will only
@@ -47,8 +47,9 @@ namespace errors
 {
 
 /**************************************************************************************************
- * @brief Prints message to console if RINVID_DEBUG_MODE is defined, also writes it to
- * rinvid_error.log file if RINVID_DEBUG_MODE_OUTPUT_TO_FILE is defined
+ * @brief Records a diagnostic message and prints it to console if RINVID_DEBUG_MODE is defined,
+ * also writes it to rinvid_error.log file if RINVID_DEBUG_MODE_OUTPUT_TO_FILE is defined.
+ * This function is diagnostic only and does not replace explicit return values or exceptions.
  *
  * @param error_description Message to be written to console/file
  *
@@ -56,8 +57,9 @@ namespace errors
 void put_error_to_log(const std::string& error_description);
 
 /**************************************************************************************************
- * @brief Prints message to console if RINVID_DEBUG_MODE is defined, also writes it to
- * rinvid_error.log file if RINVID_DEBUG_MODE_OUTPUT_TO_FILE is defined
+ * @brief Records a diagnostic message and prints it to console if RINVID_DEBUG_MODE is defined,
+ * also writes it to rinvid_error.log file if RINVID_DEBUG_MODE_OUTPUT_TO_FILE is defined.
+ * This function is diagnostic only and does not replace explicit return values or exceptions.
  *
  * @param error_description Message to be written to console/file
  *

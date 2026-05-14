@@ -8,6 +8,7 @@
  **********************************************************************/
 
 #include <rinvid/sound/sound.h>
+#include <rinvid/util/error.h>
 
 namespace rinvid::sound
 {
@@ -16,7 +17,7 @@ Sound::Sound(const std::string& file_path)
 {
     if (!buffer_.loadFromFile(file_path))
     {
-        throw "Error loading sound from file!";
+        throw AudioError{"Audio: Could not load sound file '" + file_path + "'"};
     }
 
     sound_.setBuffer(buffer_);

@@ -14,6 +14,8 @@
 
 #include <SFML/Audio.hpp>
 
+#include <rinvid/util/error.h>
+
 namespace rinvid::sound
 {
 
@@ -29,6 +31,8 @@ class Sound
      * @brief Sound constructor.
      *
      * @param file_path Path to sound file to load.
+     *
+     * @throws AudioError if the sound file cannot be loaded.
      *
      *************************************************************************************************/
     Sound(const std::string& file_path);

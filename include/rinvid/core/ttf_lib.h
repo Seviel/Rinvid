@@ -15,6 +15,8 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
+#include <rinvid/util/error.h>
+
 namespace rinvid
 {
 
@@ -29,6 +31,8 @@ class TTFLib
      * @brief Returns an instance of FT_Library.
      *
      * @return FT_Library instance.
+     *
+     * @throws ResourceLoadError if FreeType cannot be initialized.
      *
      *************************************************************************************************/
     static const FT_Library* get_instance();

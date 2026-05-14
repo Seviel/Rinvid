@@ -8,6 +8,7 @@
  **********************************************************************/
 
 #include <rinvid/core/ttf_lib.h>
+#include <rinvid/util/error.h>
 
 namespace rinvid
 {
@@ -24,7 +25,7 @@ const FT_Library* TTFLib::get_instance()
         {
             delete ft_lib_;
             ft_lib_ = nullptr;
-            throw "Freetype: Could not init FreeType Library";
+            throw ResourceLoadError{"Freetype: Could not init FreeType Library"};
         }
     }
 

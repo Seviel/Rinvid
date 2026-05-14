@@ -13,6 +13,7 @@
 
 #include <rinvid/core/text.h>
 #include <rinvid/core/ttf_lib.h>
+#include <rinvid/util/error.h>
 
 #include "include/opengl_test.h"
 
@@ -29,6 +30,14 @@ std::string get_font_path()
     file_path.resize(tests_separator);
 
     return file_path + "/examples/full_demo/resources/aquifer.ttf";
+}
+
+void create_text_with_font(const std::string& font_path)
+{
+    const rinvid::Vector2f position{0.0F, 0.0F};
+    const rinvid::Color    color{255U, 255U, 255U, 255U};
+
+    rinvid::Text text(std::string{"Hello"}, font_path, position, color, 18U);
 }
 
 } // namespace
@@ -55,5 +64,11 @@ TEST_F(OpenGLTest, TextSetSize_RecreatesGlyphResources)
     EXPECT_NO_THROW(text.set_size(24U));
     EXPECT_NO_THROW(text.set_size(12U));
 
+    rinvid::TTFLib::destroy();
+}
+
+TEST_F(OpenGLTest, TextConstructor_InvalidFontThrowsResourceLoadError)
+{
+    EXPECT_THROW(create_text_with_font("resources/missing_font.ttf"), rinvid::ResourceLoadError);
     rinvid::TTFLib::destroy();
 }
