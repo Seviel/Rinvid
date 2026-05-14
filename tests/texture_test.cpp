@@ -52,6 +52,13 @@ TEST_F(TextureTest, Constructor_InvalidImageFile)
     EXPECT_THROW(Texture texture{file_name}, ResourceLoadError);
 }
 
+TEST_F(TextureTest, Constructor_NullImageFileThrowsResourceLoadError)
+{
+    const char* file_name{nullptr};
+
+    EXPECT_THROW(Texture texture{file_name}, ResourceLoadError);
+}
+
 // Test the move constructor
 TEST_F(TextureTest, MoveConstructor)
 {

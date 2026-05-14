@@ -7,6 +7,7 @@
  * repository for more details.
  **********************************************************************/
 
+#include <string>
 #include <utility>
 
 #include <gtest/gtest.h>
@@ -63,9 +64,17 @@ TEST_F(OpenGLTest, ShaderMoveAssignment_LeavesDestinationUsable)
 
 TEST_F(OpenGLTest, ShaderConstructor_InvalidFragmentSourceThrowsGraphicsError)
 {
-    EXPECT_THROW(
-        (static_cast<void>(Shader{vertex_shader_source, invalid_fragment_shader_source})),
-        GraphicsError);
+    try
+    {
+        const Shader shader{vertex_shader_source, invalid_fragment_shader_source};
+        (void)shader;
+        FAIL() << "Expected GraphicsError";
+    }
+    catch (const GraphicsError& error)
+    {
+        EXPECT_NE(std::string{error.what()}.find("fragment shader compilation failed"),
+                  std::string::npos);
+    }
 }
 
 TEST_F(OpenGLTest, ShaderSetUniform_InvalidNameRecordsUniformName)
