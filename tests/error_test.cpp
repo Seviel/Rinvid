@@ -8,11 +8,13 @@
  **********************************************************************/
 
 #include <stdexcept>
+#include <string>
 #include <type_traits>
 
 #include <gtest/gtest.h>
 
 #include <rinvid/util/error.h>
+#include <rinvid/util/error_handler.h>
 
 TEST(ErrorTest, ErrorTypesInheritFromRinvidError)
 {
@@ -31,4 +33,30 @@ TEST(ErrorTest, ErrorPreservesDiagnosticMessage)
     const rinvid::ResourceLoadError error{"resource failed"};
 
     EXPECT_STREQ("resource failed", error.what());
+}
+
+TEST(ErrorTest, ErrorLogRecordsUniqueMessages)
+{
+    rinvid::errors::clear_errors();
+
+    rinvid::errors::put_error_to_log("duplicate diagnostic");
+    rinvid::errors::put_error_to_log(std::string{"duplicate diagnostic"});
+
+    EXPECT_EQ(1U, rinvid::errors::get_error_count());
+    EXPECT_TRUE(rinvid::errors::has_error_occurred("duplicate diagnostic"));
+
+    rinvid::errors::clear_errors();
+    EXPECT_EQ(0U, rinvid::errors::get_error_count());
+}
+
+TEST(ErrorTest, ErrorLogAcceptsNullDescription)
+{
+    rinvid::errors::clear_errors();
+
+    const char* description{nullptr};
+    rinvid::errors::put_error_to_log(description);
+
+    EXPECT_TRUE(rinvid::errors::has_error_occurred("Rinvid error: null error description"));
+
+    rinvid::errors::clear_errors();
 }
