@@ -13,6 +13,8 @@
 #include <cstdint>
 #include <vector>
 
+#include <rinvid/util/error.h>
+
 namespace rinvid
 {
 
@@ -23,6 +25,8 @@ class Texture
      * @brief Texture constructor.
      *
      * @param file_name Path to texture image file
+     *
+     * @throws ResourceLoadError if the texture image cannot be loaded.
      *
      *************************************************************************************************/
     Texture(const char* file_name);

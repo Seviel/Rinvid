@@ -11,6 +11,7 @@
 
 #include <rinvid/core/sprite.h>
 #include <rinvid/core/texture.h>
+#include <rinvid/util/error.h>
 #include <rinvid/util/error_handler.h>
 
 #include "include/texture_test.h"
@@ -46,14 +47,9 @@ TEST_F(TextureTest, Constructor_RawPixels)
 // Test the constructor with an invalid image file
 TEST_F(TextureTest, Constructor_InvalidImageFile)
 {
-#ifndef RINVID_DEBUG_MODE
-    GTEST_SKIP();
-#endif
     const char* file_name = "invalid_image.png";
-    Texture     texture(file_name);
 
-    std::string error{"invalid_image.png image loading failed during texture creation"};
-    ASSERT_TRUE(errors::has_error_occured(error));
+    EXPECT_THROW(Texture texture{file_name}, ResourceLoadError);
 }
 
 // Test the move constructor

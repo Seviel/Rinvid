@@ -12,6 +12,7 @@
 
 #include <rinvid/core/rinvid_gl.h>
 #include <rinvid/core/texture.h>
+#include <rinvid/util/error.h>
 #include <rinvid/util/error_handler.h>
 #include <rinvid/util/image_loader.h>
 
@@ -41,12 +42,17 @@ void Texture::release_gl_resources()
 
 Texture::Texture(const char* file_name)
 {
+    if (file_name == nullptr)
+    {
+        throw ResourceLoadError{"Texture: Texture file path is null"};
+    }
+
     std::vector<std::uint8_t> image_data{};
     bool                      result = load_image(file_name, image_data, width_, height_);
     if (result == false)
     {
-        errors::put_error_to_log(std::string{file_name} +
-                                 " image loading failed during texture creation");
+        throw ResourceLoadError{"Texture: Could not load image file '" + std::string{file_name} +
+                                "'"};
     }
 
     init_gl_texture(image_data.data());
