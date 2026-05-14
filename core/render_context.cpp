@@ -596,7 +596,8 @@ void RenderContext::update_mvp_matrix(const glm::mat4& model, std::uint32_t shad
     rinvid::errors::handle_gl_errors(__FILE__, __LINE__);
     if (mvp_location == -1)
     {
-        rinvid::errors::put_error_to_log("glGetUniformLocation error: invalid uniform name");
+        rinvid::errors::put_error_to_log(
+            "glGetUniformLocation error: invalid uniform name 'model_view_projection'");
         return;
     }
     GL_CALL(glUniformMatrix4fv(mvp_location, 1, GL_FALSE, glm::value_ptr(model_view_projection_)));

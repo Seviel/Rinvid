@@ -97,6 +97,7 @@ void handle_gl_errors(const char* file, std::uint32_t line)
                 error = "GL_STACK_OVERFLOW";
                 break;
             default:
+                error = "UNKNOWN_OPENGL_ERROR(" + std::to_string(error_code) + ")";
                 break;
         }
 
