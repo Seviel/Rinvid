@@ -24,7 +24,6 @@ jobs:
           sudo apt install --yes \
             cmake \
             ninja-build \
-            libfreetype-dev \
             libgl1-mesa-dev \
             libgl1-mesa-dri \
             libx11-dev \

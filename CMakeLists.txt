@@ -25,8 +25,13 @@ set(RINVID_GTEST_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/extern/googletest"
 set(RINVID_BENCHMARK_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/extern/benchmark"
     CACHE PATH "Path to a local Google Benchmark source checkout")
 
-find_package(Freetype REQUIRED)
 find_package(OpenGL REQUIRED COMPONENTS OpenGL)
+
+set(FT_DISABLE_ZLIB ON)
+set(FT_DISABLE_BZIP2 ON)
+set(FT_DISABLE_PNG ON)
+set(FT_DISABLE_HARFBUZZ ON)
+set(FT_DISABLE_BROTLI ON)
 
 set(SFML_BUILD_WINDOW ON)
 set(SFML_BUILD_AUDIO ON)
@@ -43,6 +48,12 @@ if(DEFINED BUILD_SHARED_LIBS)
 else()
   set(RINVID_PREVIOUS_BUILD_SHARED_LIBS_WAS_DEFINED OFF)
 endif()
+
+set(BUILD_SHARED_LIBS OFF)
+
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/extern/freetype"
+                 "${CMAKE_CURRENT_BINARY_DIR}/freetype"
+                 EXCLUDE_FROM_ALL)
 
 set(BUILD_SHARED_LIBS ON)
 
@@ -88,7 +99,6 @@ function(rinvid_configure_target target)
            ${CMAKE_CURRENT_SOURCE_DIR}/extern/sfml/include
            ${CMAKE_CURRENT_SOURCE_DIR}/extern/glad/include
            ${CMAKE_CURRENT_SOURCE_DIR}/extern/glm
-            ${FREETYPE_INCLUDE_DIRS}
     PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/extern/stb)
   if(RINVID_DEBUG_MODE)
     target_compile_definitions(${target} PUBLIC RINVID_DEBUG_MODE)
@@ -96,6 +106,7 @@ function(rinvid_configure_target target)
   if(RINVID_DEBUG_MODE AND RINVID_DEBUG_MODE_OUTPUT_TO_FILE)
     target_compile_definitions(${target} PUBLIC RINVID_DEBUG_MODE_OUTPUT_TO_FILE)
   endif()
+  target_link_libraries(${target} PUBLIC freetype)
   target_compile_options(${target} PRIVATE -Wall -Wextra -Werror -O3)
 endfunction()
 
