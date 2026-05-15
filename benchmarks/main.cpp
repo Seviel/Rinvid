@@ -184,8 +184,7 @@ class FullStressBenchmarkRuntime
     {
         stress_scene_.set_active_counts(counts);
 
-        sf::Event event{};
-        while (application_.get_context().get_window()->pollEvent(event))
+        while (application_.get_context().get_window()->pollEvent())
         {
         }
 

@@ -105,7 +105,7 @@ class Application
   private:
     void activate_pending_screen();
     void destroy_current_screen();
-    void handle_events(sf::Window& window, sf::Event& event);
+    void handle_events(sf::Window& window);
 
     sf::Window              window_;
     ApplicationContext      context_;

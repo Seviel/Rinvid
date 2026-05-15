@@ -8,13 +8,16 @@ Rinvid is a small framework for 2D games and multimedia applications development
 
 ### Ubuntu
 
-These are instructions for Ubuntu 20.04, it would probably work on other Debian based distros:  
-First, you will need to install SFML, Ninja and Freetype.  
+These instructions assume a distro with CMake 3.28 or newer and a compiler with C++17 filesystem
+support. Older Ubuntu releases may need a newer CMake/compiler from Kitware or another package
+source. First, install Ninja, Freetype, OpenGL, X11, and udev development packages. SFML is
+provided by the `extern/sfml` submodule and built from source.
 ```shell
 sudo apt install cmake
 sudo apt install ninja-build
-sudo apt install libsfml-dev  
 sudo apt install libfreetype-dev  
+sudo apt install libgl1-mesa-dev
+sudo apt install libx11-dev libxrandr-dev libxcursor-dev libxi-dev libudev-dev
 ```
 Note that Freetpye headers must be in root include directory, and not in any new one. To make sure that's the case, you can run:  
 ```shell
@@ -33,22 +36,23 @@ ninja all
 
 What you need to build Rinvid on Windows 10:
 
-   1. [MinGW](https://www.mingw-w64.org/)  
-   2. [MSYS](https://www.msys2.org/)
-   3. [SFML](https://www.sfml-dev.org/)  
-   4. [gtest](https://github.com/google/googletest) source checkout
-   5. [Freetype](http://freetype.org/)  
-   6. [Ninja](https://ninja-build.org/)
+   1. [MinGW-w64](https://www.mingw-w64.org/)
+   2. [MSYS2](https://www.msys2.org/)
+   3. [gtest](https://github.com/google/googletest) source checkout
+   4. [Freetype](http://freetype.org/)
+   5. [Ninja](https://ninja-build.org/)
 
 #### Development environment setup
 
-1. Install [MSYS2](https://www.msys2.org/) - following all steps will also install MinGW via `pacman`
-2. Additionally, install CMake, Ninja, SFML and Freetype via `pacman` by executing the following commands in the MSYS2 terminal:
+1. Install [MSYS2](https://www.msys2.org/), then open the **MINGW64** MSYS2 terminal.
+2. Additionally, install an up-to-date MinGW64 toolchain, CMake, Ninja and Freetype via
+`pacman` by executing the following commands in the MINGW64 terminal. SFML 3.1 requires a compiler
+with C++17 filesystem support; GCC 9 or newer is required.
 ```shell
 pacman -Syu
+pacman -S mingw-w64-x86_64-gcc
 pacman -S mingw-w64-x86_64-cmake
 pacman -S mingw-w64-x86_64-ninja
-pacman -S mingw-w64-x86_64-sfml
 pacman -S mingw-w64-x86_64-freetype
 ```
 3. Pull external dependencies by running the following command from the root of the project:
@@ -61,33 +65,37 @@ git clone https://github.com/google/googletest.git extern/googletest
 ```
 You can also point CMake to a different checkout with `-DRINVID_GTEST_SOURCE_DIR=/absolute/path/to/googletest`.
 
-From the MinGW64 MSYS2 terminal, you can run the Ninja build procedure: 
+From the MINGW64 MSYS2 terminal, you can run the Ninja build procedure:
 ```shell    
 mkdir build
 cd build
-/mingw64/bin/cmake -S .. -B . -G Ninja
+cmake -S .. -B . -G Ninja
 ninja all
 ```
 
 To build without tests, configure with:
 ```shell
-/mingw64/bin/cmake -S .. -B . -G Ninja -DRINVID_BUILD_TESTS=OFF
+cmake -S .. -B . -G Ninja -DRINVID_BUILD_TESTS=OFF
 ```
 
 To enable benchmark builds during configure:
 ```shell
-/mingw64/bin/cmake -S .. -B . -G Ninja -DRINVID_BUILD_BENCHMARKS=ON
+cmake -S .. -B . -G Ninja -DRINVID_BUILD_BENCHMARKS=ON
 ```
 
 To enable Rinvid diagnostic logging and OpenGL error checks during configure:
 ```shell
-/mingw64/bin/cmake -S .. -B . -G Ninja -DRINVID_DEBUG_MODE=ON
+cmake -S .. -B . -G Ninja -DRINVID_DEBUG_MODE=ON
 ```
 
 To also append diagnostic messages to `rinvid_error.log`:
 ```shell
-/mingw64/bin/cmake -S .. -B . -G Ninja -DRINVID_DEBUG_MODE=ON -DRINVID_DEBUG_MODE_OUTPUT_TO_FILE=ON
+cmake -S .. -B . -G Ninja -DRINVID_DEBUG_MODE=ON -DRINVID_DEBUG_MODE_OUTPUT_TO_FILE=ON
 ```
+
+SFML is built from the `extern/sfml` submodule. Rinvid builds SFML as shared libraries from source.
+On Windows, CMake copies the SFML DLLs and the active MinGW runtime DLLs next to the built examples,
+tests, and benchmarks.
 
 The benchmark executable is `rinvid_benchmark`. The current sprite-scene benchmark generates random
 RGBA textures in memory, with random dimensions between `50x50` and `500x500`, and uses Google

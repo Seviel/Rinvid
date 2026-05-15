@@ -1,8 +1,19 @@
-cmake_minimum_required(VERSION 3.16.3)
+cmake_minimum_required(VERSION 3.28)
 
 project("rinvid")
 
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9)
+  message(
+    FATAL_ERROR
+      "Rinvid requires GCC 9 or newer when building SFML 3.1 from source. "
+      "Update the active compiler toolchain before configuring.")
+endif()
+
 set(CMAKE_CXX_STANDARD 17)
+
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+  set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build." FORCE)
+endif()
 
 option(RINVID_BUILD_TESTS "Build Rinvid tests" ON)
 option(RINVID_BUILD_BENCHMARKS "Build Rinvid benchmarks" OFF)
@@ -15,8 +26,56 @@ set(RINVID_BENCHMARK_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/extern/benchmark"
     CACHE PATH "Path to a local Google Benchmark source checkout")
 
 find_package(Freetype REQUIRED)
+find_package(OpenGL REQUIRED COMPONENTS OpenGL)
 
-add_definitions(-DSFML_STATIC)
+set(SFML_BUILD_WINDOW ON)
+set(SFML_BUILD_AUDIO ON)
+set(SFML_BUILD_GRAPHICS OFF)
+set(SFML_BUILD_NETWORK OFF)
+set(SFML_BUILD_DOC OFF)
+set(SFML_BUILD_EXAMPLES OFF)
+set(SFML_BUILD_TEST_SUITE OFF)
+set(SFML_USE_SYSTEM_DEPS OFF)
+
+if(DEFINED BUILD_SHARED_LIBS)
+  set(RINVID_PREVIOUS_BUILD_SHARED_LIBS "${BUILD_SHARED_LIBS}")
+  set(RINVID_PREVIOUS_BUILD_SHARED_LIBS_WAS_DEFINED ON)
+else()
+  set(RINVID_PREVIOUS_BUILD_SHARED_LIBS_WAS_DEFINED OFF)
+endif()
+
+set(BUILD_SHARED_LIBS ON)
+
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/extern/sfml"
+                 "${CMAKE_CURRENT_BINARY_DIR}/sfml"
+                 EXCLUDE_FROM_ALL)
+
+if(MINGW)
+  # Keep SFML 3.1 building with the MSYS2 MINGW64/MSVCRT runtime.
+  target_sources(sfml-window PRIVATE
+                 "${CMAKE_CURRENT_SOURCE_DIR}/compat/mingw/thread_atexit.cpp")
+  target_sources(sfml-audio PRIVATE
+                 "${CMAKE_CURRENT_SOURCE_DIR}/compat/mingw/wcsrtombs.cpp")
+  target_compile_options(sfml-audio PRIVATE -include
+                                            "${CMAKE_CURRENT_SOURCE_DIR}/compat/mingw/wcsrtombs.h")
+  target_compile_definitions(sfml-audio PRIVATE MA_HAS_WFOPEN
+                                                wcsrtombs=rinvid_mingw_wcsrtombs)
+
+  get_filename_component(RINVID_MINGW_BIN_DIR "${CMAKE_CXX_COMPILER}" DIRECTORY)
+  foreach(RINVID_MINGW_RUNTIME_DLL IN ITEMS libgcc_s_seh-1.dll libstdc++-6.dll
+                                           libwinpthread-1.dll)
+    if(EXISTS "${RINVID_MINGW_BIN_DIR}/${RINVID_MINGW_RUNTIME_DLL}")
+      list(APPEND RINVID_MINGW_RUNTIME_DLLS
+           "${RINVID_MINGW_BIN_DIR}/${RINVID_MINGW_RUNTIME_DLL}")
+    endif()
+  endforeach()
+endif()
+
+if(RINVID_PREVIOUS_BUILD_SHARED_LIBS_WAS_DEFINED)
+  set(BUILD_SHARED_LIBS "${RINVID_PREVIOUS_BUILD_SHARED_LIBS}")
+else()
+  unset(BUILD_SHARED_LIBS)
+endif()
 
 if(RINVID_DEBUG_MODE_OUTPUT_TO_FILE AND NOT RINVID_DEBUG_MODE)
   message(WARNING "RINVID_DEBUG_MODE_OUTPUT_TO_FILE has no effect unless RINVID_DEBUG_MODE is ON")
@@ -26,6 +85,7 @@ function(rinvid_configure_target target)
   target_include_directories(
     ${target}
     PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
+           ${CMAKE_CURRENT_SOURCE_DIR}/extern/sfml/include
            ${CMAKE_CURRENT_SOURCE_DIR}/extern/glad/include
            ${CMAKE_CURRENT_SOURCE_DIR}/extern/glm
             ${FREETYPE_INCLUDE_DIRS}
@@ -37,6 +97,25 @@ function(rinvid_configure_target target)
     target_compile_definitions(${target} PUBLIC RINVID_DEBUG_MODE_OUTPUT_TO_FILE)
   endif()
   target_compile_options(${target} PRIVATE -Wall -Wextra -Werror -O3)
+endfunction()
+
+function(rinvid_copy_runtime_dependencies target)
+  if(WIN32)
+    add_custom_command(
+      TARGET ${target}
+      POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_RUNTIME_DLLS:${target}>
+              $<TARGET_FILE_DIR:${target}>
+      COMMAND_EXPAND_LISTS)
+    if(MINGW AND RINVID_MINGW_RUNTIME_DLLS)
+      add_custom_command(
+        TARGET ${target}
+        POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${RINVID_MINGW_RUNTIME_DLLS}
+                $<TARGET_FILE_DIR:${target}>
+        COMMAND_EXPAND_LISTS)
+    endif()
+  endif()
 endfunction()
 
 file(GLOB CORE_SOURCES "core/*.cpp")
@@ -76,6 +155,9 @@ rinvid_configure_target(rinvid_core_obj)
 add_library(rinvid_core STATIC $<TARGET_OBJECTS:rinvid_core_obj>)
 rinvid_configure_target(rinvid_core)
 target_link_libraries(rinvid_core PUBLIC rinvid_util rinvid_extern freetype)
+if(UNIX)
+  target_link_libraries(rinvid_core PUBLIC OpenGL::GL)
+endif()
 
 add_library(rinvid_platformers_obj OBJECT)
 target_sources(rinvid_platformers_obj PRIVATE ${PLATFORMERS_SOURCES})
@@ -88,14 +170,16 @@ target_link_libraries(rinvid_platformers PUBLIC rinvid_core rinvid_util)
 add_library(rinvid_system_obj OBJECT)
 target_sources(rinvid_system_obj PRIVATE ${SYSTEM_SOURCES})
 rinvid_configure_target(rinvid_system_obj)
+target_link_libraries(rinvid_system_obj PUBLIC SFML::Window)
 
 add_library(rinvid_system STATIC $<TARGET_OBJECTS:rinvid_system_obj>)
 rinvid_configure_target(rinvid_system)
-target_link_libraries(rinvid_system PUBLIC rinvid_core rinvid_util)
+target_link_libraries(rinvid_system PUBLIC rinvid_core rinvid_util SFML::Window)
 
 add_library(rinvid_gui_obj OBJECT)
 target_sources(rinvid_gui_obj PRIVATE ${GUI_SOURCES})
 rinvid_configure_target(rinvid_gui_obj)
+target_link_libraries(rinvid_gui_obj PUBLIC SFML::Window)
 
 add_library(rinvid_gui STATIC $<TARGET_OBJECTS:rinvid_gui_obj>)
 rinvid_configure_target(rinvid_gui)
@@ -104,9 +188,11 @@ target_link_libraries(rinvid_gui PUBLIC rinvid_core rinvid_system rinvid_util)
 add_library(rinvid_sound_obj OBJECT)
 target_sources(rinvid_sound_obj PRIVATE ${SOUND_SOURCES})
 rinvid_configure_target(rinvid_sound_obj)
+target_link_libraries(rinvid_sound_obj PUBLIC SFML::Audio)
 
 add_library(rinvid_sound STATIC $<TARGET_OBJECTS:rinvid_sound_obj>)
 rinvid_configure_target(rinvid_sound)
+target_link_libraries(rinvid_sound PUBLIC SFML::Audio)
 
 add_library(${PROJECT_NAME} STATIC $<TARGET_OBJECTS:rinvid_extern_obj>
                                    $<TARGET_OBJECTS:rinvid_util_obj>
@@ -116,25 +202,9 @@ add_library(${PROJECT_NAME} STATIC $<TARGET_OBJECTS:rinvid_extern_obj>
                                    $<TARGET_OBJECTS:rinvid_gui_obj>
                                    $<TARGET_OBJECTS:rinvid_sound_obj>)
 rinvid_configure_target(${PROJECT_NAME})
-target_link_libraries(${PROJECT_NAME} PUBLIC freetype)
-
-execute_process(COMMAND uname OUTPUT_VARIABLE uname)
-if(uname MATCHES "^MSYS" OR uname MATCHES "^MINGW")
-  find_library(RINVID_OPENAL_LIBRARY NAMES openal openal32 REQUIRED)
-  find_library(RINVID_FLAC_LIBRARY NAMES FLAC flac REQUIRED)
-
-  target_link_libraries(rinvid_system PUBLIC sfml-window-s opengl32 gdi32)
-  target_link_libraries(rinvid_sound PUBLIC sfml-audio-s sfml-system-s winmm
-                                            ${RINVID_OPENAL_LIBRARY} vorbisenc vorbisfile vorbis
-                                            ogg ${RINVID_FLAC_LIBRARY})
-  target_link_libraries(${PROJECT_NAME} PUBLIC sfml-window-s opengl32 gdi32 sfml-audio-s
-                                               sfml-system-s winmm
-                                               ${RINVID_OPENAL_LIBRARY} vorbisenc vorbisfile
-                                               vorbis ogg ${RINVID_FLAC_LIBRARY})
-else()
-  target_link_libraries(rinvid_system PUBLIC pthread GL sfml-window sfml-system)
-  target_link_libraries(rinvid_sound PUBLIC sfml-audio sfml-system)
-  target_link_libraries(${PROJECT_NAME} PUBLIC pthread GL sfml-window sfml-system sfml-audio)
+target_link_libraries(${PROJECT_NAME} PUBLIC freetype SFML::Window SFML::Audio)
+if(UNIX)
+  target_link_libraries(${PROJECT_NAME} PUBLIC OpenGL::GL)
 endif()
 
 add_subdirectory(examples/full_demo)

@@ -10,3 +10,6 @@
 [submodule "extern/benchmark"]
 	path = extern/benchmark
 	url = https://github.com/google/benchmark.git
+[submodule "extern/sfml"]
+	path = extern/sfml
+	url = https://github.com/SFML/SFML.git

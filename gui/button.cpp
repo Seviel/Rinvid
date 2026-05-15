@@ -51,7 +51,7 @@ void Button::update_state()
 
     if (intersects(bounding_rect(), position_rect))
     {
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
         {
             if (!is_clicked_)
             {

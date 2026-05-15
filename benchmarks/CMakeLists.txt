@@ -21,6 +21,7 @@ add_executable(rinvid_benchmark ${BENCHMARK_SOURCES})
 
 target_link_libraries(rinvid_benchmark PRIVATE rinvid perf_stress_common benchmark::benchmark_main)
 target_compile_options(rinvid_benchmark PRIVATE -Werror -Wall -Wextra -pedantic -O3)
+rinvid_copy_runtime_dependencies(rinvid_benchmark)
 
 set(BENCHMARK_FONT_RESOURCE ${PROJECT_SOURCE_DIR}/examples/testing_grounds/resources/aquifer.ttf)
 add_custom_command(TARGET rinvid_benchmark POST_BUILD COMMAND ${CMAKE_COMMAND} -E

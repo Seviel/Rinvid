@@ -20,32 +20,32 @@ Sound::Sound(const std::string& file_path)
         throw AudioError{"Audio: Could not load sound file '" + file_path + "'"};
     }
 
-    sound_.setBuffer(buffer_);
+    sound_.emplace(buffer_);
 }
 
 void Sound::play()
 {
-    sound_.play();
+    sound_->play();
 }
 
 void Sound::pause()
 {
-    sound_.pause();
+    sound_->pause();
 }
 
 void Sound::stop()
 {
-    sound_.stop();
+    sound_->stop();
 }
 
 void Sound::set_looping(bool looping)
 {
-    sound_.setLoop(looping);
+    sound_->setLooping(looping);
 }
 
 void Sound::set_volume(float volume)
 {
-    sound_.setVolume(volume);
+    sound_->setVolume(volume);
 }
 
 } // namespace rinvid::sound
