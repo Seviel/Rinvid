@@ -6,6 +6,9 @@ set(CMAKE_CXX_STANDARD 17)
 
 option(RINVID_BUILD_TESTS "Build Rinvid tests" ON)
 option(RINVID_BUILD_BENCHMARKS "Build Rinvid benchmarks" OFF)
+option(RINVID_DEBUG_MODE "Enable Rinvid diagnostic logging and OpenGL error checks" OFF)
+option(RINVID_DEBUG_MODE_OUTPUT_TO_FILE
+       "Write Rinvid diagnostic logging output to rinvid_error.log" OFF)
 set(RINVID_GTEST_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/extern/googletest"
     CACHE PATH "Path to a local GoogleTest source checkout")
 set(RINVID_BENCHMARK_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/extern/benchmark"
@@ -15,14 +18,24 @@ find_package(Freetype REQUIRED)
 
 add_definitions(-DSFML_STATIC)
 
+if(RINVID_DEBUG_MODE_OUTPUT_TO_FILE AND NOT RINVID_DEBUG_MODE)
+  message(WARNING "RINVID_DEBUG_MODE_OUTPUT_TO_FILE has no effect unless RINVID_DEBUG_MODE is ON")
+endif()
+
 function(rinvid_configure_target target)
   target_include_directories(
     ${target}
     PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
            ${CMAKE_CURRENT_SOURCE_DIR}/extern/glad/include
            ${CMAKE_CURRENT_SOURCE_DIR}/extern/glm
-           ${FREETYPE_INCLUDE_DIRS}
+            ${FREETYPE_INCLUDE_DIRS}
     PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/extern/stb)
+  if(RINVID_DEBUG_MODE)
+    target_compile_definitions(${target} PUBLIC RINVID_DEBUG_MODE)
+  endif()
+  if(RINVID_DEBUG_MODE AND RINVID_DEBUG_MODE_OUTPUT_TO_FILE)
+    target_compile_definitions(${target} PUBLIC RINVID_DEBUG_MODE_OUTPUT_TO_FILE)
+  endif()
   target_compile_options(${target} PRIVATE -Wall -Wextra -Werror -O3)
 endfunction()
 

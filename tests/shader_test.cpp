@@ -7,12 +7,15 @@
  * repository for more details.
  **********************************************************************/
 
+#include <string>
 #include <utility>
 
 #include <gtest/gtest.h>
 
 #include <rinvid/core/render_context.h>
 #include <rinvid/core/shader.h>
+#include <rinvid/util/error.h>
+#include <rinvid/util/error_handler.h>
 
 #include "include/opengl_test.h"
 
@@ -35,6 +38,14 @@ constexpr const char* fragment_shader_source =
     "    out_color = vec4(1.0, 1.0, 1.0, 1.0);\n"
     "}\n";
 
+constexpr const char* invalid_fragment_shader_source =
+    "#version 330 core\n"
+    "out vec4 out_color;\n"
+    "void main()\n"
+    "{\n"
+    "    out_color = vec4(1.0;\n"
+    "}\n";
+
 } // namespace
 
 using namespace rinvid;
@@ -49,6 +60,34 @@ TEST_F(OpenGLTest, ShaderMoveAssignment_LeavesDestinationUsable)
     EXPECT_EQ(shader_1.get_id(), 0U);
     EXPECT_NE(shader_2.get_id(), 0U);
     EXPECT_NO_THROW(shader_2.use());
+}
+
+TEST_F(OpenGLTest, ShaderConstructor_InvalidFragmentSourceThrowsGraphicsError)
+{
+    try
+    {
+        const Shader shader{vertex_shader_source, invalid_fragment_shader_source};
+        (void)shader;
+        FAIL() << "Expected GraphicsError";
+    }
+    catch (const GraphicsError& error)
+    {
+        EXPECT_NE(std::string{error.what()}.find("fragment shader compilation failed"),
+                  std::string::npos);
+    }
+}
+
+TEST_F(OpenGLTest, ShaderSetUniform_InvalidNameRecordsUniformName)
+{
+    errors::clear_errors();
+
+    Shader shader{vertex_shader_source, fragment_shader_source};
+    shader.set_int("missing_uniform", 1);
+
+    EXPECT_TRUE(errors::has_error_occurred(
+        "glGetUniformLocation error: invalid uniform name 'missing_uniform'"));
+
+    errors::clear_errors();
 }
 
 TEST_F(OpenGLTest, RenderContextShutdown_ReleasesDefaultShadersAndAllowsReinit)

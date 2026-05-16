@@ -13,15 +13,10 @@
 #include <cstdint>
 #include <string>
 
-/// @brief Uncomment bellow macro if you want to activate Rinvid debug mode. Debug mode allows
-/// error messages to be printed in console (and to file if you choose to), but also it causes some
-/// performance overhead. Activate debug mode only during debugging and never on "release" builds or
-/// when measuring performance, etc.
-// #define RINVID_DEBUG_MODE
-
-/// @brief Uncomment bellow macro if you want error messages to be written to file. This will only
-/// work if RINVID_DEBUG_MODE is also defined. File rinvid_error.log will be created if you do so.
-// #define RINVID_DEBUG_MODE_OUTPUT_TO_FILE
+/// @brief RINVID_DEBUG_MODE and RINVID_DEBUG_MODE_OUTPUT_TO_FILE are configured through CMake.
+/// Diagnostic messages are always recorded for inspection through this API. RINVID_DEBUG_MODE also
+/// prints unique messages to stderr and enables GL_CALL OpenGL error checks. If
+/// RINVID_DEBUG_MODE_OUTPUT_TO_FILE is also enabled, messages are appended to rinvid_error.log.
 
 #ifdef RINVID_DEBUG_MODE
 /// @brief This is a common way to deal with OpenGL error handling. Instead of calling glGetError()
@@ -47,8 +42,9 @@ namespace errors
 {
 
 /**************************************************************************************************
- * @brief Prints message to console if RINVID_DEBUG_MODE is defined, also writes it to
- * rinvid_error.log file if RINVID_DEBUG_MODE_OUTPUT_TO_FILE is defined
+ * @brief Records a diagnostic message. If RINVID_DEBUG_MODE is defined, unique messages are also
+ * printed to stderr. If RINVID_DEBUG_MODE_OUTPUT_TO_FILE is defined as well, unique messages are
+ * also written to rinvid_error.log.
  *
  * @param error_description Message to be written to console/file
  *
@@ -56,8 +52,9 @@ namespace errors
 void put_error_to_log(const std::string& error_description);
 
 /**************************************************************************************************
- * @brief Prints message to console if RINVID_DEBUG_MODE is defined, also writes it to
- * rinvid_error.log file if RINVID_DEBUG_MODE_OUTPUT_TO_FILE is defined
+ * @brief Records a diagnostic message. If RINVID_DEBUG_MODE is defined, unique messages are also
+ * printed to stderr. If RINVID_DEBUG_MODE_OUTPUT_TO_FILE is defined as well, unique messages are
+ * also written to rinvid_error.log.
  *
  * @param error_description Message to be written to console/file
  *
@@ -66,7 +63,7 @@ void put_error_to_log(const char* error_description);
 
 /**************************************************************************************************
  * @brief Handles all OpenGL errors that happened until last call of this function. All discovered
- * errors will be printed on console/file if debug mode is activated.
+ * errors will be recorded and printed on console/file if debug mode is activated.
  *
  * @param file File in which potential error happened
  * @param line Line number on which potential error happened
@@ -75,7 +72,7 @@ void put_error_to_log(const char* error_description);
 void handle_gl_errors(const char* file, std::uint32_t line);
 
 /**************************************************************************************************
- * @brief Returns number of errors.
+ * @brief Returns number of unique recorded errors.
  *
  * @return Number of errors that occured up to this point in time.
  *
@@ -83,14 +80,20 @@ void handle_gl_errors(const char* file, std::uint32_t line);
 std::uint32_t get_error_count();
 
 /**************************************************************************************************
- * @brief Check whether specific error occured.
+ * @brief Clears all recorded diagnostic errors.
+ *
+ *************************************************************************************************/
+void clear_errors();
+
+/**************************************************************************************************
+ * @brief Check whether specific error occurred.
  *
  * @param description Description of the error.
  *
- * @return True if error with this description has occured.
+ * @return True if error with this description has occurred.
  *
  *************************************************************************************************/
-bool has_error_occured(const std::string& description);
+bool has_error_occurred(const std::string& description);
 
 } // namespace errors
 } // namespace rinvid

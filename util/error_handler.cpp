@@ -9,6 +9,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <mutex>
 #include <set>
 #include <string>
 
@@ -27,22 +28,22 @@ namespace errors
 {
 
 static std::set<std::string> errors;
+static std::mutex            errors_mutex;
 
 void put_error_to_log(const std::string& error_description)
 {
-#ifndef RINVID_DEBUG_MODE
-    return;
-#endif
-
-    if (errors.find(error_description) != errors.end())
+    std::lock_guard<std::mutex> lock{errors_mutex};
+    const auto                  result = errors.insert(error_description);
+    if (result.second == false)
     {
         return;
     }
 
-    errors.insert(error_description);
-    std::cout << error_description << '\n';
+#ifdef RINVID_DEBUG_MODE
+    std::cerr << error_description << '\n';
+#endif
 
-#ifdef RINVID_DEBUG_MODE_OUTPUT_TO_FILE
+#if defined(RINVID_DEBUG_MODE) && defined(RINVID_DEBUG_MODE_OUTPUT_TO_FILE)
     std::ofstream error_log;
     error_log.open("rinvid_error.log", std::ios_base::app);
     error_log << error_description << '\n';
@@ -52,24 +53,13 @@ void put_error_to_log(const std::string& error_description)
 
 void put_error_to_log(const char* error_description)
 {
-#ifndef RINVID_DEBUG_MODE
-    return;
-#endif
-
-    if (errors.find(error_description) != errors.end())
+    if (error_description == nullptr)
     {
+        put_error_to_log(std::string{"Rinvid error: null error description"});
         return;
     }
 
-    errors.insert(error_description);
-    std::cout << error_description << '\n';
-
-#ifdef RINVID_DEBUG_MODE_OUTPUT_TO_FILE
-    std::ofstream error_log;
-    error_log.open("rinvid_error.log", std::ios_base::app);
-    error_log << error_description << '\n';
-    error_log.close();
-#endif
+    put_error_to_log(std::string{error_description});
 }
 
 void handle_gl_errors(const char* file, std::uint32_t line)
@@ -107,6 +97,7 @@ void handle_gl_errors(const char* file, std::uint32_t line)
                 error = "GL_STACK_OVERFLOW";
                 break;
             default:
+                error = "UNKNOWN_OPENGL_ERROR(" + std::to_string(error_code) + ")";
                 break;
         }
 
@@ -119,11 +110,19 @@ void handle_gl_errors(const char* file, std::uint32_t line)
 
 std::uint32_t get_error_count()
 {
-    return errors.size();
+    std::lock_guard<std::mutex> lock{errors_mutex};
+    return static_cast<std::uint32_t>(errors.size());
 }
 
-bool has_error_occured(const std::string& description)
+void clear_errors()
 {
+    std::lock_guard<std::mutex> lock{errors_mutex};
+    errors.clear();
+}
+
+bool has_error_occurred(const std::string& description)
+{
+    std::lock_guard<std::mutex> lock{errors_mutex};
     return errors.find(description) != errors.end();
 }
 

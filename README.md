@@ -79,6 +79,16 @@ To enable benchmark builds during configure:
 /mingw64/bin/cmake -S .. -B . -G Ninja -DRINVID_BUILD_BENCHMARKS=ON
 ```
 
+To enable Rinvid diagnostic logging and OpenGL error checks during configure:
+```shell
+/mingw64/bin/cmake -S .. -B . -G Ninja -DRINVID_DEBUG_MODE=ON
+```
+
+To also append diagnostic messages to `rinvid_error.log`:
+```shell
+/mingw64/bin/cmake -S .. -B . -G Ninja -DRINVID_DEBUG_MODE=ON -DRINVID_DEBUG_MODE_OUTPUT_TO_FILE=ON
+```
+
 The benchmark executable is `rinvid_benchmark`. The current sprite-scene benchmark generates random
 RGBA textures in memory, with random dimensions between `50x50` and `500x500`, and uses Google
 Benchmark command-line flags such as:

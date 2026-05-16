@@ -15,6 +15,7 @@
 #include <string>
 
 #include <rinvid/core/rinvid_gl.h>
+#include <rinvid/util/error.h>
 #include <rinvid/util/error_handler.h>
 
 namespace rinvid
@@ -36,6 +37,8 @@ class Shader
      *
      * @param vert_code Raw code of the vertex shader.
      * @param frag_code Raw code of the fragment shader.
+     *
+     * @throws GraphicsError if shader source is null or shader compilation/linking fails.
      *
      *************************************************************************************************/
     Shader(const char* vert_code, const char* frag_code);

@@ -18,6 +18,7 @@
 #include <rinvid/core/rinvid_gl.h>
 #include <rinvid/core/text.h>
 #include <rinvid/core/ttf_lib.h>
+#include <rinvid/util/error.h>
 
 namespace rinvid
 {
@@ -64,7 +65,8 @@ Text::Text(std::string text, const std::string& font_path, Vector2f position, Co
     if (error)
     {
         TTFLib::release();
-        throw error;
+        throw ResourceLoadError{"Freetype: Could not load font face '" + font_path +
+                                "' with error code " + std::to_string(error)};
     }
 
     try
@@ -225,7 +227,7 @@ void Text::generate_character_textures()
         {
             if (FT_Load_Char(ft_face_, c, FT_LOAD_RENDER))
             {
-                throw "Freetype: Failed to load Glyph";
+                throw ResourceLoadError{"Freetype: Failed to load glyph"};
             }
 
             std::uint32_t texture{};

@@ -20,6 +20,7 @@
 
 #include <rinvid/core/drawable.h>
 #include <rinvid/util/color.h>
+#include <rinvid/util/error.h>
 #include <rinvid/util/vector2.h>
 
 namespace rinvid
@@ -36,6 +37,8 @@ class Text : public Drawable
      * @param position Position where to draw the text.
      * @param color Color of the text.
      * @param size Font size.
+     *
+     * @throws ResourceLoadError if the font face or glyph resources cannot be loaded.
      *
      *************************************************************************************************/
     Text(std::string text, const std::string& font_path, Vector2f position, Color color,
