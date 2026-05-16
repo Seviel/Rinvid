@@ -64,14 +64,14 @@ class TestingGrounds : public rinvid::Screen
 
     rinvid::Texture background_texture{"resources/rinvid_bg.png"};
     rinvid::Sprite  background_sprite{&background_texture, 1920, 1080, rinvid::Vector2f{0.0F, 0.0F},
-                                     rinvid::Vector2f{0.0F, 0.0F}};
+                                      rinvid::Vector2f{0.0F, 0.0F}};
 
     bool                   quad_alive{true};
     rinvid::TriangleShape  triangle{rinvid::Vector2f{400.0F, 200.0F},
-                                   rinvid::Vector2f{300.0F, 100.0F},
-                                   rinvid::Vector2f{500.0F, 100.0F}};
+                                    rinvid::Vector2f{300.0F, 100.0F},
+                                    rinvid::Vector2f{500.0F, 100.0F}};
     rinvid::QuadShape      quad{rinvid::Vector2f{100.0F, 40.0F}, rinvid::Vector2f{150.0F, 40.0F},
-                           rinvid::Vector2f{160.0F, 90.0F}, rinvid::Vector2f{90.0F, 90.0F}};
+                                rinvid::Vector2f{160.0F, 90.0F}, rinvid::Vector2f{90.0F, 90.0F}};
     rinvid::RectangleShape rectangle{rinvid::Vector2f{350.0F, 35.0F}, 100.0F, 50.0F};
     rinvid::CircleShape    circle{rinvid::Vector2f{500.0F, 300.0f}, 100.0F};
     rinvid::FixedPolygonShape<5> polygon{
@@ -80,11 +80,11 @@ class TestingGrounds : public rinvid::Screen
          rinvid::Vector2f{100.0F, 200.0F}}};
     rinvid::Texture texture{"resources/logo.png"};
     rinvid::Sprite  sprite{&texture, 100, 100, rinvid::Vector2f{200.0F, 200.0F},
-                          rinvid::Vector2f{0.0F, 0.0F}};
+                           rinvid::Vector2f{0.0F, 0.0F}};
 
     rinvid::Texture clock_texture{"resources/clck.png"};
     rinvid::Sprite  clock_sprite{&clock_texture, 100, 100, rinvid::Vector2f{650.0F, 450.0F},
-                                rinvid::Vector2f{0.0F, 0.0F}};
+                                 rinvid::Vector2f{0.0F, 0.0F}};
 
     rinvid::Texture     button_texture{"resources/default_button.png"};
     rinvid::gui::Button button{};
@@ -96,6 +96,11 @@ class TestingGrounds : public rinvid::Screen
 
     rinvid::Text text{
         "Aloha!", "resources/aquifer.ttf", {250.0F, 375.0F}, {0.0F, 0.0F, 0.0F, 1.0F}, 28};
+
+    rinvid::Text wrapped_text{
+        "Hello world!", "resources/aquifer.ttf", {700.0F, 700.0F}, {0.0F, 0.0F, 0.0F, 1.0F}, 28};
+    rinvid::Text spaced_text{
+        "Hello\nworld\r!", "resources/aquifer.ttf", {700.0F, 800.0F}, {0.0F, 0.0F, 0.0F, 1.0F}, 28};
 
     rinvid::sound::Sound wind{"resources/wind.wav"};
 };
@@ -123,6 +128,9 @@ void TestingGrounds::create()
     button.set_idle({button_regions.at(0)});
     button.set_mouse_hovering({button_regions.at(1)});
     button.set_clicked({button_regions.at(2)});
+
+    wrapped_text.set_max_width(150.0F);
+    spaced_text.set_max_width(150.0F);
 
     light_mid.set_position(rinvid::Vector2f{320.0F, 250.0F});
     light_mid.set_intensity(0.4F);
@@ -196,6 +204,8 @@ void TestingGrounds::update(double delta_time)
     clock_sprite.draw(delta_time);
     button.draw(delta_time);
     text.draw();
+    wrapped_text.draw();
+    spaced_text.draw();
 
     triangle.move(rinvid::Vector2f{120.0F * static_cast<float>(delta_time), 0.0F});
     rinvid::Vector2f triangle_origin = triangle.get_origin();
