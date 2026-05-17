@@ -65,14 +65,14 @@ class TestingGrounds : public rinvid::Screen
 
     rinvid::Texture background_texture{"resources/rinvid_bg.png"};
     rinvid::Sprite  background_sprite{&background_texture, 1920, 1080, rinvid::Vector2f{0.0F, 0.0F},
-                                      rinvid::Vector2f{0.0F, 0.0F}};
+                                     rinvid::Vector2f{0.0F, 0.0F}};
 
     bool                   quad_alive{true};
     rinvid::TriangleShape  triangle{rinvid::Vector2f{400.0F, 200.0F},
-                                    rinvid::Vector2f{300.0F, 100.0F},
-                                    rinvid::Vector2f{500.0F, 100.0F}};
+                                   rinvid::Vector2f{300.0F, 100.0F},
+                                   rinvid::Vector2f{500.0F, 100.0F}};
     rinvid::QuadShape      quad{rinvid::Vector2f{100.0F, 40.0F}, rinvid::Vector2f{150.0F, 40.0F},
-                                rinvid::Vector2f{160.0F, 90.0F}, rinvid::Vector2f{90.0F, 90.0F}};
+                           rinvid::Vector2f{160.0F, 90.0F}, rinvid::Vector2f{90.0F, 90.0F}};
     rinvid::RectangleShape rectangle{rinvid::Vector2f{350.0F, 35.0F}, 100.0F, 50.0F};
     rinvid::CircleShape    circle{rinvid::Vector2f{500.0F, 300.0f}, 100.0F};
     rinvid::FixedPolygonShape<5> polygon{
@@ -81,11 +81,11 @@ class TestingGrounds : public rinvid::Screen
          rinvid::Vector2f{100.0F, 200.0F}}};
     rinvid::Texture texture{"resources/logo.png"};
     rinvid::Sprite  sprite{&texture, 100, 100, rinvid::Vector2f{200.0F, 200.0F},
-                           rinvid::Vector2f{0.0F, 0.0F}};
+                          rinvid::Vector2f{0.0F, 0.0F}};
 
     rinvid::Texture clock_texture{"resources/clck.png"};
     rinvid::Sprite  clock_sprite{&clock_texture, 100, 100, rinvid::Vector2f{650.0F, 450.0F},
-                                 rinvid::Vector2f{0.0F, 0.0F}};
+                                rinvid::Vector2f{0.0F, 0.0F}};
 
     rinvid::Texture     button_texture{"resources/default_button.png"};
     rinvid::gui::Button button{};
