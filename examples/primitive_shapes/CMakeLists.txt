@@ -5,3 +5,4 @@ add_executable(primitive_shapes WIN32 ${EXAMPLE_SOURCES})
 target_link_libraries(primitive_shapes PRIVATE rinvid)
 target_compile_options(primitive_shapes PRIVATE -Werror -Wall -Wextra -pedantic
                                                 -O3)
+rinvid_copy_runtime_dependencies(primitive_shapes)

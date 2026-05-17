@@ -24,10 +24,13 @@ jobs:
           sudo apt install --yes \
             cmake \
             ninja-build \
-            libsfml-dev \
-            libfreetype-dev \
             libgl1-mesa-dev \
             libgl1-mesa-dri \
+            libx11-dev \
+            libxrandr-dev \
+            libxcursor-dev \
+            libxi-dev \
+            libudev-dev \
             xvfb \
             xauth
 

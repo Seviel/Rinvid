@@ -12,6 +12,7 @@ add_executable(perf_stress WIN32 ${PERF_STRESS_SOURCES})
 
 target_link_libraries(perf_stress PRIVATE perf_stress_common rinvid)
 target_compile_options(perf_stress PRIVATE -Werror -Wall -Wextra -pedantic -O3)
+rinvid_copy_runtime_dependencies(perf_stress)
 
 set(PERF_STRESS_FONT_RESOURCE
     ${PROJECT_SOURCE_DIR}/examples/testing_grounds/resources/aquifer.ttf)

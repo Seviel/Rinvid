@@ -4,6 +4,7 @@ add_executable(sprites WIN32 ${EXAMPLE_SOURCES})
 
 target_link_libraries(sprites PRIVATE rinvid)
 target_compile_options(sprites PRIVATE -Werror -Wall -Wextra -pedantic -O3)
+rinvid_copy_runtime_dependencies(sprites)
 
 # Copy resources to build directory so the executable can find them
 set(EXAMPLE_RESOURCES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/resources)

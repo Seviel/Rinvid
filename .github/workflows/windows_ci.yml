@@ -30,36 +30,6 @@ jobs:
             mingw-w64-x86_64-gcc
             mingw-w64-x86_64-cmake
             mingw-w64-x86_64-ninja
-            mingw-w64-x86_64-flac
-            mingw-w64-x86_64-freetype
-            mingw-w64-x86_64-libjpeg
-            mingw-w64-x86_64-libvorbis
-            mingw-w64-x86_64-openal
-
-      - name: Install dependencies
-        shell: msys2 {0}
-        run: pacman -S --needed --noconfirm mingw-w64-x86_64-gtest
-
-      - name: Install SFML 2.6.1
-        shell: msys2 {0}
-        run: |
-          sfml_package="/tmp/mingw-w64-x86_64-sfml-2.6.1-1-any.pkg.tar.zst"
-          urls=(
-            "https://mirror.msys2.org/mingw/mingw64/mingw-w64-x86_64-sfml-2.6.1-1-any.pkg.tar.zst"
-            "https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-sfml-2.6.1-1-any.pkg.tar.zst"
-          )
-          downloaded=0
-          for url in "${urls[@]}"; do
-            if curl -fL --retry 5 --retry-delay 2 --retry-all-errors "$url" -o "$sfml_package"; then
-              downloaded=1
-              break
-            fi
-          done
-          if [ "$downloaded" -ne 1 ]; then
-            echo "Failed to download SFML 2.6.1 package from MSYS2 mirrors." >&2
-            exit 1
-          fi
-          pacman -U --noconfirm --needed "$sfml_package"
 
       - name: Configure CMake
         shell: msys2 {0}

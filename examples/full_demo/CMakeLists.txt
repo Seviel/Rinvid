@@ -4,6 +4,7 @@ add_executable(full_demo WIN32 ${EXAMPLE_SOURCES})
 
 target_link_libraries(full_demo PRIVATE rinvid)
 target_compile_options(full_demo PRIVATE -Werror -Wall -Wextra -pedantic -O3)
+rinvid_copy_runtime_dependencies(full_demo)
 
 # Copy resources to build directory so the executable can find them
 set(EXAMPLE_RESOURCES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/resources)

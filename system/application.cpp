@@ -34,13 +34,13 @@ Application::Application(std::uint32_t width, std::uint32_t height, const std::s
 {
     if (fullscreen)
     {
-        window_.create(sf::VideoMode::getDesktopMode(), title, sf::Style::Fullscreen);
+        window_.create(sf::VideoMode::getDesktopMode(), title, sf::State::Fullscreen);
         window_.setVerticalSyncEnabled(true);
         window_.setFramerateLimit(fps_);
     }
     else
     {
-        window_.create(sf::VideoMode{width, height}, title);
+        window_.create(sf::VideoMode{{width, height}}, title);
     }
 
 #ifdef _WIN32
@@ -65,9 +65,11 @@ Application::~Application()
 void Application::run()
 {
     std::chrono::duration<double> total_frame_time{};
-    sf::Event                     event;
 
-    window_.setActive(true);
+    if (!window_.setActive(true))
+    {
+        return;
+    }
 
     running_ = true;
     activate_pending_screen();
@@ -76,7 +78,7 @@ void Application::run()
     {
         auto start = std::chrono::high_resolution_clock::now();
 
-        handle_events(window_, event);
+        handle_events(window_);
 
         if (current_screen_ != nullptr)
         {
@@ -159,21 +161,17 @@ void Application::destroy_current_screen()
     }
 }
 
-void Application::handle_events(sf::Window& window, sf::Event& event)
+void Application::handle_events(sf::Window& window)
 {
-    while (window.pollEvent(event))
+    while (const auto event = window.pollEvent())
     {
-        switch (event.type)
+        if (event->is<sf::Event::Closed>())
         {
-            case sf::Event::Closed:
-                running_ = false;
-                break;
-            case sf::Event::Resized:
-                context_.get_render_context().set_viewport(0, 0, event.size.width,
-                                                           event.size.height);
-                break;
-            default:
-                break;
+            running_ = false;
+        }
+        else if (const auto* resized = event->getIf<sf::Event::Resized>())
+        {
+            context_.get_render_context().set_viewport(0, 0, resized->size.x, resized->size.y);
         }
     }
 }

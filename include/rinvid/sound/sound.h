@@ -10,6 +10,7 @@
 #ifndef INCLUDE_RINVID_SOUND_SOUND_H
 #define INCLUDE_RINVID_SOUND_SOUND_H
 
+#include <optional>
 #include <string>
 
 #include <SFML/Audio.hpp>
@@ -70,8 +71,8 @@ class Sound
     void set_volume(float volume);
 
   private:
-    sf::SoundBuffer buffer_;
-    sf::Sound       sound_;
+    sf::SoundBuffer          buffer_;
+    std::optional<sf::Sound> sound_;
 };
 
 } // namespace rinvid::sound
