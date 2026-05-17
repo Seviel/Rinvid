@@ -20,6 +20,7 @@
 #include <rinvid/core/texture.h>
 #include <rinvid/core/ttf_lib.h>
 #include <rinvid/gui/button.h>
+#include <rinvid/gui/label.h>
 #include <rinvid/platformers/object.h>
 #include <rinvid/platformers/sprite_object.h>
 #include <rinvid/platformers/world.h>
@@ -82,10 +83,10 @@ class TestingGrounds : public Screen
 
     Button bell_button_{};
 
-    Text light_intensity_label_{
+    Label light_intensity_label_{
         "Light intensity", "resources/aquifer.ttf", {20.0F, 400.0F}, 0xffffffff, 18};
 
-    Text light_falloff_label_{
+    Label light_falloff_label_{
         "Light falloff", "resources/aquifer.ttf", {20.0F, 475.0F}, 0xffffffff, 18};
 
     Camera camera_{};
@@ -111,54 +112,21 @@ void TestingGrounds::create()
     clock_sprite_.get_animation().add_animation("running", clock_animation);
     clock_sprite_.get_animation().play("still");
 
-    logo_rotate_button_.setup(&rotation_button_texture_, 100, 30, Vector2f{20.0F, 120.0F});
-    auto button_regions = logo_rotate_button_.get_animation().split_animation_frames(100, 30, 3, 1);
-
-    logo_rotate_button_.set_idle({button_regions.at(0)});
-    logo_rotate_button_.set_mouse_hovering({button_regions.at(1)});
-    logo_rotate_button_.set_clicked({button_regions.at(2)});
-
-    logo_transparency_button_.setup(&opacity_button_texture_, 100, 30, Vector2f{20.0F, 160.0F});
-
-    logo_transparency_button_.set_idle({button_regions.at(0)});
-    logo_transparency_button_.set_mouse_hovering({button_regions.at(1)});
-    logo_transparency_button_.set_clicked({button_regions.at(2)});
-
-    clock_anim_button_.setup(&run_reset_button_texture_, 100, 30, Vector2f{20.0F, 285.0F});
-
-    clock_anim_button_.set_idle({button_regions.at(0)});
-    clock_anim_button_.set_mouse_hovering({button_regions.at(1)});
-    clock_anim_button_.set_clicked({button_regions.at(2)});
-
-    light_intensity_plus_button_.setup(&plus_button_texture_, 100, 30, Vector2f{20.0F, 420.0F});
-
-    light_intensity_plus_button_.set_idle({button_regions.at(0)});
-    light_intensity_plus_button_.set_mouse_hovering({button_regions.at(1)});
-    light_intensity_plus_button_.set_clicked({button_regions.at(2)});
-
-    light_intensity_minus_button_.setup(&minus_button_texture_, 100, 30, Vector2f{130.0F, 420.0F});
-
-    light_intensity_minus_button_.set_idle({button_regions.at(0)});
-    light_intensity_minus_button_.set_mouse_hovering({button_regions.at(1)});
-    light_intensity_minus_button_.set_clicked({button_regions.at(2)});
-
-    light_falloff_plus_button_.setup(&plus_button_texture_, 100, 30, Vector2f{20.0F, 495.0F});
-
-    light_falloff_plus_button_.set_idle({button_regions.at(0)});
-    light_falloff_plus_button_.set_mouse_hovering({button_regions.at(1)});
-    light_falloff_plus_button_.set_clicked({button_regions.at(2)});
-
-    light_falloff_minus_button_.setup(&minus_button_texture_, 100, 30, Vector2f{130.0F, 495.0F});
-
-    light_falloff_minus_button_.set_idle({button_regions.at(0)});
-    light_falloff_minus_button_.set_mouse_hovering({button_regions.at(1)});
-    light_falloff_minus_button_.set_clicked({button_regions.at(2)});
-
-    bell_button_.setup(&bell_button_texture_, 100, 30, Vector2f{20.0F, 550.0F});
-
-    bell_button_.set_idle({button_regions.at(0)});
-    bell_button_.set_mouse_hovering({button_regions.at(1)});
-    bell_button_.set_clicked({button_regions.at(2)});
+    logo_rotate_button_.setup_from_atlas(&rotation_button_texture_, 100, 30,
+                                         Vector2f{20.0F, 120.0F});
+    logo_transparency_button_.setup_from_atlas(&opacity_button_texture_, 100, 30,
+                                               Vector2f{20.0F, 160.0F});
+    clock_anim_button_.setup_from_atlas(&run_reset_button_texture_, 100, 30,
+                                        Vector2f{20.0F, 285.0F});
+    light_intensity_plus_button_.setup_from_atlas(&plus_button_texture_, 100, 30,
+                                                  Vector2f{20.0F, 420.0F});
+    light_intensity_minus_button_.setup_from_atlas(&minus_button_texture_, 100, 30,
+                                                   Vector2f{130.0F, 420.0F});
+    light_falloff_plus_button_.setup_from_atlas(&plus_button_texture_, 100, 30,
+                                                Vector2f{20.0F, 495.0F});
+    light_falloff_minus_button_.setup_from_atlas(&minus_button_texture_, 100, 30,
+                                                 Vector2f{130.0F, 495.0F});
+    bell_button_.setup_from_atlas(&bell_button_texture_, 100, 30, Vector2f{20.0F, 550.0F});
 
     light_.set_position(Vector2f{400.0F, 50.0F});
     light_.set_intensity(0.5F);
@@ -213,45 +181,45 @@ void TestingGrounds::button_control()
 {
     for (auto button : buttons_)
     {
-        button->update_state();
+        button->update();
     }
 
-    if (light_intensity_plus_button_.just_clicked())
+    if (light_intensity_plus_button_.was_activated())
     {
         light_.set_intensity(std::min(1.0F, light_.get_intensity() + 0.1F));
     }
 
-    if (light_intensity_minus_button_.just_clicked())
+    if (light_intensity_minus_button_.was_activated())
     {
         light_.set_intensity(std::max(0.0F, light_.get_intensity() - 0.1F));
     }
 
-    if (light_falloff_plus_button_.just_clicked())
+    if (light_falloff_plus_button_.was_activated())
     {
         light_.set_falloff(std::min(1.0F, light_.get_falloff() + 0.1F));
     }
 
-    if (light_falloff_minus_button_.just_clicked())
+    if (light_falloff_minus_button_.was_activated())
     {
         light_.set_falloff(std::max(0.0F, light_.get_falloff() - 0.1F));
     }
 
-    if (logo_rotate_button_.just_clicked())
+    if (logo_rotate_button_.was_activated())
     {
         logo_rotation_ = !logo_rotation_;
     }
 
-    if (logo_transparency_button_.just_clicked())
+    if (logo_transparency_button_.was_activated())
     {
         logo_transparent_ = !logo_transparent_;
     }
 
-    if (clock_anim_button_.just_clicked())
+    if (clock_anim_button_.was_activated())
     {
         clock_running_ = !clock_running_;
     }
 
-    if (bell_button_.just_clicked())
+    if (bell_button_.was_activated())
     {
         play_bell_ = true;
     }

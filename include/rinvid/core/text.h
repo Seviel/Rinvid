@@ -10,6 +10,7 @@
 #ifndef INCLUDE_RINVID_CORE_TEXT_H
 #define INCLUDE_RINVID_CORE_TEXT_H
 
+#include <cstdint>
 #include <string>
 #include <unordered_map>
 
@@ -120,6 +121,62 @@ class Text : public Drawable
      *************************************************************************************************/
     void set_max_width(float max_width);
 
+    /**************************************************************************************************
+     * @brief Returns the text contents.
+     *
+     * @return Text contents.
+     *
+     *************************************************************************************************/
+    const std::string& get_text() const;
+
+    /**************************************************************************************************
+     * @brief Returns the text position.
+     *
+     * @return Text position.
+     *
+     *************************************************************************************************/
+    Vector2f get_position() const;
+
+    /**************************************************************************************************
+     * @brief Returns the font size.
+     *
+     * @return Font size.
+     *
+     *************************************************************************************************/
+    std::uint32_t get_size() const;
+
+    /**************************************************************************************************
+     * @brief Returns the text color.
+     *
+     * @return Text color.
+     *
+     *************************************************************************************************/
+    Color get_color() const;
+
+    /**************************************************************************************************
+     * @brief Returns the max wrapping width.
+     *
+     * @return Max wrapping width.
+     *
+     *************************************************************************************************/
+    float get_max_width() const;
+
+    /**************************************************************************************************
+     * @brief Returns the natural width of the widest line.
+     *
+     * @return Natural width of the widest line.
+     *
+     *************************************************************************************************/
+    float get_width() const;
+
+    /**************************************************************************************************
+     * @brief Returns the text line height.
+     *
+     * @return Text line height.
+     *
+     *************************************************************************************************/
+    float get_line_height() const;
+
   private:
     struct Character
     {
@@ -144,8 +201,6 @@ class Text : public Drawable
     float get_character_advance(char character_key) const;
 
     float get_text_width(std::string::const_iterator begin, std::string::const_iterator end) const;
-
-    float get_line_height() const;
 
     void move_to_next_line(float& x, float& y, float start_x) const;
 

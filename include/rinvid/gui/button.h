@@ -10,6 +10,9 @@
 #ifndef INCLUDE_RINVID_GUI_BUTTON_H
 #define INCLUDE_RINVID_GUI_BUTTON_H
 
+#include <cstdint>
+#include <vector>
+
 #include <rinvid/core/sprite.h>
 
 namespace rinvid
@@ -17,6 +20,18 @@ namespace rinvid
 
 namespace gui
 {
+
+/**************************************************************************************************
+ * @brief Visual and input state of a button.
+ *
+ *************************************************************************************************/
+enum class ButtonState
+{
+    Idle = 0U,
+    Hovered,
+    Pressed,
+    Disabled
+};
 
 /**************************************************************************************************
  * @brief A clickable button.
@@ -32,10 +47,27 @@ class Button : public Sprite
     Button();
 
     /**************************************************************************************************
-     * @brief Updates the button status (clicked status and animation) based on mouse position.
+     * @brief Sets texture, position, size and state regions from a horizontal sprite atlas.
+     *
+     * Regions are expected to be ordered as idle, hovered, pressed and optionally disabled.
+     *
+     * @param texture Button texture.
+     * @param width Button width.
+     * @param height Button height.
+     * @param top_left Top-left button position.
+     * @param state_count Number of state regions in the atlas.
+     * @param atlas_offset Top-left offset of the first region in the texture.
      *
      *************************************************************************************************/
-    void update_state();
+    void setup_from_atlas(Texture* texture, std::int32_t width, std::int32_t height,
+                          Vector2f top_left, std::uint32_t state_count = 3U,
+                          Vector2f atlas_offset = {0.0F, 0.0F});
+
+    /**************************************************************************************************
+     * @brief Updates the button state and input events based on mouse position.
+     *
+     *************************************************************************************************/
+    void update();
 
     /**************************************************************************************************
      * @brief Sets animation regions for idle status (mouse is not hovering over button).
@@ -51,38 +83,164 @@ class Button : public Sprite
      * @param regions Vector of rects indicating frames of texture that make up the animation.
      *
      *************************************************************************************************/
-    void set_mouse_hovering(const std::vector<Rect>& regions);
+    void set_hovered(const std::vector<Rect>& regions);
 
     /**************************************************************************************************
-     * @brief Sets animation regions for when the button is clicked.
+     * @brief Sets animation regions for when the button is pressed.
      *
      * @param regions Vector of rects indicating frames of texture that make up the animation.
      *
      *************************************************************************************************/
-    void set_clicked(const std::vector<Rect>& regions);
+    void set_pressed(const std::vector<Rect>& regions);
 
     /**************************************************************************************************
-     * @brief Checks whether button is clicked on.
+     * @brief Sets animation regions for when the button is disabled.
      *
-     * @return True if button is clicked, false otherwise.
+     * @param regions Vector of rects indicating frames of texture that make up the animation.
      *
      *************************************************************************************************/
-    bool is_clicked() const;
+    void set_disabled(const std::vector<Rect>& regions);
 
     /**************************************************************************************************
-     * @brief Checks whether button is "just clicked". Will return true only once per click.
+     * @brief Sets state regions from an ordered region list.
      *
-     * @return True if button is just clicked, false otherwise.
+     * Regions are expected to be ordered as idle, hovered, pressed and optionally disabled.
+     *
+     * @param regions Ordered list of state texture regions.
      *
      *************************************************************************************************/
-    bool just_clicked();
+    void set_state_regions(const std::vector<Rect>& regions);
+
+    /**************************************************************************************************
+     * @brief Sets whether the button should react to input.
+     *
+     * @param enabled True to enable the button, false to disable it.
+     *
+     *************************************************************************************************/
+    void set_enabled(bool enabled);
+
+    /**************************************************************************************************
+     * @brief Checks whether the button reacts to input.
+     *
+     * @return True if the button is enabled, false otherwise.
+     *
+     *************************************************************************************************/
+    bool is_enabled() const;
+
+    /**************************************************************************************************
+     * @brief Sets whether the button should be drawn and updated.
+     *
+     * @param visible True to show the button, false to hide it.
+     *
+     *************************************************************************************************/
+    void set_visible(bool visible);
+
+    /**************************************************************************************************
+     * @brief Checks whether the button is visible.
+     *
+     * @return True if the button is visible, false otherwise.
+     *
+     *************************************************************************************************/
+    bool is_visible() const;
+
+    /**************************************************************************************************
+     * @brief Returns the current button state.
+     *
+     * @return Current button state.
+     *
+     *************************************************************************************************/
+    ButtonState get_state() const;
+
+    /**************************************************************************************************
+     * @brief Checks whether the mouse is hovering over the button.
+     *
+     * @return True if the button is hovered, false otherwise.
+     *
+     *************************************************************************************************/
+    bool is_hovered() const;
+
+    /**************************************************************************************************
+     * @brief Checks whether the button is currently pressed.
+     *
+     * @return True if the button is pressed, false otherwise.
+     *
+     *************************************************************************************************/
+    bool is_pressed() const;
+
+    /**************************************************************************************************
+     * @brief Checks whether the button was pressed during the most recent update.
+     *
+     * @return True if the button was pressed, false otherwise.
+     *
+     *************************************************************************************************/
+    bool was_pressed() const;
+
+    /**************************************************************************************************
+     * @brief Checks whether the button was released during the most recent update.
+     *
+     * @return True if the button was released, false otherwise.
+     *
+     *************************************************************************************************/
+    bool was_released() const;
+
+    /**************************************************************************************************
+     * @brief Checks whether the button was pressed and released while hovered.
+     *
+     * @return True if the button was activated, false otherwise.
+     *
+     *************************************************************************************************/
+    bool was_activated() const;
+
+    /**************************************************************************************************
+     * @brief Draws the button if it is visible.
+     *
+     *************************************************************************************************/
+    virtual void draw() override;
+
+    /**************************************************************************************************
+     * @brief Draws the button with shader if it is visible.
+     *
+     * @param shader Shader to use.
+     *
+     *************************************************************************************************/
+    virtual void draw(const Shader shader) override;
+
+    /**************************************************************************************************
+     * @brief Draws the animated button if it is visible.
+     *
+     * @param delta_time Time passed in seconds since last frame.
+     *
+     *************************************************************************************************/
+    virtual void draw(double delta_time) override;
+
+    /**************************************************************************************************
+     * @brief Draws the animated button with shader if it is visible.
+     *
+     * @param delta_time Time passed in seconds since last frame.
+     * @param shader Shader to use.
+     *
+     *************************************************************************************************/
+    virtual void draw(double delta_time, const Shader shader) override;
 
   private:
-    Animation idle_;
-    Animation mouse_hovering_;
-    Animation clicked_;
-    bool      is_clicked_;
-    bool      just_clicked_;
+    void clear_events();
+    bool is_mouse_over();
+    void set_state(ButtonState state);
+    void apply_state_animation();
+
+    Animation   idle_;
+    Animation   hovered_;
+    Animation   pressed_;
+    Animation   disabled_;
+    ButtonState state_;
+    bool        visible_;
+    bool        enabled_;
+    bool        has_disabled_animation_;
+    bool        mouse_was_down_;
+    bool        pressed_inside_;
+    bool        was_pressed_;
+    bool        was_released_;
+    bool        was_activated_;
 };
 
 } // namespace gui
