@@ -14,6 +14,7 @@
 #include <vector>
 
 #include <rinvid/core/sprite.h>
+#include <rinvid/gui/widget.h>
 
 namespace rinvid
 {
@@ -37,7 +38,7 @@ enum class ButtonState
  * @brief A clickable button.
  *
  *************************************************************************************************/
-class Button : public Sprite
+class Button : public Sprite, public Widget
 {
   public:
     /**************************************************************************************************
@@ -68,6 +69,30 @@ class Button : public Sprite
      *
      *************************************************************************************************/
     void update();
+
+    /**************************************************************************************************
+     * @brief Updates the button state and input events based on mouse position.
+     *
+     * @param delta_time Time passed in seconds since last frame.
+     *
+     *************************************************************************************************/
+    virtual void update(double delta_time) override;
+
+    /**************************************************************************************************
+     * @brief Moves the button.
+     *
+     * @param move_vector Vector to add to current position.
+     *
+     *************************************************************************************************/
+    virtual void move(const Vector2f move_vector) override;
+
+    /**************************************************************************************************
+     * @brief Sets button position.
+     *
+     * @param position New top-left button position.
+     *
+     *************************************************************************************************/
+    virtual void set_position(const Vector2f position) override;
 
     /**************************************************************************************************
      * @brief Sets animation regions for idle status (mouse is not hovering over button).
@@ -117,7 +142,7 @@ class Button : public Sprite
      * @param enabled True to enable the button, false to disable it.
      *
      *************************************************************************************************/
-    void set_enabled(bool enabled);
+    virtual void set_enabled(bool enabled) override;
 
     /**************************************************************************************************
      * @brief Checks whether the button reacts to input.
@@ -125,7 +150,7 @@ class Button : public Sprite
      * @return True if the button is enabled, false otherwise.
      *
      *************************************************************************************************/
-    bool is_enabled() const;
+    virtual bool is_enabled() const override;
 
     /**************************************************************************************************
      * @brief Sets whether the button should be drawn and updated.
@@ -133,7 +158,7 @@ class Button : public Sprite
      * @param visible True to show the button, false to hide it.
      *
      *************************************************************************************************/
-    void set_visible(bool visible);
+    virtual void set_visible(bool visible) override;
 
     /**************************************************************************************************
      * @brief Checks whether the button is visible.
@@ -141,7 +166,7 @@ class Button : public Sprite
      * @return True if the button is visible, false otherwise.
      *
      *************************************************************************************************/
-    bool is_visible() const;
+    virtual bool is_visible() const override;
 
     /**************************************************************************************************
      * @brief Returns the current button state.
@@ -150,6 +175,14 @@ class Button : public Sprite
      *
      *************************************************************************************************/
     ButtonState get_state() const;
+
+    /**************************************************************************************************
+     * @brief Returns button bounds.
+     *
+     * @return Button bounds.
+     *
+     *************************************************************************************************/
+    virtual Rect get_bounds() override;
 
     /**************************************************************************************************
      * @brief Checks whether the mouse is hovering over the button.

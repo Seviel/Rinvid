@@ -8,6 +8,7 @@
  **********************************************************************/
 
 #include <algorithm>
+#include <cmath>
 #include <utility>
 
 #include <rinvid/gui/label.h>
@@ -24,6 +25,21 @@ Label::Label(std::string text, const std::string& font_path, Vector2f position, 
       alignment_{alignment}, visible_{true}
 {
     set_bounds_width(bounds_width);
+}
+
+void Label::update(double delta_time)
+{
+    (void)delta_time;
+}
+
+void Label::move(const Vector2f move_vector)
+{
+    Text::move(move_vector);
+}
+
+void Label::set_position(const Vector2f position)
+{
+    Text::set_position(position);
 }
 
 void Label::set_alignment(LabelAlignment alignment)
@@ -55,6 +71,14 @@ void Label::set_visible(bool visible)
 bool Label::is_visible() const
 {
     return visible_;
+}
+
+Rect Label::get_bounds()
+{
+    const float width{bounds_width_ > 0.0F ? bounds_width_ : Text::get_width()};
+
+    return Rect{Text::get_position(), static_cast<std::int32_t>(std::ceil(std::max(0.0F, width))),
+                static_cast<std::int32_t>(std::ceil(Text::get_line_height()))};
 }
 
 void Label::draw()

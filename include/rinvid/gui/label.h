@@ -14,6 +14,7 @@
 #include <string>
 
 #include <rinvid/core/text.h>
+#include <rinvid/gui/widget.h>
 
 namespace rinvid
 {
@@ -36,7 +37,7 @@ enum class LabelAlignment
  * @brief A textual label.
  *
  *************************************************************************************************/
-class Label : public Text
+class Label : public Text, public Widget
 {
   public:
     /**************************************************************************************************
@@ -54,6 +55,30 @@ class Label : public Text
     Label(std::string text, const std::string& font_path, Vector2f position, Color color,
           std::uint32_t size, float bounds_width = 0.0F,
           LabelAlignment alignment = LabelAlignment::Left);
+
+    /**************************************************************************************************
+     * @brief Updates label state.
+     *
+     * @param delta_time Time passed in seconds since last frame.
+     *
+     *************************************************************************************************/
+    virtual void update(double delta_time) override;
+
+    /**************************************************************************************************
+     * @brief Moves the label.
+     *
+     * @param move_vector Vector to add to current position.
+     *
+     *************************************************************************************************/
+    virtual void move(const Vector2f move_vector) override;
+
+    /**************************************************************************************************
+     * @brief Sets label position.
+     *
+     * @param position New position.
+     *
+     *************************************************************************************************/
+    virtual void set_position(const Vector2f position) override;
 
     /**************************************************************************************************
      * @brief Sets horizontal alignment inside label bounds.
@@ -93,7 +118,7 @@ class Label : public Text
      * @param visible True to show the label, false to hide it.
      *
      *************************************************************************************************/
-    void set_visible(bool visible);
+    virtual void set_visible(bool visible) override;
 
     /**************************************************************************************************
      * @brief Checks whether the label is visible.
@@ -101,7 +126,15 @@ class Label : public Text
      * @return True if the label is visible, false otherwise.
      *
      *************************************************************************************************/
-    bool is_visible() const;
+    virtual bool is_visible() const override;
+
+    /**************************************************************************************************
+     * @brief Returns label bounds.
+     *
+     * @return Label bounds.
+     *
+     *************************************************************************************************/
+    virtual Rect get_bounds() override;
 
     /**************************************************************************************************
      * @brief Draws the label if it is visible.

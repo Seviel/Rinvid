@@ -93,7 +93,7 @@ class TextButton : public Button
      * @param visible True to show the button, false to hide it.
      *
      *************************************************************************************************/
-    void set_visible(bool visible);
+    virtual void set_visible(bool visible) override;
 
     /**************************************************************************************************
      * @brief Sets the button label text.

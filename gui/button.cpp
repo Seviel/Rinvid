@@ -119,7 +119,7 @@ void Button::update()
     {
         if (mouse_was_down_ && pressed_inside_)
         {
-            was_released_ = true;
+            was_released_  = true;
             was_activated_ = hovered;
         }
 
@@ -128,6 +128,22 @@ void Button::update()
     }
 
     mouse_was_down_ = mouse_down;
+}
+
+void Button::update(double delta_time)
+{
+    (void)delta_time;
+    update();
+}
+
+void Button::move(const Vector2f move_vector)
+{
+    Sprite::move(move_vector);
+}
+
+void Button::set_position(const Vector2f position)
+{
+    Sprite::set_position(position);
 }
 
 void Button::set_idle(const std::vector<Rect>& regions)
@@ -218,6 +234,11 @@ bool Button::is_visible() const
 ButtonState Button::get_state() const
 {
     return state_;
+}
+
+Rect Button::get_bounds()
+{
+    return bounding_rect();
 }
 
 bool Button::is_hovered() const
