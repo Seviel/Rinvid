@@ -332,7 +332,7 @@ float Text::get_width() const
     {
         if (is_line_break(*current))
         {
-            widest_line_width = std::max(widest_line_width, current_line_width);
+            widest_line_width  = std::max(widest_line_width, current_line_width);
             current_line_width = 0.0F;
             current            = consume_line_break(current, text_.cend());
             continue;

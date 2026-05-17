@@ -134,12 +134,12 @@ class GuiShowcaseScreen : public rinvid::Screen
     rinvid::gui::StackLayout preview_layout_{{0.0F, 0.0F}};
 
     rinvid::gui::Label       controls_title_{"Controls", FONT_PATH, {0.0F, 0.0F},
-                                             0xFFFFFFFF, 18U,       320.0F};
+                                       0xFFFFFFFF, 18U,       320.0F};
     rinvid::gui::Label       slider_label_{"Slider value", FONT_PATH, {0.0F, 0.0F},
-                                           0xBFD2E6FF,     13U,       320.0F};
+                                     0xBFD2E6FF,     13U,       320.0F};
     rinvid::gui::Slider      value_slider_{{0.0F, 0.0F}, 320.0F, 0.0F, 100.0F, 55.0F};
     rinvid::gui::Label       speed_label_{"Auto-fill speed", FONT_PATH, {0.0F, 0.0F},
-                                          0xBFD2E6FF,        13U,       320.0F};
+                                    0xBFD2E6FF,        13U,       320.0F};
     rinvid::gui::Slider      speed_slider_{{0.0F, 0.0F}, 320.0F, 0.1F, 1.0F, 0.35F};
     rinvid::gui::CheckButton auto_fill_check_{"Auto fill", FONT_PATH, 0xFFFFFFFF, 13U};
     rinvid::gui::CheckButton controls_active_check_{"Controls active", FONT_PATH, 0xFFFFFFFF, 13U};
@@ -150,10 +150,10 @@ class GuiShowcaseScreen : public rinvid::Screen
                                       0xD8E6FFFF,          13U,       320.0F};
     rinvid::gui::ProgressBar value_bar_{{0.0F, 0.0F}, 320.0F, 20.0F, 0.0F, 100.0F, 55.0F};
     rinvid::gui::Label       timer_readout_{"Auto progress: 0%", FONT_PATH, {0.0F, 0.0F},
-                                            0xD8E6FFFF,          13U,       320.0F};
+                                      0xD8E6FFFF,          13U,       320.0F};
     rinvid::gui::ProgressBar auto_bar_{{0.0F, 0.0F}, 320.0F, 20.0F};
     rinvid::gui::Label       plain_button_label_{"Plain Button pulse", FONT_PATH, {0.0F, 0.0F},
-                                                 0xBFD2E6FF,           13U,       320.0F};
+                                           0xBFD2E6FF,           13U,       320.0F};
     rinvid::gui::Button      pulse_button_{};
     rinvid::gui::Label status_label_{"Ready", FONT_PATH, {0.0F, 0.0F}, 0xFFFFFFFF, 13U, 320.0F};
 
