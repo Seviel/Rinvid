@@ -67,6 +67,25 @@ TEST_F(OpenGLTest, TextSetSize_RecreatesGlyphResources)
     rinvid::TTFLib::destroy();
 }
 
+TEST_F(OpenGLTest, TextDraw_WordWrappingHandlesWordsLineBreaksAndLongWords)
+{
+    const auto font_path = get_font_path();
+
+    rinvid::Text text{"Alpha Beta Supercalifragilistic",
+                      font_path,
+                      {0.0F, 0.0F},
+                      rinvid::Color{255U, 255U, 255U, 255U},
+                      18U};
+    text.set_max_width(48.0F);
+
+    EXPECT_NO_THROW(text.draw());
+
+    text.set_text("Alpha\nBeta\r\nGamma");
+
+    EXPECT_NO_THROW(text.draw());
+    rinvid::TTFLib::destroy();
+}
+
 TEST_F(OpenGLTest, TextConstructor_InvalidFontThrowsResourceLoadError)
 {
     EXPECT_THROW(create_text_with_font("resources/missing_font.ttf"), rinvid::ResourceLoadError);

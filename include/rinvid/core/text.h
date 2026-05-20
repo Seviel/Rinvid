@@ -139,6 +139,25 @@ class Text : public Drawable
 
     void release_vertex_buffer();
 
+    const Character* find_character(char character_key) const;
+
+    float get_character_advance(char character_key) const;
+
+    float get_text_width(std::string::const_iterator begin, std::string::const_iterator end) const;
+
+    float get_line_height() const;
+
+    void move_to_next_line(float& x, float& y, float start_x) const;
+
+    void draw_character(char character_key, float& x, float y) const;
+
+    void draw_text_range(std::string::const_iterator begin, std::string::const_iterator end,
+                         float& x, float y) const;
+
+    void draw_text_range_wrapped_by_character(std::string::const_iterator begin,
+                                              std::string::const_iterator end, float& x, float& y,
+                                              float start_x, bool& line_has_content) const;
+
     FT_Face       ft_face_{nullptr};
     std::uint32_t vertex_array_object_{};
     std::uint32_t vertex_buffer_object_{};
