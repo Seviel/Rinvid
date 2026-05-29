@@ -1,6 +1,8 @@
 .vscode
 bin
 build
+build-*
+dist
 *.o
 bazel*
 user.bazelrc

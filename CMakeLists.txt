@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.28)
 
-project("rinvid")
+project("rinvid" VERSION 0.2.0)
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9)
   message(
