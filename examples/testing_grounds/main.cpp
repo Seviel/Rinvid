@@ -31,6 +31,7 @@
 #include <rinvid/core/triangle_shape.h>
 #include <rinvid/core/ttf_lib.h>
 #include <rinvid/gui/button.h>
+#include <rinvid/gui/label.h>
 #include <rinvid/sound/sound.h>
 #include <rinvid/system/application.h>
 #include <rinvid/system/keyboard.h>
@@ -64,14 +65,14 @@ class TestingGrounds : public rinvid::Screen
 
     rinvid::Texture background_texture{"resources/rinvid_bg.png"};
     rinvid::Sprite  background_sprite{&background_texture, 1920, 1080, rinvid::Vector2f{0.0F, 0.0F},
-                                      rinvid::Vector2f{0.0F, 0.0F}};
+                                     rinvid::Vector2f{0.0F, 0.0F}};
 
     bool                   quad_alive{true};
     rinvid::TriangleShape  triangle{rinvid::Vector2f{400.0F, 200.0F},
-                                    rinvid::Vector2f{300.0F, 100.0F},
-                                    rinvid::Vector2f{500.0F, 100.0F}};
+                                   rinvid::Vector2f{300.0F, 100.0F},
+                                   rinvid::Vector2f{500.0F, 100.0F}};
     rinvid::QuadShape      quad{rinvid::Vector2f{100.0F, 40.0F}, rinvid::Vector2f{150.0F, 40.0F},
-                                rinvid::Vector2f{160.0F, 90.0F}, rinvid::Vector2f{90.0F, 90.0F}};
+                           rinvid::Vector2f{160.0F, 90.0F}, rinvid::Vector2f{90.0F, 90.0F}};
     rinvid::RectangleShape rectangle{rinvid::Vector2f{350.0F, 35.0F}, 100.0F, 50.0F};
     rinvid::CircleShape    circle{rinvid::Vector2f{500.0F, 300.0f}, 100.0F};
     rinvid::FixedPolygonShape<5> polygon{
@@ -80,11 +81,11 @@ class TestingGrounds : public rinvid::Screen
          rinvid::Vector2f{100.0F, 200.0F}}};
     rinvid::Texture texture{"resources/logo.png"};
     rinvid::Sprite  sprite{&texture, 100, 100, rinvid::Vector2f{200.0F, 200.0F},
-                           rinvid::Vector2f{0.0F, 0.0F}};
+                          rinvid::Vector2f{0.0F, 0.0F}};
 
     rinvid::Texture clock_texture{"resources/clck.png"};
     rinvid::Sprite  clock_sprite{&clock_texture, 100, 100, rinvid::Vector2f{650.0F, 450.0F},
-                                 rinvid::Vector2f{0.0F, 0.0F}};
+                                rinvid::Vector2f{0.0F, 0.0F}};
 
     rinvid::Texture     button_texture{"resources/default_button.png"};
     rinvid::gui::Button button{};
@@ -94,7 +95,7 @@ class TestingGrounds : public rinvid::Screen
     rinvid::Light light_mid{};
     rinvid::Light light_low{{650.0F, 480.0F}, 0.5, 1.0};
 
-    rinvid::Text text{
+    rinvid::gui::Label text{
         "Aloha!", "resources/aquifer.ttf", {250.0F, 375.0F}, {0.0F, 0.0F, 0.0F, 1.0F}, 28};
 
     rinvid::Text wrapped_text{
@@ -122,12 +123,7 @@ void TestingGrounds::create()
     clock_sprite.set_scale(1.5F);
     clock_sprite.set_opacity(0.3);
 
-    button.setup(&button_texture, 100, 30, rinvid::Vector2f{250.0F, 450.0F});
-    auto button_regions = button.get_animation().split_animation_frames(100, 30, 3, 1);
-
-    button.set_idle({button_regions.at(0)});
-    button.set_mouse_hovering({button_regions.at(1)});
-    button.set_clicked({button_regions.at(2)});
+    button.setup_from_atlas(&button_texture, 100, 30, rinvid::Vector2f{250.0F, 450.0F});
 
     wrapped_text.set_max_width(150.0F);
     spaced_text.set_max_width(150.0F);
@@ -153,15 +149,15 @@ void TestingGrounds::update(double delta_time)
         quad_alive = false;
     }
 
-    button.update_state();
+    button.update();
 
-    if (button.is_clicked())
+    if (button.is_pressed())
     {
         quad.set_position(rinvid::Vector2f{100.0F, 40.0F});
         quad_alive = true;
     }
 
-    if (button.just_clicked())
+    if (button.was_activated())
     {
         static std::uint32_t index = 0;
         ++index;

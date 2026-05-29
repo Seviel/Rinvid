@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2022 - 2026, Filip Vasiljevic
+ * Copyright (c) 2026, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -7,14 +7,14 @@
  * repository for more details.
  **********************************************************************/
 
-#ifndef INCLUDE_RINVID_GUI_BUTTON_H
-#define INCLUDE_RINVID_GUI_BUTTON_H
+#ifndef INCLUDE_RINVID_GUI_SLIDER_H
+#define INCLUDE_RINVID_GUI_SLIDER_H
 
-#include <cstdint>
-#include <vector>
+#include <memory>
 
-#include <rinvid/core/sprite.h>
+#include <rinvid/core/rectangle_shape.h>
 #include <rinvid/gui/widget.h>
+#include <rinvid/util/color.h>
 
 namespace rinvid
 {
@@ -23,55 +23,176 @@ namespace gui
 {
 
 /**************************************************************************************************
- * @brief Visual and input state of a button.
+ * @brief A horizontal value slider.
  *
  *************************************************************************************************/
-enum class ButtonState
-{
-    Idle = 0U,
-    Hovered,
-    Pressed,
-    Disabled
-};
-
-/**************************************************************************************************
- * @brief A clickable button.
- *
- *************************************************************************************************/
-class Button : public Sprite, public Widget
+class Slider : public Widget
 {
   public:
     /**************************************************************************************************
-     * @brief Button constructor.
+     * @brief Slider constructor.
+     *
+     * @param position Top-left slider position.
+     * @param width Slider width.
+     * @param min_value Minimum value.
+     * @param max_value Maximum value.
+     * @param value Initial value.
      *
      *************************************************************************************************/
-    Button();
+    Slider(Vector2f position, float width, float min_value = 0.0F, float max_value = 1.0F,
+           float value = 0.0F);
 
     /**************************************************************************************************
-     * @brief Sets texture, position, size and state regions from a horizontal sprite atlas.
+     * @brief Sets slider size.
      *
-     * Regions are expected to be ordered as idle, hovered, pressed and optionally disabled.
-     *
-     * @param texture Button texture.
-     * @param width Button width.
-     * @param height Button height.
-     * @param top_left Top-left button position.
-     * @param state_count Number of state regions in the atlas.
-     * @param atlas_offset Top-left offset of the first region in the texture.
+     * @param width Slider width.
+     * @param height Slider height.
      *
      *************************************************************************************************/
-    void setup_from_atlas(Texture* texture, std::int32_t width, std::int32_t height,
-                          Vector2f top_left, std::uint32_t state_count = 3U,
-                          Vector2f atlas_offset = {0.0F, 0.0F});
+    void set_size(float width, float height);
 
     /**************************************************************************************************
-     * @brief Updates the button state and input events based on mouse position.
+     * @brief Returns slider width.
+     *
+     * @return Slider width.
      *
      *************************************************************************************************/
-    void update();
+    float get_width() const;
 
     /**************************************************************************************************
-     * @brief Updates the button state and input events based on mouse position.
+     * @brief Returns slider height.
+     *
+     * @return Slider height.
+     *
+     *************************************************************************************************/
+    float get_height() const;
+
+    /**************************************************************************************************
+     * @brief Sets slider range.
+     *
+     * @param min_value Minimum value.
+     * @param max_value Maximum value.
+     *
+     *************************************************************************************************/
+    void set_range(float min_value, float max_value);
+
+    /**************************************************************************************************
+     * @brief Returns minimum value.
+     *
+     * @return Minimum value.
+     *
+     *************************************************************************************************/
+    float get_min_value() const;
+
+    /**************************************************************************************************
+     * @brief Returns maximum value.
+     *
+     * @return Maximum value.
+     *
+     *************************************************************************************************/
+    float get_max_value() const;
+
+    /**************************************************************************************************
+     * @brief Sets slider value.
+     *
+     * @param value New value.
+     *
+     *************************************************************************************************/
+    void set_value(float value);
+
+    /**************************************************************************************************
+     * @brief Returns slider value.
+     *
+     * @return Slider value.
+     *
+     *************************************************************************************************/
+    float get_value() const;
+
+    /**************************************************************************************************
+     * @brief Sets slider step size.
+     *
+     * Set to 0.0F for continuous values.
+     *
+     * @param step Step size.
+     *
+     *************************************************************************************************/
+    void set_step(float step);
+
+    /**************************************************************************************************
+     * @brief Returns slider step size.
+     *
+     * @return Step size.
+     *
+     *************************************************************************************************/
+    float get_step() const;
+
+    /**************************************************************************************************
+     * @brief Sets track height.
+     *
+     * @param height Track height in pixels.
+     *
+     *************************************************************************************************/
+    void set_track_height(float height);
+
+    /**************************************************************************************************
+     * @brief Returns track height.
+     *
+     * @return Track height in pixels.
+     *
+     *************************************************************************************************/
+    float get_track_height() const;
+
+    /**************************************************************************************************
+     * @brief Sets thumb size.
+     *
+     * @param width Thumb width.
+     * @param height Thumb height.
+     *
+     *************************************************************************************************/
+    void set_thumb_size(float width, float height);
+
+    /**************************************************************************************************
+     * @brief Sets track color.
+     *
+     * @param color Track color.
+     *
+     *************************************************************************************************/
+    void set_track_color(Color color);
+
+    /**************************************************************************************************
+     * @brief Sets fill color.
+     *
+     * @param color Fill color.
+     *
+     *************************************************************************************************/
+    void set_fill_color(Color color);
+
+    /**************************************************************************************************
+     * @brief Sets thumb color.
+     *
+     * @param color Thumb color.
+     *
+     *************************************************************************************************/
+    void set_thumb_color(Color color);
+
+    /**************************************************************************************************
+     * @brief Checks whether the slider is currently being dragged.
+     *
+     * @return True if the slider is being dragged, false otherwise.
+     *
+     *************************************************************************************************/
+    bool is_dragging() const;
+
+    /**************************************************************************************************
+     * @brief Checks whether value changed during the most recent update or setter call.
+     *
+     * @return True if value changed, false otherwise.
+     *
+     *************************************************************************************************/
+    bool was_value_changed() const;
+
+    /**************************************************************************************************
+     * @brief Updates slider input.
      *
      * @param delta_time Time passed in seconds since last frame.
      *
@@ -79,167 +200,13 @@ class Button : public Sprite, public Widget
     virtual void update(double delta_time) override;
 
     /**************************************************************************************************
-     * @brief Moves the button.
-     *
-     * @param move_vector Vector to add to current position.
-     *
-     *************************************************************************************************/
-    virtual void move(const Vector2f move_vector) override;
-
-    /**************************************************************************************************
-     * @brief Sets button position.
-     *
-     * @param position New top-left button position.
-     *
-     *************************************************************************************************/
-    virtual void set_position(const Vector2f position) override;
-
-    /**************************************************************************************************
-     * @brief Sets animation regions for idle status (mouse is not hovering over button).
-     *
-     * @param regions Vector of rects indicating frames of texture that make up the animation.
-     *
-     *************************************************************************************************/
-    void set_idle(const std::vector<Rect>& regions);
-
-    /**************************************************************************************************
-     * @brief Sets animation regions for when mouse is hovering over the button.
-     *
-     * @param regions Vector of rects indicating frames of texture that make up the animation.
-     *
-     *************************************************************************************************/
-    void set_hovered(const std::vector<Rect>& regions);
-
-    /**************************************************************************************************
-     * @brief Sets animation regions for when the button is pressed.
-     *
-     * @param regions Vector of rects indicating frames of texture that make up the animation.
-     *
-     *************************************************************************************************/
-    void set_pressed(const std::vector<Rect>& regions);
-
-    /**************************************************************************************************
-     * @brief Sets animation regions for when the button is disabled.
-     *
-     * @param regions Vector of rects indicating frames of texture that make up the animation.
-     *
-     *************************************************************************************************/
-    void set_disabled(const std::vector<Rect>& regions);
-
-    /**************************************************************************************************
-     * @brief Sets state regions from an ordered region list.
-     *
-     * Regions are expected to be ordered as idle, hovered, pressed and optionally disabled.
-     *
-     * @param regions Ordered list of state texture regions.
-     *
-     *************************************************************************************************/
-    void set_state_regions(const std::vector<Rect>& regions);
-
-    /**************************************************************************************************
-     * @brief Sets whether the button should react to input.
-     *
-     * @param enabled True to enable the button, false to disable it.
-     *
-     *************************************************************************************************/
-    virtual void set_enabled(bool enabled) override;
-
-    /**************************************************************************************************
-     * @brief Checks whether the button reacts to input.
-     *
-     * @return True if the button is enabled, false otherwise.
-     *
-     *************************************************************************************************/
-    virtual bool is_enabled() const override;
-
-    /**************************************************************************************************
-     * @brief Sets whether the button should be drawn and updated.
-     *
-     * @param visible True to show the button, false to hide it.
-     *
-     *************************************************************************************************/
-    virtual void set_visible(bool visible) override;
-
-    /**************************************************************************************************
-     * @brief Checks whether the button is visible.
-     *
-     * @return True if the button is visible, false otherwise.
-     *
-     *************************************************************************************************/
-    virtual bool is_visible() const override;
-
-    /**************************************************************************************************
-     * @brief Returns the current button state.
-     *
-     * @return Current button state.
-     *
-     *************************************************************************************************/
-    ButtonState get_state() const;
-
-    /**************************************************************************************************
-     * @brief Returns button bounds.
-     *
-     * @return Button bounds.
-     *
-     *************************************************************************************************/
-    virtual Rect get_bounds() override;
-
-    /**************************************************************************************************
-     * @brief Checks whether the mouse is hovering over the button.
-     *
-     * @return True if the button is hovered, false otherwise.
-     *
-     *************************************************************************************************/
-    bool is_hovered() const;
-
-    /**************************************************************************************************
-     * @brief Checks whether the button is currently pressed.
-     *
-     * @return True if the button is pressed, false otherwise.
-     *
-     *************************************************************************************************/
-    bool is_pressed() const;
-
-    /**************************************************************************************************
-     * @brief Checks whether the button was pressed during the most recent update.
-     *
-     * @return True if the button was pressed, false otherwise.
-     *
-     *************************************************************************************************/
-    bool was_pressed() const;
-
-    /**************************************************************************************************
-     * @brief Checks whether the button was released during the most recent update.
-     *
-     * @return True if the button was released, false otherwise.
-     *
-     *************************************************************************************************/
-    bool was_released() const;
-
-    /**************************************************************************************************
-     * @brief Checks whether the button was pressed and released while hovered.
-     *
-     * @return True if the button was activated, false otherwise.
-     *
-     *************************************************************************************************/
-    bool was_activated() const;
-
-    /**************************************************************************************************
-     * @brief Draws the button if it is visible.
+     * @brief Draws the slider if visible.
      *
      *************************************************************************************************/
     virtual void draw() override;
 
     /**************************************************************************************************
-     * @brief Draws the button with shader if it is visible.
-     *
-     * @param shader Shader to use.
-     *
-     *************************************************************************************************/
-    virtual void draw(const Shader shader) override;
-
-    /**************************************************************************************************
-     * @brief Draws the animated button if it is visible.
+     * @brief Draws the slider if visible.
      *
      * @param delta_time Time passed in seconds since last frame.
      *
@@ -247,37 +214,97 @@ class Button : public Sprite, public Widget
     virtual void draw(double delta_time) override;
 
     /**************************************************************************************************
-     * @brief Draws the animated button with shader if it is visible.
+     * @brief Moves the slider.
      *
-     * @param delta_time Time passed in seconds since last frame.
-     * @param shader Shader to use.
+     * @param move_vector Vector to add to current position.
      *
      *************************************************************************************************/
-    virtual void draw(double delta_time, const Shader shader) override;
+    virtual void move(const Vector2f move_vector) override;
+
+    /**************************************************************************************************
+     * @brief Sets slider position.
+     *
+     * @param position New top-left slider position.
+     *
+     *************************************************************************************************/
+    virtual void set_position(const Vector2f position) override;
+
+    /**************************************************************************************************
+     * @brief Returns slider bounds.
+     *
+     * @return Slider bounds.
+     *
+     *************************************************************************************************/
+    virtual Rect get_bounds() override;
+
+    /**************************************************************************************************
+     * @brief Sets whether the slider should be drawn and updated.
+     *
+     * @param visible True to show the slider, false to hide it.
+     *
+     *************************************************************************************************/
+    virtual void set_visible(bool visible) override;
+
+    /**************************************************************************************************
+     * @brief Checks whether the slider is visible.
+     *
+     * @return True if the slider is visible, false otherwise.
+     *
+     *************************************************************************************************/
+    virtual bool is_visible() const override;
+
+    /**************************************************************************************************
+     * @brief Sets whether the slider should react to input.
+     *
+     * @param enabled True to enable the slider, false to disable it.
+     *
+     *************************************************************************************************/
+    virtual void set_enabled(bool enabled) override;
+
+    /**************************************************************************************************
+     * @brief Checks whether the slider reacts to input.
+     *
+     * @return True if the slider is enabled, false otherwise.
+     *
+     *************************************************************************************************/
+    virtual bool is_enabled() const override;
 
   private:
-    void clear_events();
-    bool is_mouse_over();
-    void set_state(ButtonState state);
-    void apply_state_animation();
+    float    clamp_value(float value) const;
+    float    get_normalized_value() const;
+    float    get_track_width() const;
+    float    get_track_left() const;
+    float    get_track_center_y() const;
+    Vector2f get_mouse_position() const;
+    bool     is_mouse_over(Vector2f mouse_position);
+    void     set_value_from_position(float position_x);
+    void     update_shapes();
 
-    Animation   idle_;
-    Animation   hovered_;
-    Animation   pressed_;
-    Animation   disabled_;
-    ButtonState state_;
-    bool        visible_;
-    bool        enabled_;
-    bool        has_disabled_animation_;
-    bool        mouse_was_down_;
-    bool        pressed_inside_;
-    bool        was_pressed_;
-    bool        was_released_;
-    bool        was_activated_;
+    Vector2f                        position_;
+    float                           width_;
+    float                           height_;
+    float                           min_value_;
+    float                           max_value_;
+    float                           value_;
+    float                           step_;
+    float                           track_height_;
+    float                           thumb_width_;
+    float                           thumb_height_;
+    Color                           track_color_;
+    Color                           fill_color_;
+    Color                           thumb_color_;
+    std::unique_ptr<RectangleShape> track_;
+    std::unique_ptr<RectangleShape> fill_;
+    std::unique_ptr<RectangleShape> thumb_;
+    bool                            visible_;
+    bool                            enabled_;
+    bool                            dragging_;
+    bool                            mouse_was_down_;
+    bool                            was_value_changed_;
 };
 
 } // namespace gui
 
 } // namespace rinvid
 
-#endif // INCLUDE_RINVID_GUI_BUTTON_H
+#endif // INCLUDE_RINVID_GUI_SLIDER_H

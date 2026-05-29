@@ -7,6 +7,7 @@
  * repository for more details.
  **********************************************************************/
 
+#include <algorithm>
 #include <cctype>
 #include <cmath>
 #include <iostream>
@@ -294,6 +295,54 @@ void Text::set_text(const std::string& text)
 void Text::set_max_width(float max_width)
 {
     max_width_ = max_width;
+}
+
+const std::string& Text::get_text() const
+{
+    return text_;
+}
+
+Vector2f Text::get_position() const
+{
+    return position_;
+}
+
+std::uint32_t Text::get_size() const
+{
+    return size_;
+}
+
+Color Text::get_color() const
+{
+    return color_;
+}
+
+float Text::get_max_width() const
+{
+    return max_width_;
+}
+
+float Text::get_width() const
+{
+    float widest_line_width{0.0F};
+    float current_line_width{0.0F};
+
+    auto current = text_.cbegin();
+    while (current != text_.cend())
+    {
+        if (is_line_break(*current))
+        {
+            widest_line_width  = std::max(widest_line_width, current_line_width);
+            current_line_width = 0.0F;
+            current            = consume_line_break(current, text_.cend());
+            continue;
+        }
+
+        current_line_width += get_character_advance(*current);
+        ++current;
+    }
+
+    return std::max(widest_line_width, current_line_width);
 }
 
 const Text::Character* Text::find_character(char character_key) const
