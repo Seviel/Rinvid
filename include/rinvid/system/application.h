@@ -23,6 +23,16 @@
 namespace rinvid
 {
 
+/**************************************************************************************************
+ * @brief Controls whether a windowed application can be resized.
+ *
+ *************************************************************************************************/
+enum class WindowResizeMode
+{
+    Resizable = 0U, ///< The user and operating system can resize the window client area.
+    Fixed           ///< The window client area retains its requested size.
+};
+
 class Application
 {
   public:
@@ -38,6 +48,19 @@ class Application
      *************************************************************************************************/
     Application(std::uint32_t width, std::uint32_t height, const std::string& title,
                 bool fullscreen = false, std::uint16_t fps = 60U);
+
+    /**************************************************************************************************
+     * @brief Windowed application constructor.
+     *
+     * @param width The width of the application window client area
+     * @param height The height of the application window client area
+     * @param title Title of the application window
+     * @param resize_mode Whether the window can be resized
+     * @param fps Frames per second, pass 0 to have uncapped framerate (default is 60)
+     *
+     *************************************************************************************************/
+    Application(std::uint32_t width, std::uint32_t height, const std::string& title,
+                WindowResizeMode resize_mode, std::uint16_t fps = 60U);
 
     ~Application();
 
@@ -103,15 +126,21 @@ class Application
     const RenderContext& get_render_context() const;
 
   private:
+    Application(std::uint32_t width, std::uint32_t height, const std::string& title,
+                bool fullscreen, WindowResizeMode resize_mode, std::uint16_t fps);
+
     void activate_pending_screen();
     void destroy_current_screen();
+    void enforce_fixed_window_size();
     void handle_events(sf::Window& window);
 
     sf::Window              window_;
     ApplicationContext      context_;
     std::unique_ptr<Screen> current_screen_;
     std::unique_ptr<Screen> new_screen_;
+    sf::Vector2u            windowed_size_;
     std::uint16_t           fps_;
+    WindowResizeMode        window_resize_mode_;
     bool                    running_;
 };
 

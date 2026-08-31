@@ -29,8 +29,20 @@ namespace rinvid
 
 Application::Application(std::uint32_t width, std::uint32_t height, const std::string& title,
                          bool fullscreen, std::uint16_t fps)
-    : window_{}, context_{}, current_screen_{nullptr}, new_screen_{nullptr}, fps_{fps},
-      running_{false}
+    : Application{width, height, title, fullscreen, WindowResizeMode::Resizable, fps}
+{
+}
+
+Application::Application(std::uint32_t width, std::uint32_t height, const std::string& title,
+                         WindowResizeMode resize_mode, std::uint16_t fps)
+    : Application{width, height, title, false, resize_mode, fps}
+{
+}
+
+Application::Application(std::uint32_t width, std::uint32_t height, const std::string& title,
+                         bool fullscreen, WindowResizeMode resize_mode, std::uint16_t fps)
+    : window_{}, context_{}, current_screen_{nullptr}, new_screen_{nullptr},
+      windowed_size_{width, height}, fps_{fps}, window_resize_mode_{resize_mode}, running_{false}
 {
     if (fullscreen)
     {
@@ -40,7 +52,11 @@ Application::Application(std::uint32_t width, std::uint32_t height, const std::s
     }
     else
     {
-        window_.create(sf::VideoMode{{width, height}}, title);
+        const std::uint32_t style = resize_mode == WindowResizeMode::Fixed
+                                        ? sf::Style::Titlebar | sf::Style::Close
+                                        : sf::Style::Default;
+        window_.create(sf::VideoMode{{width, height}}, title, style);
+        enforce_fixed_window_size();
     }
 
 #ifdef _WIN32
@@ -48,7 +64,8 @@ Application::Application(std::uint32_t width, std::uint32_t height, const std::s
 #endif
 
     context_.init(this, window_);
-    auto size = window_.getSize();
+    const auto size =
+        window_resize_mode_ == WindowResizeMode::Fixed ? windowed_size_ : window_.getSize();
     context_.get_render_context().set_viewport(0, 0, size.x, size.y);
 }
 
@@ -161,6 +178,48 @@ void Application::destroy_current_screen()
     }
 }
 
+void Application::enforce_fixed_window_size()
+{
+    if (window_resize_mode_ != WindowResizeMode::Fixed)
+    {
+        return;
+    }
+
+#ifdef _WIN32
+    const HWND native_window = window_.getNativeHandle();
+    RECT       window_rectangle{};
+    RECT       client_rectangle{};
+
+    if (native_window != nullptr && GetWindowRect(native_window, &window_rectangle) != 0 &&
+        GetClientRect(native_window, &client_rectangle) != 0)
+    {
+        const LONG client_width  = client_rectangle.right - client_rectangle.left;
+        const LONG client_height = client_rectangle.bottom - client_rectangle.top;
+
+        if (client_width == static_cast<LONG>(windowed_size_.x) &&
+            client_height == static_cast<LONG>(windowed_size_.y))
+        {
+            return;
+        }
+
+        const LONG window_width  = window_rectangle.right - window_rectangle.left;
+        const LONG window_height = window_rectangle.bottom - window_rectangle.top;
+        const LONG corrected_width =
+            window_width + static_cast<LONG>(windowed_size_.x) - client_width;
+        const LONG corrected_height =
+            window_height + static_cast<LONG>(windowed_size_.y) - client_height;
+
+        if (SetWindowPos(native_window, nullptr, 0, 0, corrected_width, corrected_height,
+                         SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE) != 0)
+        {
+            return;
+        }
+    }
+#endif
+
+    window_.setSize(windowed_size_);
+}
+
 void Application::handle_events(sf::Window& window)
 {
     while (const auto event = window.pollEvent())
@@ -171,7 +230,16 @@ void Application::handle_events(sf::Window& window)
         }
         else if (const auto* resized = event->getIf<sf::Event::Resized>())
         {
-            context_.get_render_context().set_viewport(0, 0, resized->size.x, resized->size.y);
+            if (window_resize_mode_ == WindowResizeMode::Fixed)
+            {
+                enforce_fixed_window_size();
+                context_.get_render_context().set_viewport(0, 0, windowed_size_.x,
+                                                           windowed_size_.y);
+            }
+            else
+            {
+                context_.get_render_context().set_viewport(0, 0, resized->size.x, resized->size.y);
+            }
         }
     }
 }
