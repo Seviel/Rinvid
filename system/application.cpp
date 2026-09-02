@@ -93,9 +93,11 @@ void Application::run()
 
     while (running_ == true)
     {
-        auto start = std::chrono::high_resolution_clock::now();
-
         handle_events(window_);
+
+        // Native event handlers can block while the user moves a window. Treat that time as paused
+        // instead of passing one oversized time step to the next update.
+        const auto start = std::chrono::steady_clock::now();
 
         if (current_screen_ != nullptr)
         {
@@ -109,7 +111,7 @@ void Application::run()
             activate_pending_screen();
         }
 
-        auto end         = std::chrono::high_resolution_clock::now();
+        const auto end   = std::chrono::steady_clock::now();
         total_frame_time = end - start;
     }
 
