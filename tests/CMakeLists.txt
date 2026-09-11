@@ -38,6 +38,9 @@ add_test(NAME rinvid_sound_test COMMAND ./$<TARGET_FILE_NAME:rinvid_sound_test>)
 
 # Copy resources to build directory so the executable can find them
 set(EXAMPLE_RESOURCES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/resources)
+add_custom_command(TARGET rinvid_sound_test POST_BUILD COMMAND ${CMAKE_COMMAND}
+-E copy_directory ${EXAMPLE_RESOURCES_DIR}
+$<TARGET_FILE_DIR:rinvid_sound_test>/sound_resources )
 add_custom_command(TARGET rinvid_test POST_BUILD COMMAND ${CMAKE_COMMAND}
 -E copy_directory ${EXAMPLE_RESOURCES_DIR}
 $<TARGET_FILE_DIR:rinvid_test>/resources )

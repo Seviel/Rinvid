@@ -159,6 +159,8 @@ void TestingGrounds::update(double delta_time)
 
     if (button.was_activated())
     {
+        wind.set_pitch(1.25F);
+        wind.play();
         static std::uint32_t index = 0;
         ++index;
         index = index % 2;
