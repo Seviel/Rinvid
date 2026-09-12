@@ -32,6 +32,7 @@
 #include <rinvid/core/ttf_lib.h>
 #include <rinvid/gui/button.h>
 #include <rinvid/gui/label.h>
+#include <rinvid/sound/music.h>
 #include <rinvid/sound/sound.h>
 #include <rinvid/system/application.h>
 #include <rinvid/system/keyboard.h>
@@ -104,6 +105,7 @@ class TestingGrounds : public rinvid::Screen
         "Hello\nworld\r!", "resources/aquifer.ttf", {700.0F, 800.0F}, {0.0F, 0.0F, 0.0F, 1.0F}, 28};
 
     rinvid::sound::Sound wind{"resources/wind.wav"};
+    rinvid::sound::Music music_{"resources/menu_music.wav"};
 };
 
 void TestingGrounds::create()
@@ -138,6 +140,8 @@ void TestingGrounds::create()
 
     wind.set_volume(50.0F);
     wind.play();
+    music_.set_volume(25.0F);
+    music_.play();
 }
 
 void TestingGrounds::update(double delta_time)
@@ -159,9 +163,12 @@ void TestingGrounds::update(double delta_time)
 
     if (button.was_activated())
     {
+        wind.set_pitch(1.25F);
+        wind.play();
         static std::uint32_t index = 0;
         ++index;
         index = index % 2;
+        music_.play(index == 0 ? "resources/menu_music.wav" : "resources/level_music.wav");
         text.set_text(text_params[index].text_);
         text.set_color(text_params[index].color_);
         text.set_position(text_params[index].position_);
