@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (c) 2024 - 2026, Filip Vasiljevic
+ * Copyright (c) 2026, Filip Vasiljevic
  * All rights reserved.
  *
  * This file is subject to the terms and conditions of the BSD 2-Clause
@@ -7,8 +7,8 @@
  * repository for more details.
  **********************************************************************/
 
-#ifndef INCLUDE_RINVID_SOUND_SOUND_H
-#define INCLUDE_RINVID_SOUND_SOUND_H
+#ifndef INCLUDE_RINVID_SOUND_MUSIC_H
+#define INCLUDE_RINVID_SOUND_MUSIC_H
 
 #include <memory>
 #include <string>
@@ -18,96 +18,96 @@
 
 namespace sf
 {
-class Sound;
-class SoundBuffer;
-} // namespace sf
+class Music;
+}
 
 namespace rinvid::sound
 {
 
 /**************************************************************************************************
- * @brief A sound that owns its audio samples and playback.
- * Copies own independent samples and start stopped. Moves transfer live playback without
- * restarting it. Moved-from sounds can be destroyed or assigned another sound; all other
- * operations on them throw AudioError.
+ * @brief Streams one music track from a file, with looping enabled by default.
+ * Owns the stream and stops playback on destruction. The file must remain accessible until
+ * another track is opened or the music is destroyed. Playback needs no per-frame update.
+ * Moves transfer live playback without restarting it. Moved-from music can be destroyed or
+ * reassigned; other operations throw AudioError.
  *
  *************************************************************************************************/
-class Sound
+class Music
 {
   public:
     /**************************************************************************************************
-     * @brief Loads audio samples from a file and creates stopped playback.
+     * @brief Opens a music file for streaming. Playback starts when play() is called.
      *
-     * @param file_path Path of the audio file to load into memory.
+     * @param file_path Path of the music file.
      *
-     * @throws AudioError if the file cannot be loaded.
-     *
-     *************************************************************************************************/
-    explicit Sound(const std::string& file_path);
-
-    /**************************************************************************************************
-     * @brief Copies the audio samples, volume, pitch, and looping setting.
-     * The copy starts stopped at position zero, independently of the original sound.
-     *
-     * @param other Sound to copy.
-     *
-     * @throws AudioError if the source has been moved from.
+     * @throws AudioError if the file cannot be opened.
      *
      *************************************************************************************************/
-    Sound(const Sound& other);
+    explicit Music(const std::string& file_path);
 
     /**************************************************************************************************
-     * @brief Replaces this sound with an independent, stopped copy of another sound.
-     * Copying a sound onto itself has no effect. A failed copy leaves this sound unchanged.
-     *
-     * @param other Sound to copy.
-     *
-     * @return This sound.
-     *
-     * @throws AudioError if the source has been moved from.
+     * @brief Copy construction is disabled because music owns an active file stream.
      *
      *************************************************************************************************/
-    Sound& operator=(const Sound& other);
+    Music(const Music& other) = delete;
 
     /**************************************************************************************************
-     * @brief Transfers playback and its settings without interrupting it.
-     *
-     * @param other Sound to move from.
+     * @brief Copy assignment is disabled.
      *
      *************************************************************************************************/
-    Sound(Sound&& other) noexcept;
+    Music& operator=(const Music& other) = delete;
 
     /**************************************************************************************************
-     * @brief Stops this sound and takes ownership of another sound's uninterrupted playback.
-     * Moving a sound onto itself has no effect.
+     * @brief Transfers the stream, playback position, and settings without interrupting playback.
      *
-     * @param other Sound to move from.
-     *
-     * @return This sound.
+     * @param other Music to move from.
      *
      *************************************************************************************************/
-    Sound& operator=(Sound&& other) noexcept;
+    Music(Music&& other) noexcept;
 
     /**************************************************************************************************
-     * @brief Stops and destroys playback before releasing the owned audio samples.
+     * @brief Stops this music and takes ownership of another music's uninterrupted playback.
+     * Moving music onto itself has no effect.
+     *
+     * @param other Music to move from.
+     *
+     * @return This music.
      *
      *************************************************************************************************/
-    ~Sound();
+    Music& operator=(Music&& other) noexcept;
 
     /**************************************************************************************************
-     * @brief Starts playback or resumes a paused sound. Restarts an already playing sound.
+     * @brief Stops playback and closes the streamed file.
+     *
+     *************************************************************************************************/
+    ~Music();
+
+    /**************************************************************************************************
+     * @brief Starts playback or resumes paused music. Restarts already playing music.
      *
      *************************************************************************************************/
     void play();
 
     /**************************************************************************************************
-     * @brief Pauses the sound if it is being played currently.
+     * @brief Switches to another file and starts it from the beginning.
+     * Preserves volume, pitch, and looping. The old track stops before the new one starts.
+     * Opening the same file again restarts it. A failed open leaves the current track unchanged.
+     *
+     * @param file_path Path of the next music file.
+     *
+     * @throws AudioError if the file cannot be opened.
+     *
+     *************************************************************************************************/
+    void play(const std::string& file_path);
+
+    /**************************************************************************************************
+     * @brief Pauses playing music, preserving its position.
      *
      *************************************************************************************************/
     void pause();
 
     /**************************************************************************************************
-     * @brief Stops and rewinds the sound, including when it is paused or already stopped.
+     * @brief Stops and rewinds the music, including when paused or already stopped.
      *
      *************************************************************************************************/
     void stop();
@@ -121,15 +121,15 @@ class Sound
     PlaybackStatus get_status() const;
 
     /**************************************************************************************************
-     * @brief Returns the duration of the audio at its original pitch.
+     * @brief Returns the original track duration, unaffected by looping or pitch.
      *
-     * @return Duration in seconds, unaffected by looping or pitch changes.
+     * @return Duration in seconds.
      *
      *************************************************************************************************/
     double get_duration() const;
 
     /**************************************************************************************************
-     * @brief Returns the current position within the audio.
+     * @brief Returns the current position within the track.
      *
      * @return Playback position in seconds.
      *
@@ -137,26 +137,26 @@ class Sound
     double get_playing_offset() const;
 
     /**************************************************************************************************
-     * @brief Seeks within the audio without changing the playback state.
+     * @brief Seeks within the track without changing playback state.
      * The backend rounds the position to an audio sample boundary.
      *
      * @param seconds Finite position in [0, get_duration()], in seconds.
      *
-     * @throws AudioError if the position is non-finite or outside the audio's duration.
+     * @throws AudioError if the position is non-finite or outside the track's duration.
      *
      *************************************************************************************************/
     void set_playing_offset(double seconds);
 
     /**************************************************************************************************
-     * @brief Controls whether the sound should be looping when played.
+     * @brief Controls whether the entire track repeats.
      *
-     * @param looping Whether playback should repeat. Default is false.
+     * @param looping Whether to repeat. Default is true.
      *
      *************************************************************************************************/
     void set_looping(bool looping);
 
     /**************************************************************************************************
-     * @brief Returns whether playback should repeat.
+     * @brief Returns whether the track repeats.
      *
      * @return True if looping is enabled.
      *
@@ -164,9 +164,9 @@ class Sound
     bool is_looping() const;
 
     /**************************************************************************************************
-     * @brief Controls the volume, clamping finite values to [0, 100]. Default is 100.
+     * @brief Controls volume, clamping finite values to [0, 100]. Default is 100.
      *
-     * @param volume The volume of the sound.
+     * @param volume The music volume.
      *
      * @throws AudioError if the volume is non-finite.
      *
@@ -174,7 +174,7 @@ class Sound
     void set_volume(float volume);
 
     /**************************************************************************************************
-     * @brief Returns the sound's volume.
+     * @brief Returns the music volume.
      *
      * @return Volume in [0, 100].
      *
@@ -182,10 +182,9 @@ class Sound
     float get_volume() const;
 
     /**************************************************************************************************
-     * @brief Changes pitch and playback speed by the supplied factor. Default is 1.
-     * A factor of 2 plays the audio twice as fast and at a higher pitch.
+     * @brief Changes pitch and playback speed together. Default is 1.
      *
-     * @param pitch Finite, positive pitch factor.
+     * @param pitch Finite, positive pitch factor; 2 plays twice as fast and at a higher pitch.
      *
      * @throws AudioError if the pitch is non-finite or not positive.
      *
@@ -201,14 +200,12 @@ class Sound
     float get_pitch() const;
 
   private:
-    sf::Sound&       get_sound();
-    const sf::Sound& get_sound() const;
+    sf::Music&       get_music();
+    const sf::Music& get_music() const;
 
-    // Stable sample storage lets moves preserve playback. Destroy sound_ before buffer_.
-    std::unique_ptr<sf::SoundBuffer> buffer_;
-    std::unique_ptr<sf::Sound>       sound_;
+    std::unique_ptr<sf::Music> music_;
 };
 
 } // namespace rinvid::sound
 
-#endif // INCLUDE_RINVID_SOUND_SOUND_H
+#endif // INCLUDE_RINVID_SOUND_MUSIC_H

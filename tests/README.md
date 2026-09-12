@@ -8,7 +8,7 @@ To skip building tests entirely, configure with:
 -DRINVID_BUILD_TESTS=OFF
 ```
 
-The audio tests can be built and run independently of the graphics tests:
+The sound and music tests can be built and run independently of the graphics tests:
 
 ```shell
 cmake --build build --target rinvid_sound_test

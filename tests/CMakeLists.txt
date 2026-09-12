@@ -12,10 +12,11 @@ set(INSTALL_GTEST OFF CACHE BOOL "" FORCE)
 add_subdirectory("${RINVID_GTEST_SOURCE_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/googletest"
                  EXCLUDE_FROM_ALL)
 
-set(SOUND_TEST_SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/sound_test.cpp")
+set(SOUND_TEST_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/sound_test.cpp"
+                       "${CMAKE_CURRENT_SOURCE_DIR}/music_test.cpp")
 
 file(GLOB_RECURSE EXAMPLE_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
-list(REMOVE_ITEM EXAMPLE_SOURCES "${SOUND_TEST_SOURCE}")
+list(REMOVE_ITEM EXAMPLE_SOURCES ${SOUND_TEST_SOURCES})
 
 add_executable(rinvid_test ${EXAMPLE_SOURCES})
 
@@ -27,7 +28,7 @@ rinvid_copy_runtime_dependencies(rinvid_test)
 
 add_test(NAME rinvid_test COMMAND ./$<TARGET_FILE_NAME:rinvid_test>)
 
-add_executable(rinvid_sound_test ${SOUND_TEST_SOURCE}
+add_executable(rinvid_sound_test ${SOUND_TEST_SOURCES}
                                  "${CMAKE_CURRENT_SOURCE_DIR}/test_main.cpp")
 target_include_directories(rinvid_sound_test PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(rinvid_sound_test PRIVATE rinvid_sound gtest)
