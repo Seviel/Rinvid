@@ -129,7 +129,7 @@ class Application
     Application(std::uint32_t width, std::uint32_t height, const std::string& title,
                 bool fullscreen, WindowResizeMode resize_mode, std::uint16_t fps);
 
-    void activate_pending_screen();
+    bool activate_pending_screen();
     void destroy_current_screen();
     void enforce_fixed_window_size();
     void handle_events(sf::Window& window);

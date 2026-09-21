@@ -106,13 +106,11 @@ void Application::run()
 
         window_.display();
 
-        if (running_ == true)
-        {
-            activate_pending_screen();
-        }
-
-        const auto end   = std::chrono::steady_clock::now();
-        total_frame_time = end - start;
+        const bool screen_changed{running_ && activate_pending_screen()};
+        const auto end = std::chrono::steady_clock::now();
+        // Screen construction can happen inside update(), before set_screen(). Discard the
+        // entire transition frame so loading and teardown never advance the new screen.
+        total_frame_time = screen_changed ? std::chrono::duration<double>{} : end - start;
     }
 
     destroy_current_screen();
@@ -157,11 +155,11 @@ const RenderContext& Application::get_render_context() const
     return context_.get_render_context();
 }
 
-void Application::activate_pending_screen()
+bool Application::activate_pending_screen()
 {
     if (!new_screen_)
     {
-        return;
+        return false;
     }
 
     destroy_current_screen();
@@ -169,6 +167,7 @@ void Application::activate_pending_screen()
     current_screen_ = std::move(new_screen_);
     current_screen_->set_application(this);
     current_screen_->create();
+    return true;
 }
 
 void Application::destroy_current_screen()
