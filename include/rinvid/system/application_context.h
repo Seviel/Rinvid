@@ -11,6 +11,7 @@
 #define INCLUDE_RINVID_SYSTEM_APPLICATION_CONTEXT_H
 
 #include <rinvid/core/render_context.h>
+#include <rinvid/system/input_state.h>
 
 namespace sf
 {
@@ -99,6 +100,22 @@ class ApplicationContext
     const RenderContext& get_render_context() const;
 
     /**************************************************************************************************
+     * @brief Returns this application's input transition state.
+     *
+     * @return Input state advanced by the application's frame loop.
+     *
+     *************************************************************************************************/
+    system::InputState& get_input_state();
+
+    /**************************************************************************************************
+     * @brief Returns this application's input transition state.
+     *
+     * @return Input state for the current frame.
+     *
+     *************************************************************************************************/
+    const system::InputState& get_input_state() const;
+
+    /**************************************************************************************************
      * @brief Returns application window.
      *
      * @return Application window.
@@ -125,8 +142,9 @@ class ApplicationContext
   private:
     static ApplicationContext* active_context_;
 
-    RenderContext render_context_{};
-    sf::Window*   window_{nullptr};
+    RenderContext      render_context_{};
+    system::InputState input_state_{};
+    sf::Window*        window_{nullptr};
 };
 
 } // namespace rinvid

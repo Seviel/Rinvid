@@ -20,11 +20,13 @@ void ApplicationContext::init(const Application* application, sf::Window& window
 {
     window_         = &window;
     active_context_ = this;
+    input_state_.reset(window.hasFocus());
     render_context_.init(application);
 }
 
 void ApplicationContext::shutdown()
 {
+    input_state_.reset(false);
     render_context_.shutdown();
     window_ = nullptr;
 
@@ -42,6 +44,16 @@ RenderContext& ApplicationContext::get_render_context()
 const RenderContext& ApplicationContext::get_render_context() const
 {
     return render_context_;
+}
+
+system::InputState& ApplicationContext::get_input_state()
+{
+    return input_state_;
+}
+
+const system::InputState& ApplicationContext::get_input_state() const
+{
+    return input_state_;
 }
 
 sf::Window* ApplicationContext::get_window()
