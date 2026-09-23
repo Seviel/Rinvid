@@ -34,6 +34,30 @@ class Keyboard
      *
      *************************************************************************************************/
     static bool is_key_pressed(Key key);
+
+    /**************************************************************************************************
+     * @brief Checks whether a key was newly pressed during the current application frame.
+     * Remains true for every query in that frame, even if the key was also released. Holding a key
+     * does not generate additional press transitions. Focus loss clears pending transitions.
+     *
+     * @param key Key to check.
+     *
+     * @return True for a press transition, or false for an invalid key or no active application.
+     *
+     *************************************************************************************************/
+    static bool is_key_just_pressed(Key key);
+
+    /**************************************************************************************************
+     * @brief Checks whether a key was released during the current application frame.
+     * Remains true for every query in that frame. Focus loss clears state without generating
+     * releases.
+     *
+     * @param key Key to check.
+     *
+     * @return True for a release transition, or false for an invalid key or no active application.
+     *
+     *************************************************************************************************/
+    static bool is_key_just_released(Key key);
 };
 
 } // namespace system

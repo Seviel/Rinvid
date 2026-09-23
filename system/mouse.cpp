@@ -29,6 +29,30 @@ bool Mouse::is_button_pressed(MouseButton button)
     return sf::Mouse::isButtonPressed(sf_button);
 }
 
+bool Mouse::is_button_just_pressed(MouseButton button)
+{
+    const auto* context{ApplicationContext::get_active_context()};
+    if (context == nullptr || (button != Left && button != Right))
+    {
+        return false;
+    }
+
+    const auto sf_button{button == Left ? sf::Mouse::Button::Left : sf::Mouse::Button::Right};
+    return context->get_input_state().is_button_just_pressed(sf_button);
+}
+
+bool Mouse::is_button_just_released(MouseButton button)
+{
+    const auto* context{ApplicationContext::get_active_context()};
+    if (context == nullptr || (button != Left && button != Right))
+    {
+        return false;
+    }
+
+    const auto sf_button{button == Left ? sf::Mouse::Button::Left : sf::Mouse::Button::Right};
+    return context->get_input_state().is_button_just_released(sf_button);
+}
+
 Vector2f Mouse::get_mouse_pos()
 {
     ApplicationContext* context = ApplicationContext::get_active_context();

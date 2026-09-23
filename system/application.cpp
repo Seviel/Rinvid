@@ -63,6 +63,8 @@ Application::Application(std::uint32_t width, std::uint32_t height, const std::s
     gladLoadGLLoader(reinterpret_cast<GLADloadproc>(sf::Context::getFunction));
 #endif
 
+    // Only physical presses should create input edges, including after regaining focus.
+    window_.setKeyRepeatEnabled(false);
     context_.init(this, window_);
     const auto size =
         window_resize_mode_ == WindowResizeMode::Fixed ? windowed_size_ : window_.getSize();
@@ -93,6 +95,7 @@ void Application::run()
 
     while (running_ == true)
     {
+        context_.get_input_state().begin_frame();
         handle_events(window_);
 
         // Native event handlers can block while the user moves a window. Treat that time as paused
@@ -225,6 +228,7 @@ void Application::handle_events(sf::Window& window)
 {
     while (const auto event = window.pollEvent())
     {
+        context_.get_input_state().handle_event(*event);
         if (event->is<sf::Event::Closed>())
         {
             running_ = false;
