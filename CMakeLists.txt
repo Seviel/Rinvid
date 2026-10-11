@@ -27,6 +27,19 @@ set(RINVID_BENCHMARK_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/extern/benchmark"
 
 find_package(OpenGL REQUIRED COMPONENTS OpenGL)
 
+# Keep XML parsing private to the TMX loader. Fetch into the build tree, not extern/.
+include(FetchContent)
+set(tinyxml2_BUILD_TESTING OFF CACHE BOOL "" FORCE)
+set(tinyxml2_SHARED_LIBS OFF CACHE BOOL "" FORCE)
+FetchContent_Declare(tinyxml2
+  URL https://codeload.github.com/leethomason/tinyxml2/tar.gz/refs/tags/11.0.0
+  URL_HASH SHA256=5556deb5081fb246ee92afae73efd943c889cef0cafea92b0b82422d6a18f289)
+FetchContent_MakeAvailable(tinyxml2)
+if(MINGW)
+  target_compile_options(tinyxml2 PRIVATE -include
+    "${CMAKE_CURRENT_SOURCE_DIR}/compat/mingw/tinyxml2_stdio.h")
+endif()
+
 set(FT_DISABLE_ZLIB ON)
 set(FT_DISABLE_BZIP2 ON)
 set(FT_DISABLE_PNG ON)
@@ -154,10 +167,12 @@ target_compile_options(rinvid_extern PRIVATE -O3)
 add_library(rinvid_util_obj OBJECT)
 target_sources(rinvid_util_obj PRIVATE ${UTIL_SOURCES})
 rinvid_configure_target(rinvid_util_obj)
+target_link_libraries(rinvid_util_obj PRIVATE tinyxml2::tinyxml2)
 
 add_library(rinvid_util STATIC $<TARGET_OBJECTS:rinvid_util_obj>)
 rinvid_configure_target(rinvid_util)
 target_link_libraries(rinvid_util PUBLIC rinvid_extern)
+target_link_libraries(rinvid_util PRIVATE tinyxml2::tinyxml2)
 
 add_library(rinvid_core_obj OBJECT)
 target_sources(rinvid_core_obj PRIVATE ${CORE_SOURCES})
@@ -214,6 +229,7 @@ add_library(${PROJECT_NAME} STATIC $<TARGET_OBJECTS:rinvid_extern_obj>
                                    $<TARGET_OBJECTS:rinvid_sound_obj>)
 rinvid_configure_target(${PROJECT_NAME})
 target_link_libraries(${PROJECT_NAME} PUBLIC freetype SFML::Window SFML::Audio)
+target_link_libraries(${PROJECT_NAME} PRIVATE tinyxml2::tinyxml2)
 if(UNIX)
   target_link_libraries(${PROJECT_NAME} PUBLIC OpenGL::GL)
 endif()

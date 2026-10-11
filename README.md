@@ -119,3 +119,4 @@ the other three pinned at `100`.
 [gtest](https://github.com/google/googletest)  
 [Google Benchmark](https://github.com/google/benchmark)  
 [Freetype](http://freetype.org/)
+[TinyXML2](https://github.com/leethomason/tinyxml2)
