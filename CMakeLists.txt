@@ -243,6 +243,7 @@ add_subdirectory(examples/screens)
 add_subdirectory(examples/shaders)
 add_subdirectory(examples/sprites)
 add_subdirectory(examples/testing_grounds)
+add_subdirectory(examples/tiled)
 
 if(RINVID_BUILD_BENCHMARKS)
   add_subdirectory(benchmarks)
