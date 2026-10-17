@@ -77,6 +77,7 @@ class Texture
 
   private:
     friend class Sprite;
+    friend class TileMap;
 
     void release_gl_resources();
     void bind() const;
