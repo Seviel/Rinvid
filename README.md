@@ -46,6 +46,7 @@ pacman -Syu
 pacman -S mingw-w64-x86_64-gcc
 pacman -S mingw-w64-x86_64-cmake
 pacman -S mingw-w64-x86_64-ninja
+pacman -S mingw-w64-x86_64-git
 ```
 3. Pull external dependencies by running the following command from the root of the project:
 ```shell
