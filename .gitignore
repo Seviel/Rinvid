@@ -7,3 +7,4 @@ dist
 bazel*
 user.bazelrc
 MODULE.bazel.lock
+scratchpad/*
