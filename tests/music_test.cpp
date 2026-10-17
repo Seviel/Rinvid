@@ -13,11 +13,12 @@
 #include <limits>
 #include <optional>
 #include <string>
-#include <thread>
 #include <utility>
 #include <type_traits>
 
 #include <SFML/Audio/PlaybackDevice.hpp>
+#include <SFML/System/Sleep.hpp>
+#include <SFML/System/Time.hpp>
 #include <gtest/gtest.h>
 
 #include <rinvid/sound/music.h>
@@ -49,7 +50,7 @@ bool wait_until(Predicate predicate)
             return false;
         }
 
-        std::this_thread::sleep_for(std::chrono::milliseconds{5});
+        sf::sleep(sf::milliseconds(5));
     }
 
     return true;
