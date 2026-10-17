@@ -3,18 +3,18 @@
 ## 1. General
 
 1.1 Formatting shall be done by clang-format  
-All formatting (line breaks, spaces, etc) is done by clang-format-6.0 (install on ubuntu: sudo apt install clang-format-6.0). Formatting style is defined in _clang-format file in the root of Rinvid repository. A utility bash script apply_clang_format.sh is made available in the root of the repository to facilitate formatting.
+All formatting (line breaks, spaces, etc) is done by clang-format using the `_clang-format` file in the root of the Rinvid repository. Use a version that supports this configuration, and use the same version across contributors and CI to keep formatting consistent. A utility bash script apply_clang_format.sh is made available in the root of the repository to facilitate formatting.
 
 1.2 All source files shall start with license notice comment block (see any of the existing source files for an example)
 
-1.3 An extra empty line shall end every file.
+1.3 End every file with a newline.
 
 1.4 Includes shall have the following order:
 1. Standard lib includes first, sorted alphabetically
 2. SFML and other extern lib includes, sorted alphabetically
 3. Rinvid headers, sorted alphabetically
 
-1.5 Uniform initialization shall always be used instead of other means of initialization
+1.5 Prefer uniform initialization. Parentheses are allowed when they express the intended behavior, such as selecting a size constructor instead of an initializer-list constructor.
 
 Example:
 
@@ -24,6 +24,13 @@ float f = 5.0F;
 
 // Good 
 float f{5.0F};
+```
+
+For example, these vector constructors are both allowed because they have different meanings:
+
+```cpp
+std::vector<std::int32_t> values(10); // Ten zero-initialized elements.
+std::vector<std::int32_t> values{10}; // One element with the value 10.
 ```
 
 1.6 Capital F literal suffix shall always be appended to float constants
@@ -44,7 +51,7 @@ float fl;
 fl = 0.1F;
 ```
 
-1.7 Only integer types with specified width shall be used
+1.7 Use integer types with specified width, except that `std::size_t` (from `<cstddef>`) is allowed for sizes, counts, and indexing.
 
 Example:
 
