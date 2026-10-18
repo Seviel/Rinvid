@@ -42,7 +42,7 @@ class ShapesScreen : public rinvid::Screen
     rinvid::QuadShape      quad{rinvid::Vector2f{100.0F, 260.0F}, rinvid::Vector2f{150.0F, 260.0F},
                            rinvid::Vector2f{160.0F, 310.0F}, rinvid::Vector2f{90.0F, 310.0F}};
     rinvid::RectangleShape rectangle{rinvid::Vector2f{400.0F, 50.0F}, 100.0F, 50.0F};
-    rinvid::CircleShape    circle{rinvid::Vector2f{670.0F, 280.0f}, 40.0F};
+    rinvid::CircleShape    circle{rinvid::Vector2f{670.0F, 280.0F}, 40.0F};
     rinvid::Shape*         current_shape = nullptr;
 };
 

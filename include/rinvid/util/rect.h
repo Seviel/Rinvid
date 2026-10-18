@@ -41,7 +41,7 @@ struct Rect
         return *this;
     }
 
-    Vector2f     position;
+    Vector2f position;
     std::int32_t width;
     std::int32_t height;
 };

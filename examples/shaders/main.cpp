@@ -59,9 +59,9 @@ class ShadersScreen : public rinvid::Screen
 
 void ShadersScreen::create()
 {
-    auto vertex_shader_code   = load_shader_source("resources/shader.vert");
-    auto fragment_shader_code = load_shader_source("resources/shader.frag");
-    shader_                   = Shader(vertex_shader_code.c_str(), fragment_shader_code.c_str());
+    auto vertex_shader_code{load_shader_source("resources/shader.vert")};
+    auto fragment_shader_code{load_shader_source("resources/shader.frag")};
+    shader_ = Shader(vertex_shader_code.c_str(), fragment_shader_code.c_str());
 }
 
 void ShadersScreen::update(double delta_time)

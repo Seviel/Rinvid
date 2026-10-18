@@ -46,13 +46,13 @@ void Sprite::draw(const Shader shader)
 
 void Sprite::draw(double delta_time)
 {
-    RenderContext* render_context = RenderContext::get_active_context();
+    RenderContext* render_context{RenderContext::get_active_context()};
     if (render_context == nullptr)
     {
         return;
     }
 
-    const auto shader = render_context->get_texture_default_shader();
+    const auto shader{render_context->get_texture_default_shader()};
     draw(delta_time, shader);
 }
 
@@ -68,7 +68,7 @@ void Sprite::draw(double delta_time, const Shader shader)
 
     if (sprite_animation_.is_active_)
     {
-        Animation* current_animation = sprite_animation_.get_current_animation();
+        Animation* current_animation{sprite_animation_.get_current_animation()};
         if (current_animation == nullptr)
         {
             sprite_animation_.is_active_ = false;
@@ -76,10 +76,10 @@ void Sprite::draw(double delta_time, const Shader shader)
         else
         {
             current_animation->advance(delta_time);
-            Rect          texture_region = current_animation->frame();
+            Rect          texture_region{current_animation->frame()};
             Vector2f      offset{texture_offset_};
-            std::uint32_t width  = texture_region.width;
-            std::uint32_t height = texture_region.height;
+            std::uint32_t width{static_cast<std::uint32_t>(texture_region.width)};
+            std::uint32_t height{static_cast<std::uint32_t>(texture_region.height)};
 
             offset.x += texture_region.position.x;
             offset.y += texture_region.position.y;
@@ -90,7 +90,7 @@ void Sprite::draw(double delta_time, const Shader shader)
 
     ensure_vertex_buffer_initialized();
 
-    RenderContext* render_context = RenderContext::get_active_context();
+    RenderContext* render_context{RenderContext::get_active_context()};
     if (render_context == nullptr)
     {
         return;
@@ -126,7 +126,7 @@ Rect Sprite::bounding_rect()
     std::vector<glm::vec4> glm_vertices{};
     glm_vertices.reserve(4U);
 
-    const auto& transform = get_transform();
+    const auto& transform{get_transform()};
 
     glm_vertices.emplace_back(transform * glm::vec4{position_.x, position_.y, 1.0F, 1.0F});
     glm_vertices.emplace_back(transform * glm::vec4{position_.x + width_, position_.y, 1.0F, 1.0F});

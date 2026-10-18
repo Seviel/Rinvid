@@ -28,7 +28,7 @@ namespace rinvid
 namespace
 {
 
-constexpr float LINE_SPACING = 1.08F;
+constexpr float LINE_SPACING{1.08F};
 
 bool is_line_break(char character)
 {
@@ -115,9 +115,9 @@ Text::Text(std::string text, const std::string& font_path, Vector2f position, Co
            std::uint32_t size)
     : size_{size}, text_{std::move(text)}, position_{position}, color_{color}, max_width_{0.0F}
 {
-    const auto* ft_lib = TTFLib::get_instance();
+    const auto* ft_lib{TTFLib::get_instance()};
 
-    auto error = FT_New_Face(*ft_lib, font_path.c_str(), 0, &ft_face_);
+    auto error{FT_New_Face(*ft_lib, font_path.c_str(), 0, &ft_face_)};
     if (error)
     {
         TTFLib::release();
@@ -153,32 +153,32 @@ Text::~Text()
 
 void Text::draw()
 {
-    RenderContext* render_context = RenderContext::get_active_context();
+    RenderContext* render_context{RenderContext::get_active_context()};
     if (render_context == nullptr)
     {
         return;
     }
 
-    const auto shader = render_context->get_text_default_shader();
+    const auto shader{render_context->get_text_default_shader()};
     draw(shader);
 }
 
 void Text::draw(const Shader shader)
 {
-    RenderContext* render_context = RenderContext::get_active_context();
+    RenderContext* render_context{RenderContext::get_active_context()};
     if (render_context == nullptr)
     {
         return;
     }
 
-    float x = position_.x;
-    float y = position_.y;
+    float x{position_.x};
+    float y{position_.y};
 
     glm::vec4   glm_pos{x, y, 1.0F, 1.0F};
-    const auto& view = render_context->get_view();
-    glm_pos          = view * glm_pos;
-    x                = glm_pos.x;
-    y                = render_context->get_height() - glm_pos.y;
+    const auto& view{render_context->get_view()};
+    glm_pos = view * glm_pos;
+    x       = glm_pos.x;
+    y       = render_context->get_height() - glm_pos.y;
 
     shader.use();
     glm::mat4 projection = glm::ortho(0.0F, static_cast<float>(render_context->get_width()), 0.0F,
@@ -190,12 +190,12 @@ void Text::draw(const Shader shader)
     GL_CALL(glActiveTexture(GL_TEXTURE0));
     GL_CALL(glBindVertexArray(vertex_array_object_));
 
-    const float start_x = x;
-    const float max_x   = start_x + max_width_;
+    const float start_x{x};
+    const float max_x{start_x + max_width_};
 
-    auto current                  = text_.cbegin();
-    auto pending_whitespace_begin = text_.cend();
-    auto pending_whitespace_end   = text_.cend();
+    auto current{text_.cbegin()};
+    auto pending_whitespace_begin{text_.cend()};
+    auto pending_whitespace_end{text_.cend()};
     bool has_pending_whitespace{false};
     bool line_has_content{false};
     bool skip_leading_whitespace{false};
@@ -221,17 +221,17 @@ void Text::draw(const Shader shader)
             continue;
         }
 
-        const auto word_begin = current;
-        const auto word_end   = find_word_end(current, text_.cend());
-        current               = word_end;
+        const auto word_begin{current};
+        const auto word_end{find_word_end(current, text_.cend())};
+        current = word_end;
 
-        const bool should_draw_pending_whitespace =
-            has_pending_whitespace && (line_has_content || !skip_leading_whitespace);
-        const float pending_whitespace_width =
+        const bool  should_draw_pending_whitespace{has_pending_whitespace &&
+                                                  (line_has_content || !skip_leading_whitespace)};
+        const float pending_whitespace_width{
             should_draw_pending_whitespace
                 ? get_text_width(pending_whitespace_begin, pending_whitespace_end)
-                : 0.0F;
-        const float word_width = get_text_width(word_begin, word_end);
+                : 0.0F};
+        const float word_width{get_text_width(word_begin, word_end)};
 
         if (max_width_ > 0.0F && line_has_content &&
             x + pending_whitespace_width + word_width > max_x)
@@ -327,7 +327,7 @@ float Text::get_width() const
     float widest_line_width{0.0F};
     float current_line_width{0.0F};
 
-    auto current = text_.cbegin();
+    auto current{text_.cbegin()};
     while (current != text_.cend())
     {
         if (is_line_break(*current))
@@ -347,7 +347,7 @@ float Text::get_width() const
 
 const Text::Character* Text::find_character(char character_key) const
 {
-    const auto character = characters_.find(character_key);
+    const auto character{characters_.find(character_key)};
     if (character == characters_.end())
     {
         return nullptr;
@@ -358,7 +358,7 @@ const Text::Character* Text::find_character(char character_key) const
 
 float Text::get_character_advance(char character_key) const
 {
-    const auto* character = find_character(character_key);
+    const auto* character{find_character(character_key)};
     if (character == nullptr)
     {
         return 0.0F;
@@ -371,7 +371,7 @@ float Text::get_text_width(std::string::const_iterator begin, std::string::const
 {
     float width{0.0F};
 
-    for (auto current = begin; current != end; ++current)
+    for (auto current{begin}; current != end; ++current)
     {
         width += get_character_advance(*current);
     }
@@ -392,17 +392,17 @@ void Text::move_to_next_line(float& x, float& y, float start_x) const
 
 void Text::draw_character(char character_key, float& x, float y) const
 {
-    const auto* character = find_character(character_key);
+    const auto* character{find_character(character_key)};
     if (character == nullptr)
     {
         return;
     }
 
-    const float xpos = x + static_cast<float>(character->bearing.x);
-    const float ypos = y - static_cast<float>(character->size.y - character->bearing.y);
+    const float xpos{x + static_cast<float>(character->bearing.x)};
+    const float ypos{y - static_cast<float>(character->size.y - character->bearing.y)};
 
-    const float width  = static_cast<float>(character->size.x);
-    const float height = static_cast<float>(character->size.y);
+    const float width{static_cast<float>(character->size.x)};
+    const float height{static_cast<float>(character->size.y)};
 
     const float vertices[6][4] = {
         {xpos, ypos + height, 0.0F, 0.0F},        {xpos, ypos, 0.0F, 1.0F},
@@ -423,7 +423,7 @@ void Text::draw_character(char character_key, float& x, float y) const
 void Text::draw_text_range(std::string::const_iterator begin, std::string::const_iterator end,
                            float& x, float y) const
 {
-    for (auto current = begin; current != end; ++current)
+    for (auto current{begin}; current != end; ++current)
     {
         draw_character(*current, x, y);
     }
@@ -433,11 +433,11 @@ void Text::draw_text_range_wrapped_by_character(std::string::const_iterator begi
                                                 std::string::const_iterator end, float& x, float& y,
                                                 float start_x, bool& line_has_content) const
 {
-    const float max_x = start_x + max_width_;
+    const float max_x{start_x + max_width_};
 
-    for (auto current = begin; current != end; ++current)
+    for (auto current{begin}; current != end; ++current)
     {
-        const float advance = get_character_advance(*current);
+        const float advance{get_character_advance(*current)};
         if (max_width_ > 0.0F && line_has_content && x + advance > max_x)
         {
             move_to_next_line(x, y, start_x);
@@ -460,7 +460,7 @@ void Text::generate_character_textures()
 
     try
     {
-        for (unsigned char c = 0; c < 128; c++)
+        for (std::uint32_t c{0U}; c < 128U; ++c)
         {
             if (FT_Load_Char(ft_face_, c, FT_LOAD_RENDER))
             {
@@ -478,10 +478,10 @@ void Text::generate_character_textures()
             GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
             GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
 
-            Character character = {
+            Character character{
                 texture, glm::ivec2(ft_face_->glyph->bitmap.width, ft_face_->glyph->bitmap.rows),
                 glm::ivec2(ft_face_->glyph->bitmap_left, ft_face_->glyph->bitmap_top),
-                static_cast<unsigned int>(ft_face_->glyph->advance.x)};
+                static_cast<std::uint32_t>(ft_face_->glyph->advance.x)};
             new_characters.emplace(static_cast<char>(c), character);
         }
     }

@@ -31,7 +31,7 @@ void LevelOne::update(double delta_time)
     bg_level_one_sprite.draw();
     guardian_sprite_->draw(delta_time);
 
-    static bool last_moved_right = true;
+    static bool last_moved_right{true};
     if (Keyboard::is_key_pressed(Keyboard::Key::D) ||
         Keyboard::is_key_pressed(Keyboard::Key::Right))
     {

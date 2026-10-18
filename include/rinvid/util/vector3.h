@@ -21,7 +21,7 @@ struct Vector3
         static_assert(std::is_arithmetic<T>::value == true);
     }
 
-    Vector3(T X, T Y, T Z) : x{X}, y{Y}, z{Z}
+    Vector3(T x_value, T y_value, T z_value) : x{x_value}, y{y_value}, z{z_value}
     {
         static_assert(std::is_arithmetic<T>::value == true);
     }

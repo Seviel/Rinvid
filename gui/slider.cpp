@@ -318,13 +318,13 @@ Vector2f Slider::get_mouse_position() const
     Vector2f  mouse_position{system::Mouse::get_mouse_pos()};
     glm::vec4 glm_mouse_position{mouse_position.x, mouse_position.y, 1.0F, 1.0F};
 
-    RenderContext* render_context = RenderContext::get_active_context();
+    RenderContext* render_context{RenderContext::get_active_context()};
     if (render_context == nullptr)
     {
         return mouse_position;
     }
 
-    const auto& view   = glm::inverse(render_context->get_view());
+    const auto& view{glm::inverse(render_context->get_view())};
     glm_mouse_position = view * glm_mouse_position;
     mouse_position.x   = glm_mouse_position.x;
     mouse_position.y   = glm_mouse_position.y;

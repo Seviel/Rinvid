@@ -13,8 +13,8 @@
 #include <limits>
 #include <optional>
 #include <string>
-#include <utility>
 #include <type_traits>
+#include <utility>
 
 #include <SFML/Audio/PlaybackDevice.hpp>
 #include <SFML/System/Sleep.hpp>

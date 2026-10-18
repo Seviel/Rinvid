@@ -7,14 +7,14 @@
  * repository for more details.
  **********************************************************************/
 
+#include <chrono>
+#include <iostream>
+
 #ifdef __unix__
 #include <unistd.h>
 #else
 #include <windows.h>
 #endif
-
-#include <chrono>
-#include <iostream>
 
 #include <rinvid/core/animation.h>
 #include <rinvid/core/camera.h>
@@ -75,7 +75,7 @@ class TestingGrounds : public rinvid::Screen
     rinvid::QuadShape      quad{rinvid::Vector2f{100.0F, 40.0F}, rinvid::Vector2f{150.0F, 40.0F},
                            rinvid::Vector2f{160.0F, 90.0F}, rinvid::Vector2f{90.0F, 90.0F}};
     rinvid::RectangleShape rectangle{rinvid::Vector2f{350.0F, 35.0F}, 100.0F, 50.0F};
-    rinvid::CircleShape    circle{rinvid::Vector2f{500.0F, 300.0f}, 100.0F};
+    rinvid::CircleShape    circle{rinvid::Vector2f{500.0F, 300.0F}, 100.0F};
     rinvid::FixedPolygonShape<5> polygon{
         {rinvid::Vector2f{100.0F, 100.0F}, rinvid::Vector2f{125.0F, 75.0F},
          rinvid::Vector2f{150.0F, 100.0F}, rinvid::Vector2f{150.0F, 200.0F},
@@ -118,7 +118,7 @@ void TestingGrounds::create()
     polygon.set_color(rinvid::Color{1.0F, 1.0F, 1.0F, 1.0F});
     polygon.set_position(rinvid::Vector2f{500.0F, 500.0F});
 
-    auto regions = clock_sprite.get_animation().split_animation_frames(100, 100, 12, 1);
+    auto              regions{clock_sprite.get_animation().split_animation_frames(100, 100, 12, 1)};
     rinvid::Animation clock_animation{20.0, regions, rinvid::AnimationMode::Looping};
     clock_sprite.get_animation().add_animation("anim", clock_animation);
     clock_sprite.get_animation().play("anim");
@@ -165,7 +165,7 @@ void TestingGrounds::update(double delta_time)
     {
         wind.set_pitch(1.25F);
         wind.play();
-        static std::uint32_t index = 0;
+        static std::uint32_t index{0};
         ++index;
         index = index % 2;
         music_.play(index == 0 ? "resources/menu_music.wav" : "resources/level_music.wav");

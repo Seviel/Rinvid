@@ -7,8 +7,6 @@
  * repository for more details.
  **********************************************************************/
 
-#include "stress_scene.h"
-
 #include <algorithm>
 #include <array>
 #include <cstddef>
@@ -17,6 +15,7 @@
 #include <string>
 #include <utility>
 
+#include "stress_scene.h"
 #include <rinvid/core/light_manager.h>
 #include <rinvid/core/render_context.h>
 #include <rinvid/util/color.h>
@@ -98,8 +97,8 @@ const std::array<std::string, 8> k_text_fragments{"Rinvid", "Stress", "Sprites",
 
 std::string make_text_content(std::mt19937& generator, std::uint32_t index)
 {
-    const auto first_index  = static_cast<std::size_t>(random_int(generator, 0, 7));
-    const auto second_index = static_cast<std::size_t>(random_int(generator, 0, 7));
+    const auto first_index{static_cast<std::size_t>(random_int(generator, 0, 7))};
+    const auto second_index{static_cast<std::size_t>(random_int(generator, 0, 7))};
 
     return k_text_fragments.at(first_index) + " " + k_text_fragments.at(second_index) + " " +
            std::to_string(index);
@@ -182,9 +181,9 @@ StressSceneContent::~StressSceneContent() = default;
 StressSceneContent::SpriteEntity StressSceneContent::make_sprite_entity(std::mt19937& generator)
 {
     SpriteEntity     entity{};
-    GeneratedTexture generated_texture = make_texture(generator);
-    const auto       max_x = viewport_width_ - static_cast<float>(generated_texture.width_);
-    const auto       max_y = viewport_height_ - static_cast<float>(generated_texture.height_);
+    GeneratedTexture generated_texture{make_texture(generator)};
+    const auto       max_x{viewport_width_ - static_cast<float>(generated_texture.width_)};
+    const auto       max_y{viewport_height_ - static_cast<float>(generated_texture.height_)};
 
     entity.texture_ = std::make_unique<rinvid::Texture>(
         generated_texture.pixels_, generated_texture.width_, generated_texture.height_);
@@ -207,7 +206,7 @@ StressSceneContent::TextEntity StressSceneContent::make_text_entity(std::mt19937
                                                                     std::uint32_t      index)
 {
     TextEntity entity{};
-    const auto size = static_cast<std::uint32_t>(random_int(generator, 16, 34));
+    const auto size{static_cast<std::uint32_t>(random_int(generator, 16, 34))};
 
     entity.max_width_        = TEXT_MAX_WIDTH;
     entity.estimated_height_ = static_cast<float>(size) * TEXT_HEIGHT_SCALE;
@@ -225,15 +224,15 @@ StressSceneContent::TextEntity StressSceneContent::make_text_entity(std::mt19937
 StressSceneContent::ShapeEntity StressSceneContent::make_shape_entity(std::mt19937& generator)
 {
     ShapeEntity entity{};
-    const auto  shape_kind = random_int(generator, 0, 2);
+    const auto  shape_kind{random_int(generator, 0, 2)};
 
     entity.velocity_         = random_velocity(generator, MAX_SHAPE_SPEED);
     entity.angular_velocity_ = random_float(generator, -MAX_ROTATION_SPEED, MAX_ROTATION_SPEED);
 
     if (shape_kind == 0)
     {
-        const auto width  = random_float(generator, 40.0F, 160.0F);
-        const auto height = random_float(generator, 40.0F, 160.0F);
+        const auto width{random_float(generator, 40.0F, 160.0F)};
+        const auto height{random_float(generator, 40.0F, 160.0F)};
 
         entity.extent_x_ = width / 2.0F;
         entity.extent_y_ = height / 2.0F;
@@ -241,14 +240,14 @@ StressSceneContent::ShapeEntity StressSceneContent::make_shape_entity(std::mt199
             random_float(generator, entity.extent_x_, viewport_width_ - entity.extent_x_),
             random_float(generator, entity.extent_y_, viewport_height_ - entity.extent_y_)};
 
-        auto rectangle = std::make_unique<rinvid::RectangleShape>(entity.center_, width, height);
+        auto rectangle{std::make_unique<rinvid::RectangleShape>(entity.center_, width, height)};
         rectangle->set_color(random_color(generator));
         rectangle->set_rotation(random_float(generator, 0.0F, 360.0F));
         entity.shape_ = std::move(rectangle);
     }
     else if (shape_kind == 1)
     {
-        const auto radius = random_float(generator, 25.0F, 90.0F);
+        const auto radius{random_float(generator, 25.0F, 90.0F)};
 
         entity.extent_x_ = radius;
         entity.extent_y_ = radius;
@@ -256,14 +255,14 @@ StressSceneContent::ShapeEntity StressSceneContent::make_shape_entity(std::mt199
             random_float(generator, entity.extent_x_, viewport_width_ - entity.extent_x_),
             random_float(generator, entity.extent_y_, viewport_height_ - entity.extent_y_)};
 
-        auto circle = std::make_unique<rinvid::CircleShape>(entity.center_, radius);
+        auto circle{std::make_unique<rinvid::CircleShape>(entity.center_, radius)};
         circle->set_color(random_color(generator));
         entity.shape_ = std::move(circle);
     }
     else
     {
-        const auto half_width  = random_float(generator, 30.0F, 90.0F);
-        const auto half_height = random_float(generator, 30.0F, 90.0F);
+        const auto half_width{random_float(generator, 30.0F, 90.0F)};
+        const auto half_height{random_float(generator, 30.0F, 90.0F)};
 
         entity.extent_x_ = half_width;
         entity.extent_y_ = half_height;
@@ -271,10 +270,10 @@ StressSceneContent::ShapeEntity StressSceneContent::make_shape_entity(std::mt199
             random_float(generator, entity.extent_x_, viewport_width_ - entity.extent_x_),
             random_float(generator, entity.extent_y_, viewport_height_ - entity.extent_y_)};
 
-        auto triangle = std::make_unique<rinvid::TriangleShape>(
+        auto triangle{std::make_unique<rinvid::TriangleShape>(
             rinvid::Vector2f{entity.center_.x, entity.center_.y - half_height},
             rinvid::Vector2f{entity.center_.x - half_width, entity.center_.y + half_height},
-            rinvid::Vector2f{entity.center_.x + half_width, entity.center_.y + half_height});
+            rinvid::Vector2f{entity.center_.x + half_width, entity.center_.y + half_height})};
         triangle->set_color(random_color(generator));
         triangle->set_rotation(random_float(generator, 0.0F, 360.0F));
         entity.shape_ = std::move(triangle);
@@ -321,11 +320,11 @@ const StressSceneCounts& StressSceneContent::get_max_counts() const
 
 void StressSceneContent::step(double delta_time)
 {
-    const auto delta = static_cast<float>(delta_time);
+    const auto delta{static_cast<float>(delta_time)};
 
     for (std::size_t index{0U}; index < active_counts_.sprite_count_; ++index)
     {
-        auto& sprite = sprites_.at(index);
+        auto& sprite{sprites_.at(index)};
         sprite.position_.x += sprite.velocity_.x * delta;
         sprite.position_.y += sprite.velocity_.y * delta;
         bounce_coordinate(sprite.position_.x, sprite.velocity_.x, 0.0F,
@@ -338,7 +337,7 @@ void StressSceneContent::step(double delta_time)
 
     for (std::size_t index{0U}; index < active_counts_.shape_count_; ++index)
     {
-        auto& shape = shapes_.at(index);
+        auto& shape{shapes_.at(index)};
         shape.center_.x += shape.velocity_.x * delta;
         shape.center_.y += shape.velocity_.y * delta;
         bounce_coordinate(shape.center_.x, shape.velocity_.x, shape.extent_x_,
@@ -357,7 +356,7 @@ void StressSceneContent::step(double delta_time)
 
     for (std::size_t index{0U}; index < active_counts_.text_count_; ++index)
     {
-        auto& text = texts_.at(index);
+        auto& text{texts_.at(index)};
         text.position_.x += text.velocity_.x * delta;
         text.position_.y += text.velocity_.y * delta;
         bounce_coordinate(text.position_.x, text.velocity_.x, 0.0F,
@@ -369,7 +368,7 @@ void StressSceneContent::step(double delta_time)
 
     for (std::size_t index{0U}; index < active_counts_.light_count_; ++index)
     {
-        auto& light = lights_.at(index);
+        auto& light{lights_.at(index)};
         light.position_.x += light.velocity_.x * delta;
         light.position_.y += light.velocity_.y * delta;
         bounce_coordinate(light.position_.x, light.velocity_.x, 0.0F,
@@ -382,7 +381,7 @@ void StressSceneContent::step(double delta_time)
 
 void StressSceneContent::render()
 {
-    auto* render_context = rinvid::RenderContext::get_active_context();
+    auto* render_context{rinvid::RenderContext::get_active_context()};
     if (render_context == nullptr)
     {
         return;

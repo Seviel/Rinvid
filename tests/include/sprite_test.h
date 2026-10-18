@@ -12,9 +12,8 @@
 
 #include <cstdlib>
 
-#include <gtest/gtest.h>
-
 #include <SFML/Window/Context.hpp>
+#include <gtest/gtest.h>
 
 #include <rinvid/core/render_context.h>
 #include <rinvid/core/rinvid_gl.h>
@@ -28,7 +27,7 @@ class SpriteTest : public ::testing::Test
     void SetUp() override
     {
 #ifdef _WIN32
-        const char* skip_opengl_tests = std::getenv("RINVID_SKIP_OPENGL_TESTS");
+        const char* skip_opengl_tests{std::getenv("RINVID_SKIP_OPENGL_TESTS")};
         if (skip_opengl_tests != nullptr && skip_opengl_tests[0] != '\0' &&
             skip_opengl_tests[0] != '0')
         {
@@ -54,8 +53,8 @@ class SpriteTest : public ::testing::Test
         render_context_.set_viewport(0, 0, 32, 32);
         render_context_.init(nullptr);
 
-        const char* file_name = {"tests/resources/valid_image.png"};
-        mock_texture_         = new Texture{file_name};
+        const char* file_name{"tests/resources/valid_image.png"};
+        mock_texture_ = new Texture{file_name};
     }
 
     void TearDown() override

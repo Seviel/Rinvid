@@ -9,15 +9,14 @@
 
 #include <gtest/gtest.h>
 
+#include "include/world_test.h"
 #include <rinvid/platformers/object.h>
 #include <rinvid/platformers/world.h>
-
-#include "include/world_test.h"
 
 using namespace rinvid;
 
 // Mock collision resolver
-std::int32_t resolver_call_count = 0;
+std::int32_t resolver_call_count{0};
 
 bool mock_resolver(Object&, Object&)
 {
@@ -44,7 +43,7 @@ static void disable_physics_side_effects(Object& object)
 
 TEST_F(WorldTest, ObjectObject_Collides)
 {
-    bool result = World::collide(a, b, mock_resolver);
+    bool result{World::collide(object_a_, object_b_, mock_resolver)};
 
     EXPECT_TRUE(result);
     EXPECT_EQ(resolver_call_count, 1);
@@ -52,7 +51,7 @@ TEST_F(WorldTest, ObjectObject_Collides)
 
 TEST_F(WorldTest, ObjectObject_NoCollision)
 {
-    bool result = World::collide(a, c, mock_resolver);
+    bool result{World::collide(object_a_, object_c_, mock_resolver)};
 
     EXPECT_FALSE(result);
     EXPECT_EQ(resolver_call_count, 0);
@@ -60,7 +59,7 @@ TEST_F(WorldTest, ObjectObject_NoCollision)
 
 TEST_F(WorldTest, ObjectObject_ResolverReturnsFalse)
 {
-    bool result = World::collide(a, b, false_resolver);
+    bool result{World::collide(object_a_, object_b_, false_resolver)};
 
     EXPECT_FALSE(result);
     EXPECT_EQ(resolver_call_count, 1);
@@ -72,9 +71,9 @@ TEST_F(WorldTest, ObjectObject_ResolverReturnsFalse)
 
 TEST_F(WorldTest, ObjectGroup_OneCollision)
 {
-    std::vector<Object*> group{&b, &c};
+    std::vector<Object*> group{&object_b_, &object_c_};
 
-    bool result = World::collide(a, group, mock_resolver);
+    bool result{World::collide(object_a_, group, mock_resolver)};
 
     EXPECT_TRUE(result);
     EXPECT_EQ(resolver_call_count, 1);
@@ -82,9 +81,9 @@ TEST_F(WorldTest, ObjectGroup_OneCollision)
 
 TEST_F(WorldTest, ObjectGroup_TwoCollisions)
 {
-    std::vector<Object*> group{&a, &b, &c};
+    std::vector<Object*> group{&object_a_, &object_b_, &object_c_};
 
-    bool result = World::collide(ab, group, mock_resolver);
+    bool result{World::collide(object_ab_, group, mock_resolver)};
 
     EXPECT_TRUE(result);
     EXPECT_EQ(resolver_call_count, 2);
@@ -92,9 +91,9 @@ TEST_F(WorldTest, ObjectGroup_TwoCollisions)
 
 TEST_F(WorldTest, ObjectGroup_NoCollision)
 {
-    std::vector<Object*> group{&c, &d};
+    std::vector<Object*> group{&object_c_, &object_d_};
 
-    bool result = World::collide(a, group, mock_resolver);
+    bool result{World::collide(object_a_, group, mock_resolver)};
 
     EXPECT_FALSE(result);
     EXPECT_EQ(resolver_call_count, 0);
@@ -102,9 +101,9 @@ TEST_F(WorldTest, ObjectGroup_NoCollision)
 
 TEST_F(WorldTest, ObjectGroup_SkipsSelf)
 {
-    std::vector<Object*> group{&a};
+    std::vector<Object*> group{&object_a_};
 
-    bool result = World::collide(a, group, mock_resolver);
+    bool result{World::collide(object_a_, group, mock_resolver)};
 
     EXPECT_FALSE(result);
     EXPECT_EQ(resolver_call_count, 0);
@@ -116,9 +115,9 @@ TEST_F(WorldTest, ObjectGroup_SkipsSelf)
 
 TEST_F(WorldTest, GroupObject_TwoCollisions)
 {
-    std::vector<Object*> group{&a, &b, &c, &d};
+    std::vector<Object*> group{&object_a_, &object_b_, &object_c_, &object_d_};
 
-    bool result = World::collide(group, ab, mock_resolver);
+    bool result{World::collide(group, object_ab_, mock_resolver)};
 
     EXPECT_TRUE(result);
     EXPECT_EQ(resolver_call_count, 2);
@@ -130,10 +129,10 @@ TEST_F(WorldTest, GroupObject_TwoCollisions)
 
 TEST_F(WorldTest, GroupGroup_TwoCollisions)
 {
-    std::vector<Object*> group1{&a, &b};
-    std::vector<Object*> group2{&ab, &c, &d};
+    std::vector<Object*> group1{&object_a_, &object_b_};
+    std::vector<Object*> group2{&object_ab_, &object_c_, &object_d_};
 
-    bool result = World::collide(group1, group2, mock_resolver);
+    bool result{World::collide(group1, group2, mock_resolver)};
 
     EXPECT_TRUE(result);
     EXPECT_EQ(resolver_call_count, 2);
@@ -141,10 +140,10 @@ TEST_F(WorldTest, GroupGroup_TwoCollisions)
 
 TEST_F(WorldTest, GroupGroup_NoCollisions)
 {
-    std::vector<Object*> group1{&a, &b};
-    std::vector<Object*> group2{&c, &d};
+    std::vector<Object*> group1{&object_a_, &object_b_};
+    std::vector<Object*> group2{&object_c_, &object_d_};
 
-    bool result = World::collide(group1, group2, mock_resolver);
+    bool result{World::collide(group1, group2, mock_resolver)};
 
     EXPECT_FALSE(result);
     EXPECT_EQ(resolver_call_count, 0);
@@ -152,10 +151,10 @@ TEST_F(WorldTest, GroupGroup_NoCollisions)
 
 TEST_F(WorldTest, GroupGroup_SkipsSameObjects_NoCollisions)
 {
-    std::vector<Object*> group1{&a, &c};
-    std::vector<Object*> group2{&a, &c, &d};
+    std::vector<Object*> group1{&object_a_, &object_c_};
+    std::vector<Object*> group2{&object_a_, &object_c_, &object_d_};
 
-    bool result = World::collide(group1, group2, mock_resolver);
+    bool result{World::collide(group1, group2, mock_resolver)};
 
     EXPECT_FALSE(result);
     EXPECT_EQ(resolver_call_count, 0);
@@ -163,9 +162,9 @@ TEST_F(WorldTest, GroupGroup_SkipsSameObjects_NoCollisions)
 
 TEST_F(WorldTest, GroupGroup_IdenticalGroups_SixCollisions)
 {
-    std::vector<Object*> group1{&a, &b, &ab, &c, &d};
+    std::vector<Object*> group1{&object_a_, &object_b_, &object_ab_, &object_c_, &object_d_};
 
-    bool result = World::collide(group1, group1, mock_resolver);
+    bool result{World::collide(group1, group1, mock_resolver)};
 
     EXPECT_TRUE(result);
     EXPECT_EQ(resolver_call_count, 6);
@@ -177,94 +176,94 @@ TEST_F(WorldTest, GroupGroup_IdenticalGroups_SixCollisions)
 
 TEST_F(WorldTest, SeparateX_BothMovable_SplitsOverlapAndAveragesVelocity)
 {
-    a.reset({0.0F, 0.0F});
-    a.resize(10.0F, 10.0F);
-    disable_physics_side_effects(a);
-    a.set_velocity({5.0F, 0.0F});
-    a.update(1.0);
+    object_a_.reset({0.0F, 0.0F});
+    object_a_.resize(10.0F, 10.0F);
+    disable_physics_side_effects(object_a_);
+    object_a_.set_velocity({5.0F, 0.0F});
+    object_a_.update(1.0);
 
-    b.reset({12.0F, 0.0F});
-    b.resize(10.0F, 10.0F);
-    disable_physics_side_effects(b);
-    b.set_velocity({-5.0F, 0.0F});
-    b.update(1.0);
+    object_b_.reset({12.0F, 0.0F});
+    object_b_.resize(10.0F, 10.0F);
+    disable_physics_side_effects(object_b_);
+    object_b_.set_velocity({-5.0F, 0.0F});
+    object_b_.update(1.0);
 
-    EXPECT_TRUE(World::separate(a, b));
+    EXPECT_TRUE(World::separate(object_a_, object_b_));
 
-    EXPECT_FLOAT_EQ(a.get_position().x, 1.0F);
-    EXPECT_FLOAT_EQ(b.get_position().x, 11.0F);
-    EXPECT_FLOAT_EQ(a.get_x_velocity(), 0.0F);
-    EXPECT_FLOAT_EQ(b.get_x_velocity(), 0.0F);
-    EXPECT_TRUE(a.is_touching(RIGHT));
-    EXPECT_TRUE(b.is_touching(LEFT));
+    EXPECT_FLOAT_EQ(object_a_.get_position().x, 1.0F);
+    EXPECT_FLOAT_EQ(object_b_.get_position().x, 11.0F);
+    EXPECT_FLOAT_EQ(object_a_.get_x_velocity(), 0.0F);
+    EXPECT_FLOAT_EQ(object_b_.get_x_velocity(), 0.0F);
+    EXPECT_TRUE(object_a_.is_touching(RIGHT));
+    EXPECT_TRUE(object_b_.is_touching(LEFT));
 }
 
 TEST_F(WorldTest, SeparateY_StaticObject_MovesOnlyMovableObject)
 {
-    a.reset({0.0F, 0.0F});
-    a.resize(10.0F, 10.0F);
-    disable_physics_side_effects(a);
-    a.set_velocity({0.0F, 10.0F});
-    a.update(1.0);
+    object_a_.reset({0.0F, 0.0F});
+    object_a_.resize(10.0F, 10.0F);
+    disable_physics_side_effects(object_a_);
+    object_a_.set_velocity({0.0F, 10.0F});
+    object_a_.update(1.0);
 
-    b.reset({0.0F, 15.0F});
-    b.resize(10.0F, 10.0F);
-    disable_physics_side_effects(b);
-    b.set_movable(NOT);
-    b.set_velocity({0.0F, 3.0F});
-    b.update(1.0);
+    object_b_.reset({0.0F, 15.0F});
+    object_b_.resize(10.0F, 10.0F);
+    disable_physics_side_effects(object_b_);
+    object_b_.set_movable(NOT);
+    object_b_.set_velocity({0.0F, 3.0F});
+    object_b_.update(1.0);
 
-    EXPECT_TRUE(World::separate(a, b));
+    EXPECT_TRUE(World::separate(object_a_, object_b_));
 
-    EXPECT_FLOAT_EQ(a.get_position().y, 5.0F);
-    EXPECT_FLOAT_EQ(b.get_position().y, 15.0F);
-    EXPECT_FLOAT_EQ(a.get_y_velocity(), 3.0F);
-    EXPECT_FLOAT_EQ(b.get_y_velocity(), 3.0F);
-    EXPECT_TRUE(a.is_touching(DOWN));
-    EXPECT_TRUE(b.is_touching(UP));
+    EXPECT_FLOAT_EQ(object_a_.get_position().y, 5.0F);
+    EXPECT_FLOAT_EQ(object_b_.get_position().y, 15.0F);
+    EXPECT_FLOAT_EQ(object_a_.get_y_velocity(), 3.0F);
+    EXPECT_FLOAT_EQ(object_b_.get_y_velocity(), 3.0F);
+    EXPECT_TRUE(object_a_.is_touching(DOWN));
+    EXPECT_TRUE(object_b_.is_touching(UP));
 }
 
 TEST_F(WorldTest, SeparateX_RespectsAllowedCollisions)
 {
-    a.reset({0.0F, 0.0F});
-    a.resize(10.0F, 10.0F);
-    disable_physics_side_effects(a);
-    a.set_allowed_collisions(LEFT | UP | DOWN);
-    a.set_velocity({5.0F, 0.0F});
-    a.update(1.0);
+    object_a_.reset({0.0F, 0.0F});
+    object_a_.resize(10.0F, 10.0F);
+    disable_physics_side_effects(object_a_);
+    object_a_.set_allowed_collisions(LEFT | UP | DOWN);
+    object_a_.set_velocity({5.0F, 0.0F});
+    object_a_.update(1.0);
 
-    b.reset({12.0F, 0.0F});
-    b.resize(10.0F, 10.0F);
-    disable_physics_side_effects(b);
-    b.set_velocity({-5.0F, 0.0F});
-    b.update(1.0);
+    object_b_.reset({12.0F, 0.0F});
+    object_b_.resize(10.0F, 10.0F);
+    disable_physics_side_effects(object_b_);
+    object_b_.set_velocity({-5.0F, 0.0F});
+    object_b_.update(1.0);
 
-    EXPECT_FALSE(World::separate(a, b));
+    EXPECT_FALSE(World::separate(object_a_, object_b_));
 
-    EXPECT_FLOAT_EQ(a.get_position().x, 5.0F);
-    EXPECT_FLOAT_EQ(b.get_position().x, 7.0F);
-    EXPECT_FALSE(a.is_touching(RIGHT));
-    EXPECT_FALSE(b.is_touching(LEFT));
+    EXPECT_FLOAT_EQ(object_a_.get_position().x, 5.0F);
+    EXPECT_FLOAT_EQ(object_b_.get_position().x, 7.0F);
+    EXPECT_FALSE(object_a_.is_touching(RIGHT));
+    EXPECT_FALSE(object_b_.is_touching(LEFT));
 }
 
 TEST_F(WorldTest, Collide_DoesNotSeparateWhenObjectsMoveTogether)
 {
-    a.reset({0.0F, 0.0F});
-    a.resize(10.0F, 10.0F);
-    disable_physics_side_effects(a);
-    a.set_velocity({5.0F, 0.0F});
-    a.update(1.0);
+    object_a_.reset({0.0F, 0.0F});
+    object_a_.resize(10.0F, 10.0F);
+    disable_physics_side_effects(object_a_);
+    object_a_.set_velocity({5.0F, 0.0F});
+    object_a_.update(1.0);
 
-    b.reset({8.0F, 0.0F});
-    b.resize(10.0F, 10.0F);
-    disable_physics_side_effects(b);
-    b.set_velocity({5.0F, 0.0F});
-    b.update(1.0);
+    object_b_.reset({8.0F, 0.0F});
+    object_b_.resize(10.0F, 10.0F);
+    disable_physics_side_effects(object_b_);
+    object_b_.set_velocity({5.0F, 0.0F});
+    object_b_.update(1.0);
 
-    EXPECT_FALSE(World::collide(a, b));
+    EXPECT_FALSE(World::collide(object_a_, object_b_));
 
-    EXPECT_FLOAT_EQ(a.get_position().x, 5.0F);
-    EXPECT_FLOAT_EQ(b.get_position().x, 13.0F);
-    EXPECT_FALSE(a.is_touching(RIGHT));
-    EXPECT_FALSE(b.is_touching(LEFT));
+    EXPECT_FLOAT_EQ(object_a_.get_position().x, 5.0F);
+    EXPECT_FLOAT_EQ(object_b_.get_position().x, 13.0F);
+    EXPECT_FALSE(object_a_.is_touching(RIGHT));
+    EXPECT_FALSE(object_b_.is_touching(LEFT));
 }

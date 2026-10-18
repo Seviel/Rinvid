@@ -98,7 +98,7 @@ class World
     static bool collide(const std::vector<Object*>& group_1, const std::vector<Object*>& group_2,
                         CollisionResolver resolve = separate);
 
-    static float gravity;
+    static float gravity_;
 
     /**************************************************************************************************
      * @brief Called by 'collide' if objects collided to separate them.

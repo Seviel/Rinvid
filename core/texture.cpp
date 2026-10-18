@@ -48,7 +48,7 @@ Texture::Texture(const char* file_name)
     }
 
     std::vector<std::uint8_t> image_data{};
-    bool                      result = load_image(file_name, image_data, width_, height_);
+    bool                      result{load_image(file_name, image_data, width_, height_)};
     if (result == false)
     {
         throw ResourceLoadError{"Texture: Could not load image file '" + std::string{file_name} +

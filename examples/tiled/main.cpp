@@ -32,8 +32,8 @@ class TiledScreen : public rinvid::Screen
 
     void create() override
     {
-        map_             = std::make_unique<rinvid::TileMap>(map_file_);
-        const auto& data = map_->get_data();
+        map_ = std::make_unique<rinvid::TileMap>(map_file_);
+        const auto& data{map_->get_data()};
         camera_.set_borders(
             {0.0F, 0.0F},
             {std::max(0.0F, static_cast<float>(data.width_ * data.tile_width_) - 960.0F),
@@ -48,8 +48,8 @@ class TiledScreen : public rinvid::Screen
   private:
     void update(double delta_time) override
     {
-        using Keyboard        = rinvid::system::Keyboard;
-        const float      step = 240.0F * static_cast<float>(delta_time);
+        using Keyboard = rinvid::system::Keyboard;
+        const float      step{240.0F * static_cast<float>(delta_time)};
         rinvid::Vector2f movement{};
         if (Keyboard::is_key_pressed(Keyboard::Key::Left) ||
             Keyboard::is_key_pressed(Keyboard::Key::A))
@@ -90,9 +90,9 @@ class TiledScreen : public rinvid::Screen
 
 int main(int argc, char** argv)
 {
-    const auto map_file =
-        argc > 1 ? std::filesystem::absolute(argv[1])
-                 : std::filesystem::absolute(argv[0]).parent_path() / "resources/garden.tmx";
+    const auto          map_file{argc > 1 ? std::filesystem::absolute(argv[1])
+                                          : std::filesystem::absolute(argv[0]).parent_path() /
+                                       "resources/garden.tmx"};
     rinvid::Application application{960, 640, "Tiled | WASD / arrows: pan | Esc: exit"};
     application.set_screen(std::make_unique<TiledScreen>(map_file));
     application.set_fps(60);

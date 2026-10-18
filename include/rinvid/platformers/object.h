@@ -22,19 +22,19 @@ namespace rinvid
 class World;
 
 // Constants related to 'touching' property
-constexpr std::uint8_t NONE  = 0x0;
-constexpr std::uint8_t LEFT  = 0x1;
-constexpr std::uint8_t RIGHT = 0x2;
-constexpr std::uint8_t UP    = 0x4;
-constexpr std::uint8_t DOWN  = 0x8;
-constexpr std::uint8_t WALL  = LEFT | RIGHT;
-constexpr std::uint8_t ANY   = LEFT | RIGHT | UP | DOWN;
+constexpr std::uint8_t NONE{0x0};
+constexpr std::uint8_t LEFT{0x1};
+constexpr std::uint8_t RIGHT{0x2};
+constexpr std::uint8_t UP{0x4};
+constexpr std::uint8_t DOWN{0x8};
+constexpr std::uint8_t WALL{LEFT | RIGHT};
+constexpr std::uint8_t ANY{LEFT | RIGHT | UP | DOWN};
 
 // Constants related to 'movable' property
-constexpr std::uint8_t NOT          = 0x0;
-constexpr std::uint8_t HORIZONTALLY = 0x1;
-constexpr std::uint8_t VERTICALLY   = 0x2;
-constexpr std::uint8_t YES          = HORIZONTALLY | VERTICALLY;
+constexpr std::uint8_t NOT{0x0};
+constexpr std::uint8_t HORIZONTALLY{0x1};
+constexpr std::uint8_t VERTICALLY{0x2};
+constexpr std::uint8_t YES{HORIZONTALLY | VERTICALLY};
 
 /**************************************************************************************************
  * @brief A movable object in the world.

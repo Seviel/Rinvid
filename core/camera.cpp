@@ -24,9 +24,9 @@ Camera::Camera()
 
 void Camera::update()
 {
-    auto view = glm::lookAt(camera_pos_, camera_pos_ + camera_front_, camera_up_);
+    auto view{glm::lookAt(camera_pos_, camera_pos_ + camera_front_, camera_up_)};
 
-    RenderContext* render_context = RenderContext::get_active_context();
+    RenderContext* render_context{RenderContext::get_active_context()};
     if (render_context == nullptr)
     {
         return;
@@ -37,7 +37,7 @@ void Camera::update()
 
 void Camera::set_position(const Vector2f position)
 {
-    Vector2f current_pos = get_pos();
+    Vector2f current_pos{get_pos()};
     Vector2f move_vector{};
     move_vector.x = position.x - current_pos.x;
     move_vector.y = position.y - current_pos.y;

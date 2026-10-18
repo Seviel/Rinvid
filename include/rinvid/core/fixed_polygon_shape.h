@@ -226,7 +226,7 @@ void FixedPolygonShape<number_of_vertices, draw_mode>::update_gl_buffer_data()
 template <typename std::uint32_t number_of_vertices, GLenum draw_mode>
 void FixedPolygonShape<number_of_vertices, draw_mode>::calculate_origin()
 {
-    Rect rect = non_transformed_bounding_rect();
+    Rect rect{non_transformed_bounding_rect()};
 
     origin_.x = rect.position.x + (rect.width / 2);
     origin_.y = rect.position.y + (rect.height / 2);
@@ -251,20 +251,20 @@ void FixedPolygonShape<number_of_vertices, draw_mode>::init_vertex_buffer()
 template <typename std::uint32_t number_of_vertices, GLenum draw_mode>
 void FixedPolygonShape<number_of_vertices, draw_mode>::draw()
 {
-    RenderContext* render_context = RenderContext::get_active_context();
+    RenderContext* render_context{RenderContext::get_active_context()};
     if (render_context == nullptr)
     {
         return;
     }
 
-    const auto shader = render_context->get_shape_default_shader();
+    const auto shader{render_context->get_shape_default_shader()};
     draw(shader);
 }
 
 template <typename std::uint32_t number_of_vertices, GLenum draw_mode>
 void FixedPolygonShape<number_of_vertices, draw_mode>::draw(Shader shader)
 {
-    RenderContext* render_context = RenderContext::get_active_context();
+    RenderContext* render_context{RenderContext::get_active_context()};
     if (render_context == nullptr)
     {
         return;
@@ -320,7 +320,7 @@ Rect FixedPolygonShape<number_of_vertices, draw_mode>::bounding_rect()
     std::vector<glm::vec4> glm_vertices{};
     glm_vertices.reserve(vertices_.size());
 
-    const auto& transform = get_transform();
+    const auto& transform{get_transform()};
 
     for (const auto& vec : vertices_)
     {

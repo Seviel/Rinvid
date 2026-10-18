@@ -29,7 +29,7 @@ void LightManager::set_ambient_light(bool enabled, float strength)
 {
     strength = std::clamp(strength, 0.0F, 1.0F);
 
-    RenderContext* render_context = RenderContext::get_active_context();
+    RenderContext* render_context{RenderContext::get_active_context()};
     if (render_context == nullptr)
     {
         return;

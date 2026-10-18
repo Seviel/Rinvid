@@ -24,7 +24,7 @@ class OpenGLTest : public ::testing::Test
   protected:
     void SetUp() override
     {
-        const char* skip_opengl_tests = std::getenv("RINVID_SKIP_OPENGL_TESTS");
+        const char* skip_opengl_tests{std::getenv("RINVID_SKIP_OPENGL_TESTS")};
         if (skip_opengl_tests != nullptr && skip_opengl_tests[0] != '\0' &&
             skip_opengl_tests[0] != '0')
         {

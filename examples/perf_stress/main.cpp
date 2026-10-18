@@ -9,9 +9,8 @@
 
 #include <memory>
 
-#include <rinvid/system/application.h>
-
 #include "perf_stress_screen.h"
+#include <rinvid/system/application.h>
 
 int main()
 {
