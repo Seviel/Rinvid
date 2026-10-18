@@ -94,10 +94,10 @@ class TestingGrounds : public Screen
 
     sound::Sound bell_sound_{"resources/bell.wav"};
 
-    bool logo_rotation_    = false;
-    bool logo_transparent_ = false;
-    bool clock_running_    = false;
-    bool play_bell_        = false;
+    bool logo_rotation_{false};
+    bool logo_transparent_{false};
+    bool clock_running_{false};
+    bool play_bell_{false};
 
     std::vector<Button*> buttons_;
 };
@@ -105,7 +105,7 @@ class TestingGrounds : public Screen
 void TestingGrounds::create()
 {
 
-    auto      regions = clock_sprite_.get_animation().split_animation_frames(100, 100, 12, 1);
+    auto      regions{clock_sprite_.get_animation().split_animation_frames(100, 100, 12, 1)};
     Animation clock_standstill{20.0, {regions[0]}, AnimationMode::Normal};
     Animation clock_animation{20.0, regions, AnimationMode::Looping};
     clock_sprite_.get_animation().add_animation("still", clock_standstill);
@@ -237,7 +237,7 @@ void TestingGrounds::handle_logic(double delta_time)
         camera_.move(Vector2f{-480.0F * static_cast<float>(delta_time), 0.0F});
     }
 
-    static bool last_moved_right = true;
+    static bool last_moved_right{true};
     if (Keyboard::is_key_pressed(Keyboard::Key::Right))
     {
         player_sprite_.set_x_velocity(300.0F);

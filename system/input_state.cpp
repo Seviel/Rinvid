@@ -43,7 +43,7 @@ void InputState::handle_event(const sf::Event& event)
     }
     else if (focused_)
     {
-        if (const auto* pressed = event.getIf<sf::Event::KeyPressed>())
+        if (const auto* pressed{event.getIf<sf::Event::KeyPressed>()})
         {
             const auto index{static_cast<std::size_t>(pressed->code)};
             if (index < keys_.size())
@@ -51,7 +51,7 @@ void InputState::handle_event(const sf::Event& event)
                 set_down(keys_[index], true);
             }
         }
-        else if (const auto* released = event.getIf<sf::Event::KeyReleased>())
+        else if (const auto* released{event.getIf<sf::Event::KeyReleased>()})
         {
             const auto index{static_cast<std::size_t>(released->code)};
             if (index < keys_.size())
@@ -59,7 +59,7 @@ void InputState::handle_event(const sf::Event& event)
                 set_down(keys_[index], false);
             }
         }
-        else if (const auto* pressed = event.getIf<sf::Event::MouseButtonPressed>())
+        else if (const auto* pressed{event.getIf<sf::Event::MouseButtonPressed>()})
         {
             const auto index{static_cast<std::size_t>(pressed->button)};
             if (index < buttons_.size())
@@ -67,7 +67,7 @@ void InputState::handle_event(const sf::Event& event)
                 set_down(buttons_[index], true);
             }
         }
-        else if (const auto* released = event.getIf<sf::Event::MouseButtonReleased>())
+        else if (const auto* released{event.getIf<sf::Event::MouseButtonReleased>()})
         {
             const auto index{static_cast<std::size_t>(released->button)};
             if (index < buttons_.size())

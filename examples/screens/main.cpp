@@ -24,7 +24,7 @@ int main()
     rinvid::Sprite  guardian_sprite{&guardian_tex, 30, 45, rinvid::Vector2f{50.0F, 425.0F},
                                    rinvid::Vector2f{0.0F, 0.0F}};
 
-    auto regions = guardian_sprite.get_animation().split_animation_frames(30, 45, 52, 1);
+    auto regions{guardian_sprite.get_animation().split_animation_frames(30, 45, 52, 1)};
     rinvid::Animation standing_right{14.0,
                                      {regions[26], regions[27], regions[28], regions[29],
                                       regions[30], regions[31], regions[32], regions[33],

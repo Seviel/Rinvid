@@ -55,7 +55,7 @@ bool Mouse::is_button_just_released(MouseButton button)
 
 Vector2f Mouse::get_mouse_pos()
 {
-    ApplicationContext* context = ApplicationContext::get_active_context();
+    ApplicationContext* context{ApplicationContext::get_active_context()};
     if (context == nullptr || context->get_window() == nullptr)
     {
         return Vector2f{};

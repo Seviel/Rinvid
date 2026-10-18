@@ -103,7 +103,7 @@ class SpriteSceneBenchmark : public benchmark::Fixture
   public:
     void SetUp(const benchmark::State& state) override
     {
-        const auto sprite_count = static_cast<std::size_t>(state.range(0));
+        const auto sprite_count{static_cast<std::size_t>(state.range(0))};
 
         application_ = std::make_unique<rinvid::Application>(
             BENCHMARK_WINDOW_WIDTH, BENCHMARK_WINDOW_HEIGHT, "Rinvid benchmark", false, 0U);
@@ -117,14 +117,14 @@ class SpriteSceneBenchmark : public benchmark::Fixture
 
         for (std::size_t i{0U}; i < sprite_count; ++i)
         {
-            auto generated_texture = make_texture(generator);
-            auto texture           = std::make_unique<rinvid::Texture>(
-                generated_texture.pixels_, generated_texture.width_, generated_texture.height_);
-            auto setup    = make_sprite_setup(generator);
+            auto generated_texture{make_texture(generator)};
+            auto texture{std::make_unique<rinvid::Texture>(
+                generated_texture.pixels_, generated_texture.width_, generated_texture.height_)};
+            auto setup{make_sprite_setup(generator)};
             setup.width_  = generated_texture.width_;
             setup.height_ = generated_texture.height_;
-            auto sprite   = std::make_unique<rinvid::Sprite>(texture.get(), setup.width_,
-                                                             setup.height_, setup.position_);
+            auto sprite{std::make_unique<rinvid::Sprite>(texture.get(), setup.width_, setup.height_,
+                                                         setup.position_)};
 
             sprite->set_rotation(setup.rotation_);
             sprite->set_opacity(setup.opacity_);
@@ -144,7 +144,7 @@ class SpriteSceneBenchmark : public benchmark::Fixture
   protected:
     void draw_scene()
     {
-        auto& render_context = application_->get_render_context();
+        auto& render_context{application_->get_render_context()};
         render_context.clear_screen(0.0F, 0.0F, 0.0F, 1.0F);
 
         for (const auto& sprite : sprites_)
@@ -206,7 +206,7 @@ StressSceneCounts make_counts_with_varying_category(std::uint32_t   fixed_count,
                                                     std::uint32_t   varying_count,
                                                     VaryingCategory varying_category)
 {
-    StressSceneCounts counts = make_uniform_stress_scene_counts(fixed_count);
+    StressSceneCounts counts{make_uniform_stress_scene_counts(fixed_count)};
 
     switch (varying_category)
     {
@@ -229,7 +229,7 @@ StressSceneCounts make_counts_with_varying_category(std::uint32_t   fixed_count,
 
 void run_full_stress_benchmark_case(benchmark::State& state, const StressSceneCounts& counts)
 {
-    auto& runtime = get_full_stress_runtime();
+    auto& runtime{get_full_stress_runtime()};
 
     runtime.run_frame(counts);
     state.SetLabel(format_stress_scene_counts(counts));
@@ -263,41 +263,43 @@ BENCHMARK_REGISTER_F(SpriteSceneBenchmark, DrawRandomSpriteScene)
 
 static void FullStressFrame(benchmark::State& state)
 {
-    const StressSceneCounts counts =
-        make_uniform_stress_scene_counts(static_cast<std::uint32_t>(state.range(0)));
+    const StressSceneCounts counts{
+        make_uniform_stress_scene_counts(static_cast<std::uint32_t>(state.range(0)))};
 
     run_full_stress_benchmark_case(state, counts);
 }
 
 static void FullStressFrameVarySprites(benchmark::State& state)
 {
-    const StressSceneCounts counts = make_counts_with_varying_category(
+    const StressSceneCounts counts{make_counts_with_varying_category(
         PINNED_CATEGORY_COUNT, static_cast<std::uint32_t>(state.range(0)),
-        VaryingCategory::Sprites);
+        VaryingCategory::Sprites)};
 
     run_full_stress_benchmark_case(state, counts);
 }
 
 static void FullStressFrameVaryShapes(benchmark::State& state)
 {
-    const StressSceneCounts counts = make_counts_with_varying_category(
-        PINNED_CATEGORY_COUNT, static_cast<std::uint32_t>(state.range(0)), VaryingCategory::Shapes);
+    const StressSceneCounts counts{make_counts_with_varying_category(
+        PINNED_CATEGORY_COUNT, static_cast<std::uint32_t>(state.range(0)),
+        VaryingCategory::Shapes)};
 
     run_full_stress_benchmark_case(state, counts);
 }
 
 static void FullStressFrameVaryText(benchmark::State& state)
 {
-    const StressSceneCounts counts = make_counts_with_varying_category(
-        PINNED_CATEGORY_COUNT, static_cast<std::uint32_t>(state.range(0)), VaryingCategory::Text);
+    const StressSceneCounts counts{make_counts_with_varying_category(
+        PINNED_CATEGORY_COUNT, static_cast<std::uint32_t>(state.range(0)), VaryingCategory::Text)};
 
     run_full_stress_benchmark_case(state, counts);
 }
 
 static void FullStressFrameVaryLights(benchmark::State& state)
 {
-    const StressSceneCounts counts = make_counts_with_varying_category(
-        PINNED_CATEGORY_COUNT, static_cast<std::uint32_t>(state.range(0)), VaryingCategory::Lights);
+    const StressSceneCounts counts{make_counts_with_varying_category(
+        PINNED_CATEGORY_COUNT, static_cast<std::uint32_t>(state.range(0)),
+        VaryingCategory::Lights)};
 
     run_full_stress_benchmark_case(state, counts);
 }

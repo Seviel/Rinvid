@@ -28,7 +28,7 @@ struct Vector2
         static_assert(std::is_arithmetic<T>::value == true);
     }
 
-    Vector2(T X, T Y) : x{X}, y{Y}
+    Vector2(T x_value, T y_value) : x{x_value}, y{y_value}
     {
         static_assert(std::is_arithmetic<T>::value == true);
     }

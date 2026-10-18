@@ -18,8 +18,8 @@ namespace rinvid
 
 void windows_sleep(std::int64_t microseconds)
 {
-    double       frequenzy     = 0.0;
-    std::int64_t counter_start = 0;
+    double       frequenzy{0.0};
+    std::int64_t counter_start{0};
 
     LARGE_INTEGER freq;
     LARGE_INTEGER counter;

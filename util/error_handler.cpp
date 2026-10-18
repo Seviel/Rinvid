@@ -33,7 +33,7 @@ static std::mutex            errors_mutex;
 void put_error_to_log(const std::string& error_description)
 {
     std::lock_guard<std::mutex> lock{errors_mutex};
-    const auto                  result = errors.insert(error_description);
+    const auto                  result{errors.insert(error_description)};
     if (result.second == false)
     {
         return;
@@ -101,8 +101,8 @@ void handle_gl_errors(const char* file, std::uint32_t line)
                 break;
         }
 
-        std::string error_description = "An OpenGL error: " + error + " occured in file: " + file +
-                                        ", on line: " + std::to_string(line);
+        std::string error_description{"An OpenGL error: " + error + " occured in file: " + file +
+                                      ", on line: " + std::to_string(line)};
 
         put_error_to_log(error_description);
     }

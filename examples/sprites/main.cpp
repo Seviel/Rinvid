@@ -43,11 +43,11 @@ void SpritesScreen::create()
 {
     robot_sprite.get_animation().split_animation_frames(455, 455, 9, 8);
 
-    auto idle_right    = robot_sprite.get_animation().get_regions({0});
-    auto running_right = robot_sprite.get_animation().get_regions(
+    auto idle_right{robot_sprite.get_animation().get_regions({0})};
+    auto running_right{robot_sprite.get_animation().get_regions(
         {1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15,
-         16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30});
-    auto attack_right = robot_sprite.get_animation().get_regions({31, 32, 33, 34, 34, 34});
+         16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30})};
+    auto attack_right{robot_sprite.get_animation().get_regions({31, 32, 33, 34, 34, 34})};
 
     rinvid::Animation idle_right_animation{0.0, idle_right, rinvid::AnimationMode::Normal};
     rinvid::Animation running_right_animation{20.0, running_right, rinvid::AnimationMode::Looping};
@@ -57,11 +57,11 @@ void SpritesScreen::create()
     robot_sprite.get_animation().add_animation("running_right", running_right_animation);
     robot_sprite.get_animation().add_animation("attack_right", attack_right_animation);
 
-    auto idle_left    = robot_sprite.get_animation().get_regions({35});
-    auto attack_left  = robot_sprite.get_animation().get_regions({66, 67, 68, 69, 69, 69});
-    auto running_left = robot_sprite.get_animation().get_regions(
+    auto idle_left{robot_sprite.get_animation().get_regions({35})};
+    auto attack_left{robot_sprite.get_animation().get_regions({66, 67, 68, 69, 69, 69})};
+    auto running_left{robot_sprite.get_animation().get_regions(
         {36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50,
-         51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65});
+         51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65})};
 
     rinvid::Animation idle_left_animation{0.0, idle_left, rinvid::AnimationMode::Normal};
     rinvid::Animation running_left_animation{20.0, running_left, rinvid::AnimationMode::Looping};
@@ -78,14 +78,14 @@ void SpritesScreen::update(double delta_time)
 {
     get_render_context().clear_screen(0.2F, 0.4F, 0.4F, 1.0F);
 
-    float horizontal_delta = 0.0F;
+    float horizontal_delta{0.0F};
 
     robot_sprite.draw(delta_time);
 
     handle_inputs(horizontal_delta);
 
-    bool state_changed = handle_animation_state(
-        action, direction, horizontal_delta, robot_sprite.get_animation().is_animation_finished());
+    bool state_changed{handle_animation_state(
+        action, direction, horizontal_delta, robot_sprite.get_animation().is_animation_finished())};
 
     if (state_changed == true)
     {

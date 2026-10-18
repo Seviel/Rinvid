@@ -52,9 +52,9 @@ Application::Application(std::uint32_t width, std::uint32_t height, const std::s
     }
     else
     {
-        const std::uint32_t style = resize_mode == WindowResizeMode::Fixed
-                                        ? sf::Style::Titlebar | sf::Style::Close
-                                        : sf::Style::Default;
+        const std::uint32_t style{static_cast<std::uint32_t>(
+            resize_mode == WindowResizeMode::Fixed ? sf::Style::Titlebar | sf::Style::Close
+                                                   : sf::Style::Default)};
         window_.create(sf::VideoMode{{width, height}}, title, style);
         enforce_fixed_window_size();
     }
@@ -66,8 +66,8 @@ Application::Application(std::uint32_t width, std::uint32_t height, const std::s
     // Only physical presses should create input edges, including after regaining focus.
     window_.setKeyRepeatEnabled(false);
     context_.init(this, window_);
-    const auto size =
-        window_resize_mode_ == WindowResizeMode::Fixed ? windowed_size_ : window_.getSize();
+    const auto size{window_resize_mode_ == WindowResizeMode::Fixed ? windowed_size_
+                                                                   : window_.getSize()};
     context_.get_render_context().set_viewport(0, 0, size.x, size.y);
 }
 
@@ -100,7 +100,7 @@ void Application::run()
 
         // Native event handlers can block while the user moves a window. Treat that time as paused
         // instead of passing one oversized time step to the next update.
-        const auto start = std::chrono::steady_clock::now();
+        const auto start{std::chrono::steady_clock::now()};
 
         if (current_screen_ != nullptr)
         {
@@ -110,7 +110,7 @@ void Application::run()
         window_.display();
 
         const bool screen_changed{running_ && activate_pending_screen()};
-        const auto end = std::chrono::steady_clock::now();
+        const auto end{std::chrono::steady_clock::now()};
         // Screen construction can happen inside update(), before set_screen(). Discard the
         // entire transition frame so loading and teardown never advance the new screen.
         total_frame_time = screen_changed ? std::chrono::duration<double>{} : end - start;
@@ -190,15 +190,15 @@ void Application::enforce_fixed_window_size()
     }
 
 #ifdef _WIN32
-    const HWND native_window = window_.getNativeHandle();
+    const HWND native_window{window_.getNativeHandle()};
     RECT       window_rectangle{};
     RECT       client_rectangle{};
 
     if (native_window != nullptr && GetWindowRect(native_window, &window_rectangle) != 0 &&
         GetClientRect(native_window, &client_rectangle) != 0)
     {
-        const LONG client_width  = client_rectangle.right - client_rectangle.left;
-        const LONG client_height = client_rectangle.bottom - client_rectangle.top;
+        const LONG client_width{client_rectangle.right - client_rectangle.left};
+        const LONG client_height{client_rectangle.bottom - client_rectangle.top};
 
         if (client_width == static_cast<LONG>(windowed_size_.x) &&
             client_height == static_cast<LONG>(windowed_size_.y))
@@ -206,12 +206,12 @@ void Application::enforce_fixed_window_size()
             return;
         }
 
-        const LONG window_width  = window_rectangle.right - window_rectangle.left;
-        const LONG window_height = window_rectangle.bottom - window_rectangle.top;
-        const LONG corrected_width =
-            window_width + static_cast<LONG>(windowed_size_.x) - client_width;
-        const LONG corrected_height =
-            window_height + static_cast<LONG>(windowed_size_.y) - client_height;
+        const LONG window_width{window_rectangle.right - window_rectangle.left};
+        const LONG window_height{window_rectangle.bottom - window_rectangle.top};
+        const LONG corrected_width{window_width + static_cast<LONG>(windowed_size_.x) -
+                                   client_width};
+        const LONG corrected_height{window_height + static_cast<LONG>(windowed_size_.y) -
+                                    client_height};
 
         if (SetWindowPos(native_window, nullptr, 0, 0, corrected_width, corrected_height,
                          SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE) != 0)
@@ -226,14 +226,14 @@ void Application::enforce_fixed_window_size()
 
 void Application::handle_events(sf::Window& window)
 {
-    while (const auto event = window.pollEvent())
+    while (const auto event{window.pollEvent()})
     {
         context_.get_input_state().handle_event(*event);
         if (event->is<sf::Event::Closed>())
         {
             running_ = false;
         }
-        else if (const auto* resized = event->getIf<sf::Event::Resized>())
+        else if (const auto* resized{event->getIf<sf::Event::Resized>()})
         {
             if (window_resize_mode_ == WindowResizeMode::Fixed)
             {

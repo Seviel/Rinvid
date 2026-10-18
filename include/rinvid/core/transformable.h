@@ -107,19 +107,19 @@ class Transformable
     void set_min_max_coords(const std::vector<T>& vertices, float& min_x, float& max_x,
                             float& min_y, float& max_y)
     {
-        auto min_x_vector =
-            std::min_element(vertices.begin(), vertices.end(),
-                             [](const T& first, const T& second) { return first.x < second.x; });
-        auto max_x_vector =
-            std::max_element(vertices.begin(), vertices.end(),
-                             [](const T& first, const T& second) { return first.x < second.x; });
+        auto min_x_vector{std::min_element(vertices.begin(), vertices.end(),
+                                           [](const T& first, const T& second)
+                                           { return first.x < second.x; })};
+        auto max_x_vector{std::max_element(vertices.begin(), vertices.end(),
+                                           [](const T& first, const T& second)
+                                           { return first.x < second.x; })};
 
-        auto min_y_vector =
-            std::min_element(vertices.begin(), vertices.end(),
-                             [](const T& first, const T& second) { return first.y < second.y; });
-        auto max_y_vector =
-            std::max_element(vertices.begin(), vertices.end(),
-                             [](const T& first, const T& second) { return first.y < second.y; });
+        auto min_y_vector{std::min_element(vertices.begin(), vertices.end(),
+                                           [](const T& first, const T& second)
+                                           { return first.y < second.y; })};
+        auto max_y_vector{std::max_element(vertices.begin(), vertices.end(),
+                                           [](const T& first, const T& second)
+                                           { return first.y < second.y; })};
 
         min_x = min_x_vector->x;
         max_x = max_x_vector->x;

@@ -52,7 +52,7 @@ TEST_F(UtilTest, Color_4)
 {
     Color color{0xFF7FFF00};
 
-    float tolerance = 1e-3;
+    float tolerance{1e-3F};
 
     EXPECT_NEAR(color.r, 1.0F, tolerance);
     EXPECT_NEAR(color.g, 0.498F, tolerance);
@@ -124,7 +124,7 @@ static void test_collision_detection(Vector2f move_vec)
 
     EXPECT_TRUE(intersects(rect_1, rect_2));
 
-    auto& rect_2_pos = rect_2.position;
+    auto& rect_2_pos{rect_2.position};
     rect_2_pos.move(move_vec);
 
     EXPECT_TRUE(intersects(rect_1, rect_2));
@@ -181,7 +181,7 @@ TEST_F(UtilTest, CollisionDetection_DiagonalGapDoesNotIntersect)
 TEST_F(UtilTest, RectScale_ShrinksAroundCenterAndReturnsSelf)
 {
     Rect  rect{{10.0F, 20.0F}, 100, 60};
-    Rect& scaled_rect = rect.scale(0.5F);
+    Rect& scaled_rect{rect.scale(0.5F)};
 
     EXPECT_EQ(&scaled_rect, &rect);
     EXPECT_FLOAT_EQ(rect.position.x, 35.0F);

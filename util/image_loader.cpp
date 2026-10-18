@@ -25,19 +25,19 @@ bool load_image(const char* file_name, std::vector<std::uint8_t>& image_data, st
 {
     std::int32_t number_of_channels;
 
-    std::uint8_t* data = stbi_load(file_name, &width, &height, &number_of_channels, STBI_rgb_alpha);
+    std::uint8_t* data{stbi_load(file_name, &width, &height, &number_of_channels, STBI_rgb_alpha)};
 
     if (data == NULL)
     {
-        std::string error_description = "STBI: Image loading failed because: ";
+        std::string error_description{"STBI: Image loading failed because: "};
         error_description += stbi_failure_reason();
         rinvid::errors::put_error_to_log(error_description);
 
         return false;
     }
 
-    const auto image_size =
-        static_cast<std::size_t>(width) * static_cast<std::size_t>(height) * STBI_rgb_alpha;
+    const auto image_size{static_cast<std::size_t>(width) * static_cast<std::size_t>(height) *
+                          STBI_rgb_alpha};
     image_data.assign(data, data + image_size);
 
     stbi_image_free(data);

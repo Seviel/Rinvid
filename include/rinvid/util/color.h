@@ -108,10 +108,10 @@ struct Color
      *************************************************************************************************/
     Color(std::uint32_t color)
     {
-        std::uint8_t red   = (0xFF & (color >> 24));
-        std::uint8_t green = (0xFF & (color >> 16));
-        std::uint8_t blue  = (0xFF & (color >> 8));
-        std::uint8_t alpha = (0xFF & color);
+        std::uint8_t red{static_cast<std::uint8_t>((0xFF & (color >> 24)))};
+        std::uint8_t green{static_cast<std::uint8_t>((0xFF & (color >> 16)))};
+        std::uint8_t blue{static_cast<std::uint8_t>((0xFF & (color >> 8)))};
+        std::uint8_t alpha{static_cast<std::uint8_t>((0xFF & color))};
 
         r = static_cast<float>(red) / static_cast<float>(UINT8_MAX);
         g = static_cast<float>(green) / static_cast<float>(UINT8_MAX);

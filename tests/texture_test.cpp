@@ -20,9 +20,9 @@ using namespace rinvid;
 // Test the constructor with a valid image file
 TEST_F(TextureTest, Constructor_ValidImageFile)
 {
-    auto number_of_errors = errors::get_error_count();
+    auto number_of_errors{errors::get_error_count()};
 
-    const char* file_name = "resources/valid_image.png";
+    const char* file_name{"resources/valid_image.png"};
     Texture     texture{file_name};
 
     // Check that the number of errors did not increase.
@@ -31,7 +31,7 @@ TEST_F(TextureTest, Constructor_ValidImageFile)
 
 TEST_F(TextureTest, Constructor_RawPixels)
 {
-    auto number_of_errors = errors::get_error_count();
+    auto number_of_errors{errors::get_error_count()};
 
     std::vector<std::uint8_t> image_data{255U, 0U, 0U,   255U, 0U,   255U, 0U,   255U,
                                          0U,   0U, 255U, 255U, 255U, 255U, 255U, 255U};
@@ -46,7 +46,7 @@ TEST_F(TextureTest, Constructor_RawPixels)
 // Test the constructor with an invalid image file
 TEST_F(TextureTest, Constructor_InvalidImageFile)
 {
-    const char* file_name = "invalid_image.png";
+    const char* file_name{"invalid_image.png"};
 
     EXPECT_THROW(Texture texture{file_name}, ResourceLoadError);
 }
@@ -61,7 +61,7 @@ TEST_F(TextureTest, Constructor_NullImageFileThrowsResourceLoadError)
 // Test the move constructor
 TEST_F(TextureTest, MoveConstructor)
 {
-    auto number_of_errors = errors::get_error_count();
+    auto number_of_errors{errors::get_error_count()};
 
     Texture texture1{"resources/valid_image.png"};
     Texture texture2{std::move(texture1)};
@@ -73,7 +73,7 @@ TEST_F(TextureTest, MoveConstructor)
 // Test the move assignment operator
 TEST_F(TextureTest, MoveAssignmentOperator)
 {
-    auto number_of_errors = errors::get_error_count();
+    auto number_of_errors{errors::get_error_count()};
 
     Texture texture1("resources/valid_image.png");
     Texture texture2{"resources/valid_image.png"};
@@ -85,7 +85,7 @@ TEST_F(TextureTest, MoveAssignmentOperator)
 
 TEST_F(TextureTest, MovedTextureCanStillBeUsedForDrawing)
 {
-    auto number_of_errors = errors::get_error_count();
+    auto number_of_errors{errors::get_error_count()};
 
     Texture texture1{"resources/valid_image.png"};
     Texture texture2{"resources/valid_image.png"};
@@ -101,9 +101,9 @@ TEST_F(TextureTest, MovedTextureCanStillBeUsedForDrawing)
 // Test the destructor
 TEST_F(TextureTest, Destructor)
 {
-    auto number_of_errors = errors::get_error_count();
+    auto number_of_errors{errors::get_error_count()};
 
-    Texture* texture = new Texture("resources/valid_image.png");
+    Texture* texture{new Texture("resources/valid_image.png")};
     delete texture;
 
     // Check that the number of errors did not increase.

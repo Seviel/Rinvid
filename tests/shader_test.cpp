@@ -21,29 +21,29 @@
 namespace
 {
 
-constexpr const char* vertex_shader_source =
+constexpr const char* vertex_shader_source{
     "#version 330 core\n"
     "layout(location = 0) in vec3 position;\n"
     "void main()\n"
     "{\n"
     "    gl_Position = vec4(position, 1.0);\n"
-    "}\n";
+    "}\n"};
 
-constexpr const char* fragment_shader_source =
+constexpr const char* fragment_shader_source{
     "#version 330 core\n"
     "out vec4 out_color;\n"
     "void main()\n"
     "{\n"
     "    out_color = vec4(1.0, 1.0, 1.0, 1.0);\n"
-    "}\n";
+    "}\n"};
 
-constexpr const char* invalid_fragment_shader_source =
+constexpr const char* invalid_fragment_shader_source{
     "#version 330 core\n"
     "out vec4 out_color;\n"
     "void main()\n"
     "{\n"
     "    out_color = vec4(1.0;\n"
-    "}\n";
+    "}\n"};
 
 } // namespace
 

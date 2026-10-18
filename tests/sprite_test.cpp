@@ -60,7 +60,7 @@ TEST_F(SpriteTest, ParameterizedConstructor)
 // Assure we get no errors when drawing
 TEST_F(SpriteTest, Draw)
 {
-    auto number_of_errors = errors::get_error_count();
+    auto number_of_errors{errors::get_error_count()};
 
     Vector2f top_left{10.0F, 20.0F};
     Sprite   sprite{mock_texture_, 100, 200, top_left, {0.0F, 0.0F}};
@@ -123,7 +123,7 @@ TEST_F(SpriteTest, BoundingRect)
 {
     Sprite sprite{mock_texture_, 100, 100, {10.0F, 20.0F}, {0.0F, 0.0F}};
 
-    Rect bounding_rect = sprite.bounding_rect();
+    Rect bounding_rect{sprite.bounding_rect()};
 
     EXPECT_EQ(bounding_rect.position.x, 10.0F);
     EXPECT_EQ(bounding_rect.position.y, 20.0F);
@@ -144,7 +144,7 @@ TEST_F(SpriteTest, Transformed)
 
 TEST_F(SpriteTest, AnimatedDraw_AdvancesAnimation)
 {
-    auto number_of_errors = errors::get_error_count();
+    auto number_of_errors{errors::get_error_count()};
 
     Sprite            sprite{mock_texture_, 100, 100, {10.0F, 20.0F}, {0.0F, 0.0F}};
     std::vector<Rect> frames{{{0.0F, 0.0F}, 1, 1}, {{1.0F, 0.0F}, 1, 1}};
@@ -160,7 +160,7 @@ TEST_F(SpriteTest, AnimatedDraw_AdvancesAnimation)
 
 TEST_F(SpriteTest, AnimatedDraw_RemainsStableAfterAddingAnimations)
 {
-    auto number_of_errors = errors::get_error_count();
+    auto number_of_errors{errors::get_error_count()};
 
     Sprite            sprite{mock_texture_, 100, 100, {10.0F, 20.0F}, {0.0F, 0.0F}};
     std::vector<Rect> frames{{{0.0F, 0.0F}, 1, 1}, {{1.0F, 0.0F}, 1, 1}};
@@ -169,7 +169,7 @@ TEST_F(SpriteTest, AnimatedDraw_RemainsStableAfterAddingAnimations)
     sprite.get_animation().add_animation("blink", animation);
     sprite.get_animation().play("blink");
 
-    for (std::uint32_t i = 0U; i < 256U; ++i)
+    for (std::uint32_t i{0U}; i < 256U; ++i)
     {
         sprite.get_animation().add_animation("extra_" + std::to_string(i), animation);
     }
@@ -181,19 +181,19 @@ TEST_F(SpriteTest, AnimatedDraw_RemainsStableAfterAddingAnimations)
 
 TEST_F(SpriteTest, SharedTextureSpritesKeepIndependentGeometry)
 {
-    auto number_of_errors = errors::get_error_count();
+    auto number_of_errors{errors::get_error_count()};
 
     Sprite sprite_1{mock_texture_, 100, 100, {10.0F, 20.0F}, {0.0F, 0.0F}};
     Sprite sprite_2{mock_texture_, 64, 32, {200.0F, 100.0F}, {5.0F, 10.0F}};
 
     sprite_1.draw();
-    const auto sprite_1_vertices_before = read_bound_sprite_vertices();
+    const auto sprite_1_vertices_before{read_bound_sprite_vertices()};
 
     sprite_2.draw();
-    const auto sprite_2_vertices = read_bound_sprite_vertices();
+    const auto sprite_2_vertices{read_bound_sprite_vertices()};
 
     sprite_1.draw();
-    const auto sprite_1_vertices_after = read_bound_sprite_vertices();
+    const auto sprite_1_vertices_after{read_bound_sprite_vertices()};
 
     EXPECT_NE(sprite_1_vertices_before, sprite_2_vertices);
     EXPECT_EQ(sprite_1_vertices_before, sprite_1_vertices_after);

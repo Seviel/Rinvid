@@ -22,7 +22,7 @@ using namespace rinvid;
 TEST_F(OpenGLTest, MoreThanLegacyLimitLightsCanBeCreatedAndRendered)
 {
     constexpr std::uint32_t light_count{128U};
-    const auto              number_of_errors = errors::get_error_count();
+    const auto              number_of_errors{errors::get_error_count()};
 
     std::vector<Light> lights{};
     lights.reserve(light_count);

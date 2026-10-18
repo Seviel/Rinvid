@@ -22,10 +22,10 @@ namespace
 std::string get_font_path()
 {
     std::string file_path{__FILE__};
-    const auto  last_separator = file_path.find_last_of("/\\");
+    const auto  last_separator{file_path.find_last_of("/\\")};
     file_path.resize(last_separator);
 
-    const auto tests_separator = file_path.find_last_of("/\\");
+    const auto tests_separator{file_path.find_last_of("/\\")};
     file_path.resize(tests_separator);
 
     return file_path + "/examples/full_demo/resources/aquifer.ttf";
@@ -43,10 +43,10 @@ void create_text_with_font(const std::string& font_path)
 
 TEST_F(OpenGLTest, TextDestroy_IsSafeAfterExplicitTTFLibDestroyRequest)
 {
-    const auto font_path = get_font_path();
+    const auto font_path{get_font_path()};
 
-    auto* text =
-        new rinvid::Text{"Hello", font_path, {0.0F, 0.0F}, rinvid::Color{255, 255, 255, 255}, 18U};
+    auto* text{
+        new rinvid::Text{"Hello", font_path, {0.0F, 0.0F}, rinvid::Color{255, 255, 255, 255}, 18U}};
 
     rinvid::TTFLib::destroy();
 
@@ -56,7 +56,7 @@ TEST_F(OpenGLTest, TextDestroy_IsSafeAfterExplicitTTFLibDestroyRequest)
 
 TEST_F(OpenGLTest, TextSetSize_RecreatesGlyphResources)
 {
-    const auto font_path = get_font_path();
+    const auto font_path{get_font_path()};
 
     rinvid::Text text{"Hello", font_path, {0.0F, 0.0F}, rinvid::Color{255, 255, 255, 255}, 18U};
 
@@ -68,7 +68,7 @@ TEST_F(OpenGLTest, TextSetSize_RecreatesGlyphResources)
 
 TEST_F(OpenGLTest, TextDraw_WordWrappingHandlesWordsLineBreaksAndLongWords)
 {
-    const auto font_path = get_font_path();
+    const auto font_path{get_font_path()};
 
     rinvid::Text text{"Alpha Beta Supercalifragilistic",
                       font_path,

@@ -23,15 +23,15 @@ struct DestructorNode
 };
 
 INIT_ONCE fls_init_once = INIT_ONCE_STATIC_INIT;
-DWORD     fls_index     = FLS_OUT_OF_INDEXES;
+DWORD     fls_index{FLS_OUT_OF_INDEXES};
 
 void CALLBACK run_thread_destructors(void* value)
 {
-    auto* node = static_cast<DestructorNode*>(value);
+    auto* node{static_cast<DestructorNode*>(value)};
 
     while (node != nullptr)
     {
-        auto* next = node->next;
+        auto* next{node->next};
         node->destructor(node->object);
         HeapFree(GetProcessHeap(), 0, node);
         node = next;
@@ -53,8 +53,8 @@ extern "C" int __cxa_thread_atexit(Destructor destructor, void* object, void*)
         return -1;
     }
 
-    auto* node =
-        static_cast<DestructorNode*>(HeapAlloc(GetProcessHeap(), 0, sizeof(DestructorNode)));
+    auto* node{
+        static_cast<DestructorNode*>(HeapAlloc(GetProcessHeap(), 0, sizeof(DestructorNode)))};
     if (node == nullptr)
     {
         return -1;

@@ -24,7 +24,7 @@ namespace
 
 constexpr std::uint32_t LIGHT_TEXTURE_UNIT{1U};
 
-const char* default_shape_vert =
+const char* default_shape_vert{
     "#version 330 core\n\
     layout(location = 0) in vec3 position;\n\
     out vec2 world_pos;\n\
@@ -35,9 +35,9 @@ const char* default_shape_vert =
         vec4 world_position = model * vec4(position.x, position.y, position.z, 1.0);\n\
         world_pos = world_position.xy;\n\
         gl_Position = model_view_projection * vec4(position.x, position.y, position.z, 1.0);\n\
-    }\n";
+    }\n"};
 
-const char* default_shape_frag =
+const char* default_shape_frag{
     "#version 330 core\n\
     out vec4  out_color;\n\
     uniform vec4  in_color;\n\
@@ -78,9 +78,9 @@ const char* default_shape_frag =
     {\n\
         out_color.xyz = apply_lighting(in_color.xyz);\n\
         out_color.a   = in_color.a;\n\
-    }\n";
+    }\n"};
 
-const char* default_texture_vert =
+const char* default_texture_vert{
     "#version 330 core\n\
     layout (location = 0) in vec3 position;\n\
     layout (location = 1) in vec2 texture_coord;\n\
@@ -94,9 +94,9 @@ const char* default_texture_vert =
        world_pos = world_position.xy;\n\
        gl_Position = model_view_projection * vec4(position.x, position.y, position.z, 1.0);\n\
        tex_coord = vec2(texture_coord.x, texture_coord.y);\n\
-    }\n";
+    }\n"};
 
-const char* default_texture_frag =
+const char* default_texture_frag{
     "#version 330 core\n\
     out vec4 out_color; \n\
     uniform float opacity;\n\
@@ -140,9 +140,9 @@ const char* default_texture_frag =
        vec4 texture_color = texture(the_texture, tex_coord);\n\
        out_color.xyz = apply_lighting(texture_color.rgb);\n\
        out_color.a = texture_color.a * opacity;\n\
-    }\n";
+    }\n"};
 
-const char* default_text_vert =
+const char* default_text_vert{
     "#version 330 core\n\
     layout (location = 0) in vec4 vertex;\n\
     out vec2 tex_coords;\n\
@@ -153,9 +153,9 @@ const char* default_text_vert =
     {\n\
         gl_Position = projection * vec4(vertex.xy, 0.0, 1.0);\n\
         tex_coords = vertex.zw;\n\
-    }\n";
+    }\n"};
 
-const char* default_text_frag =
+const char* default_text_frag{
     "#version 330 core\n\
     in vec2 tex_coords;\n\
     out vec4 color;\n\
@@ -167,7 +167,7 @@ const char* default_text_frag =
     {    \n\
         vec4 sampled = vec4(1.0, 1.0, 1.0, texture(text, tex_coords).r);\n\
         color = vec4(text_color, 1.0) * sampled;\n\
-    }\n";
+    }\n"};
 
 } // namespace
 
@@ -241,7 +241,7 @@ void RenderContext::ensure_default_light_capacity(std::uint32_t light_count)
         return;
     }
 
-    std::uint32_t new_capacity = default_light_capacity_;
+    std::uint32_t new_capacity{default_light_capacity_};
     if (new_capacity == 0U)
     {
         new_capacity = 1U;
@@ -303,11 +303,11 @@ void RenderContext::init_default_shader_lighting_uniforms() const
 {
     bind_default_light_buffer();
 
-    const auto shape_shader = get_shape_default_shader();
+    const auto shape_shader{get_shape_default_shader()};
     shape_shader.use();
     shape_shader.set_int("light_data", static_cast<std::int32_t>(LIGHT_TEXTURE_UNIT));
 
-    const auto texture_shader = get_texture_default_shader();
+    const auto texture_shader{get_texture_default_shader()};
     texture_shader.use();
     texture_shader.set_int("the_texture", 0);
     texture_shader.set_int("light_data", static_cast<std::int32_t>(LIGHT_TEXTURE_UNIT));
@@ -317,13 +317,13 @@ void RenderContext::init_default_shader_lighting_uniforms() const
 
 void RenderContext::update_default_lighting_uniforms() const
 {
-    const auto shape_shader = get_shape_default_shader();
+    const auto shape_shader{get_shape_default_shader()};
     shape_shader.use();
     shape_shader.set_int("light_count", static_cast<std::int32_t>(default_light_count_));
     shape_shader.set_bool("use_ambient_light", default_ambient_light_enabled_);
     shape_shader.set_float("ambient_strength", default_ambient_light_strength_);
 
-    const auto texture_shader = get_texture_default_shader();
+    const auto texture_shader{get_texture_default_shader()};
     texture_shader.use();
     texture_shader.set_int("light_count", static_cast<std::int32_t>(default_light_count_));
     texture_shader.set_bool("use_ambient_light", default_ambient_light_enabled_);
@@ -336,7 +336,7 @@ void RenderContext::sync_default_lighting()
 
     if (default_light_data_dirty_)
     {
-        const std::uint32_t dirty_count = default_light_dirty_end_ - default_light_dirty_begin_;
+        const std::uint32_t dirty_count{default_light_dirty_end_ - default_light_dirty_begin_};
         GL_CALL(glBindBuffer(GL_TEXTURE_BUFFER, default_light_buffer_object_));
         GL_CALL(glBufferSubData(
             GL_TEXTURE_BUFFER,
@@ -447,7 +447,7 @@ const Shader RenderContext::get_text_default_shader() const
 void RenderContext::set_default_light(std::uint32_t light_index, float position_x, float position_y,
                                       float intensity, float falloff)
 {
-    const auto required_light_count = light_index + 1U;
+    const auto required_light_count{light_index + 1U};
     if (required_light_count > default_light_data_.size())
     {
         default_light_data_.resize(required_light_count);
@@ -497,7 +497,7 @@ void RenderContext::release_default_light_slot(std::int32_t light_index, const L
         return;
     }
 
-    const auto slot_index                       = static_cast<std::size_t>(light_index);
+    const auto slot_index{static_cast<std::size_t>(light_index)};
     default_light_slots_.at(slot_index).owner_  = nullptr;
     default_light_slots_.at(slot_index).active_ = false;
 
@@ -584,15 +584,15 @@ void RenderContext::update_mvp_matrix(const glm::mat4& model, std::uint32_t shad
     projection_ = glm::ortho(0.0F, static_cast<float>(get_width()),
                              static_cast<float>(get_height()), 0.0F, -1.0F, 1.0F);
 
-    model_view_projection_      = projection_ * view_ * model;
-    std::int32_t model_location = glGetUniformLocation(shader_id, "model");
+    model_view_projection_ = projection_ * view_ * model;
+    std::int32_t model_location{glGetUniformLocation(shader_id, "model")};
     rinvid::errors::handle_gl_errors(__FILE__, __LINE__);
     if (model_location != -1)
     {
         GL_CALL(glUniformMatrix4fv(model_location, 1, GL_FALSE, glm::value_ptr(model)));
     }
 
-    std::int32_t mvp_location = glGetUniformLocation(shader_id, "model_view_projection");
+    std::int32_t mvp_location{glGetUniformLocation(shader_id, "model_view_projection")};
     rinvid::errors::handle_gl_errors(__FILE__, __LINE__);
     if (mvp_location == -1)
     {

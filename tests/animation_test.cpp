@@ -73,11 +73,11 @@ TEST_F(AnimationTest, ZeroFramerate_StaysOnFirstFrame)
 TEST_F(AnimationTest, Setup_RegionsUsedForCurrentFrame)
 {
     Animation animation{};
-    auto      regions = make_regions();
+    auto      regions{make_regions()};
 
     animation.setup(1.0, regions, AnimationMode::Normal);
 
-    Rect frame = animation.frame(2.0);
+    Rect frame{animation.frame(2.0)};
 
     EXPECT_FLOAT_EQ(frame.position.x, 20.0F);
     EXPECT_FLOAT_EQ(frame.position.y, 0.0F);

@@ -38,8 +38,8 @@ PerfStressScreen::~PerfStressScreen() = default;
 
 void PerfStressScreen::create()
 {
-    const auto& render_context = get_render_context();
-    stress_scene_              = std::make_unique<StressSceneContent>(
+    const auto& render_context{get_render_context()};
+    stress_scene_ = std::make_unique<StressSceneContent>(
         font_path_, static_cast<std::uint32_t>(render_context.get_width()),
         static_cast<std::uint32_t>(render_context.get_height()),
         make_uniform_stress_scene_counts(100U));
@@ -97,8 +97,8 @@ void PerfStressScreen::apply_uniform_preset(std::uint32_t count)
 
 void PerfStressScreen::update_status_text()
 {
-    const std::string message =
+    const std::string message{
         "Perf stress example. Press 1=10, 2=25, 3=50, 4=100, Esc=quit. Current: " +
-        format_stress_scene_counts(make_uniform_stress_scene_counts(active_preset_count_));
+        format_stress_scene_counts(make_uniform_stress_scene_counts(active_preset_count_))};
     status_text_->set_text(message);
 }

@@ -96,15 +96,19 @@ float Object::compute_velocity(double delta_time, float velocity, float accelera
 
     if (gravity && gravity_scale_ > 0.0F)
     {
-        velocity += (World::gravity * gravity_scale_) * delta_time;
+        velocity += (World::gravity_ * gravity_scale_) * delta_time;
     }
 
     if ((velocity != 0.0F) && (max_velocity != 0.0F))
     {
         if (velocity > max_velocity)
+        {
             velocity = max_velocity;
+        }
         else if (velocity < -max_velocity)
+        {
             velocity = -max_velocity;
+        }
     }
 
     return velocity;

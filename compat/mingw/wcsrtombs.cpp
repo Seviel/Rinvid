@@ -19,7 +19,7 @@ extern "C" std::size_t rinvid_mingw_wcsrtombs(char* destination, const wchar_t**
         return 0;
     }
 
-    const auto converted = std::wcstombs(destination, *source, count);
+    const auto converted{std::wcstombs(destination, *source, count)};
 
     if (converted != static_cast<std::size_t>(-1) && destination != nullptr)
     {

@@ -53,9 +53,9 @@ Rect Animation::frame(double delta_time) const
 
 std::uint32_t Animation::frame_index(double delta_time) const
 {
-    double        time_passed       = time_passed_ + delta_time;
-    double        index             = time_passed / frame_time_;
-    std::uint32_t number_of_regions = regions_.size();
+    double        time_passed{time_passed_ + delta_time};
+    double        index{time_passed / frame_time_};
+    std::uint32_t number_of_regions{static_cast<std::uint32_t>(regions_.size())};
 
     if (number_of_regions == 0)
     {

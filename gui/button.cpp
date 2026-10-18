@@ -307,19 +307,19 @@ void Button::clear_events()
 
 bool Button::is_mouse_over()
 {
-    Vector2f  mouse_pos = system::Mouse::get_mouse_pos();
+    Vector2f  mouse_pos{system::Mouse::get_mouse_pos()};
     glm::vec4 glm_mouse_pos{mouse_pos.x, mouse_pos.y, 1.0F, 1.0F};
 
-    RenderContext* render_context = RenderContext::get_active_context();
+    RenderContext* render_context{RenderContext::get_active_context()};
     if (render_context == nullptr)
     {
         return false;
     }
 
-    const auto& view = glm::inverse(render_context->get_view());
-    glm_mouse_pos    = view * glm_mouse_pos;
-    mouse_pos.x      = glm_mouse_pos.x;
-    mouse_pos.y      = glm_mouse_pos.y;
+    const auto& view{glm::inverse(render_context->get_view())};
+    glm_mouse_pos = view * glm_mouse_pos;
+    mouse_pos.x   = glm_mouse_pos.x;
+    mouse_pos.y   = glm_mouse_pos.y;
 
     Rect mouse_rect{mouse_pos, 1, 1};
     return intersects(bounding_rect(), mouse_rect);

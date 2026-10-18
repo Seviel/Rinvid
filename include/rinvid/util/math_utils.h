@@ -14,7 +14,7 @@
 #define M_PI 3.14159265358979323846
 #endif
 
-constexpr float DEGREES_IN_A_CIRCLE = 360.0F;
+constexpr float DEGREES_IN_A_CIRCLE{360.0F};
 
 #ifndef DEGREES_TO_RADIANS
 #define DEGREES_TO_RADIANS(angle) ((angle) * static_cast<float>(M_PI) / 180.0F)

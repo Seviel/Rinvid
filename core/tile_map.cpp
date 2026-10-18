@@ -43,7 +43,7 @@ void TileMap::build()
     for (const auto& tileset : data_.tilesets_)
     {
         textures_.emplace_back(tileset.image_.string().c_str());
-        const auto& texture = textures_.back();
+        const auto& texture{textures_.back()};
         if (texture.width_ != static_cast<std::int32_t>(tileset.image_width_) ||
             texture.height_ != static_cast<std::int32_t>(tileset.image_height_))
         {
@@ -63,11 +63,11 @@ void TileMap::build()
         {{0.0F, 0.0F}, {1.0F, 0.0F}, {1.0F, 1.0F}, {0.0F, 1.0F}}};
     for (const auto& layer : data_.layers_)
     {
-        const auto first_batch = batches_.size();
+        const auto first_batch{batches_.size()};
         for (std::size_t index{0U}; index < layer.tiles_.size(); ++index)
         {
-            const auto raw_gid = layer.tiles_[index];
-            const auto gid     = raw_gid & 0x0FFFFFFFU;
+            const auto raw_gid{layer.tiles_[index]};
+            const auto gid{raw_gid & 0x0FFFFFFFU};
             if (gid == 0U)
             {
                 continue;
@@ -80,26 +80,26 @@ void TileMap::build()
             {
                 throw ResourceLoadError{"Tiled: map geometry exceeds the OpenGL buffer limits"};
             }
-            const auto next = std::upper_bound(data_.tilesets_.begin(), data_.tilesets_.end(), gid,
-                                               [](std::uint32_t id, const Tileset& tileset)
-                                               { return id < tileset.first_gid_; });
-            const auto tileset_index = static_cast<std::size_t>(next - data_.tilesets_.begin() - 1);
-            const auto& tileset      = data_.tilesets_[tileset_index];
-            const auto  local_id     = gid - tileset.first_gid_;
-            const auto  atlas_x =
+            const auto  next{std::upper_bound(data_.tilesets_.begin(), data_.tilesets_.end(), gid,
+                                              [](std::uint32_t id, const Tileset& tileset)
+                                              { return id < tileset.first_gid_; })};
+            const auto  tileset_index{static_cast<std::size_t>(next - data_.tilesets_.begin() - 1)};
+            const auto& tileset{data_.tilesets_[tileset_index]};
+            const auto  local_id{gid - tileset.first_gid_};
+            const auto  atlas_x{
                 tileset.margin_ +
                 (local_id % tileset.columns_) *
-                    (static_cast<std::uint64_t>(data_.tile_width_) + tileset.spacing_);
-            const auto atlas_y =
+                    (static_cast<std::uint64_t>(data_.tile_width_) + tileset.spacing_)};
+            const auto atlas_y{
                 tileset.margin_ +
                 (local_id / tileset.columns_) *
-                    (static_cast<std::uint64_t>(data_.tile_height_) + tileset.spacing_);
-            const float x =
-                static_cast<float>((index % data_.width_) * data_.tile_width_) + layer.offset_.x;
-            float y =
-                static_cast<float>((index / data_.width_) * data_.tile_height_) + layer.offset_.y;
-            float width  = static_cast<float>(data_.tile_width_);
-            float height = static_cast<float>(data_.tile_height_);
+                    (static_cast<std::uint64_t>(data_.tile_height_) + tileset.spacing_)};
+            const float x{static_cast<float>((index % data_.width_) * data_.tile_width_) +
+                          layer.offset_.x};
+            float       y{static_cast<float>((index / data_.width_) * data_.tile_height_) +
+                    layer.offset_.y};
+            float       width{static_cast<float>(data_.tile_width_)};
+            float       height{static_cast<float>(data_.tile_height_)};
             if ((raw_gid & 0x20000000U) != 0U)
             {
                 // Tiled swaps rectangular tile dimensions around the bottom-left anchor.
@@ -115,9 +115,9 @@ void TileMap::build()
             batches_.back().count_ += 6;
             for (const auto corner : corners)
             {
-                const auto& position = positions[corner];
-                float       u        = position[0];
-                float       v        = position[1];
+                const auto& position{positions[corner]};
+                float       u{position[0]};
+                float       v{position[1]};
                 // Inverse mapping: undo H/V, then the diagonal swap. This renders the
                 // forward Tiled transform (diagonal first, followed by H/V).
                 if ((raw_gid & 0x80000000U) != 0U)
@@ -160,13 +160,13 @@ void TileMap::build()
 
 void TileMap::draw_layer(std::size_t index, const Shader shader)
 {
-    const auto& layer   = data_.layers_.at(index);
-    auto*       context = RenderContext::get_active_context();
+    const auto& layer{data_.layers_.at(index)};
+    auto*       context{RenderContext::get_active_context()};
     if (context == nullptr || !layer.visible_ || layer.opacity_ == 0.0F)
     {
         return;
     }
-    const auto range = layer_batches_[index];
+    const auto range{layer_batches_[index]};
     if (range.first == range.second)
     {
         return;
@@ -176,9 +176,9 @@ void TileMap::draw_layer(std::size_t index, const Shader shader)
     shader.set_float("opacity", layer.opacity_);
     shader.set_int("the_texture", 0);
     GL_CALL(glBindVertexArray(vertex_array_));
-    for (auto batch_index = range.first; batch_index < range.second; ++batch_index)
+    for (auto batch_index{range.first}; batch_index < range.second; ++batch_index)
     {
-        const auto& batch = batches_[batch_index];
+        const auto& batch{batches_[batch_index]};
         textures_[batch.tileset_].bind();
         GL_CALL(glDrawArrays(GL_TRIANGLES, batch.first_, batch.count_));
     }
@@ -209,7 +209,7 @@ TileMap::~TileMap()
 
 void TileMap::draw()
 {
-    if (auto* context = RenderContext::get_active_context())
+    if (auto* context{RenderContext::get_active_context()})
     {
         draw(context->get_texture_default_shader());
     }
@@ -226,7 +226,7 @@ void TileMap::draw(const Shader shader)
 void TileMap::draw_layer(std::size_t layer_index)
 {
     static_cast<void>(data_.layers_.at(layer_index));
-    if (auto* context = RenderContext::get_active_context())
+    if (auto* context{RenderContext::get_active_context()})
     {
         draw_layer(layer_index, context->get_texture_default_shader());
     }

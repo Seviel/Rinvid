@@ -186,9 +186,9 @@ void Light::upload()
         return;
     }
 
-    const float shader_intensity =
-        active_ ? remap(intensity_, 0.0F, 1.0F, intensity_low, intensity_high) : 0.0F;
-    const float shader_falloff = remap(falloff_, 0.0F, 1.0F, falloff_low, falloff_high);
+    const float shader_intensity{
+        active_ ? remap(intensity_, 0.0F, 1.0F, intensity_low, intensity_high) : 0.0F};
+    const float shader_falloff{remap(falloff_, 0.0F, 1.0F, falloff_low, falloff_high)};
 
     render_context_->set_default_light(static_cast<std::uint32_t>(ordinal_), position_.x,
                                        position_.y, shader_intensity, shader_falloff);
