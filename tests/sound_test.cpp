@@ -12,9 +12,9 @@
 #include <limits>
 #include <optional>
 #include <string>
+#include <type_traits>
 #include <utility>
 #include <vector>
-#include <type_traits>
 
 #include <SFML/Audio/PlaybackDevice.hpp>
 #include <SFML/System/Sleep.hpp>

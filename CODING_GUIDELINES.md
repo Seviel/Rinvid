@@ -92,7 +92,9 @@ if(counter == max_count)
 | file name   | snake_case.cpp|
 | type (class, struct, union, enum, typedef)   | PascalCase|
 | function  | snake_case|
+| benchmark function | snake_case or PascalCase (capital camel case)|
 | variable   | snake_case|
+| constexpr variable | snake_case or MACRO_CASE|
 | class member variable  | snake_case_|
 | macro | MACRO_CASE|    
   

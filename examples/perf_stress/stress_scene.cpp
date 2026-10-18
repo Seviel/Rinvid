@@ -7,8 +7,6 @@
  * repository for more details.
  **********************************************************************/
 
-#include "stress_scene.h"
-
 #include <algorithm>
 #include <array>
 #include <cstddef>
@@ -17,6 +15,7 @@
 #include <string>
 #include <utility>
 
+#include "stress_scene.h"
 #include <rinvid/core/light_manager.h>
 #include <rinvid/core/render_context.h>
 #include <rinvid/util/color.h>

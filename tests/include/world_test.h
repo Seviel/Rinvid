@@ -7,8 +7,8 @@
  * repository for more details.
  **********************************************************************/
 
-#ifndef TESTS_INCLUDE_UTIL_TEST_H
-#define TESTS_INCLUDE_UTIL_TEST_H
+#ifndef TESTS_INCLUDE_WORLD_TEST_H
+#define TESTS_INCLUDE_WORLD_TEST_H
 
 #include <gtest/gtest.h>
 
@@ -53,4 +53,4 @@ class WorldTest : public ::testing::Test
     }
 };
 
-#endif // TESTS_INCLUDE_UTIL_TEST_H
+#endif // TESTS_INCLUDE_WORLD_TEST_H

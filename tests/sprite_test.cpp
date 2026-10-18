@@ -12,10 +12,9 @@
 
 #include <gtest/gtest.h>
 
+#include "include/sprite_test.h"
 #include <rinvid/core/sprite.h>
 #include <rinvid/util/vector2.h>
-
-#include "include/sprite_test.h"
 
 using namespace rinvid;
 

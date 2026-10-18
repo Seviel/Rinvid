@@ -7,14 +7,14 @@
  * repository for more details.
  **********************************************************************/
 
+#include <chrono>
+#include <iostream>
+
 #ifdef __unix__
 #include <unistd.h>
 #else
 #include <windows.h>
 #endif
-
-#include <chrono>
-#include <iostream>
 
 #include <rinvid/core/animation.h>
 #include <rinvid/core/camera.h>

@@ -7,22 +7,22 @@
  * repository for more details.
  **********************************************************************/
 
+#include <chrono>
+#include <iostream>
+
 #ifdef __unix__
 #include <unistd.h>
 #else
 #include <windows.h>
 #endif
 
-#include <chrono>
-#include <iostream>
+#include <rinvid/core/rinvid_gl.h>
+#include <rinvid/system/application.h>
+#include <rinvid/util/vector2.h>
 
 #ifdef _WIN32
 #include <rinvid/util/windows_utils.h>
 #endif // _WIN32
-
-#include <rinvid/core/rinvid_gl.h>
-#include <rinvid/system/application.h>
-#include <rinvid/util/vector2.h>
 
 namespace rinvid
 {

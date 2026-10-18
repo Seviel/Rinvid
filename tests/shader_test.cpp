@@ -12,12 +12,11 @@
 
 #include <gtest/gtest.h>
 
+#include "include/opengl_test.h"
 #include <rinvid/core/render_context.h>
 #include <rinvid/core/shader.h>
 #include <rinvid/util/error.h>
 #include <rinvid/util/error_handler.h>
-
-#include "include/opengl_test.h"
 
 namespace
 {

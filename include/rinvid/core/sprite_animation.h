@@ -11,9 +11,9 @@
 #define INCLUDE_RINVID_CORE_SPRITE_ANIMATION_H
 
 #include <string>
-#include <vector>
 #include <type_traits>
 #include <unordered_map>
+#include <vector>
 
 #include <rinvid/core/animation.h>
 

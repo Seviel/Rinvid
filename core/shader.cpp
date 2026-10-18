@@ -8,8 +8,8 @@
  **********************************************************************/
 
 #include <string>
-#include <vector>
 #include <unordered_map>
+#include <vector>
 
 #include <rinvid/core/shader.h>
 #include <rinvid/util/error.h>

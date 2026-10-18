@@ -12,9 +12,8 @@
 
 #include <cstdlib>
 
-#include <gtest/gtest.h>
-
 #include <SFML/Window/Context.hpp>
+#include <gtest/gtest.h>
 
 #include <rinvid/core/render_context.h>
 #include <rinvid/core/rinvid_gl.h>

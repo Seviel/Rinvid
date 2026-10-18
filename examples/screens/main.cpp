@@ -7,15 +7,14 @@
  * repository for more details.
  **********************************************************************/
 
+#include "level_one.h"
+#include "level_two.h"
 #include <rinvid/core/animation.h>
 #include <rinvid/core/sprite.h>
 #include <rinvid/core/texture.h>
 #include <rinvid/system/application.h>
 #include <rinvid/system/screen.h>
 #include <rinvid/util/vector2.h>
-
-#include "level_one.h"
-#include "level_two.h"
 
 int main()
 {

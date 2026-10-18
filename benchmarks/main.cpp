@@ -16,15 +16,13 @@
 
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Window.hpp>
-
 #include <benchmark/benchmark.h>
 
+#include "stress_scene.h"
 #include <rinvid/core/rinvid_gl.h>
 #include <rinvid/core/sprite.h>
 #include <rinvid/core/texture.h>
 #include <rinvid/system/application.h>
-
-#include "stress_scene.h"
 
 namespace
 {

@@ -7,18 +7,16 @@
  * repository for more details.
  **********************************************************************/
 
-#include "perf_stress_screen.h"
-
 #include <memory>
 #include <string>
 #include <utility>
 
+#include "perf_stress_screen.h"
+#include "stress_scene.h"
 #include <rinvid/core/text.h>
 #include <rinvid/core/ttf_lib.h>
 #include <rinvid/system/application.h>
 #include <rinvid/system/keyboard.h>
-
-#include "stress_scene.h"
 
 namespace
 {
