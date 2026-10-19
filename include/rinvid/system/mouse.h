@@ -10,6 +10,8 @@
 #ifndef INCLUDE_RINVID_SYSTEM_MOUSE_H
 #define INCLUDE_RINVID_SYSTEM_MOUSE_H
 
+#include <optional>
+
 #include <rinvid/util/vector2.h>
 
 namespace rinvid
@@ -65,12 +67,20 @@ class Mouse
     static bool is_button_just_released(MouseButton mouse_button);
 
     /**************************************************************************************************
-     * @brief Returns mouse position
+     * @brief Returns raw window-relative mouse position in pixels
      *
      * @return Vector2 representing mouse position in 2D space
      *
      *************************************************************************************************/
     static Vector2f get_mouse_pos();
+
+    /**************************************************************************************************
+     * @brief Returns logical canvas position, excluding the current camera transform.
+     *
+     * @return No value outside the canvas, without a window, or while unfocused.
+     *
+     *************************************************************************************************/
+    static std::optional<Vector2f> get_mouse_canvas_pos();
 };
 
 } // namespace system

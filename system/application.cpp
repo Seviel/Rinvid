@@ -7,6 +7,7 @@
  * repository for more details.
  **********************************************************************/
 
+#include <algorithm>
 #include <chrono>
 #include <iostream>
 
@@ -48,7 +49,7 @@ Application::Application(std::uint32_t width, std::uint32_t height, const std::s
     {
         window_.create(sf::VideoMode::getDesktopMode(), title, sf::State::Fullscreen);
         window_.setVerticalSyncEnabled(true);
-        window_.setFramerateLimit(fps_);
+        window_.setFramerateLimit(0U);
     }
     else
     {
@@ -57,6 +58,7 @@ Application::Application(std::uint32_t width, std::uint32_t height, const std::s
                                                    : sf::Style::Default)};
         window_.create(sf::VideoMode{{width, height}}, title, style);
         enforce_fixed_window_size();
+        window_.setFramerateLimit(fps_);
     }
 
 #ifdef _WIN32
@@ -97,23 +99,37 @@ void Application::run()
     {
         context_.get_input_state().begin_frame();
         handle_events(window_);
+        if (!running_)
+        {
+            break;
+        }
+        const bool focused{window_.hasFocus()};
+        const auto size{window_.getSize()};
 
         // Native event handlers can block while the user moves a window. Treat that time as paused
         // instead of passing one oversized time step to the next update.
         const auto start{std::chrono::steady_clock::now()};
 
-        if (current_screen_ != nullptr)
+        if (size.x > 0U && size.y > 0U)
         {
-            current_screen_->update(total_frame_time.count());
+            if (current_screen_ != nullptr)
+            {
+                current_screen_->update(focused ? std::min(total_frame_time.count(), 0.25) : 0.0);
+            }
+            window_.display();
         }
-
-        window_.display();
+        if (!focused || size.x == 0U || size.y == 0U)
+        {
+            sf::sleep(sf::milliseconds(50));
+        }
 
         const bool screen_changed{running_ && activate_pending_screen()};
         const auto end{std::chrono::steady_clock::now()};
         // Screen construction can happen inside update(), before set_screen(). Discard the
         // entire transition frame so loading and teardown never advance the new screen.
-        total_frame_time = screen_changed ? std::chrono::duration<double>{} : end - start;
+        total_frame_time = screen_changed || !focused || size.x == 0U || size.y == 0U
+                               ? std::chrono::duration<double>{}
+                               : end - start;
     }
 
     destroy_current_screen();
@@ -130,7 +146,14 @@ void Application::set_screen(std::unique_ptr<Screen> screen)
 void Application::set_fps(std::uint16_t fps)
 {
     fps_ = fps;
+    window_.setVerticalSyncEnabled(false);
     window_.setFramerateLimit(fps_);
+}
+
+void Application::set_vertical_sync(bool enabled)
+{
+    window_.setVerticalSyncEnabled(enabled);
+    window_.setFramerateLimit(enabled ? 0U : fps_);
 }
 
 void Application::exit()

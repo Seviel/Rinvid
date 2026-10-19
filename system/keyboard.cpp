@@ -7,6 +7,8 @@
  * repository for more details.
  **********************************************************************/
 
+#include <SFML/Window.hpp>
+
 #include <rinvid/system/application_context.h>
 #include <rinvid/system/keyboard.h>
 
@@ -18,7 +20,9 @@ namespace system
 
 bool Keyboard::is_key_pressed(Key key)
 {
-    return sf::Keyboard::isKeyPressed(key);
+    const auto* context{ApplicationContext::get_active_context()};
+    return (context == nullptr || (context->get_window() && context->get_window()->hasFocus())) &&
+           sf::Keyboard::isKeyPressed(key);
 }
 
 bool Keyboard::is_key_just_pressed(Key key)

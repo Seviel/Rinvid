@@ -79,13 +79,21 @@ class Application
     void set_screen(std::unique_ptr<Screen> screen);
 
     /**************************************************************************************************
-     * @brief Sets the framerate of the application
+     * @brief Sets the software framerate limit and disables VSync
      *
      * @param fps The framerate to set expressed in frames per second. Pass 0 to have uncapped
      * framerate.
      *
      *************************************************************************************************/
     void set_fps(std::uint16_t fps);
+
+    /**************************************************************************************************
+     * @brief Selects VSync or the configured software frame limit, never both.
+     *
+     * @param enabled True enables VSync; false restores the limit configured by set_fps().
+     *
+     *************************************************************************************************/
+    void set_vertical_sync(bool enabled);
 
     /**************************************************************************************************
      * @brief Exits the application.
