@@ -105,11 +105,13 @@ class RenderContext
      *
      * @param width Logical width.
      * @param height Logical height.
+     * @param integer_scaling Use whole-number magnification for pixel art. If the window is
+     * smaller than the canvas, fractional downscaling keeps the entire canvas visible.
      *
      * @throws std::invalid_argument unless both dimensions are positive or both zero.
      *
      *************************************************************************************************/
-    void set_logical_size(std::int32_t width, std::int32_t height);
+    void set_logical_size(std::int32_t width, std::int32_t height, bool integer_scaling = false);
 
     /**************************************************************************************************
      * @brief Maps a window pixel to the logical canvas, excluding the camera transform.
@@ -387,6 +389,7 @@ class RenderContext
     Shader                      shape_default_shader_{};
     Shader                      texture_default_shader_{};
     Shader                      text_default_shader_{};
+    bool                        integer_scaling_{};
     Vector2<std::int32_t>       logical_size_{};
     std::array<std::int32_t, 4> target_viewport_{};
     std::array<std::int32_t, 4> viewport_{};

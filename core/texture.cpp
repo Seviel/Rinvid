@@ -19,14 +19,22 @@
 namespace rinvid
 {
 
+bool Texture::default_smooth_{true};
+
+void Texture::set_default_smooth(bool smooth)
+{
+    default_smooth_ = smooth;
+}
+
 void Texture::init_gl_texture(const std::uint8_t* image_data)
 {
     GL_CALL(glGenTextures(1, &texture_id_));
     GL_CALL(glBindTexture(GL_TEXTURE_2D, texture_id_));
     GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
     GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
-    GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
-    GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+    const auto filter{default_smooth_ ? GL_LINEAR : GL_NEAREST};
+    GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter));
+    GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter));
     GL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width_, height_, 0, GL_RGBA, GL_UNSIGNED_BYTE,
                          image_data));
 }
@@ -99,6 +107,21 @@ Texture& Texture::operator=(Texture&& other)
 Texture::~Texture()
 {
     release_gl_resources();
+}
+
+void Texture::set_smooth(bool smooth)
+{
+    if (texture_id_ == 0)
+    {
+        return;
+    }
+    std::int32_t previous_texture{};
+    GL_CALL(glGetIntegerv(GL_TEXTURE_BINDING_2D, &previous_texture));
+    GL_CALL(glBindTexture(GL_TEXTURE_2D, texture_id_));
+    const auto filter{smooth ? GL_LINEAR : GL_NEAREST};
+    GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter));
+    GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter));
+    GL_CALL(glBindTexture(GL_TEXTURE_2D, previous_texture));
 }
 
 void Texture::bind() const

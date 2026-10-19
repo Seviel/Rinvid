@@ -411,8 +411,12 @@ void RenderContext::set_viewport(std::int32_t x, std::int32_t y, std::int32_t wi
     height_          = logical_size_.y > 0 ? logical_size_.y : std::max(1, height);
     if (logical_size_.x > 0 && width > 0 && height > 0)
     {
-        const double scale{
+        double scale{
             std::min(static_cast<double>(width) / width_, static_cast<double>(height) / height_)};
+        if (integer_scaling_ && scale >= 1.0)
+        {
+            scale = std::floor(scale);
+        }
         viewport_[2] = std::clamp(static_cast<std::int32_t>(std::lround(width_ * scale)), 1, width);
         viewport_[3] =
             std::clamp(static_cast<std::int32_t>(std::lround(height_ * scale)), 1, height);
@@ -422,13 +426,14 @@ void RenderContext::set_viewport(std::int32_t x, std::int32_t y, std::int32_t wi
     GL_CALL(glViewport(viewport_[0], viewport_[1], viewport_[2], viewport_[3]));
 }
 
-void RenderContext::set_logical_size(std::int32_t width, std::int32_t height)
+void RenderContext::set_logical_size(std::int32_t width, std::int32_t height, bool integer_scaling)
 {
     if (width < 0 || height < 0 || (width == 0) != (height == 0))
     {
         throw std::invalid_argument{"Logical dimensions must both be positive or both zero"};
     }
-    logical_size_ = {width, height};
+    logical_size_    = {width, height};
+    integer_scaling_ = integer_scaling;
     set_viewport(target_viewport_[0], target_viewport_[1], target_viewport_[2],
                  target_viewport_[3]);
 }

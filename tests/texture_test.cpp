@@ -109,3 +109,42 @@ TEST_F(TextureTest, Destructor)
     // Check that the number of errors did not increase.
     ASSERT_TRUE(number_of_errors == errors::get_error_count());
 }
+
+TEST_F(TextureTest, DefaultFilteringOnlyAffectsNewTextures)
+{
+    // Restore the startup default even if texture construction throws.
+    struct ResetDefault
+    {
+        ~ResetDefault()
+        {
+            Texture::set_default_smooth(true);
+        }
+    } reset_default;
+
+    const auto expect_filter = [](GLint expected)
+    {
+        GLint filter{};
+        glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, &filter);
+        EXPECT_EQ(filter, expected);
+        glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, &filter);
+        EXPECT_EQ(filter, expected);
+    };
+
+    Texture original{"resources/valid_image.png"};
+    expect_filter(GL_LINEAR);
+    Texture::set_default_smooth(false);
+    expect_filter(GL_LINEAR);
+
+    Texture from_file{"resources/valid_image.png"};
+    expect_filter(GL_NEAREST);
+    from_file.set_smooth(true);
+    expect_filter(GL_LINEAR);
+
+    Texture from_pixels{std::vector<std::uint8_t>{255, 0, 0, 255}, 1, 1};
+    expect_filter(GL_NEAREST);
+    Texture::set_default_smooth(true);
+    expect_filter(GL_NEAREST);
+
+    Texture next{"resources/valid_image.png"};
+    expect_filter(GL_LINEAR);
+}
