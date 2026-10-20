@@ -8,7 +8,9 @@
  **********************************************************************/
 
 #include <algorithm>
+#include <cmath>
 #include <cstddef>
+#include <stdexcept>
 
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/transform.hpp>
@@ -401,17 +403,78 @@ void RenderContext::shutdown()
 }
 
 void RenderContext::set_viewport(std::int32_t x, std::int32_t y, std::int32_t width,
-                                 std::int32_t heigth)
+                                 std::int32_t height)
 {
-    width_  = width;
-    height_ = heigth;
-    GL_CALL(glViewport(x, y, width, heigth));
+    target_viewport_ = {x, y, std::max(0, width), std::max(0, height)};
+    viewport_        = target_viewport_;
+    width_           = logical_size_.x > 0 ? logical_size_.x : std::max(1, width);
+    height_          = logical_size_.y > 0 ? logical_size_.y : std::max(1, height);
+    if (logical_size_.x > 0 && width > 0 && height > 0)
+    {
+        double scale{
+            std::min(static_cast<double>(width) / width_, static_cast<double>(height) / height_)};
+        if (integer_scaling_ && scale >= 1.0)
+        {
+            scale = std::floor(scale);
+        }
+        viewport_[2] = std::clamp(static_cast<std::int32_t>(std::lround(width_ * scale)), 1, width);
+        viewport_[3] =
+            std::clamp(static_cast<std::int32_t>(std::lround(height_ * scale)), 1, height);
+        viewport_[0] += (width - viewport_[2]) / 2;
+        viewport_[1] += (height - viewport_[3]) / 2;
+    }
+    GL_CALL(glViewport(viewport_[0], viewport_[1], viewport_[2], viewport_[3]));
+}
+
+void RenderContext::set_logical_size(std::int32_t width, std::int32_t height, bool integer_scaling)
+{
+    if (width < 0 || height < 0 || (width == 0) != (height == 0))
+    {
+        throw std::invalid_argument{"Logical dimensions must both be positive or both zero"};
+    }
+    logical_size_    = {width, height};
+    integer_scaling_ = integer_scaling;
+    set_viewport(target_viewport_[0], target_viewport_[1], target_viewport_[2],
+                 target_viewport_[3]);
+}
+
+std::optional<Vector2f> RenderContext::map_pixel_to_canvas(Vector2f     pixel,
+                                                           std::int32_t window_height) const
+{
+    const float x{pixel.x - viewport_[0]};
+    const float y{pixel.y - (window_height - viewport_[1] - viewport_[3])};
+    if (!std::isfinite(x) || !std::isfinite(y) || viewport_[2] <= 0 || viewport_[3] <= 0 ||
+        x < 0.0F || y < 0.0F || x >= viewport_[2] || y >= viewport_[3])
+    {
+        return std::nullopt;
+    }
+    return Vector2f{x * width_ / viewport_[2], y * height_ / viewport_[3]};
 }
 
 void RenderContext::clear_screen(float r, float g, float b, float a)
 {
+    const bool   letterboxed{logical_size_.x > 0};
+    const auto   scissor_enabled{glIsEnabled(GL_SCISSOR_TEST)};
+    std::int32_t scissor[4]{};
+    if (letterboxed)
+    {
+        GL_CALL(glGetIntegerv(GL_SCISSOR_BOX, scissor));
+        GL_CALL(glDisable(GL_SCISSOR_TEST));
+        GL_CALL(glClearColor(0.0F, 0.0F, 0.0F, 1.0F));
+        GL_CALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+        GL_CALL(glEnable(GL_SCISSOR_TEST));
+        GL_CALL(glScissor(viewport_[0], viewport_[1], viewport_[2], viewport_[3]));
+    }
     GL_CALL(glClearColor(r, g, b, a));
     GL_CALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+    if (letterboxed)
+    {
+        GL_CALL(glScissor(scissor[0], scissor[1], scissor[2], scissor[3]));
+        if (!scissor_enabled)
+        {
+            GL_CALL(glDisable(GL_SCISSOR_TEST));
+        }
+    }
 }
 
 std::uint32_t RenderContext::get_shape_default_shader_id() const

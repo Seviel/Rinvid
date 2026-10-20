@@ -75,6 +75,26 @@ class Texture
      *************************************************************************************************/
     ~Texture();
 
+    /**************************************************************************************************
+     * @brief Selects linear filtering or nearest-neighbor filtering for this texture.
+     * Applies to every sprite or tile map sharing this texture. Requires an active OpenGL context.
+     *
+     * @param smooth True for linear filtering, false for nearest-neighbor filtering.
+     *
+     *************************************************************************************************/
+    void set_smooth(bool smooth);
+
+    /**************************************************************************************************
+     * @brief Sets the process-wide filtering default for newly constructed textures.
+     * Initially true (linear). Existing textures, per-texture overrides, and TrueType fonts
+     * are unaffected. No OpenGL context is required. Set before loading textures; do not call
+     * concurrently with texture construction or another call to this function.
+     *
+     * @param smooth True for linear filtering, false for nearest-neighbor filtering.
+     *
+     *************************************************************************************************/
+    static void set_default_smooth(bool smooth);
+
   private:
     friend class Sprite;
     friend class TileMap;
@@ -82,6 +102,8 @@ class Texture
     void release_gl_resources();
     void bind() const;
     void init_gl_texture(const std::uint8_t* image_data);
+
+    static bool default_smooth_;
 
     std::int32_t  width_{};
     std::int32_t  height_{};

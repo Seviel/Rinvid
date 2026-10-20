@@ -170,7 +170,7 @@ void Slider::update(double delta_time)
     was_value_changed_ = false;
     const bool mouse_down{system::Mouse::is_button_pressed(system::Mouse::Left)};
 
-    if (!visible_ || !enabled_)
+    if (!visible_ || !enabled_ || !system::Mouse::get_mouse_canvas_pos())
     {
         dragging_       = false;
         mouse_was_down_ = mouse_down;
@@ -315,7 +315,7 @@ float Slider::get_track_center_y() const
 
 Vector2f Slider::get_mouse_position() const
 {
-    Vector2f  mouse_position{system::Mouse::get_mouse_pos()};
+    Vector2f  mouse_position{system::Mouse::get_mouse_canvas_pos().value_or(Vector2f{})};
     glm::vec4 glm_mouse_position{mouse_position.x, mouse_position.y, 1.0F, 1.0F};
 
     RenderContext* render_context{RenderContext::get_active_context()};

@@ -10,12 +10,15 @@
 #ifndef INCLUDE_RINVID_CORE_RENDER_CONTEXT_H
 #define INCLUDE_RINVID_CORE_RENDER_CONTEXT_H
 
+#include <array>
 #include <cstdint>
+#include <optional>
 #include <vector>
 
 #include <glm/mat4x4.hpp>
 
 #include <rinvid/core/shader.h>
+#include <rinvid/util/vector2.h>
 
 namespace rinvid
 {
@@ -91,10 +94,35 @@ class RenderContext
     /**************************************************************************************************
      * @brief Sets viewport position and size.
      *
-     * Basically a wrapper around glViewport.
+     * Uses OpenGL bottom-left coordinates. Fits the logical canvas inside this rectangle.
      *
      *************************************************************************************************/
     void set_viewport(std::int32_t x, std::int32_t y, std::int32_t width, std::int32_t heigth);
+
+    /**************************************************************************************************
+     * @brief Sets a fixed logical canvas, preserving its aspect ratio with black bars.
+     * Both dimensions zero restore window-pixel coordinates (the default).
+     *
+     * @param width Logical width.
+     * @param height Logical height.
+     * @param integer_scaling Use whole-number magnification for pixel art. If the window is
+     * smaller than the canvas, fractional downscaling keeps the entire canvas visible.
+     *
+     * @throws std::invalid_argument unless both dimensions are positive or both zero.
+     *
+     *************************************************************************************************/
+    void set_logical_size(std::int32_t width, std::int32_t height, bool integer_scaling = false);
+
+    /**************************************************************************************************
+     * @brief Maps a window pixel to the logical canvas, excluding the camera transform.
+     *
+     * @param pixel Window-relative pixel with a top-left origin.
+     * @param window_height Actual window client height in pixels.
+     *
+     * @return Logical position, or no value outside the canvas or for an empty viewport.
+     *
+     *************************************************************************************************/
+    std::optional<Vector2f> map_pixel_to_canvas(Vector2f pixel, std::int32_t window_height) const;
 
     /**************************************************************************************************
      * @brief Clears screen.
@@ -238,7 +266,7 @@ class RenderContext
     void set_default_ambient_light(bool enabled, float strength);
 
     /**************************************************************************************************
-     * @brief Returns screen width.
+     * @brief Returns logical canvas width, or window-pixel width when no canvas is set.
      *
      * @return Screen width.
      *
@@ -246,7 +274,7 @@ class RenderContext
     std::int32_t get_width() const;
 
     /**************************************************************************************************
-     * @brief Returns screen height.
+     * @brief Returns logical canvas height, or window-pixel height when no canvas is set.
      *
      * @return Screen height.
      *
@@ -355,15 +383,19 @@ class RenderContext
 
     std::uint32_t get_default_light_count() const;
 
-    glm::mat4          model_view_projection_{1.0F};
-    glm::mat4          view_{1.0F};
-    glm::mat4          projection_{1.0F};
-    Shader             shape_default_shader_{};
-    Shader             texture_default_shader_{};
-    Shader             text_default_shader_{};
-    std::int32_t       width_{};
-    std::int32_t       height_{};
-    const Application* application_{nullptr};
+    glm::mat4                   model_view_projection_{1.0F};
+    glm::mat4                   view_{1.0F};
+    glm::mat4                   projection_{1.0F};
+    Shader                      shape_default_shader_{};
+    Shader                      texture_default_shader_{};
+    Shader                      text_default_shader_{};
+    bool                        integer_scaling_{};
+    Vector2<std::int32_t>       logical_size_{};
+    std::array<std::int32_t, 4> target_viewport_{};
+    std::array<std::int32_t, 4> viewport_{};
+    std::int32_t                width_{};
+    std::int32_t                height_{};
+    const Application*          application_{nullptr};
 
     std::vector<DefaultLightData> default_light_data_{};
     std::vector<DefaultLightSlot> default_light_slots_{};

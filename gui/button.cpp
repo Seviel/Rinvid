@@ -73,11 +73,11 @@ void Button::update()
 
     bool mouse_down{system::Mouse::is_button_pressed(system::Mouse::Left)};
 
-    if (!visible_)
+    if (!visible_ || !system::Mouse::get_mouse_canvas_pos())
     {
         pressed_inside_ = false;
         mouse_was_down_ = mouse_down;
-        set_state(ButtonState::Idle);
+        set_state(enabled_ ? ButtonState::Idle : ButtonState::Disabled);
         return;
     }
 
@@ -307,7 +307,12 @@ void Button::clear_events()
 
 bool Button::is_mouse_over()
 {
-    Vector2f  mouse_pos{system::Mouse::get_mouse_pos()};
+    const auto mouse_canvas_pos{system::Mouse::get_mouse_canvas_pos()};
+    if (!mouse_canvas_pos)
+    {
+        return false;
+    }
+    Vector2f  mouse_pos{*mouse_canvas_pos};
     glm::vec4 glm_mouse_pos{mouse_pos.x, mouse_pos.y, 1.0F, 1.0F};
 
     RenderContext* render_context{RenderContext::get_active_context()};
