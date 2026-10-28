@@ -7,6 +7,8 @@
  * repository for more details.
  **********************************************************************/
 
+#include <utility>
+
 #include "level_two.h"
 #include <rinvid/core/render_context.h>
 #include <rinvid/system/keyboard.h>
@@ -14,7 +16,8 @@
 
 using namespace rinvid::system;
 
-LevelTwo::LevelTwo(rinvid::Sprite* guardian_sprite) : guardian_sprite_{guardian_sprite}
+LevelTwo::LevelTwo(rinvid::Sprite* guardian_sprite, std::unique_ptr<rinvid::Texture> background)
+    : bg_level_two_tex{std::move(background)}, guardian_sprite_{guardian_sprite}
 {
 }
 

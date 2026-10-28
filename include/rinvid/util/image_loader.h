@@ -11,10 +11,36 @@
 #define INCLUDE_RINVID_UTIL_IMAGE_LOADER_H
 
 #include <cstdint>
+#include <filesystem>
 #include <vector>
+
+#include <rinvid/util/error.h>
 
 namespace rinvid
 {
+
+/**************************************************************************************************
+ * @brief Owned CPU image data in RGBA8 format, with rows in file order.
+ *
+ *************************************************************************************************/
+struct ImageData
+{
+    std::vector<std::uint8_t> pixels;   ///< Four bytes per pixel: red, green, blue, alpha.
+    std::int32_t              width{};  ///< Width in pixels.
+    std::int32_t              height{}; ///< Height in pixels.
+};
+
+/**************************************************************************************************
+ * @brief Decodes an image without requiring a graphics context.
+ *
+ * @param file_name Image path.
+ *
+ * @return Owned RGBA8 pixels and positive dimensions.
+ *
+ * @throws ResourceLoadError if the image cannot be opened or decoded.
+ *
+ *************************************************************************************************/
+ImageData load_image(const std::filesystem::path& file_name);
 
 /**************************************************************************************************
  * @brief Loads image from filesystem.

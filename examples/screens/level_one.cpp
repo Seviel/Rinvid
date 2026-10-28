@@ -8,6 +8,7 @@
  **********************************************************************/
 
 #include <memory>
+#include <utility>
 
 #include "level_one.h"
 #include "level_two.h"
@@ -16,16 +17,34 @@
 
 using namespace rinvid::system;
 
-LevelOne::LevelOne(rinvid::Sprite* guardian_sprite) : guardian_sprite_{guardian_sprite}
+LevelOne::LevelOne(rinvid::Sprite* guardian_sprite, rinvid::ImageCache& images)
+    : images_{images}, guardian_sprite_{guardian_sprite}
 {
+    images_.preload({"resources/level_1.png", "resources/level_2.png"});
 }
 
 void LevelOne::create()
 {
+    // Startup may wait. Subsequent preloading never waits in update().
+    const auto image = images_.get("resources/level_1.png");
+    bg_level_one_tex =
+        std::make_unique<rinvid::Texture>(image->pixels, image->width, image->height);
+    bg_level_one_sprite.setup(bg_level_one_tex.get(), 640, 480, {0.0F, 0.0F});
+    images_.evict("resources/level_1.png");
 }
 
 void LevelOne::update(double delta_time)
 {
+    if (!next_texture_)
+    {
+        if (const auto image = images_.try_get("resources/level_2.png"))
+        {
+            // Upload on the rendering thread while the current level is still active.
+            next_texture_ =
+                std::make_unique<rinvid::Texture>(image->pixels, image->width, image->height);
+            images_.clear();
+        }
+    }
     get_render_context().clear_screen(0.0F, 0.0F, 0.0F, 1.0F);
 
     bg_level_one_sprite.draw();
@@ -60,7 +79,17 @@ void LevelOne::update(double delta_time)
 
     if (guardian_sprite_->get_origin().x > 500)
     {
-        this->get_application()->set_screen(std::make_unique<LevelTwo>(guardian_sprite_));
+        if (next_texture_)
+        {
+            this->get_application()->set_screen(
+                std::make_unique<LevelTwo>(guardian_sprite_, std::move(next_texture_)));
+        }
+        else
+        {
+            // Keep rendering while waiting; the white bar indicates a pending transition.
+            guardian_sprite_->set_position({500.0F, 425.0F});
+            loading_indicator_.draw();
+        }
     }
 }
 

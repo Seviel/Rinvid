@@ -18,11 +18,12 @@
 
 int main()
 {
+    rinvid::ImageCache  images;
     rinvid::Application screens_demo_app{640, 480, "Rinvid screens demo"};
 
     rinvid::Texture guardian_tex{"resources/guardian.png"};
     rinvid::Sprite  guardian_sprite{&guardian_tex, 30, 45, rinvid::Vector2f{50.0F, 425.0F},
-                                   rinvid::Vector2f{0.0F, 0.0F}};
+                                    rinvid::Vector2f{0.0F, 0.0F}};
 
     auto regions{guardian_sprite.get_animation().split_animation_frames(30, 45, 52, 1)};
     rinvid::Animation standing_right{14.0,
@@ -51,7 +52,7 @@ int main()
     guardian_sprite.get_animation().add_animation("treading_right", treading_right);
     guardian_sprite.get_animation().play("standing_right");
 
-    screens_demo_app.set_screen(std::make_unique<LevelOne>(&guardian_sprite));
+    screens_demo_app.set_screen(std::make_unique<LevelOne>(&guardian_sprite, images));
     screens_demo_app.run();
 
     return 0;

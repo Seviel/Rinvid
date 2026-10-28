@@ -19,16 +19,16 @@
 class LevelTwo : public rinvid::Screen
 {
   public:
-    LevelTwo(rinvid::Sprite* guardian_sprite);
+    LevelTwo(rinvid::Sprite* guardian_sprite, std::unique_ptr<rinvid::Texture> background);
     void create() override;
     void destroy() override;
 
   private:
     void update(double delta_time) override;
 
-    rinvid::Texture bg_level_two_tex{"resources/level_2.png"};
-    rinvid::Sprite  bg_level_two_sprite{&bg_level_two_tex, 640, 480, rinvid::Vector2f{0.0F, 0.0F},
-                                       rinvid::Vector2f{0.0F, 0.0F}};
+    std::unique_ptr<rinvid::Texture> bg_level_two_tex;
+    rinvid::Sprite bg_level_two_sprite{bg_level_two_tex.get(), 640, 480,
+                                       rinvid::Vector2f{0.0F, 0.0F}, rinvid::Vector2f{0.0F, 0.0F}};
 
     rinvid::Sprite* guardian_sprite_;
 };
