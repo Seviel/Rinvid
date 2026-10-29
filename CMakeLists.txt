@@ -26,6 +26,7 @@ set(RINVID_BENCHMARK_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/extern/benchmark"
     CACHE PATH "Path to a local Google Benchmark source checkout")
 
 find_package(OpenGL REQUIRED COMPONENTS OpenGL)
+find_package(Threads REQUIRED)
 
 # Keep XML parsing private to the TMX loader. Fetch into the build tree, not extern/.
 include(FetchContent)
@@ -168,10 +169,12 @@ add_library(rinvid_util_obj OBJECT)
 target_sources(rinvid_util_obj PRIVATE ${UTIL_SOURCES})
 rinvid_configure_target(rinvid_util_obj)
 target_link_libraries(rinvid_util_obj PRIVATE tinyxml2::tinyxml2)
+target_link_libraries(rinvid_util_obj PRIVATE Threads::Threads)
 
 add_library(rinvid_util STATIC $<TARGET_OBJECTS:rinvid_util_obj>)
 rinvid_configure_target(rinvid_util)
 target_link_libraries(rinvid_util PUBLIC rinvid_extern)
+target_link_libraries(rinvid_util PUBLIC Threads::Threads)
 target_link_libraries(rinvid_util PRIVATE tinyxml2::tinyxml2)
 
 add_library(rinvid_core_obj OBJECT)
@@ -229,6 +232,7 @@ add_library(${PROJECT_NAME} STATIC $<TARGET_OBJECTS:rinvid_extern_obj>
                                    $<TARGET_OBJECTS:rinvid_sound_obj>)
 rinvid_configure_target(${PROJECT_NAME})
 target_link_libraries(${PROJECT_NAME} PUBLIC freetype SFML::Window SFML::Audio)
+target_link_libraries(${PROJECT_NAME} PUBLIC Threads::Threads)
 target_link_libraries(${PROJECT_NAME} PRIVATE tinyxml2::tinyxml2)
 if(UNIX)
   target_link_libraries(${PROJECT_NAME} PUBLIC OpenGL::GL)

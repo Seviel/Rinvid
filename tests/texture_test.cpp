@@ -14,8 +14,21 @@
 #include <rinvid/core/texture.h>
 #include <rinvid/util/error.h>
 #include <rinvid/util/error_handler.h>
+#include <rinvid/util/image_cache.h>
 
 using namespace rinvid;
+
+TEST_F(TextureTest, CachedImageCreatesTextureOnRenderingThread)
+{
+    ImageCache cache;
+    cache.retain({"resources/valid_image.png"});
+    auto    image = cache.get("resources/valid_image.png");
+    Texture texture{image->pixels, image->width, image->height};
+    cache.retain({});
+    image.reset();
+    Sprite sprite{&texture, 1, 1, {0.0F, 0.0F}};
+    EXPECT_NO_THROW(sprite.draw());
+}
 
 // Test the constructor with a valid image file
 TEST_F(TextureTest, Constructor_ValidImageFile)
