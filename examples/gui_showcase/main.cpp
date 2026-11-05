@@ -24,6 +24,7 @@
 #include <rinvid/gui/progress_bar.h>
 #include <rinvid/gui/slider.h>
 #include <rinvid/gui/stack_layout.h>
+#include <rinvid/gui/text_box.h>
 #include <rinvid/gui/text_button.h>
 #include <rinvid/system/application.h>
 #include <rinvid/system/keyboard.h>
@@ -156,6 +157,10 @@ class GuiShowcaseScreen : public rinvid::Screen
                                            0xBFD2E6FF,           13U,       320.0F};
     rinvid::gui::Button      pulse_button_{};
     rinvid::gui::Label status_label_{"Ready", FONT_PATH, {0.0F, 0.0F}, 0xFFFFFFFF, 13U, 320.0F};
+    rinvid::gui::Label       text_box_label_{
+        "Click to type; Enter submits", FONT_PATH, {0.0F, 0.0F}, 0xBFD2E6FF, 13U, 320.0F};
+    rinvid::gui::TextBox message_box_{"Hello Rinvid!", FONT_PATH,  {0.0F, 0.0F}, 320.0F,
+                                      38.0F,           0xFFFFFFFF, 16U};
 
     float auto_progress_{0.0F};
 };
@@ -191,6 +196,8 @@ void GuiShowcaseScreen::create()
     preview_layout_.add(&plain_button_label_);
     preview_layout_.add(&pulse_button_);
     preview_layout_.add(&status_label_);
+    preview_layout_.add(&text_box_label_);
+    preview_layout_.add(&message_box_);
 
     controls_panel_.add(&controls_layout_, {0.0F, 0.0F});
     preview_panel_.add(&preview_layout_, {0.0F, 0.0F});
@@ -218,7 +225,8 @@ void GuiShowcaseScreen::update(double delta_time)
 {
     get_render_context().clear_screen(0.055F, 0.074F, 0.102F, 1.0F);
 
-    if (rinvid::system::Keyboard::is_key_pressed(rinvid::system::Keyboard::Key::Escape))
+    if (!message_box_.is_focused() &&
+        rinvid::system::Keyboard::is_key_just_pressed(rinvid::system::Keyboard::Key::Escape))
     {
         get_application()->exit();
     }
@@ -239,12 +247,24 @@ void GuiShowcaseScreen::update_controls(double delta_time)
     auto_fill_check_.set_enabled(controls_active);
     reset_button_.set_enabled(controls_active);
     pulse_button_.set_enabled(controls_active);
+    message_box_.set_enabled(controls_active);
+
+    if (message_box_.was_text_changed())
+    {
+        status_label_.set_text("Editing: " + std::to_string(message_box_.get_text().size()) +
+                               " characters");
+    }
+    if (message_box_.was_submitted())
+    {
+        status_label_.set_text("Submitted: " + message_box_.get_text().substr(0U, 24U));
+    }
 
     if (reset_button_.was_activated())
     {
         value_slider_.set_value(55.0F);
         speed_slider_.set_value(0.35F);
         auto_progress_ = 0.0F;
+        message_box_.set_text("Hello Rinvid!");
         status_label_.set_text("Reset clicked");
     }
 

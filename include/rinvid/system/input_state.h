@@ -11,6 +11,7 @@
 #define INCLUDE_RINVID_SYSTEM_INPUT_STATE_H
 
 #include <array>
+#include <vector>
 
 #include <SFML/Window/Event.hpp>
 
@@ -93,6 +94,16 @@ class InputState
      *************************************************************************************************/
     bool is_button_just_released(sf::Mouse::Button button) const;
 
+    /**************************************************************************************************
+     * @brief Returns this frame's input events in arrival order, including text entry.
+     * Queries do not consume events. The list is cleared by begin_frame() and reset(), including
+     * on focus loss. Only keyboard, text and mouse button events received while focused are stored.
+     *
+     * @return Events valid until the next handle_event(), begin_frame() or reset() call.
+     *
+     *************************************************************************************************/
+    const std::vector<sf::Event>& get_events() const;
+
   private:
     struct ButtonState
     {
@@ -103,6 +114,7 @@ class InputState
 
     static void set_down(ButtonState& state, bool down);
 
+    std::vector<sf::Event>                          events_{};
     std::array<ButtonState, sf::Keyboard::KeyCount> keys_{};
     std::array<ButtonState, sf::Mouse::ButtonCount> buttons_{};
     bool                                            focused_{true};
