@@ -125,6 +125,26 @@ class RenderContext
     std::optional<Vector2f> map_pixel_to_canvas(Vector2f pixel, std::int32_t window_height) const;
 
     /**************************************************************************************************
+     * @brief Saves the current clipping state and clips subsequent drawing to a rectangle.
+     * Transforms the bounds through the current axis-aligned view and viewport, intersecting any
+     * existing clip. Nonpositive dimensions or an empty canvas produce an empty clip. Pair each
+     * call with pop_clip_rectangle(), keeping the same graphics context current.
+     *
+     * @param position Top-left position in world coordinates before applying the view.
+     * @param width Rectangle width in world units.
+     * @param height Rectangle height in world units.
+     *
+     *************************************************************************************************/
+    void push_clip_rectangle(Vector2f position, float width, float height);
+
+    /**************************************************************************************************
+     * @brief Restores the clipping state saved by the last push_clip_rectangle() call.
+     * Does nothing if there is no saved clipping state.
+     *
+     *************************************************************************************************/
+    void pop_clip_rectangle();
+
+    /**************************************************************************************************
      * @brief Clears screen.
      *
      * @param r red component of the color with which to clear screen
@@ -357,6 +377,12 @@ class RenderContext
   private:
     static RenderContext* active_context_;
 
+    struct ClipState
+    {
+        std::array<std::int32_t, 4> rectangle_{};
+        bool                        enabled_{};
+    };
+
     struct DefaultLightData
     {
         float position_x_{};
@@ -396,6 +422,8 @@ class RenderContext
     std::int32_t                width_{};
     std::int32_t                height_{};
     const Application*          application_{nullptr};
+
+    std::vector<ClipState> clip_stack_{};
 
     std::vector<DefaultLightData> default_light_data_{};
     std::vector<DefaultLightSlot> default_light_slots_{};

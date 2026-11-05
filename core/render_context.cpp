@@ -389,6 +389,11 @@ void RenderContext::init(const Application* application)
 
 void RenderContext::shutdown()
 {
+    while (!clip_stack_.empty())
+    {
+        pop_clip_rectangle();
+    }
+
     release_default_light_buffer();
 
     shape_default_shader_   = Shader{};
@@ -449,6 +454,72 @@ std::optional<Vector2f> RenderContext::map_pixel_to_canvas(Vector2f     pixel,
         return std::nullopt;
     }
     return Vector2f{x * width_ / viewport_[2], y * height_ / viewport_[3]};
+}
+
+void RenderContext::push_clip_rectangle(Vector2f position, float width, float height)
+{
+    std::array<std::int32_t, 4> viewport{};
+    ClipState                   previous_clip{};
+    GL_CALL(glGetIntegerv(GL_VIEWPORT, viewport.data()));
+    GL_CALL(glGetIntegerv(GL_SCISSOR_BOX, previous_clip.rectangle_.data()));
+    previous_clip.enabled_ = glIsEnabled(GL_SCISSOR_TEST) == GL_TRUE;
+    clip_stack_.push_back(previous_clip);
+
+    if (width <= 0.0F || height <= 0.0F || get_width() <= 0 || get_height() <= 0)
+    {
+        GL_CALL(glEnable(GL_SCISSOR_TEST));
+        GL_CALL(glScissor(0, 0, 0, 0));
+        return;
+    }
+
+    const auto&     view{get_view()};
+    const glm::vec4 top_left{view * glm::vec4{position.x, position.y, 1.0F, 1.0F}};
+    const glm::vec4 bottom_right{view *
+                                 glm::vec4{position.x + width, position.y + height, 1.0F, 1.0F}};
+    const float     scale_x{static_cast<float>(viewport[2]) / get_width()};
+    const float     scale_y{static_cast<float>(viewport[3]) / get_height()};
+    std::int32_t    left{viewport[0] + static_cast<std::int32_t>(
+                                        std::ceil(std::min(top_left.x, bottom_right.x) * scale_x))};
+    std::int32_t    right{viewport[0] + static_cast<std::int32_t>(std::floor(
+                                         std::max(top_left.x, bottom_right.x) * scale_x))};
+    std::int32_t    bottom{viewport[1] +
+                        static_cast<std::int32_t>(std::ceil(
+                            (get_height() - std::max(top_left.y, bottom_right.y)) * scale_y))};
+    std::int32_t    top{viewport[1] +
+                     static_cast<std::int32_t>(std::floor(
+                         (get_height() - std::min(top_left.y, bottom_right.y)) * scale_y))};
+
+    if (previous_clip.enabled_)
+    {
+        left   = std::max(left, previous_clip.rectangle_[0]);
+        bottom = std::max(bottom, previous_clip.rectangle_[1]);
+        right  = std::min(right, previous_clip.rectangle_[0] + previous_clip.rectangle_[2]);
+        top    = std::min(top, previous_clip.rectangle_[1] + previous_clip.rectangle_[3]);
+    }
+
+    GL_CALL(glEnable(GL_SCISSOR_TEST));
+    GL_CALL(glScissor(left, bottom, std::max(0, right - left), std::max(0, top - bottom)));
+}
+
+void RenderContext::pop_clip_rectangle()
+{
+    if (clip_stack_.empty())
+    {
+        return;
+    }
+
+    const ClipState previous_clip{clip_stack_.back()};
+    clip_stack_.pop_back();
+    GL_CALL(glScissor(previous_clip.rectangle_[0], previous_clip.rectangle_[1],
+                      previous_clip.rectangle_[2], previous_clip.rectangle_[3]));
+    if (previous_clip.enabled_)
+    {
+        GL_CALL(glEnable(GL_SCISSOR_TEST));
+    }
+    else
+    {
+        GL_CALL(glDisable(GL_SCISSOR_TEST));
+    }
 }
 
 void RenderContext::clear_screen(float r, float g, float b, float a)

@@ -19,6 +19,7 @@ namespace system
 
 void InputState::begin_frame()
 {
+    events_.clear();
     for (auto& key : keys_)
     {
         key.pressed_  = false;
@@ -43,6 +44,12 @@ void InputState::handle_event(const sf::Event& event)
     }
     else if (focused_)
     {
+        if (event.is<sf::Event::KeyPressed>() || event.is<sf::Event::KeyReleased>() ||
+            event.is<sf::Event::TextEntered>() || event.is<sf::Event::MouseButtonPressed>() ||
+            event.is<sf::Event::MouseButtonReleased>())
+        {
+            events_.push_back(event);
+        }
         if (const auto* pressed{event.getIf<sf::Event::KeyPressed>()})
         {
             const auto index{static_cast<std::size_t>(pressed->code)};
@@ -80,6 +87,7 @@ void InputState::handle_event(const sf::Event& event)
 
 void InputState::reset(bool focused)
 {
+    events_.clear();
     keys_    = {};
     buttons_ = {};
     focused_ = focused;
@@ -107,6 +115,11 @@ bool InputState::is_button_just_released(sf::Mouse::Button button) const
 {
     const auto index{static_cast<std::size_t>(button)};
     return index < buttons_.size() && buttons_[index].released_;
+}
+
+const std::vector<sf::Event>& InputState::get_events() const
+{
+    return events_;
 }
 
 void InputState::set_down(ButtonState& state, bool down)
