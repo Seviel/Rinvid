@@ -185,7 +185,8 @@ FixedPolygonShape<number_of_vertices, draw_mode>::FixedPolygonShape()
 
 template <typename std::uint32_t number_of_vertices, GLenum draw_mode>
 FixedPolygonShape<number_of_vertices, draw_mode>::FixedPolygonShape(FixedPolygonShape&& other)
-    : Shape(std::move(other)), number_of_vertices_{number_of_vertices}, vertices_{}, gl_vertices_{}
+    : Shape(std::move(other)), Transformable(std::move(other)),
+      number_of_vertices_{number_of_vertices}, vertices_{}, gl_vertices_{}
 {
     vertices_ = std::move(other.vertices_);
     std::copy(std::begin(other.gl_vertices_), std::end(other.gl_vertices_),
@@ -196,7 +197,13 @@ template <typename std::uint32_t number_of_vertices, GLenum draw_mode>
 FixedPolygonShape<number_of_vertices, draw_mode>&
 FixedPolygonShape<number_of_vertices, draw_mode>::operator=(FixedPolygonShape&& other)
 {
+    if (this == &other)
+    {
+        return *this;
+    }
+
     Shape::operator=(std::move(other));
+    Transformable::operator=(std::move(other));
 
     vertices_ = std::move(other.vertices_);
     std::copy(std::begin(other.gl_vertices_), std::end(other.gl_vertices_),

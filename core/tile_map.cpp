@@ -13,11 +13,14 @@
 #include <utility>
 #include <vector>
 
+#include <glm/gtc/matrix_inverse.hpp>
+
 #include <rinvid/core/render_context.h>
 #include <rinvid/core/rinvid_gl.h>
 #include <rinvid/core/texture.h>
 #include <rinvid/core/tile_map.h>
 #include <rinvid/util/error.h>
+#include <rinvid/util/image_cache.h>
 #include <rinvid/util/tiled_map_loader.h>
 
 namespace rinvid
@@ -37,12 +40,31 @@ void TileMap::release_gl_resources()
     }
 }
 
-void TileMap::build()
+void TileMap::build(ImageCache* images)
 {
+    if (images != nullptr)
+    {
+        std::vector<std::filesystem::path> paths{};
+        paths.reserve(data_.tilesets_.size());
+        for (const auto& tileset : data_.tilesets_)
+        {
+            paths.push_back(tileset.image_);
+        }
+        images->preload(paths);
+    }
+
     textures_.reserve(data_.tilesets_.size());
     for (const auto& tileset : data_.tilesets_)
     {
-        textures_.emplace_back(tileset.image_.string().c_str());
+        if (images != nullptr)
+        {
+            const auto image{images->get(tileset.image_)};
+            textures_.emplace_back(image->pixels, image->width, image->height);
+        }
+        else
+        {
+            textures_.emplace_back(tileset.image_.string().c_str());
+        }
         const auto& texture{textures_.back()};
         if (texture.width_ != static_cast<std::int32_t>(tileset.image_width_) ||
             texture.height_ != static_cast<std::int32_t>(tileset.image_height_))
@@ -97,7 +119,7 @@ void TileMap::build()
             const float x{static_cast<float>((index % data_.width_) * data_.tile_width_) +
                           layer.offset_.x};
             float       y{static_cast<float>((index / data_.width_) * data_.tile_height_) +
-                    layer.offset_.y};
+                          layer.offset_.y};
             float       width{static_cast<float>(data_.tile_width_)};
             float       height{static_cast<float>(data_.tile_height_)};
             if ((raw_gid & 0x20000000U) != 0U)
@@ -172,7 +194,17 @@ void TileMap::draw_layer(std::size_t index, const Shader shader)
         return;
     }
     shader.use();
-    context->update_mvp_matrix(glm::mat4{1.0F}, shader.get_id());
+    glm::mat4 model{1.0F};
+    if (layer.parallax_.x != 1.0F || layer.parallax_.y != 1.0F)
+    {
+        // Tiled measures parallax from the view center in world coordinates.
+        const auto center{glm::inverse(context->get_view()) *
+                          glm::vec4{static_cast<float>(context->get_width()) * 0.5F,
+                                    static_cast<float>(context->get_height()) * 0.5F, 0.0F, 1.0F}};
+        model[3][0] = (center.x - data_.parallax_origin_.x) * (1.0F - layer.parallax_.x);
+        model[3][1] = (center.y - data_.parallax_origin_.y) * (1.0F - layer.parallax_.y);
+    }
+    context->update_mvp_matrix(model, shader.get_id());
     shader.set_float("opacity", layer.opacity_);
     shader.set_int("the_texture", 0);
     GL_CALL(glBindVertexArray(vertex_array_));
@@ -185,15 +217,28 @@ void TileMap::draw_layer(std::size_t index, const Shader shader)
 }
 
 TileMap::TileMap(const std::filesystem::path& file_name)
+    : TileMap{load_tiled_map(file_name), nullptr}
+{
+}
+
+TileMap::TileMap(const std::filesystem::path& file_name, ImageCache& images)
+    : TileMap{load_tiled_map(file_name), &images}
+{
+}
+
+TileMap::TileMap(TileMapData data, ImageCache& images) : TileMap{std::move(data), &images}
+{
+}
+
+TileMap::TileMap(TileMapData data, ImageCache* images) : data_{std::move(data)}
 {
     if (RenderContext::get_active_context() == nullptr)
     {
         throw GraphicsError{"TileMap: an active render context is required"};
     }
-    data_ = load_tiled_map(file_name);
     try
     {
-        build();
+        build(images);
     }
     catch (...)
     {
