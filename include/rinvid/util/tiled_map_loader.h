@@ -22,7 +22,10 @@ namespace rinvid
  * Supports right-down tile layers, uncompressed CSV or XML tile data, and embedded or external
  * TSX atlas tilesets. Tiles must match the map grid size. Atlas dimensions must be declared.
  * Image paths are resolved relative to their owning TMX/TSX file. Image loading is deferred to
- * TileMap. Custom properties and editor metadata are ignored; unsupported visual features fail.
+ * TileMap. Top-level object layers support points and unrotated rectangles, with names, classes,
+ * visibility, and explicit string/int/float/bool properties. Object positions include layer
+ * offsets. Objects are metadata only: the application decides spawning and collision behavior.
+ * Other properties and editor metadata are ignored; unsupported object geometry fails.
  *
  * @param file_name TMX file to read.
  * @return Validated map data with absolute image paths.

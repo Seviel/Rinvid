@@ -1,8 +1,11 @@
 # Tiled maps
 
 This example loads `resources/garden.tmx`, follows its external `garden.tsx` tileset,
-and renders three layers. Use **WASD / arrow keys** to pan and **Escape** to exit.
+and renders three tile layers. Use **WASD / arrow keys** to move the yellow player
+and **Escape** to exit. The camera follows the player.
 The courtyard contains all eight horizontal/vertical/diagonal tile transforms.
+The player starts at the `player_start` point. Red rectangles show collision objects
+and block movement using a small example-only rectangle overlap check.
 
 Build with the repository's usual CMake workflow:
 
@@ -36,5 +39,5 @@ Pass a map path to open your own map:
 The loader rejects infinite/non-orthogonal maps, group/object/image layers,
 animations, image collection tilesets, per-tile image regions, nonzero tileset
 offsets, color-key transparency, layer tint, non-normal blend modes, and parallax.
-Custom properties, collision metadata, and editor metadata are ignored. Map
+Properties outside object layers/objects and editor metadata are ignored. Map
 background color is left to the application's `clear_screen()` call.

@@ -12,9 +12,10 @@
 #include <cmath>
 #include <limits>
 #include <locale>
+#include <set>
 #include <sstream>
-#include <string_view>
 #include <utility>
+#include <string_view>
 
 #include <tinyxml2.h>
 
@@ -269,13 +270,13 @@ TileLayer read_layer(const Element& element, const std::filesystem::path& file,
             if (gid != 0U)
             {
                 const auto next{std::upper_bound(map.tilesets_.begin(), map.tilesets_.end(), gid,
-                                                          [](std::uint32_t id, const Tileset& tileset)
-                                                          { return id < tileset.first_gid_; })};
+                                                 [](std::uint32_t id, const Tileset& tileset)
+                                                 { return id < tileset.first_gid_; })};
                 if (next == map.tilesets_.begin() ||
                     gid - (next - 1)->first_gid_ >= (next - 1)->tile_count_)
                 {
                     fail(file, *data,
-                                  "tile ID " + std::to_string(gid) + " has no matching tileset tile");
+                         "tile ID " + std::to_string(gid) + " has no matching tileset tile");
                 }
             }
             result.tiles_.push_back(raw_gid);
@@ -331,6 +332,172 @@ TileLayer read_layer(const Element& element, const std::filesystem::path& file,
     if (result.tiles_.size() != expected)
     {
         fail(file, *data, "tile count does not match layer dimensions");
+    }
+
+    return result;
+}
+
+std::string attribute(const Element& element, const char* name)
+{
+    const auto* value{element.Attribute(name)};
+    return value ? value : "";
+}
+
+bool visibility(const Element& element, const std::filesystem::path& file)
+{
+    const auto value{number(element, "visible", file, 1U)};
+
+    if (value > 1U)
+    {
+        fail(file, element, "visible must be 0 or 1");
+    }
+
+    return value != 0U;
+}
+
+std::map<std::string, TiledProperty> read_properties(const Element&               element,
+                                                     const std::filesystem::path& file)
+{
+    std::map<std::string, TiledProperty> result{};
+    const auto*                          properties{element.FirstChildElement("properties")};
+
+    if (properties == nullptr)
+    {
+        return result;
+    }
+
+    if (properties->NextSiblingElement("properties"))
+    {
+        fail(file, element, "only one properties element is allowed");
+    }
+
+    for (auto* property{properties->FirstChildElement("property")}; property;
+         property = property->NextSiblingElement("property"))
+    {
+        const auto  name{attribute(*property, "name")};
+        const auto  type{attribute(*property, "type")};
+        const char* text{property->Attribute("value")};
+
+        if (text == nullptr)
+        {
+            text = property->GetText();
+        }
+
+        const std::string value{text ? text : ""};
+        TiledProperty     parsed{value};
+
+        if (property->FirstChildElement())
+        {
+            fail(file, *property, "nested property values are unsupported");
+        }
+
+        if (type == "int")
+        {
+            const auto input{trim(value)};
+            if (input.empty())
+            {
+                fail(file, *property, "property must be a signed 32-bit integer");
+            }
+            std::int32_t integer{};
+            const auto   converted{
+                std::from_chars(input.data(), input.data() + input.size(), integer)};
+            if (converted.ec != std::errc{} || converted.ptr != input.data() + input.size())
+            {
+                fail(file, *property, "property must be a signed 32-bit integer");
+            }
+            parsed = integer;
+        }
+        else if (type == "float")
+        {
+            if (property->Attribute("value") == nullptr)
+            {
+                fail(file, *property, "float property requires a value attribute");
+            }
+            parsed = real(*property, "value", file);
+        }
+        else if (type == "bool")
+        {
+            if (value != "true" && value != "false")
+            {
+                fail(file, *property, "bool property must be true or false");
+            }
+            parsed = value == "true";
+        }
+        else if (!type.empty() && type != "string")
+        {
+            fail(file, *property, "only string, int, float, and bool properties are supported");
+        }
+
+        if (name.empty() || !result.emplace(name, std::move(parsed)).second)
+        {
+            fail(file, *property, "property names must be nonempty and unique");
+        }
+    }
+
+    return result;
+}
+
+ObjectLayer read_object_layer(const Element& element, const std::filesystem::path& file,
+                              std::set<std::uint32_t>& object_ids)
+{
+    if (real(element, "x", file) != 0.0F || real(element, "y", file) != 0.0F ||
+        real(element, "parallaxx", file, 1.0F) != 1.0F ||
+        real(element, "parallaxy", file, 1.0F) != 1.0F)
+    {
+        fail(file, element, "object layers support pixel offsets only, without parallax");
+    }
+
+    ObjectLayer result{};
+    result.name_       = attribute(element, "name");
+    result.class_      = attribute(element, "class");
+    result.offset_     = {real(element, "offsetx", file), real(element, "offsety", file)};
+    result.visible_    = visibility(element, file);
+    result.properties_ = read_properties(element, file);
+
+    for (auto* object{element.FirstChildElement("object")}; object;
+         object = object->NextSiblingElement("object"))
+    {
+        if (object->Attribute("gid") || object->Attribute("template") ||
+            real(*object, "rotation", file) != 0.0F)
+        {
+            fail(file, *object, "tile objects, templates, and rotated objects are unsupported");
+        }
+        MapObject item{};
+        item.id_ = number(*object, "id", file, 0U, true);
+        if (item.id_ == 0U || !object_ids.insert(item.id_).second)
+        {
+            fail(file, *object, "object IDs must be nonzero and unique within the map");
+        }
+        item.name_       = attribute(*object, "name");
+        item.class_      = attribute(*object, object->Attribute("class") ? "class" : "type");
+        item.position_   = {real(*object, "x", file) + result.offset_.x,
+                            real(*object, "y", file) + result.offset_.y};
+        item.size_       = {real(*object, "width", file), real(*object, "height", file)};
+        item.visible_    = visibility(*object, file);
+        item.properties_ = read_properties(*object, file);
+        for (auto* child{object->FirstChildElement()}; child; child = child->NextSiblingElement())
+        {
+            const std::string_view name{child->Name()};
+            if (name == "point" && item.shape_ != MapObjectShape::Point)
+            {
+                item.shape_ = MapObjectShape::Point;
+            }
+            else if (name != "properties")
+            {
+                fail(file, *child, "only point and axis-aligned rectangle objects are supported");
+            }
+        }
+
+        if (!std::isfinite(item.position_.x) || !std::isfinite(item.position_.y) ||
+            !std::isfinite(item.position_.x + item.size_.x) ||
+            !std::isfinite(item.position_.y + item.size_.y) || item.size_.x < 0.0F ||
+            item.size_.y < 0.0F ||
+            (item.shape_ == MapObjectShape::Point &&
+             (item.size_.x != 0.0F || item.size_.y != 0.0F)))
+        {
+            fail(file, *object, "invalid object bounds; point dimensions must be zero");
+        }
+        result.objects_.push_back(std::move(item));
     }
 
     return result;
@@ -400,6 +567,7 @@ TileMapData load_tiled_map(const std::filesystem::path& file_name)
         map.tilesets_.push_back(std::move(tileset));
     }
 
+    std::set<std::uint32_t> object_ids{};
     for (auto* element{root.FirstChildElement()}; element; element = element->NextSiblingElement())
     {
         const std::string_view name{element->Name()};
@@ -407,9 +575,13 @@ TileMapData load_tiled_map(const std::filesystem::path& file_name)
         {
             map.layers_.push_back(read_layer(*element, file, map));
         }
-        else if (name == "group" || name == "objectgroup" || name == "imagelayer")
+        else if (name == "objectgroup")
         {
-            fail(file, *element, "only tile layers are supported");
+            map.object_layers_.push_back(read_object_layer(*element, file, object_ids));
+        }
+        else if (name == "group" || name == "imagelayer")
+        {
+            fail(file, *element, "only tile and object layers are supported");
         }
     }
 
