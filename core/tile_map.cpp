@@ -20,6 +20,7 @@
 #include <rinvid/core/texture.h>
 #include <rinvid/core/tile_map.h>
 #include <rinvid/util/error.h>
+#include <rinvid/util/image_cache.h>
 #include <rinvid/util/tiled_map_loader.h>
 
 namespace rinvid
@@ -39,12 +40,31 @@ void TileMap::release_gl_resources()
     }
 }
 
-void TileMap::build()
+void TileMap::build(ImageCache* images)
 {
+    if (images != nullptr)
+    {
+        std::vector<std::filesystem::path> paths{};
+        paths.reserve(data_.tilesets_.size());
+        for (const auto& tileset : data_.tilesets_)
+        {
+            paths.push_back(tileset.image_);
+        }
+        images->preload(paths);
+    }
+
     textures_.reserve(data_.tilesets_.size());
     for (const auto& tileset : data_.tilesets_)
     {
-        textures_.emplace_back(tileset.image_.string().c_str());
+        if (images != nullptr)
+        {
+            const auto image{images->get(tileset.image_)};
+            textures_.emplace_back(image->pixels, image->width, image->height);
+        }
+        else
+        {
+            textures_.emplace_back(tileset.image_.string().c_str());
+        }
         const auto& texture{textures_.back()};
         if (texture.width_ != static_cast<std::int32_t>(tileset.image_width_) ||
             texture.height_ != static_cast<std::int32_t>(tileset.image_height_))
@@ -197,15 +217,28 @@ void TileMap::draw_layer(std::size_t index, const Shader shader)
 }
 
 TileMap::TileMap(const std::filesystem::path& file_name)
+    : TileMap{load_tiled_map(file_name), nullptr}
+{
+}
+
+TileMap::TileMap(const std::filesystem::path& file_name, ImageCache& images)
+    : TileMap{load_tiled_map(file_name), &images}
+{
+}
+
+TileMap::TileMap(TileMapData data, ImageCache& images) : TileMap{std::move(data), &images}
+{
+}
+
+TileMap::TileMap(TileMapData data, ImageCache* images) : data_{std::move(data)}
 {
     if (RenderContext::get_active_context() == nullptr)
     {
         throw GraphicsError{"TileMap: an active render context is required"};
     }
-    data_ = load_tiled_map(file_name);
     try
     {
-        build();
+        build(images);
     }
     catch (...)
     {

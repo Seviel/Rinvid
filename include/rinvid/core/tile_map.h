@@ -22,6 +22,7 @@
 
 namespace rinvid
 {
+class ImageCache;
 
 /**************************************************************************************************
  * @brief A static Tiled map rendered with the active RenderContext and camera.
@@ -42,6 +43,32 @@ class TileMap : public Drawable
      *
      *************************************************************************************************/
     explicit TileMap(const std::filesystem::path& file_name);
+
+    /**************************************************************************************************
+     * @brief Loads a TMX map using cached atlas pixels and creates its GPU resources.
+     * Queues missing images without evicting existing cache entries. Waits for decoding if needed.
+     * The cache is only used during construction; textures remain owned by this map.
+     *
+     * @param file_name TMX file to read.
+     * @param images Cache owned by the calling game/render thread.
+     * @throws ResourceLoadError if the map or images cannot be loaded or validated.
+     * @throws GraphicsError if there is no active Rinvid render context.
+     *************************************************************************************************/
+    TileMap(const std::filesystem::path& file_name, ImageCache& images);
+
+    /**************************************************************************************************
+     * @brief Builds a previously parsed map using cached atlas pixels.
+     * Parse and preload ahead of time to avoid repeating XML parsing and image decoding at
+     * creation. Queues missing images and waits for pending decoding. Does not evict images or
+     * retain the cache. GPU creation must run with the owning OpenGL context active on the cache's
+     * game thread.
+     *
+     * @param data Validated data returned by load_tiled_map; structural fields must remain valid.
+     * @param images Cache containing preloaded images, or one to populate during construction.
+     * @throws ResourceLoadError if atlas images cannot be loaded or dimensions do not match.
+     * @throws GraphicsError if there is no active Rinvid render context.
+     *************************************************************************************************/
+    TileMap(TileMapData data, ImageCache& images);
 
     /**************************************************************************************************
      * @brief Releases the map's GPU resources.
@@ -114,7 +141,8 @@ class TileMap : public Drawable
         std::int32_t count_{};
     };
 
-    void build();
+    TileMap(TileMapData data, ImageCache* images);
+    void build(ImageCache* images);
     void release_gl_resources();
     void draw_layer(std::size_t index, const Shader shader);
 

@@ -26,6 +26,12 @@ Pass a map path to open your own map:
 ./build/examples/tiled/tiled /path/to/level.tmx
 ```
 
+## ImageCache
+
+The example parses the map and preloads its atlas images before creating the
+window. Decoding runs on the cache worker while the application initializes.
+`TileMap` then uses the parsed data and cached pixels to create its GPU resources.
+
 ## Saving from Tiled
 
 - Save as **TMX (XML)**, with **Orthogonal** orientation, a finite size, and

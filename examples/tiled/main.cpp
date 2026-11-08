@@ -23,6 +23,8 @@
 #include <rinvid/system/application.h>
 #include <rinvid/system/keyboard.h>
 #include <rinvid/system/screen.h>
+#include <rinvid/util/image_cache.h>
+#include <rinvid/util/tiled_map_loader.h>
 
 namespace
 {
@@ -30,13 +32,14 @@ namespace
 class TiledScreen : public rinvid::Screen
 {
   public:
-    explicit TiledScreen(std::filesystem::path map_file) : map_file_{std::move(map_file)}
+    TiledScreen(rinvid::TileMapData data, rinvid::ImageCache& images)
+        : prepared_data_{std::move(data)}, images_{images}
     {
     }
 
     void create() override
     {
-        map_ = std::make_unique<rinvid::TileMap>(map_file_);
+        map_ = std::make_unique<rinvid::TileMap>(std::move(prepared_data_), images_);
         const auto& data{map_->get_data()};
         for (const auto& layer : data.object_layers_)
         {
@@ -150,7 +153,8 @@ class TiledScreen : public rinvid::Screen
         player_->draw();
     }
 
-    std::filesystem::path                 map_file_;
+    rinvid::TileMapData                   prepared_data_{};
+    rinvid::ImageCache&                   images_;
     std::unique_ptr<rinvid::TileMap>      map_{};
     rinvid::Camera                        camera_{};
     rinvid::Vector2f                      player_position_{160.0F, 160.0F};
@@ -163,11 +167,20 @@ class TiledScreen : public rinvid::Screen
 
 int main(int argc, char** argv)
 {
-    const auto          map_file{argc > 1 ? std::filesystem::absolute(argv[1])
-                                          : std::filesystem::absolute(argv[0]).parent_path() /
-                                                "resources/garden.tmx"};
+    const auto         map_file{argc > 1 ? std::filesystem::absolute(argv[1])
+                                         : std::filesystem::absolute(argv[0]).parent_path() /
+                                               "resources/garden.tmx"};
+    rinvid::ImageCache images{};
+    auto               data{rinvid::load_tiled_map(map_file)};
+    std::vector<std::filesystem::path> paths{};
+    for (const auto& tileset : data.tilesets_)
+    {
+        paths.push_back(tileset.image_);
+    }
+    // Decode on the cache worker while the window and rendering context are initialized.
+    images.preload(paths);
     rinvid::Application application{960, 640, "Tiled | WASD / arrows: move | Esc: exit"};
-    application.set_screen(std::make_unique<TiledScreen>(map_file));
+    application.set_screen(std::make_unique<TiledScreen>(std::move(data), images));
     application.set_fps(60);
     application.run();
 
