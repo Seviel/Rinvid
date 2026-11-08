@@ -48,6 +48,7 @@ struct TileLayer
     Vector2f                   offset_{}; /// Layer offset in pixels.
     float                      opacity_{1.0F}; /// Layer opacity in [0, 1].
     bool                       visible_{true}; /// Whether the layer is drawn.
+    Vector2f parallax_{1.0F, 1.0F};            ///< Scrolling factors; 1 is normal, 0 is stationary.
 };
 
 /**************************************************************************************************
@@ -104,6 +105,7 @@ struct TileMapData
     std::vector<Tileset>     tilesets_{};      /// Tilesets in ascending first_gid_ order.
     std::vector<TileLayer>   layers_{};        /// Layers in painter's order.
     std::vector<ObjectLayer> object_layers_{}; ///< Gameplay object layers in file order.
+    Vector2f parallax_origin_{}; ///< Parallax reference point in world pixels, default (0, 0).
 };
 
 } // namespace rinvid

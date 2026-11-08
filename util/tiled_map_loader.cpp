@@ -220,11 +220,9 @@ TileLayer read_layer(const Element& element, const std::filesystem::path& file,
     }
 
     if (real(element, "x", file) != 0.0F || real(element, "y", file) != 0.0F ||
-        real(element, "parallaxx", file, 1.0F) != 1.0F ||
-        real(element, "parallaxy", file, 1.0F) != 1.0F || element.Attribute("tintcolor"))
+        element.Attribute("tintcolor"))
     {
-        fail(file, element,
-             "tile offsets, parallax, and tint are unsupported; pixel offsets are supported");
+        fail(file, element, "tile offsets and tint are unsupported; pixel offsets are supported");
     }
 
     require_value(element, "mode", "normal", file);
@@ -248,8 +246,10 @@ TileLayer read_layer(const Element& element, const std::filesystem::path& file,
         result.name_ = name;
     }
 
-    result.offset_  = {real(element, "offsetx", file), real(element, "offsety", file)};
-    result.opacity_ = real(element, "opacity", file, 1.0F);
+    result.offset_   = {real(element, "offsetx", file), real(element, "offsety", file)};
+    result.parallax_ = {real(element, "parallaxx", file, 1.0F),
+                        real(element, "parallaxy", file, 1.0F)};
+    result.opacity_  = real(element, "opacity", file, 1.0F);
     const auto visible{number(element, "visible", file, 1U)};
     if (result.opacity_ < 0.0F || result.opacity_ > 1.0F || visible > 1U)
     {
@@ -528,10 +528,12 @@ TileMapData load_tiled_map(const std::filesystem::path& file_name)
     }
 
     TileMapData map{};
-    map.width_       = positive(root, "width", file);
-    map.height_      = positive(root, "height", file);
-    map.tile_width_  = positive(root, "tilewidth", file);
-    map.tile_height_ = positive(root, "tileheight", file);
+    map.width_           = positive(root, "width", file);
+    map.height_          = positive(root, "height", file);
+    map.tile_width_      = positive(root, "tilewidth", file);
+    map.tile_height_     = positive(root, "tileheight", file);
+    map.parallax_origin_ = {real(root, "parallaxoriginx", file),
+                            real(root, "parallaxoriginy", file)};
     if (static_cast<std::uint64_t>(map.width_) * map.tile_width_ >
             std::numeric_limits<std::int32_t>::max() ||
         static_cast<std::uint64_t>(map.height_) * map.tile_height_ >
