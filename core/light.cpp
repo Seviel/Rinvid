@@ -57,7 +57,7 @@ Light::Light(Vector2f position, float intensity, float falloff)
 
 Light::Light(const Light& other)
     : position_{other.position_}, intensity_{other.intensity_}, falloff_{other.falloff_},
-      ordinal_{-1}, active_{other.active_}, render_context_{nullptr}
+      color_{other.color_}, ordinal_{-1}, active_{other.active_}, render_context_{nullptr}
 {
     acquire_slot();
     upload();
@@ -78,6 +78,7 @@ Light& Light::operator=(const Light& other)
     position_  = other.position_;
     intensity_ = other.intensity_;
     falloff_   = other.falloff_;
+    color_     = other.color_;
     active_    = other.active_;
 
     if (ordinal_ >= 0 && render_context_ != nullptr)
@@ -92,7 +93,8 @@ Light& Light::operator=(const Light& other)
 
 Light::Light(Light&& other) noexcept
     : position_{other.position_}, intensity_{other.intensity_}, falloff_{other.falloff_},
-      ordinal_{other.ordinal_}, active_{other.active_}, render_context_{other.render_context_}
+      color_{other.color_}, ordinal_{other.ordinal_}, active_{other.active_},
+      render_context_{other.render_context_}
 {
     if (render_context_ != nullptr)
     {
@@ -116,6 +118,7 @@ Light& Light::operator=(Light&& other) noexcept
     position_       = other.position_;
     intensity_      = other.intensity_;
     falloff_        = other.falloff_;
+    color_          = other.color_;
     ordinal_        = other.ordinal_;
     active_         = other.active_;
     render_context_ = other.render_context_;
@@ -191,7 +194,7 @@ void Light::upload()
     const float shader_falloff{remap(falloff_, 0.0F, 1.0F, falloff_low, falloff_high)};
 
     render_context_->set_default_light(static_cast<std::uint32_t>(ordinal_), position_.x,
-                                       position_.y, shader_intensity, shader_falloff);
+                                       position_.y, shader_intensity, shader_falloff, color_);
 }
 
 void Light::move(const Vector2f move_vector)
@@ -217,6 +220,18 @@ void Light::set_falloff(float falloff)
 {
     falloff_ = 1.0F - std::clamp(falloff, 0.0F, 1.0F);
     upload();
+}
+
+void Light::set_color(Color color)
+{
+    color_ = Color{std::clamp(color.r, 0.0F, 1.0F), std::clamp(color.g, 0.0F, 1.0F),
+                   std::clamp(color.b, 0.0F, 1.0F), 1.0F};
+    upload();
+}
+
+Color Light::get_color() const
+{
+    return color_;
 }
 
 void Light::switch_it(bool on)

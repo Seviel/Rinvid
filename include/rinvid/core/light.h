@@ -12,6 +12,7 @@
 
 #include <cstdint>
 
+#include <rinvid/util/color.h>
 #include <rinvid/util/vector2.h>
 
 namespace rinvid
@@ -108,6 +109,22 @@ class Light
     void set_falloff(float falloff);
 
     /**************************************************************************************************
+     * @brief Sets the light color. Lights are white by default.
+     *
+     * @param color RGB components are clamped to [0.0, 1.0]. Alpha is ignored.
+     *
+     *************************************************************************************************/
+    void set_color(Color color);
+
+    /**************************************************************************************************
+     * @brief Returns the light color.
+     *
+     * @return Current RGB color with alpha set to 1.0.
+     *
+     *************************************************************************************************/
+    Color get_color() const;
+
+    /**************************************************************************************************
      * @brief Switches light on or off.
      *
      * @param on Set to true if you want to switch the light on, false otherwise.
@@ -180,6 +197,7 @@ class Light
     Vector2f       position_;
     float          intensity_;
     float          falloff_;
+    Color          color_{1.0F, 1.0F, 1.0F, 1.0F};
     std::int32_t   ordinal_;
     bool           active_;
     RenderContext* render_context_;
