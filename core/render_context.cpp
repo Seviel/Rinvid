@@ -59,14 +59,15 @@ const char* default_shape_frag{
     vec3 apply_lighting(vec3 object_color)\n\
     {\n\
         float ambient = use_ambient_light ? ambient_strength : 0.0;\n\
-        float direct_light = 0.0;\n\
+        vec3 direct_light = vec3(0.0);\n\
         bool any_light_active = false;\n\
         for (int i = 0; i < light_count; ++i)\n\
         {\n\
-            vec4 light = texelFetch(light_data, i);\n\
+            vec4 light = texelFetch(light_data, i * 2);\n\
             if (light.z > 0.0)\n\
             {\n\
-                direct_light += get_light_amount(light);\n\
+                vec3 light_color = texelFetch(light_data, i * 2 + 1).rgb;\n\
+                direct_light += light_color * get_light_amount(light);\n\
                 any_light_active = true;\n\
             }\n\
         }\n\
@@ -120,14 +121,15 @@ const char* default_texture_frag{
     vec3 apply_lighting(vec3 object_color)\n\
     {\n\
        float ambient = use_ambient_light ? ambient_strength : 0.0;\n\
-       float direct_light = 0.0;\n\
+       vec3 direct_light = vec3(0.0);\n\
        bool any_light_active = false;\n\
        for (int i = 0; i < light_count; ++i)\n\
        {\n\
-          vec4 light = texelFetch(light_data, i);\n\
+          vec4 light = texelFetch(light_data, i * 2);\n\
           if (light.z > 0.0)\n\
           {\n\
-             direct_light += get_light_amount(light);\n\
+             vec3 light_color = texelFetch(light_data, i * 2 + 1).rgb;\n\
+             direct_light += light_color * get_light_amount(light);\n\
              any_light_active = true;\n\
           }\n\
        }\n\
@@ -579,7 +581,7 @@ const Shader RenderContext::get_text_default_shader() const
 }
 
 void RenderContext::set_default_light(std::uint32_t light_index, float position_x, float position_y,
-                                      float intensity, float falloff)
+                                      float intensity, float falloff, Color color)
 {
     const auto required_light_count{light_index + 1U};
     if (required_light_count > default_light_data_.size())
@@ -589,8 +591,8 @@ void RenderContext::set_default_light(std::uint32_t light_index, float position_
 
     ensure_default_light_capacity(required_light_count);
 
-    default_light_data_.at(light_index) =
-        DefaultLightData{position_x, position_y, intensity, falloff};
+    default_light_data_.at(light_index) = DefaultLightData{
+        position_x, position_y, intensity, falloff, color.r, color.g, color.b, 0.0F};
 
     mark_default_light_data_dirty(light_index);
 }

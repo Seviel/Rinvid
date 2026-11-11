@@ -18,6 +18,7 @@
 #include <glm/mat4x4.hpp>
 
 #include <rinvid/core/shader.h>
+#include <rinvid/util/color.h>
 #include <rinvid/util/vector2.h>
 
 namespace rinvid
@@ -211,10 +212,12 @@ class RenderContext
      * @param position_y World-space Y coordinate.
      * @param intensity Light intensity used by the shader.
      * @param falloff Light falloff used by the shader.
+     * @param color Light RGB color. Alpha is ignored.
      *
      *************************************************************************************************/
     void set_default_light(std::uint32_t light_index, float position_x, float position_y,
-                           float intensity, float falloff);
+                           float intensity, float falloff,
+                           Color color = Color{1.0F, 1.0F, 1.0F, 1.0F});
 
     /**************************************************************************************************
      * @brief Acquires a default shader light slot. Intended for internal Rinvid use.
@@ -385,11 +388,17 @@ class RenderContext
 
     struct DefaultLightData
     {
+        // Two RGBA32F texels per light: position/intensity/falloff, then RGB/padding.
         float position_x_{};
         float position_y_{};
         float intensity_{};
         float falloff_{1.0F};
+        float red_{1.0F};
+        float green_{1.0F};
+        float blue_{1.0F};
+        float padding_{};
     };
+    static_assert(sizeof(DefaultLightData) == 8U * sizeof(float));
 
     struct DefaultLightSlot
     {

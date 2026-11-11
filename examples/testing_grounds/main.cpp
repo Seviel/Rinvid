@@ -133,6 +133,7 @@ void TestingGrounds::create()
     light_mid.set_position(rinvid::Vector2f{320.0F, 250.0F});
     light_mid.set_intensity(0.4F);
     light_mid.set_falloff(0.6F);
+    light_mid.set_color(rinvid::Color{0.25F, 0.75F, 0.25F, 1.0F});
 
     light_low.set_active(false);
 
