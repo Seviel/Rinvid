@@ -289,6 +289,14 @@ class RenderContext
     void set_default_ambient_light(bool enabled, float strength);
 
     /**************************************************************************************************
+     * @brief Enables or bypasses default shader lighting. Intended for internal Rinvid use.
+     *
+     * @param enabled Whether default shaders should apply lighting.
+     *
+     *************************************************************************************************/
+    void set_default_lighting_enabled(bool enabled);
+
+    /**************************************************************************************************
      * @brief Returns logical canvas width, or window-pixel width when no canvas is set.
      *
      * @return Screen width.
@@ -446,6 +454,7 @@ class RenderContext
     bool                          default_light_data_dirty_{};
     bool                          default_light_uniforms_dirty_{true};
     bool                          default_ambient_light_enabled_{};
+    bool                          default_lighting_enabled_{true};
 };
 
 } // namespace rinvid

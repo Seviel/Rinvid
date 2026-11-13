@@ -44,6 +44,7 @@ const char* default_shape_frag{
     out vec4  out_color;\n\
     uniform vec4  in_color;\n\
     uniform bool  use_ambient_light = false;\n\
+    uniform bool lighting_enabled = true;\n\
     uniform float ambient_strength  = 0.1;\n\
     uniform samplerBuffer light_data;\n\
     uniform int light_count = 0;\n\
@@ -58,6 +59,7 @@ const char* default_shape_frag{
     }\n\
     vec3 apply_lighting(vec3 object_color)\n\
     {\n\
+        if (!lighting_enabled) return object_color;\n\
         float ambient = use_ambient_light ? ambient_strength : 0.0;\n\
         vec3 direct_light = vec3(0.0);\n\
         bool any_light_active = false;\n\
@@ -105,6 +107,7 @@ const char* default_texture_frag{
     uniform float opacity;\n\
     uniform sampler2D the_texture;\n\
     uniform bool use_ambient_light = false;\n\
+    uniform bool lighting_enabled = true;\n\
     uniform float ambient_strength = 0.1;\n\
     in vec2 tex_coord;\n\
     in vec2 world_pos;\n\
@@ -120,6 +123,7 @@ const char* default_texture_frag{
     }\n\
     vec3 apply_lighting(vec3 object_color)\n\
     {\n\
+       if (!lighting_enabled) return object_color;\n\
        float ambient = use_ambient_light ? ambient_strength : 0.0;\n\
        vec3 direct_light = vec3(0.0);\n\
        bool any_light_active = false;\n\
@@ -236,6 +240,7 @@ void RenderContext::release_default_light_buffer()
     default_light_data_dirty_       = false;
     default_light_uniforms_dirty_   = true;
     default_ambient_light_enabled_  = false;
+    default_lighting_enabled_       = true;
 }
 
 void RenderContext::ensure_default_light_capacity(std::uint32_t light_count)
@@ -326,12 +331,14 @@ void RenderContext::update_default_lighting_uniforms() const
     shape_shader.set_int("light_count", static_cast<std::int32_t>(default_light_count_));
     shape_shader.set_bool("use_ambient_light", default_ambient_light_enabled_);
     shape_shader.set_float("ambient_strength", default_ambient_light_strength_);
+    shape_shader.set_bool("lighting_enabled", default_lighting_enabled_);
 
     const auto texture_shader{get_texture_default_shader()};
     texture_shader.use();
     texture_shader.set_int("light_count", static_cast<std::int32_t>(default_light_count_));
     texture_shader.set_bool("use_ambient_light", default_ambient_light_enabled_);
     texture_shader.set_float("ambient_strength", default_ambient_light_strength_);
+    texture_shader.set_bool("lighting_enabled", default_lighting_enabled_);
 }
 
 void RenderContext::sync_default_lighting()
@@ -676,6 +683,15 @@ void RenderContext::set_default_light_count(std::uint32_t light_count)
 
     default_light_count_          = light_count;
     default_light_uniforms_dirty_ = true;
+}
+
+void RenderContext::set_default_lighting_enabled(bool enabled)
+{
+    if (default_lighting_enabled_ != enabled)
+    {
+        default_lighting_enabled_     = enabled;
+        default_light_uniforms_dirty_ = true;
+    }
 }
 
 void RenderContext::set_default_ambient_light(bool enabled, float strength)

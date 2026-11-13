@@ -25,6 +25,16 @@ class LightManager
 {
   public:
     /**************************************************************************************************
+     * @brief Enables or bypasses lighting in the default shape and texture shaders.
+     * Bypassing preserves all light and ambient settings, for example while drawing a HUD.
+     * Lighting is enabled by default.
+     *
+     * @param enabled True to apply lighting, false to draw original object colors.
+     *
+     *************************************************************************************************/
+    static void set_lighting_enabled(bool enabled);
+
+    /**************************************************************************************************
      * @brief Sets ambient lighting.
      *
      * @param enabled True if ambient lighting should be enabled.

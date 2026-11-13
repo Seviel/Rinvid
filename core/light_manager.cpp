@@ -15,6 +15,14 @@
 namespace rinvid
 {
 
+void LightManager::set_lighting_enabled(bool enabled)
+{
+    if (auto* context = RenderContext::get_active_context())
+    {
+        context->set_default_lighting_enabled(enabled);
+    }
+}
+
 void LightManager::activate_ambient_light(float strength)
 {
     set_ambient_light(true, strength);
